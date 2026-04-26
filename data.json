@@ -34,6 +34,16 @@
       "rang": 7,
       "nom": "ROMU",
       "pts": 1249
+    },
+    {
+      "rang": 8,
+      "nom": "VINCENT",
+      "pts": 1235
+    },
+    {
+      "rang": 9,
+      "nom": "ANTHONY",
+      "pts": 1213
     }
   ],
   "derniere_journee": 31,

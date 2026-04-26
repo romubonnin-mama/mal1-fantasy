@@ -24,7 +24,7 @@ NOMS_COLS = {
 
 def lire_classement(ws):
     joueurs = []
-    for row in range(2, 11):
+    for row in range(4, 13):
         rang = ws.cell(row=row, column=2).value
         nom = ws.cell(row=row, column=3).value
         pts = ws.cell(row=row, column=4).value
