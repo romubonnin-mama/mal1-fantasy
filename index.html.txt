@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ma L1 — Saison 2025/26</title>
+</head>
+<body>
+<h1>Ma L1 — Saison 2025/26</h1>
+<p>Site en construction...</p>
+</body>
+</html>
