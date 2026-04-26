@@ -36,11 +36,11 @@
       "pts": 1249
     }
   ],
-  "derniere_journee": 38,
+  "derniere_journee": 1,
   "scores_journee": {
-    "ROMU": "PTS ",
-    "ADRIEN": "CR",
-    "ANTHONY": "CJ",
+    "ROMU": 0,
+    "ADRIEN": 0,
+    "ANTHONY": 0,
     "JEROME": 0,
     "FLORIAN": 0,
     "BASTIEN": 0,
@@ -49,13 +49,11 @@
     "MICKA": 0
   },
   "score_max": {
-    "valeur": 98,
-    "joueur": "ROMU",
-    "journee": 22
+    "valeur": null,
+    "joueur": null
   },
   "score_min": {
-    "valeur": 24,
-    "joueur": "ADRIEN",
-    "journee": 17
+    "valeur": null,
+    "joueur": null
   }
 }
