@@ -3,7 +3,7 @@
     {
       "rang": 1,
       "nom": "FLORIAN",
-      "pts": 1362
+      "pts": 1361
     },
     {
       "rang": 2,
@@ -13,7 +13,7 @@
     {
       "rang": 3,
       "nom": "BASTIEN",
-      "pts": 1332
+      "pts": 1331
     },
     {
       "rang": 4,
@@ -52,17 +52,17 @@
     "JEROME": 36,
     "VINCENT": 32,
     "ADRIEN": 28,
-    "FLORIAN": 48,
+    "FLORIAN": 47,
     "FAB": 38,
     "ANTHONY": 34,
-    "BASTIEN": 39,
+    "BASTIEN": 38,
     "MICKA": 35
   },
   "historique": {
     "1": {
-      "ROMU": 0,
-      "JEROME": 0,
-      "VINCENT": 0,
+      "ROMU": 45,
+      "JEROME": 41,
+      "VINCENT": 36,
       "ADRIEN": 0,
       "FLORIAN": 0,
       "FAB": 0,
@@ -71,9 +71,9 @@
       "MICKA": 0
     },
     "2": {
-      "ROMU": 0,
-      "JEROME": 0,
-      "VINCENT": 0,
+      "ROMU": 33,
+      "JEROME": 39,
+      "VINCENT": 44,
       "ADRIEN": 0,
       "FLORIAN": 0,
       "FAB": 0,
@@ -82,9 +82,9 @@
       "MICKA": 0
     },
     "3": {
-      "ROMU": 0,
-      "JEROME": 0,
-      "VINCENT": 0,
+      "ROMU": 47,
+      "JEROME": 35,
+      "VINCENT": 35,
       "ADRIEN": 0,
       "FLORIAN": 0,
       "FAB": 0,
@@ -93,9 +93,9 @@
       "MICKA": 0
     },
     "4": {
-      "ROMU": 0,
-      "JEROME": 0,
-      "VINCENT": 0,
+      "ROMU": 30,
+      "JEROME": 41,
+      "VINCENT": 32,
       "ADRIEN": 0,
       "FLORIAN": 0,
       "FAB": 0,
@@ -104,9 +104,9 @@
       "MICKA": 0
     },
     "5": {
-      "ROMU": 0,
-      "JEROME": 0,
-      "VINCENT": 0,
+      "ROMU": 39,
+      "JEROME": 47,
+      "VINCENT": 31,
       "ADRIEN": 0,
       "FLORIAN": 0,
       "FAB": 0,
@@ -115,9 +115,9 @@
       "MICKA": 0
     },
     "6": {
-      "ROMU": 0,
-      "JEROME": 0,
-      "VINCENT": 0,
+      "ROMU": 47,
+      "JEROME": 47,
+      "VINCENT": 35,
       "ADRIEN": 0,
       "FLORIAN": 0,
       "FAB": 0,
@@ -126,9 +126,9 @@
       "MICKA": 0
     },
     "7": {
-      "ROMU": 0,
-      "JEROME": 0,
-      "VINCENT": 0,
+      "ROMU": 41,
+      "JEROME": 39,
+      "VINCENT": 80,
       "ADRIEN": 0,
       "FLORIAN": 0,
       "FAB": 0,
@@ -137,9 +137,9 @@
       "MICKA": 0
     },
     "8": {
-      "ROMU": 0,
-      "JEROME": 0,
-      "VINCENT": 0,
+      "ROMU": 40,
+      "JEROME": 36,
+      "VINCENT": 35,
       "ADRIEN": 0,
       "FLORIAN": 0,
       "FAB": 0,
@@ -148,9 +148,9 @@
       "MICKA": 0
     },
     "9": {
-      "ROMU": 0,
-      "JEROME": 0,
-      "VINCENT": 0,
+      "ROMU": 98,
+      "JEROME": 35,
+      "VINCENT": 39,
       "ADRIEN": 0,
       "FLORIAN": 0,
       "FAB": 0,
@@ -159,9 +159,9 @@
       "MICKA": 0
     },
     "10": {
-      "ROMU": 0,
-      "JEROME": 0,
-      "VINCENT": 0,
+      "ROMU": 27,
+      "JEROME": 43,
+      "VINCENT": 81,
       "ADRIEN": 0,
       "FLORIAN": 0,
       "FAB": 0,
@@ -170,9 +170,9 @@
       "MICKA": 0
     },
     "11": {
-      "ROMU": 0,
-      "JEROME": 0,
-      "VINCENT": 0,
+      "ROMU": 36,
+      "JEROME": 40,
+      "VINCENT": 33,
       "ADRIEN": 0,
       "FLORIAN": 0,
       "FAB": 0,
@@ -181,9 +181,9 @@
       "MICKA": 0
     },
     "12": {
-      "ROMU": 0,
-      "JEROME": 0,
-      "VINCENT": 0,
+      "ROMU": 42,
+      "JEROME": 37,
+      "VINCENT": 45,
       "ADRIEN": 0,
       "FLORIAN": 0,
       "FAB": 0,
@@ -192,9 +192,9 @@
       "MICKA": 0
     },
     "13": {
-      "ROMU": 0,
-      "JEROME": 0,
-      "VINCENT": 0,
+      "ROMU": 43,
+      "JEROME": 59,
+      "VINCENT": 43,
       "ADRIEN": 0,
       "FLORIAN": 0,
       "FAB": 0,
@@ -394,10 +394,10 @@
       "JEROME": 36,
       "VINCENT": 32,
       "ADRIEN": 28,
-      "FLORIAN": 48,
+      "FLORIAN": 47,
       "FAB": 38,
       "ANTHONY": 34,
-      "BASTIEN": 39,
+      "BASTIEN": 38,
       "MICKA": 35
     }
   },

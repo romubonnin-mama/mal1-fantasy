@@ -22,6 +22,18 @@ NOMS_COLS = {
     "MICKA":   (57, 83),
 }
 
+NOMS_COLS_ANCIEN = {
+    "ROMU":    (18, 3),
+    "JEROME":  (18, 43),
+    "VINCENT": (18, 83),
+    "ADRIEN":  (37, 3),
+    "FLORIAN": (37, 43),
+    "FAB":     (37, 83),
+    "ANTHONY": (56, 3),
+    "BASTIEN": (56, 43),
+    "MICKA":   (56, 83),
+}
+
 def lire_classement(ws):
     joueurs = []
     for row in range(4, 13):
@@ -32,9 +44,10 @@ def lire_classement(ws):
             joueurs.append({"rang": int(rang) if rang else row-3, "nom": str(nom), "pts": int(pts)})
     return sorted(joueurs, key=lambda x: x["rang"])
 
-def lire_scores_journee(ws):
+def lire_scores_journee(ws, ancien=False):
+    cols = NOMS_COLS_ANCIEN if ancien else NOMS_COLS
     scores = {}
-    for nom, (col, row) in NOMS_COLS.items():
+    for nom, (col, row) in cols.items():
         val = ws.cell(row=row, column=col).value
         if isinstance(val, (int, float)):
             scores[nom] = int(val)
@@ -48,7 +61,8 @@ def derniere_journee(wb):
         if sheet.isdigit() and int(sheet) != 38:
             j = int(sheet)
             ws = wb[sheet]
-            val = ws.cell(row=3, column=19).value
+            col = 18 if j < 14 else 19
+            val = ws.cell(row=3, column=col).value
             if isinstance(val, (int, float)) and val > 0:
                 max_j = max(max_j, j)
     return max_j if max_j > 0 else 1
@@ -71,7 +85,7 @@ def main():
     for j in range(1, 35):
         if str(j) in wb.sheetnames and j != 38:
             ws_j = wb[str(j)]
-            historique[str(j)] = lire_scores_journee(ws_j)
+            historique[str(j)] = lire_scores_journee(ws_j, ancien=(j < 14))
             print(f"  J{j} extraite")
 
     score_max_val = ws_scores.cell(row=14, column=9).value
