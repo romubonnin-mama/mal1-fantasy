@@ -3,17 +3,17 @@
     {
       "rang": 1,
       "nom": "FLORIAN",
-      "pts": 1361
+      "pts": 1362
     },
     {
       "rang": 2,
       "nom": "FAB",
-      "pts": 1335
+      "pts": 1338
     },
     {
       "rang": 3,
       "nom": "BASTIEN",
-      "pts": 1325
+      "pts": 1332
     },
     {
       "rang": 4,
@@ -28,12 +28,12 @@
     {
       "rang": 6,
       "nom": "JEROME",
-      "pts": 1280
+      "pts": 1287
     },
     {
       "rang": 7,
       "nom": "ROMU",
-      "pts": 1249
+      "pts": 1255
     },
     {
       "rang": 8,
@@ -43,19 +43,19 @@
     {
       "rang": 9,
       "nom": "ANTHONY",
-      "pts": 1213
+      "pts": 1219
     }
   ],
   "derniere_journee": 31,
   "scores_journee": {
-    "ROMU": 18,
-    "JEROME": 29,
+    "ROMU": 24,
+    "JEROME": 36,
     "VINCENT": 32,
     "ADRIEN": 28,
-    "FLORIAN": 47,
-    "FAB": 35,
-    "ANTHONY": 28,
-    "BASTIEN": 32,
+    "FLORIAN": 48,
+    "FAB": 38,
+    "ANTHONY": 34,
+    "BASTIEN": 39,
     "MICKA": 35
   },
   "score_max": {
