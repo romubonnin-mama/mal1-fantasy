@@ -29,19 +29,8 @@ def lire_classement(ws):
         nom = ws.cell(row=row, column=3).value
         pts = ws.cell(row=row, column=4).value
         if nom and isinstance(pts, (int, float)):
-            joueurs.append({"rang": int(rang) if rang else row-1, "nom": str(nom), "pts": int(pts)})
+            joueurs.append({"rang": int(rang) if rang else row-3, "nom": str(nom), "pts": int(pts)})
     return sorted(joueurs, key=lambda x: x["rang"])
-
-def derniere_journee(wb):
-    max_j = 0
-    for sheet in wb.sheetnames:
-        if sheet.isdigit():
-            j = int(sheet)
-            ws = wb[sheet]
-            val = ws.cell(row=3, column=19).value
-            if isinstance(val, (int, float)) and val > 0:
-                max_j = max(max_j, j)
-    return max_j if max_j > 0 else 1
 
 def lire_scores_journee(ws):
     scores = {}
@@ -52,6 +41,17 @@ def lire_scores_journee(ws):
         else:
             scores[nom] = 0
     return scores
+
+def derniere_journee(wb):
+    max_j = 0
+    for sheet in wb.sheetnames:
+        if sheet.isdigit() and int(sheet) != 38:
+            j = int(sheet)
+            ws = wb[sheet]
+            val = ws.cell(row=3, column=19).value
+            if isinstance(val, (int, float)) and val > 0:
+                max_j = max(max_j, j)
+    return max_j if max_j > 0 else 1
 
 def main():
     print("Lecture du fichier Excel...")
@@ -64,12 +64,15 @@ def main():
 
     ws_scores = wb["SCORES"]
     classement = lire_classement(ws_scores)
-
     derniere_j = derniere_journee(wb)
     print(f"Derniere journee detectee : J{derniere_j}")
 
-    ws_j = wb[str(derniere_j)]
-    scores_journee = lire_scores_journee(ws_j)
+    historique = {}
+    for j in range(1, 35):
+        if str(j) in wb.sheetnames and j != 38:
+            ws_j = wb[str(j)]
+            historique[str(j)] = lire_scores_journee(ws_j)
+            print(f"  J{j} extraite")
 
     score_max_val = ws_scores.cell(row=14, column=9).value
     score_max_nom = ws_scores.cell(row=14, column=10).value
@@ -79,7 +82,8 @@ def main():
     data = {
         "classement": classement,
         "derniere_journee": derniere_j,
-        "scores_journee": scores_journee,
+        "scores_journee": historique[str(derniere_j)],
+        "historique": historique,
         "score_max": {"valeur": score_max_val, "joueur": score_max_nom},
         "score_min": {"valeur": score_min_val, "joueur": score_min_nom},
     }
