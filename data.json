@@ -1,0 +1,61 @@
+{
+  "classement": [
+    {
+      "rang": 1,
+      "nom": "FLORIAN",
+      "pts": 1361
+    },
+    {
+      "rang": 2,
+      "nom": "FAB",
+      "pts": 1335
+    },
+    {
+      "rang": 3,
+      "nom": "BASTIEN",
+      "pts": 1325
+    },
+    {
+      "rang": 4,
+      "nom": "ADRIEN",
+      "pts": 1292
+    },
+    {
+      "rang": 5,
+      "nom": "MICKA",
+      "pts": 1288
+    },
+    {
+      "rang": 6,
+      "nom": "JEROME",
+      "pts": 1280
+    },
+    {
+      "rang": 7,
+      "nom": "ROMU",
+      "pts": 1249
+    }
+  ],
+  "derniere_journee": 38,
+  "scores_journee": {
+    "ROMU": "PTS ",
+    "ADRIEN": "CR",
+    "ANTHONY": "CJ",
+    "JEROME": 0,
+    "FLORIAN": 0,
+    "BASTIEN": 0,
+    "VINCENT": 0,
+    "FAB": 0,
+    "MICKA": 0
+  },
+  "score_max": {
+    "valeur": 98,
+    "joueur": "ROMU",
+    "journee": 22
+  },
+  "score_min": {
+    "valeur": 24,
+    "joueur": "ADRIEN",
+    "journee": 17
+  }
+}
