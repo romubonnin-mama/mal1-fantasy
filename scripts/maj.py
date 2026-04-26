@@ -75,7 +75,16 @@ def lire_joueur(ws, col, row, ancien=False):
         return None
     statut = ws.cell(row=row, column=col+2).value
     cap = ws.cell(row=row, column=col+3).value
-    tj = ws.cell(row=row, column=col+4).value
+    tj_entree = ws.cell(row=row, column=col+4).value
+    tj_sortie = ws.cell(row=row, column=col+5).value
+    if str(tj_sortie).upper() == 'M':
+        tj = "M"
+    elif tj_entree and tj_sortie:
+        tj = f"{tj_entree}-{tj_sortie}"
+    elif tj_sortie:
+        tj = str(tj_sortie)
+    else:
+        tj = "0"
     bm  = ws.cell(row=row+1, column=col+4+decalage).value or 0
     be  = ws.cell(row=row+1, column=col+5+decalage).value or 0
     bcsc= ws.cell(row=row+1, column=col+6+decalage).value or 0
@@ -208,8 +217,11 @@ def main():
     print("Fichier data.json cree !")
     print("Envoi sur GitHub...")
     subprocess.run(["git", "add", "."], check=True)
-    subprocess.run(["git", "commit", "-m", f"Mise a jour J{derniere_j}"], check=True)
-    subprocess.run(["git", "push"], check=True)
+    result = subprocess.run(["git", "commit", "-m", f"Mise a jour J{derniere_j}"])
+    if result.returncode == 0:
+        subprocess.run(["git", "push"], check=True)
+    else:
+        print("Aucun changement a envoyer.")
     print("Site mis a jour avec succes !")
     input("Appuie sur Entree pour fermer...")
 
