@@ -20,7 +20,7 @@
   .logo span { color: var(--accent); }
   .logo-badge { background: var(--accent); color: #000; font-size: 9px; font-weight: 600; padding: 2px 6px; border-radius: 3px; }
   .nav-tabs { display: flex; gap: 4px; flex-shrink: 0; }
-  .nav-tab { color: var(--muted); font-size: 12px; font-weight: 600; padding: 6px 10px; border-radius: 6px; cursor: pointer; transition: all 0.2s; border: none; background: none; letter-spacing: 0.3px; }
+  .nav-tab { color: var(--muted); font-size: 12px; font-weight: 600; padding: 6px 10px; border-radius: 6px; cursor: pointer; transition: all 0.2s; border: none; background: none; }
   .nav-tab:hover { color: var(--text); background: var(--surface2); }
   .nav-tab.active { color: var(--accent); background: var(--surface2); }
   .journee-badge { background: var(--surface2); border: 1px solid var(--border); padding: 5px 12px; border-radius: 8px; font-size: 12px; font-weight: 600; color: var(--accent); flex-shrink: 0; }
@@ -38,7 +38,7 @@
   .divider-v { width: 1px; height: 36px; background: var(--border); }
   .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
   .card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; margin-bottom: 16px; }
-  .card-header { padding: 14px 18px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+  .card-header { padding: 14px 18px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
   .card-title { font-family: 'Barlow Condensed', sans-serif; font-size: 14px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); display: flex; align-items: center; gap: 8px; }
   .card-title::before { content: ''; display: block; width: 3px; height: 14px; background: var(--accent); border-radius: 2px; }
   .tag { font-size: 10px; font-weight: 600; padding: 3px 8px; border-radius: 4px; background: rgba(0,229,160,0.1); color: var(--accent); }
@@ -72,7 +72,8 @@
   .leader-pts .big { font-family: 'Bebas Neue', sans-serif; font-size: 42px; line-height: 1; color: var(--gold); }
   .leader-pts .lbl { font-size: 10px; color: var(--muted); text-transform: uppercase; }
   .j-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); }
-  .j-player { background: var(--surface); padding: 12px 14px; display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+  .j-player { background: var(--surface); padding: 12px 14px; display: flex; align-items: center; justify-content: space-between; gap: 8px; cursor: pointer; transition: background 0.15s; }
+  .j-player:hover { background: var(--surface2); }
   .j-player-info { display: flex; align-items: center; gap: 8px; }
   .j-avatar { width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; flex-shrink: 0; }
   .j-name { font-weight: 600; font-size: 12px; }
@@ -87,17 +88,51 @@
   .joueur-stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 14px; text-align: center; }
   .joueur-stat-card .val { font-family: 'Bebas Neue', sans-serif; font-size: 28px; color: var(--accent); }
   .joueur-stat-card .lbl { font-size: 10px; color: var(--muted); margin-top: 3px; }
-  .historique-table { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; }
-  .hist-row { display: grid; grid-template-columns: 50px 1fr 60px; align-items: center; padding: 9px 16px; border-bottom: 1px solid var(--border); font-size: 12px; gap: 10px; }
+  .historique-table { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; margin-bottom: 16px; }
+  .hist-row { display: grid; grid-template-columns: 50px 1fr 60px; align-items: center; padding: 9px 16px; border-bottom: 1px solid var(--border); font-size: 12px; gap: 10px; cursor: pointer; transition: background 0.15s; }
+  .hist-row:hover { background: var(--surface2); }
   .hist-row:last-child { border-bottom: none; }
-  .hist-header { font-size: 9px; color: var(--muted); text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px; }
+  .hist-header { font-size: 9px; color: var(--muted); text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px; cursor: default; }
+  .hist-header:hover { background: none; }
   .hist-pts { font-family: 'Bebas Neue', sans-serif; font-size: 18px; text-align: right; }
   .hist-bar-wrap { height: 5px; background: var(--surface2); border-radius: 3px; overflow: hidden; }
   .hist-bar { height: 100%; background: var(--accent); border-radius: 3px; }
   .chart-container { padding: 20px; position: relative; height: 400px; }
   .chart-filters { padding: 14px 18px; display: flex; flex-wrap: wrap; gap: 6px; border-bottom: 1px solid var(--border); }
-  .chart-btn { background: var(--surface2); border: 1px solid var(--border); font-size: 11px; font-weight: 600; padding: 5px 10px; border-radius: 6px; cursor: pointer; transition: all 0.2s; }
+  .chart-btn { background: var(--surface2); border: 1px solid var(--border); font-size: 11px; font-weight: 600; padding: 5px 10px; border-radius: 6px; cursor: pointer; transition: all 0.2s; color: var(--muted); }
   .chart-btn.active { color: #000; }
+  /* DETAIL EQUIPE */
+  .equipe-header { display: grid; grid-template-columns: 30px 1fr 40px 40px 30px 30px 30px 30px 30px 30px 30px 50px; gap: 4px; padding: 8px 14px; font-size: 9px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; border-bottom: 1px solid var(--border); }
+  .equipe-row { display: grid; grid-template-columns: 30px 1fr 40px 40px 30px 30px 30px 30px 30px 30px 30px 50px; gap: 4px; padding: 8px 14px; border-bottom: 1px solid var(--border); font-size: 12px; align-items: center; }
+  .equipe-row:last-child { border-bottom: none; }
+  .equipe-row.remplacant { opacity: 0.4; }
+  .equipe-row.absent { opacity: 0.25; }
+  .pos-badge { font-size: 9px; font-weight: 700; padding: 2px 4px; border-radius: 3px; text-align: center; }
+  .pos-G { background: rgba(255,107,53,0.15); color: #ff6b35; }
+  .pos-D { background: rgba(0,229,160,0.1); color: #00e5a0; }
+  .pos-M { background: rgba(129,140,248,0.15); color: #818cf8; }
+  .pos-A { background: rgba(255,68,85,0.12); color: #ff4455; }
+  .tj-badge { font-size: 10px; font-weight: 600; padding: 2px 6px; border-radius: 4px; background: var(--surface2); color: var(--text); text-align: center; }
+  .tj-badge.full { background: rgba(0,229,160,0.1); color: #00e5a0; }
+  .pts-cell { font-family: 'Bebas Neue', sans-serif; font-size: 16px; text-align: right; }
+  .stat-cell { text-align: center; color: var(--muted); font-size: 11px; }
+  .stat-cell.pos { color: #00e5a0; font-weight: 600; }
+  .stat-cell.neg { color: #ff4455; font-weight: 600; }
+  .cap-star { color: var(--gold); font-size: 12px; }
+  .poste-label { padding: 6px 14px; font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); background: var(--surface2); border-bottom: 1px solid var(--border); }
+  .detail-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 200; align-items: center; justify-content: center; padding: 16px; }
+  .detail-modal.open { display: flex; }
+  .detail-box { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; max-width: 500px; width: 100%; max-height: 90vh; overflow-y: auto; }
+  .detail-box-header { padding: 16px 20px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+  .detail-box-close { background: var(--surface2); border: 1px solid var(--border); color: var(--muted); padding: 4px 10px; border-radius: 6px; cursor: pointer; font-size: 12px; }
+  .journee-scores-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; padding: 16px; }
+  .journee-equipe-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; }
+  @media (max-width: 767px) {
+    .equipe-header, .equipe-row { grid-template-columns: 28px 1fr 36px 36px 26px 26px 26px 26px 26px 46px; }
+    .equipe-header > *:nth-child(7), .equipe-row > *:nth-child(7),
+    .equipe-header > *:nth-child(8), .equipe-row > *:nth-child(8) { display: none; }
+    .journee-scores-grid { grid-template-columns: 1fr; }
+  }
   @media (min-width: 768px) {
     .stats-row { grid-template-columns: repeat(4, 1fr); }
     .container { padding: 32px 24px; }
@@ -172,13 +207,7 @@
       <div class="card-header"><div class="card-title">Sélectionner une journée</div></div>
       <div class="selector-wrap" id="journee-selector"></div>
     </div>
-    <div class="card">
-      <div class="card-header">
-        <div class="card-title" id="journee-detail-titre">Journée —</div>
-        <div class="tag">SCORES</div>
-      </div>
-      <div class="j-grid" id="journee-detail-container"></div>
-    </div>
+    <div id="journee-detail-wrap"></div>
   </div>
 
   <!-- PAGE JOUEURS -->
@@ -219,6 +248,8 @@ const COULEURS = {
   "ANTHONY": {bg:"rgba(107,114,128,0.1)",  color:"#9ca3af", chart:"rgba(156,163,175,1)"},
 };
 const MEDAILLES = ["🥇","🥈","🥉"];
+const POSTES = {"G":"Gardien","D":"Défenseurs","M":"Milieux","A":"Attaquants"};
+const POS_CLASS = {"G":"pos-G","D":"pos-D","M":"pos-M","A":"pos-A"};
 let DATA = null;
 let evolutionChart = null;
 let joueursActifs = new Set();
@@ -235,7 +266,54 @@ document.getElementById('tab-journees').onclick = () => showPage('journees');
 document.getElementById('tab-joueurs').onclick = () => showPage('joueurs');
 document.getElementById('tab-evolution').onclick = () => showPage('evolution');
 
-function renderScores(scores, containerId) {
+function statCell(val) {
+  if (!val || val === 0) return '<div class="stat-cell">—</div>';
+  const cls = val > 0 ? 'pos' : 'neg';
+  return `<div class="stat-cell ${cls}">${val > 0 ? '+'+val : val}</div>`;
+}
+
+function tjBadge(tj) {
+  if (!tj || tj === '0') return '<span style="color:var(--muted);font-size:11px">—</span>';
+  if (tj === 'M') return '<span class="tj-badge full">M</span>';
+  return `<span class="tj-badge">${tj}</span>`;
+}
+
+function renderEquipe(equipe, joueurColor) {
+  let html = '';
+  html += `<div class="equipe-header">
+    <div>Pos</div><div>Joueur</div><div>TJ</div><div>PTS</div>
+    <div>BM</div><div>PD</div><div>CS</div><div>CJ</div><div>CR</div><div>PMA</div><div>BCSC</div><div></div>
+  </div>`;
+
+  ['G','D','M','A'].forEach(poste => {
+    const joueurs = equipe[poste] || [];
+    if (joueurs.length === 0) return;
+    html += `<div class="poste-label">${POSTES[poste]}</div>`;
+    joueurs.forEach(j => {
+      const isR = j.statut && j.statut.toLowerCase() === 'r';
+      const isA = j.statut && j.statut.toLowerCase() === 'a';
+      const rowClass = isR ? 'equipe-row remplacant' : isA ? 'equipe-row absent' : 'equipe-row';
+      const capHtml = j.cap ? `<span class="cap-star">★</span>` : '';
+      html += `<div class="${rowClass}">
+        <div><span class="pos-badge ${POS_CLASS[poste]}">${poste}</span></div>
+        <div style="font-weight:500;font-size:12px">${j.nom} ${capHtml}</div>
+        <div>${tjBadge(j.tj)}</div>
+        <div class="pts-cell" style="color:${j.pts>0?joueurColor:'var(--muted)'}">${j.pts}</div>
+        ${statCell(j.bm)}
+        ${statCell(j.pd)}
+        ${statCell(j.cs)}
+        ${statCell(j.cj)}
+        ${statCell(j.cr)}
+        ${statCell(j.pma)}
+        ${statCell(j.bcsc)}
+        <div></div>
+      </div>`;
+    });
+  });
+  return html;
+}
+
+function renderScores(scores, containerId, clickable) {
   const container = document.getElementById(containerId);
   container.innerHTML = '';
   const tries = Object.entries(scores).sort((a,b) => b[1]-a[1]);
@@ -258,14 +336,44 @@ function showJournee(j) {
   document.querySelectorAll('.j-btn').forEach(b => b.classList.remove('active'));
   const btn = document.querySelector('.j-btn[data-j="'+j+'"]');
   if (btn) btn.classList.add('active');
-  document.getElementById('journee-detail-titre').textContent = 'Journée ' + j;
-  renderScores(DATA.historique[String(j)], 'journee-detail-container');
+
+  const scores = DATA.historique[String(j)];
+  const detail = DATA.detail_journees[String(j)];
+  const tries = Object.entries(scores).sort((a,b) => b[1]-a[1]);
+
+  let html = `<div class="journee-scores-grid">`;
+  tries.forEach(([nom, pts]) => {
+    const c = COULEURS[nom] || {color:'#e8eaf0'};
+    const equipe = detail[nom];
+    html += `
+      <div class="journee-equipe-wrap">
+        <div class="card-header" style="background:var(--surface2);">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <div class="j-avatar" style="background:${COULEURS[nom]?.bg};color:${c.color};width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;">${nom.substring(0,2)}</div>
+            <div style="font-weight:700;font-size:13px;color:${c.color}">${nom}</div>
+          </div>
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:24px;color:${c.color}">${pts} pts</div>
+        </div>
+        ${renderEquipe(equipe, c.color)}
+      </div>`;
+  });
+  html += `</div>`;
+
+  document.getElementById('journee-detail-wrap').innerHTML = `
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Journée ${j} — Détail des équipes</div>
+        <div class="tag">SCORES</div>
+      </div>
+      ${html}
+    </div>`;
 }
 
 function showJoueur(nom) {
   document.querySelectorAll('.joueur-btn').forEach(b => b.classList.remove('active'));
   const btn = document.querySelector('.joueur-btn[data-nom="'+nom+'"]');
   if (btn) btn.classList.add('active');
+
   const historique = DATA.historique;
   const scores = [];
   let total = 0, max = 0;
@@ -275,10 +383,26 @@ function showJoueur(nom) {
     total += pts;
     if (pts > max) max = pts;
   });
+
   const moy = scores.length > 0 ? Math.round(total / scores.length) : 0;
   const maxPts = Math.max(...scores.map(s => s.pts), 1);
   const c = COULEURS[nom] || {color:'#00e5a0'};
   const rang = DATA.classement.find(j => j.nom === nom);
+
+  let detailHtml = '';
+  scores.forEach(s => {
+    const equipe = DATA.detail_journees[String(s.j)] && DATA.detail_journees[String(s.j)][nom];
+    detailHtml += `
+      <div class="hist-row" onclick="toggleJourneeDetail(this, '${nom}', ${s.j})">
+        <div style="font-weight:600;color:#6b7280">J${s.j}</div>
+        <div><div class="hist-bar-wrap"><div class="hist-bar" style="width:${Math.round((s.pts/maxPts)*100)}%;background:${c.color}"></div></div></div>
+        <div class="hist-pts" style="color:${s.pts===max?c.color:'#e8eaf0'}">${s.pts}</div>
+      </div>
+      <div class="journee-equipe-detail" id="detail-${nom}-${s.j}" style="display:none;border-bottom:1px solid var(--border);">
+        ${equipe ? renderEquipe(equipe, c.color) : ''}
+      </div>`;
+  });
+
   document.getElementById('joueur-detail').innerHTML = `
     <div class="joueur-stats-grid">
       <div class="joueur-stat-card"><div class="val" style="color:${c.color}">${rang ? rang.pts : '—'}</div><div class="lbl">Points totaux</div></div>
@@ -287,13 +411,19 @@ function showJoueur(nom) {
     </div>
     <div class="historique-table">
       <div class="hist-row hist-header"><div>Journée</div><div>Progression</div><div style="text-align:right">Points</div></div>
-      ${scores.map(s => `
-        <div class="hist-row">
-          <div style="font-weight:600;color:#6b7280">J${s.j}</div>
-          <div><div class="hist-bar-wrap"><div class="hist-bar" style="width:${Math.round((s.pts/maxPts)*100)}%;background:${c.color}"></div></div></div>
-          <div class="hist-pts" style="color:${s.pts===max?c.color:'#e8eaf0'}">${s.pts}</div>
-        </div>`).join('')}
+      ${detailHtml}
     </div>`;
+}
+
+function toggleJourneeDetail(row, nom, j) {
+  const detailDiv = document.getElementById(`detail-${nom}-${j}`);
+  if (detailDiv.style.display === 'none') {
+    detailDiv.style.display = 'block';
+    row.style.background = 'var(--surface2)';
+  } else {
+    detailDiv.style.display = 'none';
+    row.style.background = '';
+  }
 }
 
 function updateChart() {
@@ -307,7 +437,7 @@ function updateChart() {
         label: nom,
         data: DATA.evolution[nom].map(p => p.pts),
         borderColor: c.chart,
-        backgroundColor: c.chart.replace('1)', '0.1)'),
+        backgroundColor: c.chart.replace('1)', '0.05)'),
         borderWidth: 2.5,
         pointRadius: 3,
         pointHoverRadius: 6,
@@ -406,7 +536,7 @@ fetch("data.json?t=" + Date.now())
     });
     showJoueur('ROMU');
 
-    // Graphique évolution
+    // Graphique
     joueursActifs = new Set(classement.map(j => j.nom));
     const filters = document.getElementById('chart-filters');
     classement.forEach(joueur => {
@@ -453,9 +583,7 @@ fetch("data.json?t=" + Date.now())
             borderWidth: 1,
             titleColor: '#6b7280',
             bodyColor: '#e8eaf0',
-            callbacks: {
-              label: ctx => ` ${ctx.dataset.label}: ${ctx.parsed.y} pts`
-            }
+            callbacks: { label: ctx => ` ${ctx.dataset.label}: ${ctx.parsed.y} pts` }
           }
         },
         scales: {
