@@ -71,10 +71,10 @@ def main():
     ws_j = wb[str(derniere_j)]
     scores_journee = lire_scores_journee(ws_j)
 
-    score_max_val = ws_scores.cell(row=2, column=9).value
-    score_max_nom = ws_scores.cell(row=2, column=10).value
-    score_min_val = ws_scores.cell(row=3, column=9).value
-    score_min_nom = ws_scores.cell(row=3, column=10).value
+    score_max_val = ws_scores.cell(row=14, column=9).value
+    score_max_nom = ws_scores.cell(row=14, column=10).value
+    score_min_val = ws_scores.cell(row=15, column=9).value
+    score_min_nom = ws_scores.cell(row=15, column=10).value
 
     data = {
         "classement": classement,

@@ -59,11 +59,11 @@
     "MICKA": 0
   },
   "score_max": {
-    "valeur": null,
-    "joueur": null
+    "valeur": 98,
+    "joueur": "ROMU"
   },
   "score_min": {
-    "valeur": null,
-    "joueur": null
+    "valeur": 24,
+    "joueur": "ADRIEN"
   }
 }
