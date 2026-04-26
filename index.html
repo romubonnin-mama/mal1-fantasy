@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ma L1 — Saison 2025/26</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=Barlow+Condensed:wght@400;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
   :root {
     --bg: #0a0c10; --surface: #111318; --surface2: #181c24;
@@ -19,7 +20,7 @@
   .logo span { color: var(--accent); }
   .logo-badge { background: var(--accent); color: #000; font-size: 9px; font-weight: 600; padding: 2px 6px; border-radius: 3px; }
   .nav-tabs { display: flex; gap: 4px; flex-shrink: 0; }
-  .nav-tab { color: var(--muted); font-size: 12px; font-weight: 600; padding: 6px 12px; border-radius: 6px; cursor: pointer; transition: all 0.2s; border: none; background: none; letter-spacing: 0.3px; }
+  .nav-tab { color: var(--muted); font-size: 12px; font-weight: 600; padding: 6px 10px; border-radius: 6px; cursor: pointer; transition: all 0.2s; border: none; background: none; letter-spacing: 0.3px; }
   .nav-tab:hover { color: var(--text); background: var(--surface2); }
   .nav-tab.active { color: var(--accent); background: var(--surface2); }
   .journee-badge { background: var(--surface2); border: 1px solid var(--border); padding: 5px 12px; border-radius: 8px; font-size: 12px; font-weight: 600; color: var(--accent); flex-shrink: 0; }
@@ -92,7 +93,11 @@
   .hist-header { font-size: 9px; color: var(--muted); text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px; }
   .hist-pts { font-family: 'Bebas Neue', sans-serif; font-size: 18px; text-align: right; }
   .hist-bar-wrap { height: 5px; background: var(--surface2); border-radius: 3px; overflow: hidden; }
-  .hist-bar { height: 100%; background: var(--accent); border-radius: 3px; transition: width 0.5s ease; }
+  .hist-bar { height: 100%; background: var(--accent); border-radius: 3px; }
+  .chart-container { padding: 20px; position: relative; height: 400px; }
+  .chart-filters { padding: 14px 18px; display: flex; flex-wrap: wrap; gap: 6px; border-bottom: 1px solid var(--border); }
+  .chart-btn { background: var(--surface2); border: 1px solid var(--border); font-size: 11px; font-weight: 600; padding: 5px 10px; border-radius: 6px; cursor: pointer; transition: all 0.2s; }
+  .chart-btn.active { color: #000; }
   @media (min-width: 768px) {
     .stats-row { grid-template-columns: repeat(4, 1fr); }
     .container { padding: 32px 24px; }
@@ -106,6 +111,7 @@
     <button class="nav-tab active" id="tab-classement">Classement</button>
     <button class="nav-tab" id="tab-journees">Journées</button>
     <button class="nav-tab" id="tab-joueurs">Joueurs</button>
+    <button class="nav-tab" id="tab-evolution">Évolution</button>
   </div>
   <div class="journee-badge" id="journee-badge">...</div>
 </header>
@@ -125,7 +131,6 @@
         <div class="hero-stat"><div class="val" id="hero-ecart">...</div><div class="lbl">Écart 1/2</div></div>
       </div>
     </div>
-
     <div class="leader-card">
       <div class="leader-trophy">🏆</div>
       <div class="leader-info">
@@ -137,14 +142,12 @@
         <div class="lbl">Points totaux</div>
       </div>
     </div>
-
     <div class="stats-row">
       <div class="stat-card"><div class="val green" id="stat-max-val">...</div><div class="lbl">Meilleur score</div><div class="sub" id="stat-max-nom" style="color:var(--accent)">...</div></div>
       <div class="stat-card"><div class="val orange" id="stat-min-val">...</div><div class="lbl">Plus mauvais score</div><div class="sub" id="stat-min-nom">...</div></div>
       <div class="stat-card"><div class="val" id="stat-journee">...</div><div class="lbl">Journée actuelle</div></div>
       <div class="stat-card"><div class="val green">9</div><div class="lbl">Participants</div></div>
     </div>
-
     <div class="grid-2">
       <div class="card">
         <div class="card-header">
@@ -169,7 +172,7 @@
       <div class="card-header"><div class="card-title">Sélectionner une journée</div></div>
       <div class="selector-wrap" id="journee-selector"></div>
     </div>
-    <div class="card" id="journee-detail-card">
+    <div class="card">
       <div class="card-header">
         <div class="card-title" id="journee-detail-titre">Journée —</div>
         <div class="tag">SCORES</div>
@@ -187,22 +190,38 @@
     <div id="joueur-detail"></div>
   </div>
 
+  <!-- PAGE EVOLUTION -->
+  <div class="page" id="page-evolution">
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Évolution du classement</div>
+        <div class="tag">SAISON</div>
+      </div>
+      <div class="chart-filters" id="chart-filters"></div>
+      <div class="chart-container">
+        <canvas id="evolutionChart"></canvas>
+      </div>
+    </div>
+  </div>
+
 </div>
 
 <script>
 const COULEURS = {
-  "ROMU":    {bg:"rgba(0,229,160,0.08)",  color:"#00e5a0"},
-  "FLORIAN": {bg:"rgba(245,200,66,0.12)", color:"#f5c842"},
-  "FAB":     {bg:"rgba(176,184,200,0.1)", color:"#b0b8c8"},
-  "BASTIEN": {bg:"rgba(205,127,58,0.1)",  color:"#cd7f3a"},
-  "JEROME":  {bg:"rgba(129,140,248,0.1)", color:"#818cf8"},
-  "ADRIEN":  {bg:"rgba(99,102,241,0.1)",  color:"#818cf8"},
-  "MICKA":   {bg:"rgba(255,107,53,0.1)",  color:"#ff6b35"},
-  "VINCENT": {bg:"rgba(255,68,85,0.08)",  color:"#ff4455"},
-  "ANTHONY": {bg:"rgba(107,114,128,0.1)", color:"#6b7280"},
+  "ROMU":    {bg:"rgba(0,229,160,0.08)",   color:"#00e5a0", chart:"rgba(0,229,160,1)"},
+  "FLORIAN": {bg:"rgba(245,200,66,0.12)",  color:"#f5c842", chart:"rgba(245,200,66,1)"},
+  "FAB":     {bg:"rgba(176,184,200,0.1)",  color:"#b0b8c8", chart:"rgba(176,184,200,1)"},
+  "BASTIEN": {bg:"rgba(205,127,58,0.1)",   color:"#cd7f3a", chart:"rgba(205,127,58,1)"},
+  "JEROME":  {bg:"rgba(129,140,248,0.1)",  color:"#818cf8", chart:"rgba(129,140,248,1)"},
+  "ADRIEN":  {bg:"rgba(99,102,241,0.1)",   color:"#6366f1", chart:"rgba(99,102,241,1)"},
+  "MICKA":   {bg:"rgba(255,107,53,0.1)",   color:"#ff6b35", chart:"rgba(255,107,53,1)"},
+  "VINCENT": {bg:"rgba(255,68,85,0.08)",   color:"#ff4455", chart:"rgba(255,68,85,1)"},
+  "ANTHONY": {bg:"rgba(107,114,128,0.1)",  color:"#9ca3af", chart:"rgba(156,163,175,1)"},
 };
 const MEDAILLES = ["🥇","🥈","🥉"];
 let DATA = null;
+let evolutionChart = null;
+let joueursActifs = new Set();
 
 function showPage(pageId) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -214,6 +233,7 @@ function showPage(pageId) {
 document.getElementById('tab-classement').onclick = () => showPage('classement');
 document.getElementById('tab-journees').onclick = () => showPage('journees');
 document.getElementById('tab-joueurs').onclick = () => showPage('joueurs');
+document.getElementById('tab-evolution').onclick = () => showPage('evolution');
 
 function renderScores(scores, containerId) {
   const container = document.getElementById(containerId);
@@ -246,54 +266,81 @@ function showJoueur(nom) {
   document.querySelectorAll('.joueur-btn').forEach(b => b.classList.remove('active'));
   const btn = document.querySelector('.joueur-btn[data-nom="'+nom+'"]');
   if (btn) btn.classList.add('active');
-
   const historique = DATA.historique;
   const scores = [];
-  let total = 0, max = 0, min = 999;
-
-  Object.entries(historique)
-    .sort((a,b) => parseInt(a[0])-parseInt(b[0]))
-    .forEach(([j, s]) => {
-      const pts = s[nom] || 0;
-      scores.push({j: parseInt(j), pts});
-      total += pts;
-      if (pts > max) max = pts;
-      if (pts < min) min = pts;
-    });
-
+  let total = 0, max = 0;
+  Object.entries(historique).sort((a,b) => parseInt(a[0])-parseInt(b[0])).forEach(([j, s]) => {
+    const pts = s[nom] || 0;
+    scores.push({j: parseInt(j), pts});
+    total += pts;
+    if (pts > max) max = pts;
+  });
   const moy = scores.length > 0 ? Math.round(total / scores.length) : 0;
   const maxPts = Math.max(...scores.map(s => s.pts), 1);
   const c = COULEURS[nom] || {color:'#00e5a0'};
   const rang = DATA.classement.find(j => j.nom === nom);
-
   document.getElementById('joueur-detail').innerHTML = `
     <div class="joueur-stats-grid">
-      <div class="joueur-stat-card">
-        <div class="val" style="color:${c.color}">${rang ? rang.pts : '—'}</div>
-        <div class="lbl">Points totaux</div>
-      </div>
-      <div class="joueur-stat-card">
-        <div class="val">${max}</div>
-        <div class="lbl">Meilleur score</div>
-      </div>
-      <div class="joueur-stat-card">
-        <div class="val">${moy}</div>
-        <div class="lbl">Moyenne / J</div>
-      </div>
+      <div class="joueur-stat-card"><div class="val" style="color:${c.color}">${rang ? rang.pts : '—'}</div><div class="lbl">Points totaux</div></div>
+      <div class="joueur-stat-card"><div class="val">${max}</div><div class="lbl">Meilleur score</div></div>
+      <div class="joueur-stat-card"><div class="val">${moy}</div><div class="lbl">Moyenne / J</div></div>
     </div>
     <div class="historique-table">
-      <div class="hist-row hist-header">
-        <div>Journée</div>
-        <div>Progression</div>
-        <div style="text-align:right">Points</div>
-      </div>
+      <div class="hist-row hist-header"><div>Journée</div><div>Progression</div><div style="text-align:right">Points</div></div>
       ${scores.map(s => `
         <div class="hist-row">
           <div style="font-weight:600;color:#6b7280">J${s.j}</div>
-          <div><div class="hist-bar-wrap"><div class="hist-bar" style="width:${Math.round((s.pts/maxPts)*100)}%"></div></div></div>
+          <div><div class="hist-bar-wrap"><div class="hist-bar" style="width:${Math.round((s.pts/maxPts)*100)}%;background:${c.color}"></div></div></div>
           <div class="hist-pts" style="color:${s.pts===max?c.color:'#e8eaf0'}">${s.pts}</div>
         </div>`).join('')}
     </div>`;
+}
+
+function updateChart() {
+  if (!evolutionChart || !DATA) return;
+  const labels = DATA.evolution[Object.keys(DATA.evolution)[0]].map(p => 'J' + p.j);
+  const datasets = Object.keys(DATA.evolution)
+    .filter(nom => joueursActifs.has(nom))
+    .map(nom => {
+      const c = COULEURS[nom] || {chart:'#ffffff'};
+      return {
+        label: nom,
+        data: DATA.evolution[nom].map(p => p.pts),
+        borderColor: c.chart,
+        backgroundColor: c.chart.replace('1)', '0.1)'),
+        borderWidth: 2.5,
+        pointRadius: 3,
+        pointHoverRadius: 6,
+        tension: 0.3,
+      };
+    });
+  evolutionChart.data.labels = labels;
+  evolutionChart.data.datasets = datasets;
+  evolutionChart.update();
+}
+
+function toggleJoueur(nom) {
+  if (joueursActifs.has(nom)) {
+    if (joueursActifs.size > 1) joueursActifs.delete(nom);
+  } else {
+    joueursActifs.add(nom);
+  }
+  document.querySelectorAll('.chart-btn').forEach(b => {
+    const n = b.dataset.nom;
+    const c = COULEURS[n] || {chart:'#ffffff'};
+    if (joueursActifs.has(n)) {
+      b.style.background = c.chart;
+      b.style.borderColor = c.chart;
+      b.style.color = '#000';
+      b.classList.add('active');
+    } else {
+      b.style.background = '';
+      b.style.borderColor = '';
+      b.style.color = '';
+      b.classList.remove('active');
+    }
+  });
+  updateChart();
 }
 
 fetch("data.json?t=" + Date.now())
@@ -308,7 +355,6 @@ fetch("data.json?t=" + Date.now())
     document.getElementById('hero-restantes').textContent = 34 - j;
     document.getElementById('stat-journee').textContent = 'J' + j;
     document.getElementById('journee-titre').textContent = 'Journée ' + j;
-
     if (classement.length >= 2) {
       document.getElementById('hero-ecart').textContent = '+' + (classement[0].pts - classement[1].pts);
     }
@@ -322,7 +368,6 @@ fetch("data.json?t=" + Date.now())
     // Classement
     const cc = document.getElementById('classement-container');
     classement.forEach((joueur, i) => {
-      const c = COULEURS[joueur.nom] || {color:'#e8eaf0'};
       const isRomu = joueur.nom === 'ROMU';
       const row = document.createElement('div');
       row.className = 'ranking-row' + (i===0?' top1':i===1?' top2':i===2?' top3':'');
@@ -339,16 +384,14 @@ fetch("data.json?t=" + Date.now())
 
     // Boutons journées
     const js = document.getElementById('journee-selector');
-    Object.keys(data.historique)
-      .sort((a,b) => parseInt(a)-parseInt(b))
-      .forEach(jj => {
-        const btn = document.createElement('button');
-        btn.className = 'j-btn' + (parseInt(jj)===j?' active':'');
-        btn.dataset.j = jj;
-        btn.textContent = 'J' + jj;
-        btn.onclick = () => showJournee(jj);
-        js.appendChild(btn);
-      });
+    Object.keys(data.historique).sort((a,b) => parseInt(a)-parseInt(b)).forEach(jj => {
+      const btn = document.createElement('button');
+      btn.className = 'j-btn' + (parseInt(jj)===j?' active':'');
+      btn.dataset.j = jj;
+      btn.textContent = 'J' + jj;
+      btn.onclick = () => showJournee(jj);
+      js.appendChild(btn);
+    });
     showJournee(j);
 
     // Boutons joueurs
@@ -362,6 +405,65 @@ fetch("data.json?t=" + Date.now())
       joueurSel.appendChild(btn);
     });
     showJoueur('ROMU');
+
+    // Graphique évolution
+    joueursActifs = new Set(classement.map(j => j.nom));
+    const filters = document.getElementById('chart-filters');
+    classement.forEach(joueur => {
+      const c = COULEURS[joueur.nom] || {chart:'#ffffff'};
+      const btn = document.createElement('button');
+      btn.className = 'chart-btn active';
+      btn.dataset.nom = joueur.nom;
+      btn.textContent = joueur.nom;
+      btn.style.background = c.chart;
+      btn.style.borderColor = c.chart;
+      btn.style.color = '#000';
+      btn.onclick = () => toggleJoueur(joueur.nom);
+      filters.appendChild(btn);
+    });
+
+    const ctx = document.getElementById('evolutionChart').getContext('2d');
+    const labels = data.evolution[classement[0].nom].map(p => 'J' + p.j);
+    const datasets = classement.map(joueur => {
+      const c = COULEURS[joueur.nom] || {chart:'#ffffff'};
+      return {
+        label: joueur.nom,
+        data: data.evolution[joueur.nom].map(p => p.pts),
+        borderColor: c.chart,
+        backgroundColor: c.chart.replace('1)', '0.05)'),
+        borderWidth: 2.5,
+        pointRadius: 3,
+        pointHoverRadius: 6,
+        tension: 0.3,
+      };
+    });
+
+    evolutionChart = new Chart(ctx, {
+      type: 'line',
+      data: { labels, datasets },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        interaction: { mode: 'index', intersect: false },
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            backgroundColor: '#111318',
+            borderColor: 'rgba(255,255,255,0.06)',
+            borderWidth: 1,
+            titleColor: '#6b7280',
+            bodyColor: '#e8eaf0',
+            callbacks: {
+              label: ctx => ` ${ctx.dataset.label}: ${ctx.parsed.y} pts`
+            }
+          }
+        },
+        scales: {
+          x: { grid: { color: 'rgba(255,255,255,0.04)' }, ticks: { color: '#6b7280', font: { size: 11 } } },
+          y: { grid: { color: 'rgba(255,255,255,0.04)' }, ticks: { color: '#6b7280', font: { size: 11 } } }
+        }
+      }
+    });
   })
   .catch(err => console.error('Erreur:', err));
 </script>
