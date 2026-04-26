@@ -93,11 +93,24 @@ def main():
     score_min_val = ws_scores.cell(row=15, column=9).value
     score_min_nom = ws_scores.cell(row=15, column=10).value
 
+    # Calcul evolution cumulee
+    joueurs_noms = [j["nom"] for j in classement]
+    evolution = {nom: [] for nom in joueurs_noms}
+    cumul = {nom: 0 for nom in joueurs_noms}
+    
+    for j in range(1, derniere_j + 1):
+        if str(j) in historique:
+            for nom in joueurs_noms:
+                cumul[nom] += historique[str(j)].get(nom, 0)
+            for nom in joueurs_noms:
+                evolution[nom].append({"j": j, "pts": cumul[nom]})
+
     data = {
         "classement": classement,
         "derniere_journee": derniere_j,
         "scores_journee": historique[str(derniere_j)],
         "historique": historique,
+        "evolution": evolution,
         "score_max": {"valeur": score_max_val, "joueur": score_max_nom},
         "score_min": {"valeur": score_min_val, "joueur": score_min_nom},
     }
