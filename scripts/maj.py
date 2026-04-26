@@ -26,12 +26,12 @@ NOMS_COLS_ANCIEN = {
     "ROMU":    (18, 3),
     "JEROME":  (18, 43),
     "VINCENT": (18, 83),
-    "ADRIEN":  (37, 3),
-    "FLORIAN": (37, 43),
-    "FAB":     (37, 83),
-    "ANTHONY": (56, 3),
-    "BASTIEN": (56, 43),
-    "MICKA":   (56, 83),
+    "ADRIEN":  (36, 3),
+    "FLORIAN": (36, 43),
+    "FAB":     (36, 83),
+    "ANTHONY": (54, 3),
+    "BASTIEN": (54, 43),
+    "MICKA":   (54, 83),
 }
 
 def lire_classement(ws):
