@@ -11,15 +11,15 @@ except ImportError:
 EXCEL_PATH = r"C:\Users\boro7\OneDrive\Documents\Draft Club\Saison 2025-2026.xlsm"
 
 NOMS_COLS = {
-    "ROMU": 19,
-    "ADRIEN": 37,
-    "ANTHONY": 55,
-    "JEROME": 73,
-    "FLORIAN": 91,
-    "BASTIEN": 109,
-    "VINCENT": 127,
-    "FAB": 145,
-    "MICKA": 163,
+    "ROMU":    (19, 3),
+    "JEROME":  (19, 43),
+    "VINCENT": (19, 83),
+    "ADRIEN":  (38, 3),
+    "FLORIAN": (38, 43),
+    "FAB":     (38, 83),
+    "ANTHONY": (57, 3),
+    "BASTIEN": (57, 43),
+    "MICKA":   (57, 83),
 }
 
 def lire_classement(ws):
@@ -45,8 +45,8 @@ def derniere_journee(wb):
 
 def lire_scores_journee(ws):
     scores = {}
-    for nom, col in NOMS_COLS.items():
-        val = ws.cell(row=3, column=col).value
+    for nom, (col, row) in NOMS_COLS.items():
+        val = ws.cell(row=row, column=col).value
         if isinstance(val, (int, float)):
             scores[nom] = int(val)
         else:

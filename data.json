@@ -49,14 +49,14 @@
   "derniere_journee": 31,
   "scores_journee": {
     "ROMU": 18,
-    "ADRIEN": 0,
-    "ANTHONY": 0,
-    "JEROME": 0,
-    "FLORIAN": 0,
-    "BASTIEN": 0,
-    "VINCENT": 0,
-    "FAB": 0,
-    "MICKA": 0
+    "JEROME": 29,
+    "VINCENT": 32,
+    "ADRIEN": 28,
+    "FLORIAN": 47,
+    "FAB": 35,
+    "ANTHONY": 28,
+    "BASTIEN": 32,
+    "MICKA": 35
   },
   "score_max": {
     "valeur": 98,
