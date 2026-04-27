@@ -102,8 +102,7 @@
   .chart-btn { background: var(--surface2); border: 1px solid var(--border); font-size: 11px; font-weight: 600; padding: 5px 10px; border-radius: 6px; cursor: pointer; transition: all 0.2s; color: var(--muted); }
   .chart-btn.active { color: #000; }
   .equipe-header { display: grid; grid-template-columns: 26px 22px 1fr 38px 38px 26px 26px 26px 26px 26px 26px 26px; gap: 3px; padding: 7px 12px; font-size: 9px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; border-bottom: 1px solid var(--border); background: var(--surface2); }
-  .equipe-row { display: grid; grid-template-columns: 26px 22px 1fr 38px 38px 26px 26px 26px 26px 26px 26px 26px; gap: 3px; padding: 7px 12px; border-bottom: 1px solid var(--border); font-size: 12px; align-items: center; transition: background 0.15s; }
-  .equipe-row:hover { background: rgba(255,255,255,0.02); }
+  .equipe-row { display: grid; grid-template-columns: 26px 22px 1fr 38px 38px 26px 26px 26px 26px 26px 26px 26px 26px 26px;
   .equipe-row:last-child { border-bottom: none; }
   .equipe-row.remplacant { }
   .equipe-row.absent { }
@@ -284,7 +283,7 @@ function tjBadge(tj) {
 function renderEquipe(equipe, joueurColor) {
   let html = `<div class="equipe-header">
     <div>Pos</div><div></div><div>Joueur</div><div>TJ</div><div>PTS</div>
-    <div>BM</div><div>PD</div><div>CS</div><div>CJ</div><div>CR</div><div>PMA</div><div>BCSC</div>
+    <div>BM</div><div>BE</div><div>BCSC</div><div>CS</div><div>PM</div><div>PMA</div><div>PD</div><div>CJ</div><div>CR</div>
   </div>`;
 
   ['G','D','M','A'].forEach(poste => {
@@ -307,12 +306,14 @@ function renderEquipe(equipe, joueurColor) {
         <div>${tjBadge(j.tj)}</div>
         <div class="pts-cell" style="color:${isR?'#ff6b35':isA?'#ff4455':j.pts>0?'#00e5a0':'var(--muted)'}">${j.pts}</div>
         ${statCell(j.bm)}
-        ${statCell(j.pd)}
+        ${statCell(j.be)}
+        ${statCell(j.bcsc)}
         ${statCell(j.cs)}
+        ${statCell(j.pm)}
+        ${statCell(j.pma)}
+        ${statCell(j.pd)}
         ${statCell(j.cj)}
         ${statCell(j.cr)}
-        ${statCell(j.pma)}
-        ${statCell(j.bcsc)}
       </div>`;
     });
   });
