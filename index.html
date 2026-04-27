@@ -263,7 +263,7 @@ document.getElementById('tab-evolution').onclick = () => showPage('evolution');
 function getLogoUrl(nom) {
   const club = CLUBS[nom];
   if (!club) return '';
-  return `https://ligue1.com/images/clubs/L1/${club}.webp`;
+  return `https://media.api-sports.io/football/teams/${club}.png`;
 }
 
 function statCell(val) {
