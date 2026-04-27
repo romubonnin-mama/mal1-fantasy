@@ -109,10 +109,10 @@
   .equipe-row.absent { }
   .equipe-row.vide { background: rgba(107,114,128,0.04); opacity: 0.3; }
   .pos-badge { font-size: 9px; font-weight: 700; padding: 2px 4px; border-radius: 3px; text-align: center; }
-  .pos-G { background: rgba(255,107,53,0.15); color: #ff6b35; }
-  .pos-D { background: rgba(0,229,160,0.1); color: #00e5a0; }
-  .pos-M { background: rgba(129,140,248,0.15); color: #818cf8; }
-  .pos-A { background: rgba(255,68,85,0.12); color: #ff4455; }
+  .pos-G { background: rgba(255,255,255,0.06); color: #b0b8c8; }
+  .pos-D { background: rgba(255,255,255,0.06); color: #b0b8c8; }
+  .pos-M { background: rgba(255,255,255,0.06); color: #b0b8c8; }
+  .pos-A { background: rgba(255,255,255,0.06); color: #b0b8c8; }
   .tj-badge { font-size: 10px; font-weight: 600; padding: 2px 6px; border-radius: 4px; background: var(--surface2); color: var(--text); text-align: center; }
   .tj-badge.full { background: rgba(0,229,160,0.1); color: #00e5a0; }
   .pts-cell { font-family: 'Bebas Neue', sans-serif; font-size: 16px; text-align: right; }
@@ -302,7 +302,7 @@ function renderEquipe(equipe, joueurColor) {
         <div style="display:flex;align-items:center;justify-content:center">${logoHtml}</div>
         <div style="font-weight:500;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:${isR?'#ff6b35':isA?'#ff4455':'#00e5a0'}">${j.nom}${capHtml}</div>
         <div>${tjBadge(j.tj)}</div>
-        <div class="pts-cell" style="color:${j.pts>0?joueurColor:'var(--muted)'}">${j.pts}</div>
+        <div class="pts-cell" style="color:${isR?'#ff6b35':isA?'#ff4455':j.pts>0?'#00e5a0':'var(--muted)'}">${j.pts}</div>
         ${statCell(j.bm)}
         ${statCell(j.pd)}
         ${statCell(j.cs)}
