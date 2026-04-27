@@ -72,7 +72,7 @@
   .leader-pts .big { font-family: 'Bebas Neue', sans-serif; font-size: 42px; line-height: 1; color: var(--gold); }
   .leader-pts .lbl { font-size: 10px; color: var(--muted); text-transform: uppercase; }
   .j-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); }
-  .j-player { background: var(--surface); padding: 12px 14px; display: flex; align-items: center; justify-content: space-between; gap: 8px; cursor: pointer; transition: background 0.15s; }
+  .j-player { background: var(--surface); padding: 12px 14px; display: flex; align-items: center; justify-content: space-between; gap: 8px; transition: background 0.15s; }
   .j-player:hover { background: var(--surface2); }
   .j-player-info { display: flex; align-items: center; gap: 8px; }
   .j-avatar { width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; flex-shrink: 0; }
@@ -101,12 +101,13 @@
   .chart-filters { padding: 14px 18px; display: flex; flex-wrap: wrap; gap: 6px; border-bottom: 1px solid var(--border); }
   .chart-btn { background: var(--surface2); border: 1px solid var(--border); font-size: 11px; font-weight: 600; padding: 5px 10px; border-radius: 6px; cursor: pointer; transition: all 0.2s; color: var(--muted); }
   .chart-btn.active { color: #000; }
-  /* DETAIL EQUIPE */
-  .equipe-header { display: grid; grid-template-columns: 30px 1fr 40px 40px 30px 30px 30px 30px 30px 30px 30px 50px; gap: 4px; padding: 8px 14px; font-size: 9px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; border-bottom: 1px solid var(--border); }
-  .equipe-row { display: grid; grid-template-columns: 30px 1fr 40px 40px 30px 30px 30px 30px 30px 30px 30px 50px; gap: 4px; padding: 8px 14px; border-bottom: 1px solid var(--border); font-size: 12px; align-items: center; }
+  .equipe-header { display: grid; grid-template-columns: 26px 22px 1fr 38px 38px 26px 26px 26px 26px 26px 26px 26px; gap: 3px; padding: 7px 12px; font-size: 9px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; border-bottom: 1px solid var(--border); background: var(--surface2); }
+  .equipe-row { display: grid; grid-template-columns: 26px 22px 1fr 38px 38px 26px 26px 26px 26px 26px 26px 26px; gap: 3px; padding: 7px 12px; border-bottom: 1px solid var(--border); font-size: 12px; align-items: center; transition: background 0.15s; }
+  .equipe-row:hover { background: rgba(255,255,255,0.02); }
   .equipe-row:last-child { border-bottom: none; }
-  .equipe-row.remplacant { opacity: 0.4; }
-  .equipe-row.absent { opacity: 0.25; }
+  .equipe-row.remplacant { background: rgba(255,107,53,0.06); }
+  .equipe-row.absent { background: rgba(255,68,85,0.06); opacity: 0.6; }
+  .equipe-row.vide { background: rgba(107,114,128,0.04); opacity: 0.3; }
   .pos-badge { font-size: 9px; font-weight: 700; padding: 2px 4px; border-radius: 3px; text-align: center; }
   .pos-G { background: rgba(255,107,53,0.15); color: #ff6b35; }
   .pos-D { background: rgba(0,229,160,0.1); color: #00e5a0; }
@@ -118,20 +119,17 @@
   .stat-cell { text-align: center; color: var(--muted); font-size: 11px; }
   .stat-cell.pos { color: #00e5a0; font-weight: 600; }
   .stat-cell.neg { color: #ff4455; font-weight: 600; }
-  .cap-star { color: var(--gold); font-size: 12px; }
-  .poste-label { padding: 6px 14px; font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); background: var(--surface2); border-bottom: 1px solid var(--border); }
-  .detail-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 200; align-items: center; justify-content: center; padding: 16px; }
-  .detail-modal.open { display: flex; }
-  .detail-box { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; max-width: 500px; width: 100%; max-height: 90vh; overflow-y: auto; }
-  .detail-box-header { padding: 16px 20px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
-  .detail-box-close { background: var(--surface2); border: 1px solid var(--border); color: var(--muted); padding: 4px 10px; border-radius: 6px; cursor: pointer; font-size: 12px; }
+  .cap-star { color: var(--gold); font-size: 12px; margin-left: 2px; }
+  .poste-label { padding: 5px 12px; font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); background: var(--surface2); border-bottom: 1px solid var(--border); }
+  .club-logo { width: 18px; height: 18px; object-fit: contain; }
   .journee-scores-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; padding: 16px; }
   .journee-equipe-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; }
   @media (max-width: 767px) {
-    .equipe-header, .equipe-row { grid-template-columns: 28px 1fr 36px 36px 26px 26px 26px 26px 26px 46px; }
-    .equipe-header > *:nth-child(7), .equipe-row > *:nth-child(7),
-    .equipe-header > *:nth-child(8), .equipe-row > *:nth-child(8) { display: none; }
     .journee-scores-grid { grid-template-columns: 1fr; }
+    .equipe-header, .equipe-row { grid-template-columns: 26px 22px 1fr 36px 36px 24px 24px 24px 24px; }
+    .equipe-header > *:nth-child(10), .equipe-row > *:nth-child(10),
+    .equipe-header > *:nth-child(11), .equipe-row > *:nth-child(11),
+    .equipe-header > *:nth-child(12), .equipe-row > *:nth-child(12) { display: none; }
   }
   @media (min-width: 768px) {
     .stats-row { grid-template-columns: repeat(4, 1fr); }
@@ -153,7 +151,6 @@
 
 <div class="container">
 
-  <!-- PAGE CLASSEMENT -->
   <div class="page active" id="page-classement">
     <div class="hero">
       <h1>SAISON <em>2025</em>/26</h1>
@@ -201,7 +198,6 @@
     </div>
   </div>
 
-  <!-- PAGE JOURNEES -->
   <div class="page" id="page-journees">
     <div class="card">
       <div class="card-header"><div class="card-title">Sélectionner une journée</div></div>
@@ -210,7 +206,6 @@
     <div id="journee-detail-wrap"></div>
   </div>
 
-  <!-- PAGE JOUEURS -->
   <div class="page" id="page-joueurs">
     <div class="card">
       <div class="card-header"><div class="card-title">Sélectionner un joueur</div></div>
@@ -219,7 +214,6 @@
     <div id="joueur-detail"></div>
   </div>
 
-  <!-- PAGE EVOLUTION -->
   <div class="page" id="page-evolution">
     <div class="card">
       <div class="card-header">
@@ -227,9 +221,7 @@
         <div class="tag">SAISON</div>
       </div>
       <div class="chart-filters" id="chart-filters"></div>
-      <div class="chart-container">
-        <canvas id="evolutionChart"></canvas>
-      </div>
+      <div class="chart-container"><canvas id="evolutionChart"></canvas></div>
     </div>
   </div>
 
@@ -250,7 +242,9 @@ const COULEURS = {
 const MEDAILLES = ["🥇","🥈","🥉"];
 const POSTES = {"G":"Gardien","D":"Défenseurs","M":"Milieux","A":"Attaquants"};
 const POS_CLASS = {"G":"pos-G","D":"pos-D","M":"pos-M","A":"pos-A"};
+const ORDRE_JOUEURS = ["ROMU","ADRIEN","ANTHONY","JEROME","FLORIAN","BASTIEN","VINCENT","FAB","MICKA"];
 let DATA = null;
+let CLUBS = {};
 let evolutionChart = null;
 let joueursActifs = new Set();
 
@@ -266,6 +260,12 @@ document.getElementById('tab-journees').onclick = () => showPage('journees');
 document.getElementById('tab-joueurs').onclick = () => showPage('joueurs');
 document.getElementById('tab-evolution').onclick = () => showPage('evolution');
 
+function getLogoUrl(nom) {
+  const club = CLUBS[nom];
+  if (!club) return '';
+  return `https://ligue1.com/images/clubs/monochrome/L1/${club}.webp`;
+}
+
 function statCell(val) {
   if (!val || val === 0) return '<div class="stat-cell">—</div>';
   const cls = val > 0 ? 'pos' : 'neg';
@@ -279,10 +279,9 @@ function tjBadge(tj) {
 }
 
 function renderEquipe(equipe, joueurColor) {
-  let html = '';
-  html += `<div class="equipe-header">
-    <div>Pos</div><div>Joueur</div><div>TJ</div><div>PTS</div>
-    <div>BM</div><div>PD</div><div>CS</div><div>CJ</div><div>CR</div><div>PMA</div><div>BCSC</div><div></div>
+  let html = `<div class="equipe-header">
+    <div>Pos</div><div></div><div>Joueur</div><div>TJ</div><div>PTS</div>
+    <div>BM</div><div>PD</div><div>CS</div><div>CJ</div><div>CR</div><div>PMA</div><div>BCSC</div>
   </div>`;
 
   ['G','D','M','A'].forEach(poste => {
@@ -294,9 +293,14 @@ function renderEquipe(equipe, joueurColor) {
       const isA = j.statut && j.statut.toLowerCase() === 'a';
       const rowClass = isR ? 'equipe-row remplacant' : isA ? 'equipe-row absent' : 'equipe-row';
       const capHtml = j.cap ? `<span class="cap-star">★</span>` : '';
+      const logoUrl = getLogoUrl(j.nom);
+      const logoHtml = logoUrl
+        ? `<img src="${logoUrl}" class="club-logo" onerror="this.style.display='none'" alt="">`
+        : '';
       html += `<div class="${rowClass}">
         <div><span class="pos-badge ${POS_CLASS[poste]}">${poste}</span></div>
-        <div style="font-weight:500;font-size:12px">${j.nom} ${capHtml}</div>
+        <div style="display:flex;align-items:center;justify-content:center">${logoHtml}</div>
+        <div style="font-weight:500;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${j.nom}${capHtml}</div>
         <div>${tjBadge(j.tj)}</div>
         <div class="pts-cell" style="color:${j.pts>0?joueurColor:'var(--muted)'}">${j.pts}</div>
         ${statCell(j.bm)}
@@ -306,18 +310,18 @@ function renderEquipe(equipe, joueurColor) {
         ${statCell(j.cr)}
         ${statCell(j.pma)}
         ${statCell(j.bcsc)}
-        <div></div>
       </div>`;
     });
   });
   return html;
 }
 
-function renderScores(scores, containerId, clickable) {
+function renderScores(scores, containerId) {
   const container = document.getElementById(containerId);
   container.innerHTML = '';
-  const tries = Object.entries(scores).sort((a,b) => b[1]-a[1]);
-  const maxScore = tries.length > 0 ? tries[0][1] : 0;
+  const tries = ORDRE_JOUEURS.filter(n => scores[n] !== undefined)
+    .map(n => [n, scores[n]]);
+  const maxScore = Math.max(...tries.map(t => t[1]));
   tries.forEach(([nom, pts]) => {
     const c = COULEURS[nom] || {bg:'transparent', color:'#e8eaf0'};
     const div = document.createElement('div');
@@ -339,17 +343,18 @@ function showJournee(j) {
 
   const scores = DATA.historique[String(j)];
   const detail = DATA.detail_journees[String(j)];
-  const tries = Object.entries(scores).sort((a,b) => b[1]-a[1]);
 
   let html = `<div class="journee-scores-grid">`;
-  tries.forEach(([nom, pts]) => {
+  ORDRE_JOUEURS.forEach(nom => {
+    if (!scores[nom] && scores[nom] !== 0) return;
+    const pts = scores[nom];
     const c = COULEURS[nom] || {color:'#e8eaf0'};
     const equipe = detail[nom];
     html += `
       <div class="journee-equipe-wrap">
-        <div class="card-header" style="background:var(--surface2);">
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:var(--surface2);border-bottom:1px solid var(--border);">
           <div style="display:flex;align-items:center;gap:10px;">
-            <div class="j-avatar" style="background:${COULEURS[nom]?.bg};color:${c.color};width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;">${nom.substring(0,2)}</div>
+            <div style="width:28px;height:28px;border-radius:50%;background:${COULEURS[nom]?.bg};color:${c.color};display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;">${nom.substring(0,2)}</div>
             <div style="font-weight:700;font-size:13px;color:${c.color}">${nom}</div>
           </div>
           <div style="font-family:'Bebas Neue',sans-serif;font-size:24px;color:${c.color}">${pts} pts</div>
@@ -398,7 +403,7 @@ function showJoueur(nom) {
         <div><div class="hist-bar-wrap"><div class="hist-bar" style="width:${Math.round((s.pts/maxPts)*100)}%;background:${c.color}"></div></div></div>
         <div class="hist-pts" style="color:${s.pts===max?c.color:'#e8eaf0'}">${s.pts}</div>
       </div>
-      <div class="journee-equipe-detail" id="detail-${nom}-${s.j}" style="display:none;border-bottom:1px solid var(--border);">
+      <div id="detail-${nom}-${s.j}" style="display:none;border-bottom:1px solid var(--border);">
         ${equipe ? renderEquipe(equipe, c.color) : ''}
       </div>`;
   });
@@ -473,10 +478,12 @@ function toggleJoueur(nom) {
   updateChart();
 }
 
-fetch("data.json?t=" + Date.now())
-  .then(r => r.json())
-  .then(data => {
+Promise.all([
+  fetch("data.json?t=" + Date.now()).then(r => r.json()),
+  fetch("clubs.json?t=" + Date.now()).then(r => r.json())
+]).then(([data, clubs]) => {
     DATA = data;
+    CLUBS = clubs;
     const j = data.derniere_journee;
     const classement = data.classement;
 
@@ -495,7 +502,6 @@ fetch("data.json?t=" + Date.now())
     document.getElementById('stat-min-val').textContent = data.score_min.valeur || '—';
     document.getElementById('stat-min-nom').textContent = data.score_min.joueur || '—';
 
-    // Classement
     const cc = document.getElementById('classement-container');
     classement.forEach((joueur, i) => {
       const isRomu = joueur.nom === 'ROMU';
@@ -512,7 +518,6 @@ fetch("data.json?t=" + Date.now())
 
     renderScores(data.scores_journee, 'scores-container');
 
-    // Boutons journées
     const js = document.getElementById('journee-selector');
     Object.keys(data.historique).sort((a,b) => parseInt(a)-parseInt(b)).forEach(jj => {
       const btn = document.createElement('button');
@@ -524,19 +529,17 @@ fetch("data.json?t=" + Date.now())
     });
     showJournee(j);
 
-    // Boutons joueurs
     const joueurSel = document.getElementById('joueur-selector');
-    classement.forEach(joueur => {
+    ORDRE_JOUEURS.forEach(nom => {
       const btn = document.createElement('button');
       btn.className = 'joueur-btn';
-      btn.dataset.nom = joueur.nom;
-      btn.textContent = joueur.nom;
-      btn.onclick = () => showJoueur(joueur.nom);
+      btn.dataset.nom = nom;
+      btn.textContent = nom;
+      btn.onclick = () => showJoueur(nom);
       joueurSel.appendChild(btn);
     });
     showJoueur('ROMU');
 
-    // Graphique
     joueursActifs = new Set(classement.map(j => j.nom));
     const filters = document.getElementById('chart-filters');
     classement.forEach(joueur => {
@@ -592,8 +595,7 @@ fetch("data.json?t=" + Date.now())
         }
       }
     });
-  })
-  .catch(err => console.error('Erreur:', err));
+}).catch(err => console.error('Erreur:', err));
 </script>
 </body>
 </html>
