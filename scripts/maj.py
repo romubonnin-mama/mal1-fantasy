@@ -85,32 +85,48 @@ def lire_joueur(ws, col, row, ancien=False):
         tj = str(tj_sortie)
     else:
         tj = "0"
-    bm  = ws.cell(row=row+1, column=col+4+decalage).value or 0
-    be  = ws.cell(row=row+1, column=col+5+decalage).value or 0
-    bcsc= ws.cell(row=row+1, column=col+6+decalage).value or 0
-    cs  = ws.cell(row=row+1, column=col+7+decalage).value or 0
-    pm  = ws.cell(row=row+1, column=col+8+decalage).value or 0
-    pma = ws.cell(row=row+1, column=col+9+decalage).value or 0
-    pd  = ws.cell(row=row+1, column=col+10+decalage).value or 0
-    cj  = ws.cell(row=row+1, column=col+11+decalage).value or 0
-    cr  = ws.cell(row=row+1, column=col+12+decalage).value or 0
-    pts = ws.cell(row=row, column=col+14+decalage).value or 0
+
+    # Valeurs brutes (ligne 1)
+    bm_val  = ws.cell(row=row, column=col+5+decalage).value or 0
+    be_val  = ws.cell(row=row, column=col+6+decalage).value or 0
+    bcsc_val= ws.cell(row=row, column=col+7+decalage).value or 0
+    cs_val  = ws.cell(row=row, column=col+8+decalage).value or 0
+    pm_val  = ws.cell(row=row, column=col+9+decalage).value or 0
+    pma_val = ws.cell(row=row, column=col+10+decalage).value or 0
+    pd_val  = ws.cell(row=row, column=col+11+decalage).value or 0
+    cj_val  = ws.cell(row=row, column=col+12+decalage).value or 0
+    cr_val  = ws.cell(row=row, column=col+13+decalage).value or 0
+    pts     = ws.cell(row=row, column=col+14+decalage).value or 0
+
+    # Points par stat (ligne 2)
+    bm_pts  = ws.cell(row=row+1, column=col+4+decalage).value or 0
+    be_pts  = ws.cell(row=row+1, column=col+5+decalage).value or 0
+    bcsc_pts= ws.cell(row=row+1, column=col+6+decalage).value or 0
+    cs_pts  = ws.cell(row=row+1, column=col+7+decalage).value or 0
+    pm_pts  = ws.cell(row=row+1, column=col+8+decalage).value or 0
+    pma_pts = ws.cell(row=row+1, column=col+9+decalage).value or 0
+    pd_pts  = ws.cell(row=row+1, column=col+10+decalage).value or 0
+    cj_pts  = ws.cell(row=row+1, column=col+11+decalage).value or 0
+    cr_pts  = ws.cell(row=row+1, column=col+12+decalage).value or 0
+
+    def to_int(v):
+        return int(v) if isinstance(v, (int, float)) else 0
 
     return {
         "nom": str(nom),
         "statut": str(statut) if statut else "",
         "cap": str(cap) if cap else "",
-        "tj": str(tj) if tj else "0",
-        "bm": int(bm) if isinstance(bm, (int,float)) else 0,
-        "be": int(be) if isinstance(be, (int,float)) else 0,
-        "bcsc": int(bcsc) if isinstance(bcsc, (int,float)) else 0,
-        "cs": int(cs) if isinstance(cs, (int,float)) else 0,
-        "pm": int(pm) if isinstance(pm, (int,float)) else 0,
-        "pma": int(pma) if isinstance(pma, (int,float)) else 0,
-        "pd": int(pd) if isinstance(pd, (int,float)) else 0,
-        "cj": int(cj) if isinstance(cj, (int,float)) else 0,
-        "cr": int(cr) if isinstance(cr, (int,float)) else 0,
-        "pts": int(pts) if isinstance(pts, (int,float)) else 0,
+        "tj": tj,
+        "bm":   {"val": to_int(bm_val),   "pts": to_int(bm_pts)},
+        "be":   {"val": to_int(be_val),    "pts": to_int(be_pts)},
+        "bcsc": {"val": to_int(bcsc_val),  "pts": to_int(bcsc_pts)},
+        "cs":   {"val": to_int(cs_val),    "pts": to_int(cs_pts)},
+        "pm":   {"val": to_int(pm_val),    "pts": to_int(pm_pts)},
+        "pma":  {"val": to_int(pma_val),   "pts": to_int(pma_pts)},
+        "pd":   {"val": to_int(pd_val),    "pts": to_int(pd_pts)},
+        "cj":   {"val": to_int(cj_val),    "pts": to_int(cj_pts)},
+        "cr":   {"val": to_int(cr_val),    "pts": to_int(cr_pts)},
+        "pts":  to_int(pts),
     }
 
 def lire_equipe(ws, nom_joueur, ancien=False):
