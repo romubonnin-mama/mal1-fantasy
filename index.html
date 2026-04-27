@@ -266,12 +266,15 @@ function getLogoUrl(nom) {
   return `https://media.api-sports.io/football/teams/${club}.png`;
 }
 
-function statCell(val) {
-  if (!val || val === 0) return '<div class="stat-cell">—</div>';
-  const cls = val > 0 ? 'pos' : 'neg';
-  return `<div class="stat-cell ${cls}">${val > 0 ? '+'+val : val}</div>`;
+function statCell(stat) {
+  if (!stat || (stat.val === 0 && stat.pts === 0)) return '<div class="stat-cell" style="text-align:center"><div style="color:var(--muted)">—</div><div style="color:var(--muted);font-size:9px">—</div></div>';
+  const ptsColor = stat.pts > 0 ? '#00e5a0' : stat.pts < 0 ? '#ff4455' : 'var(--muted)';
+  const valColor = stat.val !== 0 ? '#e8eaf0' : 'var(--muted)';
+  return `<div class="stat-cell" style="text-align:center">
+    <div style="color:${valColor};font-size:11px">${stat.val !== 0 ? stat.val : '—'}</div>
+    <div style="color:${ptsColor};font-size:9px">${stat.pts !== 0 ? (stat.pts > 0 ? '+'+stat.pts : stat.pts) : '—'}</div>
+  </div>`;
 }
-
 function tjBadge(tj) {
   if (!tj || tj === '0') return '<span style="color:var(--muted);font-size:11px">—</span>';
   if (tj === 'M') return '<span class="tj-badge full">M</span>';
