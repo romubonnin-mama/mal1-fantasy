@@ -1,0 +1,115 @@
+{
+  "nodes": [
+    {
+      "id": "file::maj",
+      "label": "maj.py",
+      "fileType": "code",
+      "sourceFile": "C:\\Users\\boro7\\Desktop\\mal1-fantasy\\scripts\\maj.py",
+      "sourceLocation": "C:\\Users\\boro7\\Desktop\\mal1-fantasy\\scripts\\maj.py:1"
+    },
+    {
+      "id": "maj::lire_classement",
+      "label": "lire_classement",
+      "fileType": "code",
+      "sourceFile": "C:\\Users\\boro7\\Desktop\\mal1-fantasy\\scripts\\maj.py",
+      "sourceLocation": "C:\\Users\\boro7\\Desktop\\mal1-fantasy\\scripts\\maj.py:50"
+    },
+    {
+      "id": "maj::lire_scores_journee",
+      "label": "lire_scores_journee",
+      "fileType": "code",
+      "sourceFile": "C:\\Users\\boro7\\Desktop\\mal1-fantasy\\scripts\\maj.py",
+      "sourceLocation": "C:\\Users\\boro7\\Desktop\\mal1-fantasy\\scripts\\maj.py:60"
+    },
+    {
+      "id": "maj::lire_joueur",
+      "label": "lire_joueur",
+      "fileType": "code",
+      "sourceFile": "C:\\Users\\boro7\\Desktop\\mal1-fantasy\\scripts\\maj.py",
+      "sourceLocation": "C:\\Users\\boro7\\Desktop\\mal1-fantasy\\scripts\\maj.py:71"
+    },
+    {
+      "id": "maj::lire_equipe",
+      "label": "lire_equipe",
+      "fileType": "code",
+      "sourceFile": "C:\\Users\\boro7\\Desktop\\mal1-fantasy\\scripts\\maj.py",
+      "sourceLocation": "C:\\Users\\boro7\\Desktop\\mal1-fantasy\\scripts\\maj.py:153"
+    },
+    {
+      "id": "maj::derniere_journee",
+      "label": "derniere_journee",
+      "fileType": "code",
+      "sourceFile": "C:\\Users\\boro7\\Desktop\\mal1-fantasy\\scripts\\maj.py",
+      "sourceLocation": "C:\\Users\\boro7\\Desktop\\mal1-fantasy\\scripts\\maj.py:185"
+    },
+    {
+      "id": "maj::main",
+      "label": "main",
+      "fileType": "code",
+      "sourceFile": "C:\\Users\\boro7\\Desktop\\mal1-fantasy\\scripts\\maj.py",
+      "sourceLocation": "C:\\Users\\boro7\\Desktop\\mal1-fantasy\\scripts\\maj.py:197"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file::maj",
+      "target": "maj::lire_classement",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "sourceFile": "C:\\Users\\boro7\\Desktop\\mal1-fantasy\\scripts\\maj.py",
+      "sourceLocation": "C:\\Users\\boro7\\Desktop\\mal1-fantasy\\scripts\\maj.py:50",
+      "weight": 1
+    },
+    {
+      "source": "file::maj",
+      "target": "maj::lire_scores_journee",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "sourceFile": "C:\\Users\\boro7\\Desktop\\mal1-fantasy\\scripts\\maj.py",
+      "sourceLocation": "C:\\Users\\boro7\\Desktop\\mal1-fantasy\\scripts\\maj.py:60",
+      "weight": 1
+    },
+    {
+      "source": "file::maj",
+      "target": "maj::lire_joueur",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "sourceFile": "C:\\Users\\boro7\\Desktop\\mal1-fantasy\\scripts\\maj.py",
+      "sourceLocation": "C:\\Users\\boro7\\Desktop\\mal1-fantasy\\scripts\\maj.py:71",
+      "weight": 1
+    },
+    {
+      "source": "file::maj",
+      "target": "maj::lire_equipe",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "sourceFile": "C:\\Users\\boro7\\Desktop\\mal1-fantasy\\scripts\\maj.py",
+      "sourceLocation": "C:\\Users\\boro7\\Desktop\\mal1-fantasy\\scripts\\maj.py:153",
+      "weight": 1
+    },
+    {
+      "source": "file::maj",
+      "target": "maj::derniere_journee",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "sourceFile": "C:\\Users\\boro7\\Desktop\\mal1-fantasy\\scripts\\maj.py",
+      "sourceLocation": "C:\\Users\\boro7\\Desktop\\mal1-fantasy\\scripts\\maj.py:185",
+      "weight": 1
+    },
+    {
+      "source": "file::maj",
+      "target": "maj::main",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "sourceFile": "C:\\Users\\boro7\\Desktop\\mal1-fantasy\\scripts\\maj.py",
+      "sourceLocation": "C:\\Users\\boro7\\Desktop\\mal1-fantasy\\scripts\\maj.py:197",
+      "weight": 1
+    }
+  ],
+  "metadata": {
+    "files": 1,
+    "nodes": 7,
+    "edges": 6,
+    "builtAt": "2026-04-27T18:10:44.541Z"
+  }
+}

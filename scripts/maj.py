@@ -23,6 +23,18 @@ JOUEURS_CONFIG = {
     "MICKA":   {"col": 41, "ligne": 84},
 }
 
+JOUEURS_CONFIG_ANCIEN = {
+    "ROMU":    {"col": 3,  "ligne": 4},
+    "JEROME":  {"col": 3,  "ligne": 44},
+    "VINCENT": {"col": 3,  "ligne": 84},
+    "ADRIEN":  {"col": 21, "ligne": 4},
+    "FLORIAN": {"col": 21, "ligne": 44},
+    "FAB":     {"col": 21, "ligne": 84},
+    "ANTHONY": {"col": 39, "ligne": 4},
+    "BASTIEN": {"col": 39, "ligne": 44},
+    "MICKA":   {"col": 39, "ligne": 84},
+}
+
 NOMS_COLS = {
     "ROMU":    (19, 3),
     "JEROME":  (19, 43),
@@ -151,7 +163,7 @@ def lire_joueur(ws, col, row, ancien=False):
     }
 
 def lire_equipe(ws, nom_joueur, ancien=False):
-    cfg = JOUEURS_CONFIG[nom_joueur]
+    cfg = (JOUEURS_CONFIG_ANCIEN if ancien else JOUEURS_CONFIG)[nom_joueur]
     col = cfg["col"]
     ligne = cfg["ligne"]
 

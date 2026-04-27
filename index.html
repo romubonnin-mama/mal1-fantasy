@@ -101,8 +101,8 @@
   .chart-filters { padding: 14px 18px; display: flex; flex-wrap: wrap; gap: 6px; border-bottom: 1px solid var(--border); }
   .chart-btn { background: var(--surface2); border: 1px solid var(--border); font-size: 11px; font-weight: 600; padding: 5px 10px; border-radius: 6px; cursor: pointer; transition: all 0.2s; color: var(--muted); }
   .chart-btn.active { color: #000; }
-  .equipe-header { display: grid; grid-template-columns: 26px 22px 1fr 50px 36px 28px 28px 28px 28px 28px 28px 28px 28px 28px; gap: 2px; padding: 6px 10px; font-size: 9px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; border-bottom: 1px solid var(--border); background: var(--surface2); }
-  .equipe-row { display: grid; grid-template-columns: 26px 22px 1fr 50px 36px 28px 28px 28px 28px 28px 28px 28px 28px 28px; gap: 2px; padding: 6px 10px; border-bottom: 1px solid var(--border); font-size: 12px; align-items: center; transition: background 0.15s; }
+  .equipe-header { display: grid; grid-template-columns: 26px 22px minmax(0,1fr) 50px 36px 28px 28px 28px 28px 28px 28px 28px 28px 28px; gap: 2px; padding: 6px 10px; font-size: 9px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; border-bottom: 1px solid var(--border); background: var(--surface2); }
+  .equipe-row { display: grid; grid-template-columns: 26px 22px minmax(0,1fr) 50px 36px 28px 28px 28px 28px 28px 28px 28px 28px 28px; gap: 2px; padding: 6px 10px; border-bottom: 1px solid var(--border); font-size: 12px; align-items: center; transition: background 0.15s; }
   .equipe-row:last-child { border-bottom: none; }
   .equipe-row.remplacant { }
   .equipe-row.absent { }
@@ -112,7 +112,7 @@
   .pos-D { background: rgba(255,255,255,0.06); color: #b0b8c8; }
   .pos-M { background: rgba(255,255,255,0.06); color: #b0b8c8; }
   .pos-A { background: rgba(255,255,255,0.06); color: #b0b8c8; }
-  .tj-badge { font-size: 10px; font-weight: 600; padding: 2px 6px; border-radius: 4px; background: var(--surface2); color: var(--text); text-align: center; }
+  .tj-badge { font-size: 10px; font-weight: 600; padding: 2px 6px; border-radius: 4px; background: var(--surface2); color: var(--text); text-align: center; white-space: nowrap; display: inline-block; }
   .tj-badge.full { background: rgba(0,229,160,0.1); color: #00e5a0; }
   .pts-cell { font-family: 'Bebas Neue', sans-serif; font-size: 16px; text-align: right; }
   .stat-cell { text-align: center; color: var(--muted); font-size: 11px; }
@@ -123,12 +123,14 @@
   .club-logo { width: 18px; height: 18px; object-fit: contain; }
   .journee-scores-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; padding: 16px; }
   .journee-equipe-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; }
-  @media (max-width: 767px) {
-    .journee-scores-grid { grid-template-columns: 1fr; }
-    .equipe-header, .equipe-row { grid-template-columns: 26px 22px 1fr 36px 36px 24px 24px 24px 24px; }
-    .equipe-header > *:nth-child(10), .equipe-row > *:nth-child(10),
+  @media (max-width: 900px) {
+    .equipe-header, .equipe-row { grid-template-columns: 20px 16px minmax(0,1fr) 32px 26px 20px 20px 20px 20px 20px 20px; }
+    .equipe-header > *:nth-child(8), .equipe-row > *:nth-child(8),
     .equipe-header > *:nth-child(11), .equipe-row > *:nth-child(11),
     .equipe-header > *:nth-child(12), .equipe-row > *:nth-child(12) { display: none; }
+  }
+  @media (max-width: 767px) {
+    .journee-scores-grid { grid-template-columns: 1fr; }
   }
   @media (min-width: 768px) {
     .stats-row { grid-template-columns: repeat(4, 1fr); }
