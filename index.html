@@ -136,6 +136,37 @@
     .stats-row { grid-template-columns: repeat(4, 1fr); }
     .container { padding: 32px 24px; }
   }
+  @media (max-width: 599px) {
+    /* Header : nav sur 2e ligne */
+    header { height: auto; min-height: 50px; padding: 8px 12px; flex-wrap: wrap; gap: 6px; }
+    .logo { font-size: 20px; letter-spacing: 2px; }
+    .logo-badge { font-size: 8px; padding: 2px 4px; }
+    .journee-badge { font-size: 11px; padding: 4px 8px; }
+    .nav-tabs { order: 3; width: 100%; display: grid; grid-template-columns: repeat(4, 1fr); gap: 3px; padding-bottom: 2px; }
+    .nav-tab { text-align: center; padding: 7px 4px; font-size: 10px; background: var(--surface2); border-radius: 6px; }
+    /* Layout général */
+    .container { padding: 14px 10px; }
+    .grid-2 { grid-template-columns: 1fr; gap: 12px; }
+    /* Hero */
+    .hero { padding: 16px; margin-bottom: 14px; }
+    .hero h1 { font-size: 26px; }
+    .hero p { font-size: 11px; margin-bottom: 12px; }
+    .hero-stat .val { font-size: 22px; }
+    /* Leader */
+    .leader-card { padding: 14px; gap: 12px; }
+    .leader-trophy { font-size: 30px; }
+    .leader-info h2 { font-size: 22px; }
+    .leader-pts .big { font-size: 32px; }
+    /* Tableau équipe : Pos + Nom + TJ + Pts seulement */
+    .equipe-header { grid-template-columns: 22px minmax(0,1fr) 38px 30px; padding: 5px 10px; gap: 3px; }
+    .equipe-row { grid-template-columns: 22px minmax(0,1fr) 38px 30px; padding: 6px 10px; font-size: 11px; gap: 3px; }
+    .equipe-header > *:nth-child(2), .equipe-row > *:nth-child(2),
+    .equipe-header > *:nth-child(n+6), .equipe-row > *:nth-child(n+6) { display: none; }
+    /* Journées */
+    .journee-scores-grid { padding: 10px; gap: 10px; }
+    /* Graphique */
+    .chart-container { height: 260px; padding: 12px; }
+  }
 </style>
 </head>
 <body>
