@@ -301,6 +301,22 @@ let DATA = null;
 let CLUBS = {};
 let evolutionChart = null;
 let joueursActifs = new Set();
+let RANK_EVOLUTION = {};
+
+function computeRankEvolution(evolution) {
+  const noms = Object.keys(evolution);
+  if (!noms.length) return {};
+  const nb = evolution[noms[0]].length;
+  const res = {};
+  noms.forEach(n => { res[n] = []; });
+  for (let i = 0; i < nb; i++) {
+    const sorted = noms
+      .map(n => ({ n, pts: evolution[n][i].pts, j: evolution[n][i].j }))
+      .sort((a, b) => b.pts - a.pts);
+    sorted.forEach((s, idx) => res[s.n].push({ j: s.j, rang: idx + 1 }));
+  }
+  return res;
+}
 
 function showPage(pageId) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -493,13 +509,13 @@ function toggleJourneeDetail(row, nom, j) {
 function updateChart() {
   if (!evolutionChart || !DATA) return;
   const labels = DATA.evolution[Object.keys(DATA.evolution)[0]].map(p => 'J' + p.j);
-  const datasets = Object.keys(DATA.evolution)
+  const datasets = Object.keys(RANK_EVOLUTION)
     .filter(nom => joueursActifs.has(nom))
     .map(nom => {
       const c = COULEURS[nom] || {chart:'#ffffff'};
       return {
         label: nom,
-        data: DATA.evolution[nom].map(p => p.pts),
+        data: RANK_EVOLUTION[nom].map(p => p.rang),
         borderColor: c.chart,
         backgroundColor: c.chart.replace('1)', '0.05)'),
         borderWidth: 2.5,
@@ -614,13 +630,16 @@ Promise.all([
       filters.appendChild(btn);
     });
 
+    RANK_EVOLUTION = computeRankEvolution(data.evolution);
+    const nbParticipants = classement.length;
+
     const ctx = document.getElementById('evolutionChart').getContext('2d');
     const labels = data.evolution[classement[0].nom].map(p => 'J' + p.j);
     const datasets = classement.map(joueur => {
       const c = COULEURS[joueur.nom] || {chart:'#ffffff'};
       return {
         label: joueur.nom,
-        data: data.evolution[joueur.nom].map(p => p.pts),
+        data: RANK_EVOLUTION[joueur.nom].map(p => p.rang),
         borderColor: c.chart,
         backgroundColor: c.chart.replace('1)', '0.05)'),
         borderWidth: 2.5,
@@ -645,12 +664,29 @@ Promise.all([
             borderWidth: 1,
             titleColor: '#6b7280',
             bodyColor: '#e8eaf0',
-            callbacks: { label: ctx => ` ${ctx.dataset.label}: ${ctx.parsed.y} pts` }
+            callbacks: {
+              label: ctx => {
+                const r = ctx.parsed.y;
+                const suffix = r === 1 ? 'er' : 'e';
+                return ` ${ctx.dataset.label}: ${r}${suffix}`;
+              }
+            }
           }
         },
         scales: {
           x: { grid: { color: 'rgba(255,255,255,0.04)' }, ticks: { color: '#6b7280', font: { size: 11 } } },
-          y: { grid: { color: 'rgba(255,255,255,0.04)' }, ticks: { color: '#6b7280', font: { size: 11 } } }
+          y: {
+            reverse: true,
+            min: 1,
+            max: nbParticipants,
+            grid: { color: 'rgba(255,255,255,0.04)' },
+            ticks: {
+              color: '#6b7280',
+              font: { size: 11 },
+              stepSize: 1,
+              callback: val => val + (val === 1 ? 'er' : 'e')
+            }
+          }
         }
       }
     });
