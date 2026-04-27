@@ -122,6 +122,7 @@
   .poste-label { padding: 5px 12px; font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); background: var(--surface2); border-bottom: 1px solid var(--border); }
   .club-logo { width: 18px; height: 18px; object-fit: contain; }
   .equipe-scroll-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .equipe-logo { display: flex; align-items: center; justify-content: center; }
   .equipe-name { font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .stat-cell .sv { font-size: 11px; }
   .stat-cell .sp { font-size: 9px; }
@@ -161,24 +162,25 @@
     .leader-trophy { font-size: 30px; }
     .leader-info h2 { font-size: 22px; }
     .leader-pts .big { font-size: 32px; }
-    /* Tableau équipe mobile */
+    /* Tableau équipe mobile : 14 colonnes, logo réduit, toutes stats */
     .equipe-header, .equipe-row {
-      grid-template-columns: 18px 0 minmax(0,1fr) 26px 26px 16px 16px 16px 16px 16px 16px 16px 16px 16px;
+      grid-template-columns: 18px 13px minmax(60px,1fr) 26px 26px 16px 16px 18px 16px 16px 18px 16px 16px 16px;
       font-size: 8px;
       padding: 4px 6px;
       gap: 2px;
     }
-    /* Masquer colonne logo */
-    .equipe-header > *:nth-child(2), .equipe-row > *:nth-child(2) { display: none; }
+    .equipe-header { letter-spacing: 0; }
     /* Ré-afficher les colonnes masquées par le breakpoint 900px */
     .equipe-header > *:nth-child(8), .equipe-row > *:nth-child(8),
     .equipe-header > *:nth-child(11), .equipe-row > *:nth-child(11),
     .equipe-header > *:nth-child(12), .equipe-row > *:nth-child(12) { display: block; }
-    /* Badge de poste plus compact */
+    /* Contenir le texte dans chaque cellule */
+    .equipe-header > *, .equipe-row > * { overflow: hidden; }
+    /* Logo réduit */
+    .equipe-logo .club-logo { width: 13px; height: 13px; }
     .pos-badge { font-size: 8px; padding: 1px 3px; }
     .equipe-name { font-size: 10px; }
-    /* TJ badge taille fixe pour éviter le décalage */
-    .tj-badge { font-size: 8px; padding: 1px 4px; min-width: 22px; text-align: center; display: inline-block; white-space: nowrap; }
+    .tj-badge { font-size: 8px; padding: 1px 3px; }
     .pts-cell { font-size: 12px; }
     .stat-cell .sv { font-size: 8px; }
     .stat-cell .sp { font-size: 7px; }
@@ -354,7 +356,7 @@ function renderEquipe(equipe, joueurColor) {
         : '';
       html += `<div class="${rowClass}">
         <div><span class="pos-badge ${POS_CLASS[poste]}">${poste}</span></div>
-        <div style="display:flex;align-items:center;justify-content:center">${logoHtml}</div>
+        <div class="equipe-logo">${logoHtml}</div>
         <div class="equipe-name" style="color:${isR?'#ff6b35':isA?'#ff4455':'#00e5a0'}">${j.nom}${capHtml}</div>
         <div>${tjBadge(j.tj)}</div>
         <div class="pts-cell" style="color:${isR?'#ff6b35':isA?'#ff4455':j.pts>0?'#00e5a0':'var(--muted)'}">${j.pts}</div>
