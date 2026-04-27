@@ -161,25 +161,27 @@
     .leader-trophy { font-size: 30px; }
     .leader-info h2 { font-size: 22px; }
     .leader-pts .big { font-size: 32px; }
-    /* Tableau équipe : toutes stats, scroll horizontal */
+    /* Tableau équipe mobile */
     .equipe-header, .equipe-row {
-      grid-template-columns: 16px minmax(80px,1fr) 26px 24px 20px 20px 22px 20px 20px 22px 20px 20px 20px;
-      min-width: 354px;
+      grid-template-columns: 18px 0 minmax(0,1fr) 26px 26px 16px 16px 16px 16px 16px 16px 16px 16px 16px;
       font-size: 8px;
       padding: 4px 6px;
-      gap: 1px;
+      gap: 2px;
     }
+    /* Masquer colonne logo */
+    .equipe-header > *:nth-child(2), .equipe-row > *:nth-child(2) { display: none; }
     /* Ré-afficher les colonnes masquées par le breakpoint 900px */
     .equipe-header > *:nth-child(8), .equipe-row > *:nth-child(8),
     .equipe-header > *:nth-child(11), .equipe-row > *:nth-child(11),
     .equipe-header > *:nth-child(12), .equipe-row > *:nth-child(12) { display: block; }
-    /* Masquer uniquement le logo */
-    .equipe-header > *:nth-child(2), .equipe-row > *:nth-child(2) { display: none; }
+    /* Badge de poste plus compact */
+    .pos-badge { font-size: 8px; padding: 1px 3px; }
     .equipe-name { font-size: 10px; }
-    .pts-cell { font-size: 13px; }
-    .tj-badge { font-size: 8px; padding: 1px 3px; }
-    .stat-cell .sv { font-size: 9px; }
-    .stat-cell .sp { font-size: 8px; }
+    /* TJ badge taille fixe pour éviter le décalage */
+    .tj-badge { font-size: 8px; padding: 1px 4px; min-width: 22px; text-align: center; display: inline-block; white-space: nowrap; }
+    .pts-cell { font-size: 12px; }
+    .stat-cell .sv { font-size: 8px; }
+    .stat-cell .sp { font-size: 7px; }
     /* Journées */
     .journee-scores-grid { padding: 10px; gap: 10px; }
     /* Graphique */
