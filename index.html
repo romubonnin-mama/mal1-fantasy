@@ -121,6 +121,10 @@
   .cap-star { color: var(--gold); font-size: 12px; margin-left: 2px; }
   .poste-label { padding: 5px 12px; font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); background: var(--surface2); border-bottom: 1px solid var(--border); }
   .club-logo { width: 18px; height: 18px; object-fit: contain; }
+  .equipe-scroll-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .equipe-name { font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .stat-cell .sv { font-size: 11px; }
+  .stat-cell .sp { font-size: 9px; }
   .journee-scores-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; padding: 16px; }
   .journee-equipe-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; }
   @media (max-width: 900px) {
@@ -157,11 +161,25 @@
     .leader-trophy { font-size: 30px; }
     .leader-info h2 { font-size: 22px; }
     .leader-pts .big { font-size: 32px; }
-    /* Tableau équipe : Pos + Nom + TJ + Pts seulement */
-    .equipe-header { grid-template-columns: 22px minmax(0,1fr) 38px 30px; padding: 5px 10px; gap: 3px; }
-    .equipe-row { grid-template-columns: 22px minmax(0,1fr) 38px 30px; padding: 6px 10px; font-size: 11px; gap: 3px; }
-    .equipe-header > *:nth-child(2), .equipe-row > *:nth-child(2),
-    .equipe-header > *:nth-child(n+6), .equipe-row > *:nth-child(n+6) { display: none; }
+    /* Tableau équipe : toutes stats, scroll horizontal */
+    .equipe-header, .equipe-row {
+      grid-template-columns: 16px minmax(80px,1fr) 26px 24px 20px 20px 22px 20px 20px 22px 20px 20px 20px;
+      min-width: 354px;
+      font-size: 8px;
+      padding: 4px 6px;
+      gap: 1px;
+    }
+    /* Ré-afficher les colonnes masquées par le breakpoint 900px */
+    .equipe-header > *:nth-child(8), .equipe-row > *:nth-child(8),
+    .equipe-header > *:nth-child(11), .equipe-row > *:nth-child(11),
+    .equipe-header > *:nth-child(12), .equipe-row > *:nth-child(12) { display: block; }
+    /* Masquer uniquement le logo */
+    .equipe-header > *:nth-child(2), .equipe-row > *:nth-child(2) { display: none; }
+    .equipe-name { font-size: 10px; }
+    .pts-cell { font-size: 13px; }
+    .tj-badge { font-size: 8px; padding: 1px 3px; }
+    .stat-cell .sv { font-size: 9px; }
+    .stat-cell .sp { font-size: 8px; }
     /* Journées */
     .journee-scores-grid { padding: 10px; gap: 10px; }
     /* Graphique */
@@ -299,12 +317,12 @@ function getLogoUrl(nom) {
 }
 
 function statCell(stat) {
-  if (!stat || (stat.val === 0 && stat.pts === 0)) return '<div class="stat-cell" style="text-align:center"><div style="color:var(--muted)">—</div><div style="color:var(--muted);font-size:9px">—</div></div>';
+  if (!stat || (stat.val === 0 && stat.pts === 0)) return '<div class="stat-cell"><div class="sv" style="color:var(--muted)">—</div><div class="sp" style="color:var(--muted)">—</div></div>';
   const ptsColor = stat.pts > 0 ? '#00e5a0' : stat.pts < 0 ? '#ff4455' : 'var(--muted)';
   const valColor = stat.val !== 0 ? '#e8eaf0' : 'var(--muted)';
-  return `<div class="stat-cell" style="text-align:center">
-    <div style="color:${valColor};font-size:11px">${stat.val !== 0 ? stat.val : '—'}</div>
-    <div style="color:${ptsColor};font-size:9px">${stat.pts !== 0 ? (stat.pts > 0 ? '+'+stat.pts : stat.pts) : '—'}</div>
+  return `<div class="stat-cell">
+    <div class="sv" style="color:${valColor}">${stat.val !== 0 ? stat.val : '—'}</div>
+    <div class="sp" style="color:${ptsColor}">${stat.pts !== 0 ? (stat.pts > 0 ? '+'+stat.pts : stat.pts) : '—'}</div>
   </div>`;
 }
 function tjBadge(tj) {
@@ -335,7 +353,7 @@ function renderEquipe(equipe, joueurColor) {
       html += `<div class="${rowClass}">
         <div><span class="pos-badge ${POS_CLASS[poste]}">${poste}</span></div>
         <div style="display:flex;align-items:center;justify-content:center">${logoHtml}</div>
-        <div style="font-weight:500;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:${isR?'#ff6b35':isA?'#ff4455':'#00e5a0'}">${j.nom}${capHtml}</div>
+        <div class="equipe-name" style="color:${isR?'#ff6b35':isA?'#ff4455':'#00e5a0'}">${j.nom}${capHtml}</div>
         <div>${tjBadge(j.tj)}</div>
         <div class="pts-cell" style="color:${isR?'#ff6b35':isA?'#ff4455':j.pts>0?'#00e5a0':'var(--muted)'}">${j.pts}</div>
         ${statCell(j.bm)}
@@ -350,7 +368,7 @@ function renderEquipe(equipe, joueurColor) {
       </div>`;
     });
   });
-  return html;
+  return `<div class="equipe-scroll-wrap">${html}</div>`;
 }
 
 function renderScores(scores, containerId) {
