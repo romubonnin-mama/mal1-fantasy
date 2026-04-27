@@ -105,8 +105,8 @@
   .equipe-row { display: grid; grid-template-columns: 26px 22px 1fr 38px 38px 26px 26px 26px 26px 26px 26px 26px; gap: 3px; padding: 7px 12px; border-bottom: 1px solid var(--border); font-size: 12px; align-items: center; transition: background 0.15s; }
   .equipe-row:hover { background: rgba(255,255,255,0.02); }
   .equipe-row:last-child { border-bottom: none; }
-  .equipe-row.remplacant { background: rgba(255,107,53,0.06); }
-  .equipe-row.absent { background: rgba(255,68,85,0.06); opacity: 0.6; }
+  .equipe-row.remplacant { background: rgba(255,107,53,0.12); color: #ff6b35; }
+  .equipe-row.absent { background: rgba(255,68,85,0.12); color: #ff4455; }
   .equipe-row.vide { background: rgba(107,114,128,0.04); opacity: 0.3; }
   .pos-badge { font-size: 9px; font-weight: 700; padding: 2px 4px; border-radius: 3px; text-align: center; }
   .pos-G { background: rgba(255,107,53,0.15); color: #ff6b35; }
@@ -263,7 +263,7 @@ document.getElementById('tab-evolution').onclick = () => showPage('evolution');
 function getLogoUrl(nom) {
   const club = CLUBS[nom];
   if (!club) return '';
-  return `https://ligue1.com/images/clubs/monochrome/L1/${club}.webp`;
+  return `https://ligue1.com/images/clubs/L1/${club}.webp`;
 }
 
 function statCell(val) {
