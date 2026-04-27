@@ -76,39 +76,60 @@ def lire_joueur(ws, col, row, ancien=False):
     statut = ws.cell(row=row, column=col+2).value
     cap = ws.cell(row=row, column=col+3).value
     tj_entree = ws.cell(row=row, column=col+4).value
-    tj_sortie = ws.cell(row=row, column=col+5).value
+    tj_sortie = ws.cell(row=row, column=col+4+decalage).value
     if str(tj_sortie).upper() == 'M':
         tj = "M"
-    elif tj_entree and tj_sortie:
+    elif tj_entree and tj_sortie and tj_entree != tj_sortie:
         tj = f"{tj_entree}-{tj_sortie}"
     elif tj_sortie:
         tj = str(tj_sortie)
     else:
         tj = "0"
 
-    # Valeurs brutes (ligne 1)
-    bm_val  = ws.cell(row=row, column=col+5+decalage).value or 0
-    be_val  = ws.cell(row=row, column=col+6+decalage).value or 0
-    bcsc_val= ws.cell(row=row, column=col+7+decalage).value or 0
-    cs_val  = ws.cell(row=row, column=col+8+decalage).value or 0
-    pm_val  = ws.cell(row=row, column=col+9+decalage).value or 0
-    pma_val = ws.cell(row=row, column=col+10+decalage).value or 0
-    pd_val  = ws.cell(row=row, column=col+11+decalage).value or 0
-    cj_val  = ws.cell(row=row, column=col+12+decalage).value or 0
-    cr_val  = ws.cell(row=row, column=col+13+decalage).value or 0
-    pts     = ws.cell(row=row, column=col+14+decalage).value or 0
+    def to_int(v):
+        return int(v) if isinstance(v, (int, float)) else 0
 
-    # Points par stat (ligne 2)
-    bm_pts  = ws.cell(row=row+1, column=col+4+decalage).value or 0
-    be_pts  = ws.cell(row=row+1, column=col+5+decalage).value or 0
-    bcsc_pts= ws.cell(row=row+1, column=col+6+decalage).value or 0
-    cs_pts  = ws.cell(row=row+1, column=col+7+decalage).value or 0
-    pm_pts  = ws.cell(row=row+1, column=col+8+decalage).value or 0
-    pma_pts = ws.cell(row=row+1, column=col+9+decalage).value or 0
-    pd_pts  = ws.cell(row=row+1, column=col+10+decalage).value or 0
-    cj_pts  = ws.cell(row=row+1, column=col+11+decalage).value or 0
-    cr_pts  = ws.cell(row=row+1, column=col+12+decalage).value or 0
+    # Valeurs brutes (ligne joueur)
+    bm_val   = to_int(ws.cell(row=row,   column=col+5+decalage).value)
+    be_val   = to_int(ws.cell(row=row,   column=col+6+decalage).value)
+    bcsc_val = to_int(ws.cell(row=row,   column=col+7+decalage).value)
+    cs_val   = to_int(ws.cell(row=row,   column=col+8+decalage).value)
+    pm_val   = to_int(ws.cell(row=row,   column=col+9+decalage).value)
+    pma_val  = to_int(ws.cell(row=row,   column=col+10+decalage).value)
+    pd_val   = to_int(ws.cell(row=row,   column=col+11+decalage).value)
+    cj_val   = to_int(ws.cell(row=row,   column=col+12+decalage).value)
+    cr_val   = to_int(ws.cell(row=row,   column=col+13+decalage).value)
+    pts      = to_int(ws.cell(row=row,   column=col+14+decalage).value)
 
+    # Points par stat (ligne suivante)
+    tj_pts   = to_int(ws.cell(row=row+1, column=col+4+decalage).value)
+    bm_pts   = to_int(ws.cell(row=row+1, column=col+5+decalage).value)
+    be_pts   = to_int(ws.cell(row=row+1, column=col+6+decalage).value)
+    bcsc_pts = to_int(ws.cell(row=row+1, column=col+7+decalage).value)
+    cs_pts   = to_int(ws.cell(row=row+1, column=col+8+decalage).value)
+    pm_pts   = to_int(ws.cell(row=row+1, column=col+9+decalage).value)
+    pma_pts  = to_int(ws.cell(row=row+1, column=col+10+decalage).value)
+    pd_pts   = to_int(ws.cell(row=row+1, column=col+11+decalage).value)
+    cj_pts   = to_int(ws.cell(row=row+1, column=col+12+decalage).value)
+    cr_pts   = to_int(ws.cell(row=row+1, column=col+13+decalage).value)
+
+    return {
+        "nom": str(nom),
+        "statut": str(statut).lower() if statut else "",
+        "cap": str(cap) if cap else "",
+        "tj": tj,
+        "tj_pts": tj_pts,
+        "bm":   {"val": bm_val,   "pts": bm_pts},
+        "be":   {"val": be_val,   "pts": be_pts},
+        "bcsc": {"val": bcsc_val, "pts": bcsc_pts},
+        "cs":   {"val": cs_val,   "pts": cs_pts},
+        "pm":   {"val": pm_val,   "pts": pm_pts},
+        "pma":  {"val": pma_val,  "pts": pma_pts},
+        "pd":   {"val": pd_val,   "pts": pd_pts},
+        "cj":   {"val": cj_val,   "pts": cj_pts},
+        "cr":   {"val": cr_val,   "pts": cr_pts},
+        "pts":  pts,
+    }
     def to_int(v):
         return int(v) if isinstance(v, (int, float)) else 0
 
