@@ -1,0 +1,56 @@
+{
+  "ROMU": {
+    "G": ["RESTES"],
+    "D": ["CLAUSS", "SIDIBE", "TAGLIAFICO", "M.SARR"],
+    "M": ["LEPENANT", "NEVES", "BOUFAL", "DOUMBIA", "MORTON", "DIOP"],
+    "A": ["MORREIRA", "DEL CASTILLO", "GOUIRI"]
+  },
+  "JEROME": {
+    "G": ["GREIF"],
+    "D": ["KLUIVERT", "NGOY", "GANIOU", "ZABARNYI", "LOCKO"],
+    "M": ["AL-TAMARI", "THOMASSON", "VITINHA", "KEBBAL", "SULC"],
+    "A": ["LEPAUL", "SAINT MAXIMAIN", "WAHI"]
+  },
+  "VINCENT": {
+    "G": ["PENDERS"],
+    "D": ["N.MENDES", "MAITLAND-NILES", "TEZE", "MCKENZIE", "DOUCOURE"],
+    "M": ["HARALDSSON", "ZAIRE-EMERY", "CABELLA", "RONGIER", "NWANERY"],
+    "A": ["DOUE", "EDOUARD", "GIROUD"]
+  },
+  "ADRIEN": {
+    "G": ["RISSER"],
+    "D": ["AGUERD", "PERRAUD", "NIAKHATE", "UDOL", "SENAYA"],
+    "M": ["GOLOVIN", "PAPE DEMBA", "SZYMANSKI", "RUIZ", "TSITAISHVILI"],
+    "A": ["DEMBELE", "EMBOLO", "PANICHELLI"]
+  },
+  "FLORIAN": {
+    "G": ["ÖZER"],
+    "D": ["KOUASSI", "NICOLAISEN", "CHARDONNET", "MERLIN", "HAKIMI"],
+    "M": ["MUNETSI", "HEIN", "SANGARE", "OWUSU", "ANDRE"],
+    "A": ["H.DIALLO", "GREENWOOD", "AJORQUE"]
+  },
+  "FAB": {
+    "G": ["SAMBA"],
+    "D": ["MANDI", "BARCO", "WEAH", "LEFORT", "BRASSIER"],
+    "M": ["ABERGEL", "HOJBJERG", "M.CAMARA", "LEES-MELOU", "VAN DEN BOOMEN"],
+    "A": ["F.PARDO", "KVARATSKHELIA", "ABLINE"]
+  },
+  "ANTHONY": {
+    "G": ["LOPES"],
+    "D": ["G.DOUE", "LALA", "PAVARD", "PACHO"],
+    "M": ["DANOIS", "AKLIOUCHE", "MAGNETTI", "SANSON", "BOUADDI", "ENCISO"],
+    "A": ["GODO", "PAGIS", "SAID"]
+  },
+  "BASTIEN": {
+    "G": ["RULLI"],
+    "D": ["O.CAMARA", "NEGO", "MATA", "BARD", "MBOW"],
+    "M": ["ZAKARIA", "CHOTARD", "CASSERES", "BELKEBLA", "PERRIN"],
+    "A": ["THAUVIN", "ENDRICK", "GBOHO"]
+  },
+  "MICKA": {
+    "G": ["DIAW"],
+    "D": ["AGUILAR", "CRESSWELL", "LLORIS", "ARCUS", "VANDERSON"],
+    "M": ["NDIAYE", "TOLISSO", "L.CAMARA", "BELKHDIM", "DONNUM"],
+    "A": ["SOUMARE", "BALOGUN", "SINAYOKO"]
+  }
+}

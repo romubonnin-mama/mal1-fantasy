@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:ligue1.com)",
+      "WebFetch(domain:api.ligue1.fr)",
+      "Bash(python *)"
+    ]
+  }
+}

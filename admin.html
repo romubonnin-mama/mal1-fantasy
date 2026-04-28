@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ma L1 — Admin</title>
+<style>
+:root {
+  --bg: #0d1117; --surface: #161b22; --surface2: #21262d;
+  --border: #30363d; --text: #e6edf3; --muted: #7d8590;
+  --accent: #00e5a0; --red: #ff4455; --yellow: #f0c040;
+  --blue: #58a6ff;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 14px; }
+
+header {
+  background: var(--surface); border-bottom: 1px solid var(--border);
+  padding: 14px 24px; display: flex; align-items: center; gap: 16px;
+}
+header h1 { font-size: 18px; font-weight: 700; color: var(--accent); }
+.journee-select { display: flex; align-items: center; gap: 8px; margin-left: auto; }
+.journee-select label { color: var(--muted); }
+.journee-select input {
+  background: var(--surface2); border: 1px solid var(--border); color: var(--text);
+  padding: 6px 12px; border-radius: 6px; font-size: 14px; width: 60px; text-align: center;
+}
+.btn {
+  padding: 7px 14px; border-radius: 6px; border: none; cursor: pointer;
+  font-size: 13px; font-weight: 600; transition: opacity .15s;
+}
+.btn:hover { opacity: .8; }
+.btn-primary { background: var(--accent); color: #0d1117; }
+.btn-danger  { background: var(--red);    color: #fff; }
+.btn-subtle  { background: var(--surface2); color: var(--text); border: 1px solid var(--border); }
+
+.tabs { display: flex; gap: 4px; padding: 12px 24px; background: var(--surface); border-bottom: 1px solid var(--border); }
+.tab { padding: 7px 16px; border-radius: 6px; cursor: pointer; color: var(--muted); transition: all .15s; }
+.tab.active { background: var(--accent); color: #0d1117; font-weight: 700; }
+.tab:hover:not(.active) { background: var(--surface2); color: var(--text); }
+
+.container { padding: 24px; max-width: 1400px; margin: 0 auto; }
+
+/* ── Sections ── */
+.section { display: none; }
+.section.active { display: block; }
+
+/* ── Lineups ── */
+.managers-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 16px; }
+.manager-card {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 10px; overflow: hidden;
+}
+.manager-card-header {
+  padding: 10px 14px; background: var(--surface2); display: flex; align-items: center; gap: 8px;
+  border-bottom: 1px solid var(--border);
+}
+.manager-name { font-weight: 700; font-size: 15px; }
+.manager-pts { margin-left: auto; color: var(--accent); font-weight: 700; font-size: 15px; }
+.poste-group { padding: 6px 14px; }
+.poste-label { color: var(--muted); font-size: 11px; font-weight: 700; letter-spacing: .08em; padding: 4px 0 2px; }
+.player-row {
+  display: flex; align-items: center; gap: 8px; padding: 4px 0;
+  border-bottom: 1px solid rgba(255,255,255,.04); cursor: pointer;
+}
+.player-row:last-child { border-bottom: none; }
+.player-check {
+  width: 16px; height: 16px; border-radius: 4px; border: 2px solid var(--border);
+  flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+}
+.player-row.titu .player-check { background: var(--accent); border-color: var(--accent); }
+.player-row.titu .player-check::after { content: '✓'; color: #0d1117; font-size: 10px; font-weight: 900; }
+.player-row.cap .player-check { background: var(--yellow); border-color: var(--yellow); }
+.player-row.cap .player-check::after { content: 'C'; color: #0d1117; font-size: 10px; font-weight: 900; }
+.player-row.rempl { opacity: .45; }
+.player-row.rempl .player-check::after { content: '—'; color: var(--muted); font-size: 11px; }
+.player-row.rempl .cap-btn { display: none !important; }
+.player-nom { flex: 1; }
+.cap-btn {
+  font-size: 10px; padding: 2px 6px; border-radius: 4px;
+  background: var(--surface2); color: var(--muted); border: 1px solid var(--border);
+  cursor: pointer; display: none;
+}
+.player-row.titu .cap-btn { display: block; }
+.player-row.cap .cap-btn { background: var(--yellow); color: #0d1117; border-color: var(--yellow); display: block; }
+.titu-count { font-size: 11px; color: var(--muted); margin-left: auto; }
+.titu-count.ok { color: var(--accent); }
+.titu-count.err { color: var(--red); }
+
+.save-bar {
+  position: sticky; bottom: 0; background: var(--surface); border-top: 1px solid var(--border);
+  padding: 12px 24px; display: flex; align-items: center; gap: 12px;
+}
+.save-status { color: var(--muted); font-size: 13px; }
+.save-status.ok { color: var(--accent); }
+.save-status.err { color: var(--red); }
+
+/* ── Corrections ── */
+.corrections-manager { margin-bottom: 20px; }
+.corrections-manager-title {
+  font-weight: 700; margin-bottom: 8px; padding: 8px 14px;
+  background: var(--surface2); border-radius: 6px;
+}
+.corr-table { width: 100%; border-collapse: collapse; }
+.corr-table th, .corr-table td {
+  padding: 6px 12px; text-align: left; border-bottom: 1px solid var(--border);
+}
+.corr-table th { color: var(--muted); font-size: 11px; font-weight: 700; letter-spacing: .06em; }
+.corr-input {
+  background: var(--surface2); border: 1px solid var(--border); color: var(--text);
+  padding: 4px 8px; border-radius: 4px; width: 60px; text-align: center;
+}
+
+/* ── Roster (jokers) ── */
+.roster-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
+.roster-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 14px; }
+.roster-card h3 { font-size: 14px; font-weight: 700; margin-bottom: 10px; color: var(--accent); }
+.roster-player { display: flex; align-items: center; gap: 8px; padding: 4px 0; }
+.roster-poste { font-size: 10px; padding: 2px 5px; border-radius: 3px; font-weight: 700; flex-shrink: 0; }
+.p-G { background: #fbbf24; color: #0d1117; }
+.p-D { background: #3b82f6; color: #fff; }
+.p-M { background: #10b981; color: #fff; }
+.p-A { background: var(--red); color: #fff; }
+.roster-nom { flex: 1; font-size: 13px; }
+.roster-nom-input {
+  background: var(--surface2); border: 1px solid var(--border); color: var(--text);
+  padding: 3px 8px; border-radius: 4px; font-size: 13px; width: 100%;
+}
+
+
+/* ── Classement ── */
+.classement-table { width: 100%; border-collapse: collapse; }
+.classement-table th, .classement-table td {
+  padding: 8px 14px; text-align: left; border-bottom: 1px solid var(--border);
+}
+.classement-table th { color: var(--muted); font-size: 12px; font-weight: 700; letter-spacing: .06em; }
+.rang-badge {
+  width: 28px; height: 28px; border-radius: 50%; display: inline-flex;
+  align-items: center; justify-content: center; font-weight: 700; font-size: 13px;
+  background: var(--surface2);
+}
+
+/* ── Notifications ── */
+#toast {
+  position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%);
+  background: var(--surface); border: 1px solid var(--border); padding: 10px 20px;
+  border-radius: 8px; font-size: 13px; z-index: 999; opacity: 0; pointer-events: none;
+  transition: opacity .3s;
+}
+#toast.show { opacity: 1; }
+#toast.ok { border-color: var(--accent); color: var(--accent); }
+#toast.err { border-color: var(--red); color: var(--red); }
+
+/* ── Stats Manuelles ── */
+.stats-manager { margin-bottom: 20px; }
+.stats-manager-header {
+  padding: 8px 14px; background: var(--surface2); border-radius: 6px;
+  margin-bottom: 6px; display: flex; align-items: center; gap: 10px; font-weight: 700;
+}
+.stats-table-wrap { overflow-x: auto; }
+.stats-tbl { border-collapse: collapse; white-space: nowrap; min-width: 100%; }
+.stats-tbl th, .stats-tbl td {
+  padding: 4px 7px; text-align: center; border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+}
+.stats-tbl th { color: var(--muted); font-size: 11px; font-weight: 700; letter-spacing: .05em; }
+.stats-tbl .col-nom { text-align: left; min-width: 110px; }
+.stats-tbl tr.is-titu { background: rgba(0,229,160,.05); }
+.stats-tbl tr.is-titu .col-nom { font-weight: 700; color: var(--accent); }
+.stats-tbl tr.is-rempl td { opacity: .4; }
+.snum {
+  background: var(--surface2); border: 1px solid var(--border); color: var(--text);
+  padding: 3px 4px; border-radius: 4px; width: 46px; text-align: center; font-size: 13px;
+}
+.snum:focus { border-color: var(--accent); outline: none; }
+.snum.nz { border-color: var(--accent); background: rgba(0,229,160,.12); font-weight: 700; }
+.snum:disabled { opacity: .25; cursor: not-allowed; }
+.schk { width: 16px; height: 16px; cursor: pointer; accent-color: var(--accent); }
+.schk-red { accent-color: var(--red); }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Ma L1 — Admin</h1>
+  <div class="journee-select">
+    <label>Journée</label>
+    <input type="number" id="journeeInput" min="1" max="38" value="32">
+    <button class="btn btn-subtle" onclick="loadJournee()">Charger</button>
+  </div>
+</header>
+
+<div class="tabs">
+  <div class="tab active" data-tab="lineups"      onclick="showTab('lineups')">Compositions</div>
+  <div class="tab"        data-tab="stats"        onclick="showTab('stats')">Stats J</div>
+  <div class="tab"        data-tab="classement"   onclick="showTab('classement')">Classement</div>
+  <div class="tab"        data-tab="corrections"  onclick="showTab('corrections')">Corrections</div>
+  <div class="tab"        data-tab="roster"       onclick="showTab('roster')">Effectifs (Jokers)</div>
+</div>
+
+<div id="toast"></div>
+
+<!-- ── COMPOSITIONS ── -->
+<div id="section-lineups" class="section active">
+  <div class="container">
+    <div id="lineups-grid" class="managers-grid"></div>
+  </div>
+  <div class="save-bar">
+    <span class="save-status" id="lineup-status">Non sauvegardé</span>
+    <button class="btn btn-primary" onclick="saveLineup()">💾 Sauvegarder la journée</button>
+    <span style="color:var(--muted);font-size:12px">Cliquer sur un joueur pour le basculer remplaçant (— grisé). Tous sont titulaires par défaut.</span>
+  </div>
+</div>
+
+<!-- ── CLASSEMENT ── -->
+<div id="section-classement" class="section">
+  <div class="container">
+    <table class="classement-table">
+      <thead><tr><th>Rang</th><th>Participant</th><th>Points</th><th>J courante</th></tr></thead>
+      <tbody id="classement-body"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ── CORRECTIONS ── -->
+<div id="section-corrections" class="section">
+  <div class="container">
+    <p style="color:var(--muted);margin-bottom:16px;font-size:13px">
+      Corrections pour la journée sélectionnée. Les valeurs sont des <em>ajustements</em> (ex: -1 pour annuler une passe décisive).
+    </p>
+    <div id="corrections-body"></div>
+    <div style="margin-top:16px">
+      <button class="btn btn-primary" onclick="saveCorrections()">💾 Sauvegarder corrections</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── EFFECTIFS ── -->
+<div id="section-roster" class="section">
+  <div class="container">
+    <p style="color:var(--muted);margin-bottom:16px;font-size:13px">
+      Modifier l'effectif en cas de joker. Double-cliquez sur un nom pour l'éditer.
+    </p>
+    <div id="roster-grid" class="roster-grid"></div>
+    <div style="margin-top:16px">
+      <button class="btn btn-primary" onclick="saveRoster()">💾 Sauvegarder effectifs</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- ── STATS MANUELLES ── -->
+<div id="section-stats" class="section">
+  <div class="container">
+    <p style="color:var(--muted);margin-bottom:16px;font-size:13px">
+      Stats brutes de la journée. Les <span style="color:var(--accent);font-weight:700">titulaires</span> sont surlignés.
+      Remplis les stats puis clique <em>Calculer</em> pour mettre à jour le classement.
+    </p>
+    <div id="stats-body"></div>
+  </div>
+  <div class="save-bar">
+    <span class="save-status" id="stats-status"></span>
+    <button class="btn btn-primary" onclick="saveStats()">💾 Sauvegarder stats</button>
+    <button class="btn btn-subtle" onclick="computeJournee()" id="btn-compute">⚙️ Calculer J<span id="compute-j-lbl">—</span></button>
+    <button class="btn btn-subtle" onclick="pushGithub()" id="btn-push">🚀 Publier GitHub</button>
+  </div>
+</div>
+
+<script>
+const API = 'http://localhost:8765/api';
+let ROSTER = {}, LINEUPS = {}, CORRECTIONS = {}, DATA = {}, MANUAL_STATS = {};
+let currentJournee = 32;
+
+// ─── Utilitaires ─────────────────────────────────────────────────────────────
+
+function toast(msg, type = 'ok') {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.className = 'show ' + type;
+  setTimeout(() => el.className = '', 2500);
+}
+
+async function api(method, path, body) {
+  const opts = { method, headers: { 'Content-Type': 'application/json' } };
+  if (body !== undefined) opts.body = JSON.stringify(body);
+  const r = await fetch(API + path, opts);
+  if (!r.ok) throw new Error(await r.text());
+  return r.json();
+}
+
+function showTab(name) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('section-' + name).classList.add('active');
+  document.querySelectorAll('.tab').forEach(t => {
+    if (t.dataset.tab === name) t.classList.add('active');
+  });
+  if (name === 'classement') renderClassement();
+  if (name === 'corrections') renderCorrections();
+  if (name === 'roster') renderRoster();
+  if (name === 'stats') renderStats();
+}
+
+// ─── Chargement ───────────────────────────────────────────────────────────────
+
+async function init() {
+  [ROSTER, DATA] = await Promise.all([
+    api('GET', '/roster'),
+    api('GET', '/data'),
+  ]);
+  currentJournee = document.getElementById('journeeInput').value;
+  await loadJournee();
+}
+
+async function loadJournee() {
+  currentJournee = parseInt(document.getElementById('journeeInput').value) || 32;
+  [LINEUPS, CORRECTIONS, MANUAL_STATS] = await Promise.all([
+    api('GET', `/lineups/${currentJournee}`),
+    api('GET', `/corrections/${currentJournee}`),
+    api('GET', `/manual-stats/${currentJournee}`),
+  ]);
+  renderLineups();
+  const lbl = document.getElementById('compute-j-lbl');
+  if (lbl) lbl.textContent = currentJournee;
+  const statsSection = document.getElementById('section-stats');
+  if (statsSection && statsSection.classList.contains('active')) renderStats();
+}
+
+// ─── COMPOSITIONS ────────────────────────────────────────────────────────────
+
+const POSTE_ORDER = ['G', 'D', 'M', 'A'];
+
+function renderLineups() {
+  const grid = document.getElementById('lineups-grid');
+  grid.innerHTML = '';
+
+  for (const manager of Object.keys(ROSTER)) {
+    const lineup = LINEUPS[manager] || { titulaires: [], capitaine: null, coeff: 1 };
+    const allPlayerNames = POSTE_ORDER.flatMap(p => ROSTER[manager][p] || []);
+    const titus = (lineup.titulaires && lineup.titulaires.length)
+      ? new Set(lineup.titulaires)
+      : new Set(allPlayerNames);
+    const cap = lineup.capitaine;
+    const remplCount = allPlayerNames.length - titus.size;
+    const isOk = titus.size === 11;
+
+    const card = document.createElement('div');
+    card.className = 'manager-card';
+    card.dataset.manager = manager;
+
+    const header = document.createElement('div');
+    header.className = 'manager-card-header';
+    header.innerHTML = `
+      <span class="manager-name">${manager}</span>
+      <span style="font-size:12px;color:var(--muted)">Coeff cap :</span>
+      <input type="number" class="corr-input" style="width:50px" value="${lineup.coeff || 1}" min="1" max="7"
+             onchange="setCoeff('${manager}', this.value)">
+      <span class="titu-count ${isOk ? 'ok' : 'err'}" id="count-${manager}">${remplCount} rempl.</span>
+    `;
+    card.appendChild(header);
+
+    for (const poste of POSTE_ORDER) {
+      const joueurs = ROSTER[manager][poste] || [];
+      if (!joueurs.length) continue;
+
+      const group = document.createElement('div');
+      group.className = 'poste-group';
+      group.innerHTML = `<div class="poste-label">${poste}</div>`;
+
+      for (const nom of joueurs) {
+        const isTitu = titus.has(nom);
+        const isCap  = nom === cap;
+
+        const row = document.createElement('div');
+        row.className = 'player-row' + (isCap ? ' cap' : isTitu ? ' titu' : ' rempl');
+        row.dataset.nom = nom;
+        row.dataset.manager = manager;
+        row.dataset.poste = poste;
+        row.innerHTML = `
+          <div class="player-check"></div>
+          <span class="player-nom">${nom}</span>
+          <button class="cap-btn" onclick="setCap(event,'${manager}','${nom}')">C</button>
+        `;
+        row.addEventListener('click', (e) => {
+          if (e.target.classList.contains('cap-btn')) return;
+          toggleTitu(manager, nom, row);
+        });
+        group.appendChild(row);
+      }
+      card.appendChild(group);
+    }
+    grid.appendChild(card);
+  }
+}
+
+function toggleTitu(manager, nom, row) {
+  if (!LINEUPS[manager]) {
+    const allNames = POSTE_ORDER.flatMap(p => ROSTER[manager][p] || []);
+    LINEUPS[manager] = { titulaires: allNames, capitaine: null, coeff: 1 };
+  }
+  const lineup = LINEUPS[manager];
+  const titus = new Set(lineup.titulaires);
+
+  if (titus.has(nom)) {
+    titus.delete(nom);
+    if (lineup.capitaine === nom) lineup.capitaine = null;
+    row.classList.remove('titu', 'cap');
+    row.classList.add('rempl');
+  } else {
+    titus.add(nom);
+    row.classList.remove('rempl');
+    row.classList.add('titu');
+  }
+  lineup.titulaires = [...titus];
+
+  const card = row.closest('.manager-card');
+  const countEl = card.querySelector('.titu-count');
+  const totalPlayers = POSTE_ORDER.flatMap(p => ROSTER[manager][p] || []).length;
+  const remplCount = totalPlayers - titus.size;
+  countEl.textContent = `${remplCount} rempl.`;
+  countEl.className = `titu-count ${titus.size === 11 ? 'ok' : 'err'}`;
+
+  document.getElementById('lineup-status').textContent = 'Non sauvegardé*';
+  document.getElementById('lineup-status').className = 'save-status err';
+}
+
+function setCap(e, manager, nom) {
+  e.stopPropagation();
+  if (!LINEUPS[manager]) return;
+  const lineup = LINEUPS[manager];
+  if (!new Set(lineup.titulaires).has(nom)) return;
+
+  lineup.capitaine = lineup.capitaine === nom ? null : nom;
+
+  const card = document.querySelector(`.manager-card[data-manager="${manager}"]`);
+  card.querySelectorAll('.player-row').forEach(r => {
+    r.classList.remove('cap');
+    if (r.dataset.nom === lineup.capitaine) r.classList.add('cap');
+  });
+}
+
+function setCoeff(manager, val) {
+  if (!LINEUPS[manager]) LINEUPS[manager] = { titulaires: [], capitaine: null, coeff: 1 };
+  LINEUPS[manager].coeff = parseInt(val) || 1;
+}
+
+async function saveLineup() {
+  try {
+    await api('POST', `/lineups/${currentJournee}`, LINEUPS);
+    toast(`✅ Compositions J${currentJournee} sauvegardées`);
+    document.getElementById('lineup-status').textContent = 'Sauvegardé ✓';
+    document.getElementById('lineup-status').className = 'save-status ok';
+  } catch (e) {
+    toast('Erreur sauvegarde', 'err');
+  }
+}
+
+// ─── CLASSEMENT ──────────────────────────────────────────────────────────────
+
+function renderClassement() {
+  const tbody = document.getElementById('classement-body');
+  const classement = DATA.classement || [];
+  const scores = DATA.scores_journee || {};
+  tbody.innerHTML = classement.map(j => `
+    <tr>
+      <td><span class="rang-badge">${j.rang}</span></td>
+      <td><strong>${j.nom}</strong></td>
+      <td style="color:var(--accent);font-weight:700">${j.pts}</td>
+      <td style="color:var(--muted)">${scores[j.nom] !== undefined ? scores[j.nom] + ' pts' : '—'}</td>
+    </tr>
+  `).join('');
+}
+
+// ─── CORRECTIONS ─────────────────────────────────────────────────────────────
+
+const STAT_FIELDS = ['bm', 'be', 'bcsc', 'cs', 'pm', 'pma', 'pd', 'cj', 'cr'];
+
+function renderCorrections() {
+  const body = document.getElementById('corrections-body');
+  body.innerHTML = '';
+
+  for (const manager of Object.keys(ROSTER)) {
+    const managerCorr = CORRECTIONS[manager] || {};
+    const div = document.createElement('div');
+    div.className = 'corrections-manager';
+    div.innerHTML = `<div class="corrections-manager-title">${manager}</div>`;
+
+    const table = document.createElement('table');
+    table.className = 'corr-table';
+    table.innerHTML = `<thead><tr><th>Joueur</th>${STAT_FIELDS.map(s => `<th>${s.toUpperCase()}</th>`).join('')}</tr></thead>`;
+    const tbody = document.createElement('tbody');
+
+    for (const poste of POSTE_ORDER) {
+      for (const nom of (ROSTER[manager][poste] || [])) {
+        const playerCorr = managerCorr[nom] || {};
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td>${nom}</td>` + STAT_FIELDS.map(stat => `
+          <td>
+            <input type="number" class="corr-input" data-manager="${manager}" data-nom="${nom}" data-stat="${stat}"
+                   value="${playerCorr[stat]?.val || 0}" style="width:55px"
+                   onchange="setCorrection('${manager}','${nom}','${stat}',this.value)">
+          </td>
+        `).join('');
+        tbody.appendChild(tr);
+      }
+    }
+    table.appendChild(tbody);
+    div.appendChild(table);
+    body.appendChild(div);
+  }
+}
+
+function setCorrection(manager, nom, stat, val) {
+  if (!CORRECTIONS[manager]) CORRECTIONS[manager] = {};
+  if (!CORRECTIONS[manager][nom]) CORRECTIONS[manager][nom] = {};
+  const v = parseInt(val) || 0;
+  if (v === 0) {
+    delete CORRECTIONS[manager][nom][stat];
+    if (!Object.keys(CORRECTIONS[manager][nom]).length) delete CORRECTIONS[manager][nom];
+    if (!Object.keys(CORRECTIONS[manager]).length) delete CORRECTIONS[manager];
+  } else {
+    CORRECTIONS[manager][nom][stat] = { val: v };
+  }
+}
+
+async function saveCorrections() {
+  await api('POST', `/corrections/${currentJournee}`, CORRECTIONS);
+  toast(`✅ Corrections J${currentJournee} sauvegardées`);
+}
+
+// ─── EFFECTIFS (JOKERS) ──────────────────────────────────────────────────────
+
+function renderRoster() {
+  const grid = document.getElementById('roster-grid');
+  grid.innerHTML = '';
+
+  for (const manager of Object.keys(ROSTER)) {
+    const card = document.createElement('div');
+    card.className = 'roster-card';
+    card.innerHTML = `<h3>${manager}</h3>`;
+
+    for (const poste of POSTE_ORDER) {
+      for (const nom of (ROSTER[manager][poste] || [])) {
+        const row = document.createElement('div');
+        row.className = 'roster-player';
+        row.innerHTML = `
+          <span class="roster-poste p-${poste}">${poste}</span>
+          <input class="roster-nom-input" data-manager="${manager}" data-poste="${poste}" data-orig="${nom}"
+                 value="${nom}" title="Double-cliquez pour modifier">
+        `;
+        card.appendChild(row);
+      }
+    }
+    grid.appendChild(card);
+  }
+}
+
+async function saveRoster() {
+  const newRoster = {};
+  document.querySelectorAll('.roster-nom-input').forEach(inp => {
+    const m = inp.dataset.manager, p = inp.dataset.poste, v = inp.value.trim().toUpperCase();
+    if (!newRoster[m]) newRoster[m] = { G: [], D: [], M: [], A: [] };
+    if (v) newRoster[m][p].push(v);
+  });
+  await api('POST', '/roster', newRoster);
+  ROSTER = newRoster;
+  toast('✅ Effectifs sauvegardés');
+  renderLineups();
+}
+
+
+// ─── STATS MANUELLES ─────────────────────────────────────────────────────────
+
+const STAT_NUM_FIELDS = [
+  { f: 'goals',         label: 'BM', title: 'Buts marqués' },
+  { f: 'assists',       label: 'PD', title: 'Passes déc.' },
+  { f: 'goals_conceded',label: 'BE', title: 'Buts encaissés' },
+  { f: 'pen_scored',    label: 'PM', title: 'Pénalty marqué' },
+  { f: 'pen_mm_saved',  label: 'PMA',title: 'Pén. manqué (D/M/A) ou arrêté/manqué adv. (G)' },
+  { f: 'own_goals',     label: 'BC', title: 'But contre son camp' },
+  { f: 'yellow_cards',  label: 'CJ', title: 'Carton jaune' },
+];
+
+function renderStats() {
+  const body = document.getElementById('stats-body');
+  body.innerHTML = '';
+
+  for (const manager of Object.keys(ROSTER)) {
+    const lineup = LINEUPS[manager] || {};
+    const titus  = new Set(lineup.titulaires || []);
+    const mStats = MANUAL_STATS[manager] || {};
+
+    const wrap = document.createElement('div');
+    wrap.className = 'stats-manager';
+    wrap.innerHTML = `
+      <div class="stats-manager-header">
+        ${manager}
+        <span style="color:var(--muted);font-size:12px;font-weight:400">${titus.size}/11 titulaires</span>
+      </div>
+      <div class="stats-table-wrap">
+        <table class="stats-tbl">
+          <thead><tr>
+            <th class="col-nom">Joueur</th>
+            <th>P</th>
+            <th title="Match entier (90 min réglementaires)">Full</th>
+            <th title="Minutes jouées">Min</th>
+            ${STAT_NUM_FIELDS.map(x => `<th title="${x.title}">${x.label}</th>`).join('')}
+            <th title="Carton rouge">CR</th>
+          </tr></thead>
+          <tbody id="stb-${manager}"></tbody>
+        </table>
+      </div>`;
+    body.appendChild(wrap);
+
+    const tbody = wrap.querySelector(`#stb-${manager}`);
+    const allPlayers = [];
+    for (const p of POSTE_ORDER) {
+      for (const nom of (ROSTER[manager][p] || [])) allPlayers.push({ nom, p, titu: titus.has(nom) });
+    }
+    allPlayers.sort((a, b) => (b.titu ? 1 : 0) - (a.titu ? 1 : 0));
+
+    for (const { nom, p, titu } of allPlayers) {
+      const s    = mStats[nom] || {};
+      const full = !!s.full_match;
+      const tr   = document.createElement('tr');
+      tr.className = titu ? 'is-titu' : 'is-rempl';
+      tr.innerHTML = `
+        <td class="col-nom">${nom}</td>
+        <td><span class="roster-poste p-${p}">${p}</span></td>
+        <td>
+          <input type="checkbox" class="schk" data-m="${manager}" data-n="${nom}" data-f="full_match"
+                 ${full ? 'checked' : ''} onchange="onFullChange(this)">
+        </td>
+        <td>
+          <input type="number" class="snum" min="0" max="90"
+                 data-m="${manager}" data-n="${nom}" data-f="minutes"
+                 value="${full ? '' : (s.minutes > 0 ? s.minutes : '')}"
+                 placeholder="${full ? 'M' : '0'}"
+                 ${full ? 'disabled' : ''}
+                 onchange="onNumChange(this)">
+        </td>
+        ${STAT_NUM_FIELDS.map(x => `
+          <td>
+            <input type="number" class="snum ${(s[x.f] || 0) > 0 ? 'nz' : ''}" min="0" max="20"
+                   data-m="${manager}" data-n="${nom}" data-f="${x.f}"
+                   value="${s[x.f] > 0 ? s[x.f] : ''}" placeholder="0"
+                   onchange="onNumChange(this)">
+          </td>`).join('')}
+        <td>
+          <input type="checkbox" class="schk schk-red" data-m="${manager}" data-n="${nom}" data-f="red_card"
+                 ${s.red_card ? 'checked' : ''} onchange="onCheckChange(this)">
+        </td>`;
+      tbody.appendChild(tr);
+    }
+  }
+}
+
+function _setStatVal(m, n, f, val) {
+  const empty = (val === 0 || val === false);
+  if (!empty) {
+    if (!MANUAL_STATS[m])    MANUAL_STATS[m]    = {};
+    if (!MANUAL_STATS[m][n]) MANUAL_STATS[m][n] = {};
+    MANUAL_STATS[m][n][f] = val;
+  } else if (MANUAL_STATS[m] && MANUAL_STATS[m][n]) {
+    delete MANUAL_STATS[m][n][f];
+    if (!Object.keys(MANUAL_STATS[m][n]).length) delete MANUAL_STATS[m][n];
+    if (!Object.keys(MANUAL_STATS[m]).length)    delete MANUAL_STATS[m];
+  }
+  const el = document.getElementById('stats-status');
+  el.textContent = 'Non sauvegardé*'; el.className = 'save-status err';
+}
+
+function onFullChange(el) {
+  const minInput = el.closest('tr').querySelector('[data-f="minutes"]');
+  if (el.checked) {
+    minInput.disabled = true; minInput.placeholder = 'M'; minInput.value = '';
+    _setStatVal(el.dataset.m, el.dataset.n, 'minutes', 0);
+  } else {
+    minInput.disabled = false; minInput.placeholder = '0';
+  }
+  _setStatVal(el.dataset.m, el.dataset.n, el.dataset.f, el.checked);
+}
+
+function onNumChange(el) {
+  const v = parseInt(el.value) || 0;
+  el.classList.toggle('nz', v > 0);
+  _setStatVal(el.dataset.m, el.dataset.n, el.dataset.f, v);
+}
+
+function onCheckChange(el) {
+  _setStatVal(el.dataset.m, el.dataset.n, el.dataset.f, el.checked);
+}
+
+async function saveStats(quiet = false) {
+  await api('POST', `/manual-stats/${currentJournee}`, MANUAL_STATS);
+  const statusEl = document.getElementById('stats-status');
+  statusEl.textContent = 'Sauvegardé ✓'; statusEl.className = 'save-status ok';
+  if (!quiet) toast(`✅ Stats J${currentJournee} sauvegardées`);
+}
+
+async function computeJournee() {
+  const btn = document.getElementById('btn-compute');
+  const origHTML = btn.innerHTML;
+  btn.disabled = true; btn.textContent = '⏳ Calcul…';
+  try {
+    await saveStats(true);
+    const r = await api('POST', `/compute/${currentJournee}`, {});
+    DATA = await api('GET', '/data');
+    toast(`✅ J${currentJournee} calculée !`);
+    if (document.getElementById('section-classement').classList.contains('active')) renderClassement();
+  } catch (e) {
+    toast('Erreur calcul : ' + e.message, 'err');
+  } finally {
+    btn.disabled = false; btn.innerHTML = origHTML;
+  }
+}
+
+async function pushGithub() {
+  if (!confirm(`Publier J${currentJournee} sur GitHub ?`)) return;
+  const btn = document.getElementById('btn-push');
+  const orig = btn.textContent;
+  btn.disabled = true; btn.textContent = '⏳ Publication…';
+  try {
+    const r = await api('POST', '/push', { journee: currentJournee });
+    toast(r.ok ? `✅ ${r.msg}` : `❌ ${r.msg}`, r.ok ? 'ok' : 'err');
+  } catch (e) {
+    toast('Erreur push : ' + e.message, 'err');
+  } finally {
+    btn.disabled = false; btn.textContent = orig;
+  }
+}
+
+// ─── Init ─────────────────────────────────────────────────────────────────────
+
+init().catch(e => {
+  document.getElementById('lineups-grid').innerHTML =
+    `<div style="color:var(--red);padding:20px">
+      ⚠️ Impossible de contacter le serveur admin.<br>
+      Lance <code>admin.bat</code> puis recharge cette page.
+    </div>`;
+});
+</script>
+</body>
+</html>
