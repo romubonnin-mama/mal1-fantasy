@@ -281,11 +281,18 @@
       "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\export_excel.py:78"
     },
     {
+      "id": "export_excel::_create_sheet",
+      "label": "_create_sheet",
+      "fileType": "code",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\export_excel.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\export_excel.py:89"
+    },
+    {
       "id": "export_excel::export_journee",
       "label": "export_journee",
       "fileType": "code",
       "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\export_excel.py",
-      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\export_excel.py:89"
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\export_excel.py:107"
     }
   ],
   "edges": [
@@ -597,18 +604,27 @@
     },
     {
       "source": "file::export_excel",
-      "target": "export_excel::export_journee",
+      "target": "export_excel::_create_sheet",
       "relation": "contains",
       "confidence": "EXTRACTED",
       "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\export_excel.py",
       "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\export_excel.py:89",
       "weight": 1
+    },
+    {
+      "source": "file::export_excel",
+      "target": "export_excel::export_journee",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\export_excel.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\export_excel.py:107",
+      "weight": 1
     }
   ],
   "metadata": {
     "files": 6,
-    "nodes": 41,
-    "edges": 35,
-    "builtAt": "2026-04-28T22:27:56.347Z"
+    "nodes": 42,
+    "edges": 36,
+    "builtAt": "2026-04-28T22:44:16.227Z"
   }
 }

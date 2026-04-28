@@ -33,7 +33,7 @@
     {
       "rang": 7,
       "nom": "ROMU",
-      "pts": 1255
+      "pts": 1261
     },
     {
       "rang": 8,
@@ -48,7 +48,7 @@
   ],
   "derniere_journee": 32,
   "scores_journee": {
-    "ROMU": 0,
+    "ROMU": 6,
     "JEROME": 0,
     "VINCENT": 0,
     "ADRIEN": 0,
@@ -401,7 +401,7 @@
       "MICKA": 35
     },
     "32": {
-      "ROMU": 0,
+      "ROMU": 6,
       "JEROME": 0,
       "VINCENT": 0,
       "ADRIEN": 0,
@@ -175004,8 +175004,8 @@
             "nom": "RESTES",
             "statut": "",
             "cap": "",
-            "tj": "0",
-            "tj_pts": 0,
+            "tj": "M",
+            "tj_pts": 4,
             "bm": {
               "val": 0,
               "pts": 0
@@ -175019,8 +175019,8 @@
               "pts": 0
             },
             "cs": {
-              "val": 0,
-              "pts": 0
+              "val": 1,
+              "pts": 2
             },
             "pm": {
               "val": 0,
@@ -175042,7 +175042,7 @@
               "val": 0,
               "pts": 0
             },
-            "pts": 0
+            "pts": 6
           }
         ],
         "D": [
@@ -181542,7 +181542,7 @@
       },
       {
         "j": 32,
-        "pts": 1255
+        "pts": 1261
       }
     ],
     "VINCENT": [

@@ -86,6 +86,24 @@ def compute_cs(poste: str, goals_conceded: int, minutes: int, full_match: bool) 
     return 0
 
 
+def _create_sheet(wb, journee: int, new_fmt: bool, off: dict):
+    """Crée la feuille journée en copiant la feuille vierge '38' comme modèle."""
+    if "38" not in wb.sheetnames:
+        return None
+    tgt = wb.copy_worksheet(wb["38"])
+    tgt.title = str(journee)
+    # Déplacer la feuille à la bonne position (ordre numérique entre les journées)
+    sheets = wb.sheetnames
+    current_idx = sheets.index(str(journee))
+    try:
+        target_idx = next(i for i, s in enumerate(sheets) if s.isdigit() and int(s) > journee)
+        wb.move_sheet(str(journee), offset=target_idx - current_idx)
+    except StopIteration:
+        idx_38 = sheets.index("38")
+        wb.move_sheet(str(journee), offset=idx_38 - current_idx)
+    return tgt
+
+
 def export_journee(journee: int, verbose: bool = True) -> None:
     with open(DATA_DIR / "roster.json", encoding="utf-8") as f:
         roster = json.load(f)
