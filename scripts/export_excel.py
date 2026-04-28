@@ -49,7 +49,7 @@ def get_offsets(new_fmt: bool) -> dict:
     """Offsets depuis name_col vers chaque cellule d'entrée."""
     if new_fmt:
         return {
-            "name": 1, "cap": 4, "tj": 5, "status": 6,
+            "name": 1, "status": 3, "cap": 4, "tj": 6,
             "bm": 7, "be": 8, "bcsc": 9, "cs": 10,
             "pm": 11, "pma": 12, "pd": 13, "cj": 14, "cr": 15,
         }
@@ -161,53 +161,55 @@ def export_journee(journee: int, verbose: bool = True) -> None:
                         print(f"  [warn] {manager}/{player} introuvable dans feuille '{sheet_name}'")
                     continue
 
-                is_titu    = player in titulaires
-                stats      = m_stats.get(player, {}) if is_titu else {}
-                full_match = bool(stats.get("full_match", False))
-                minutes    = int(stats.get("minutes", 0) or 0)
-                red_card   = bool(stats.get("red_card", False))
-
-                # TJ : 'M' si match entier, minutes sinon, None si remplaçant
-                if not is_titu:
-                    tj_val = None
-                    status = "r"
-                elif red_card:
-                    tj_val = 0
-                    status = "m"
-                elif full_match:
-                    tj_val = "M"
-                    status = "M"
-                elif minutes > 0:
-                    tj_val = minutes
-                    status = "m"
-                else:
-                    tj_val = None
-                    status = "m"
+                is_titu = player in titulaires
+                stats   = m_stats.get(player, {}) if is_titu else {}
 
                 def w(field, value):
                     if field in off:
                         ws.cell(row=row, column=name_col + off[field]).value = value
 
-                w("tj",     tj_val)
-                w("status", status)
+                if not is_titu:
+                    # Remplaçant: 'r' en colonne statut, tout le reste effacé
+                    w("status", "r")
+                    w("cap", None)
+                    w("tj", None)
+                    for field in ["bm","be","bcsc","cs","pm","pma","pd","cj","cr"]:
+                        w(field, None)
 
-                # Capitaine
-                w("cap", coeff if (is_titu and player == capitaine) else None)
+                elif not stats:
+                    # Titulaire sans stats saisies : ne rien écrire
+                    pass
 
-                if is_titu:
+                else:
+                    # Titulaire avec stats
+                    full_match = bool(stats.get("full_match", False))
+                    minutes    = int(stats.get("minutes", 0) or 0)
+                    red_card   = bool(stats.get("red_card", False))
+
+                    if red_card:
+                        tj_val, status = 0, "m"
+                    elif full_match:
+                        tj_val, status = "M", "M"
+                    elif minutes > 0:
+                        tj_val, status = minutes, "m"
+                    else:
+                        tj_val, status = None, "m"
+
+                    w("status", status)
+                    w("tj",     tj_val)
+                    w("cap",    coeff if player == capitaine else None)
+
                     goals_c = int(stats.get("goals_conceded", 0))
+                    cs_val  = stats.get("cs") or compute_cs(poste, goals_c, minutes, full_match)
                     w("bm",   int(stats.get("goals", 0))        or None)
                     w("be",   goals_c                            or None)
                     w("bcsc", int(stats.get("own_goals", 0))     or None)
-                    w("cs",   compute_cs(poste, goals_c, minutes, full_match) or None)
+                    w("cs",   cs_val                             or None)
                     w("pm",   int(stats.get("pen_scored", 0))    or None)
                     w("pma",  int(stats.get("pen_mm_saved", 0))  or None)
                     w("pd",   int(stats.get("assists", 0))       or None)
                     w("cj",   int(stats.get("yellow_cards", 0))  or None)
-                    w("cr",   1 if red_card else None)
-                else:
-                    for field in ["bm","be","bcsc","cs","pm","pma","pd","cj","cr"]:
-                        w(field, None)
+                    w("cr",   1 if red_card                      else None)
 
     wb.save(EXCEL_PATH)
     if verbose:

@@ -5,6 +5,14 @@
         "full_match": true,
         "cs": true
       }
+    },
+    "JEROME": {
+      "GREIF": {
+        "full_match": true
+      },
+      "NGOY": {
+        "minutes": 18
+      }
     }
   }
 }
