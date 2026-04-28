@@ -109,10 +109,14 @@ def export_journee(journee: int, verbose: bool = True) -> None:
     wb = openpyxl.load_workbook(EXCEL_PATH, keep_vba=True)
 
     if sheet_name not in wb.sheetnames:
+        ws = _create_sheet(wb, journee, new_fmt, off)
+        if ws is None:
+            if verbose:
+                print(f"Impossible de créer la feuille '{sheet_name}'.")
+            wb.close()
+            return
         if verbose:
-            print(f"Feuille '{sheet_name}' absente de l'Excel.")
-        wb.close()
-        return
+            print(f"Feuille '{sheet_name}' créée par copie.")
 
     ws = wb[sheet_name]
 
