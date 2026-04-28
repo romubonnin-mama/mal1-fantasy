@@ -4,6 +4,11 @@
       "RESTES": {
         "full_match": true,
         "cs": true
+      },
+      "CLAUSS": {
+        "full_match": true,
+        "assists": 1,
+        "goals_conceded": 3
       }
     },
     "JEROME": {
