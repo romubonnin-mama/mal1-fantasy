@@ -176,6 +176,7 @@ header h1 { font-size: 18px; font-weight: 700; color: var(--accent); }
 .snum:disabled { opacity: .25; cursor: not-allowed; }
 .schk { width: 16px; height: 16px; cursor: pointer; accent-color: var(--accent); }
 .schk-red { accent-color: var(--red); }
+.schk-cs  { accent-color: #4fc3f7; }
 </style>
 </head>
 <body>
@@ -576,7 +577,7 @@ const STAT_NUM_FIELDS = [
   { f: 'goals_conceded',label: 'BE', title: 'Buts encaissés' },
   { f: 'pen_scored',    label: 'PM', title: 'Pénalty marqué' },
   { f: 'pen_mm_saved',  label: 'PMA',title: 'Pén. manqué (D/M/A) ou arrêté/manqué adv. (G)' },
-  { f: 'own_goals',     label: 'BC', title: 'But contre son camp' },
+  { f: 'own_goals',     label: 'BCSC', title: 'But contre son camp' },
   { f: 'yellow_cards',  label: 'CJ', title: 'Carton jaune' },
 ];
 
@@ -604,6 +605,7 @@ function renderStats() {
             <th title="Match entier (90 min réglementaires)">Full</th>
             <th title="Minutes jouées">Min</th>
             ${STAT_NUM_FIELDS.map(x => `<th title="${x.title}">${x.label}</th>`).join('')}
+            <th title="Clean sheet (forcer manuellement)">CS</th>
             <th title="Carton rouge">CR</th>
           </tr></thead>
           <tbody id="stb-${manager}"></tbody>
@@ -645,6 +647,10 @@ function renderStats() {
                    value="${s[x.f] > 0 ? s[x.f] : ''}" placeholder="0"
                    onchange="onNumChange(this)">
           </td>`).join('')}
+        <td>
+          <input type="checkbox" class="schk schk-cs" data-m="${manager}" data-n="${nom}" data-f="cs"
+                 ${s.cs ? 'checked' : ''} onchange="onCheckChange(this)">
+        </td>
         <td>
           <input type="checkbox" class="schk schk-red" data-m="${manager}" data-n="${nom}" data-f="red_card"
                  ${s.red_card ? 'checked' : ''} onchange="onCheckChange(this)">

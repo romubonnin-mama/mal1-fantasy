@@ -50,90 +50,6 @@
       "sourceLocation": "C:\\Users\\boro7\\Desktop\\mal1-fantasy\\scripts\\maj.py:197"
     },
     {
-      "id": "file::admin_server",
-      "label": "admin_server.py",
-      "fileType": "code",
-      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py",
-      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py:1"
-    },
-    {
-      "id": "admin_server::read_json",
-      "label": "read_json",
-      "fileType": "code",
-      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py",
-      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py:37"
-    },
-    {
-      "id": "admin_server::write_json",
-      "label": "write_json",
-      "fileType": "code",
-      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py",
-      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py:42"
-    },
-    {
-      "id": "admin_server::adminhandler",
-      "label": "AdminHandler",
-      "fileType": "code",
-      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py",
-      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py:47"
-    },
-    {
-      "id": "admin_server::adminhandler::log_message",
-      "label": ".log_message",
-      "fileType": "code",
-      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py",
-      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py:49"
-    },
-    {
-      "id": "admin_server::adminhandler::send_json",
-      "label": ".send_json",
-      "fileType": "code",
-      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py",
-      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py:52"
-    },
-    {
-      "id": "admin_server::adminhandler::send_error_json",
-      "label": ".send_error_json",
-      "fileType": "code",
-      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py",
-      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py:61"
-    },
-    {
-      "id": "admin_server::adminhandler::do_options",
-      "label": ".do_OPTIONS",
-      "fileType": "code",
-      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py",
-      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py:64"
-    },
-    {
-      "id": "admin_server::adminhandler::do_get",
-      "label": ".do_GET",
-      "fileType": "code",
-      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py",
-      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py:71"
-    },
-    {
-      "id": "admin_server::adminhandler::do_post",
-      "label": ".do_POST",
-      "fileType": "code",
-      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py",
-      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py:100"
-    },
-    {
-      "id": "file::compute_journee",
-      "label": "compute_journee.py",
-      "fileType": "code",
-      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\compute_journee.py",
-      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\compute_journee.py:1"
-    },
-    {
-      "id": "compute_journee::compute",
-      "label": "compute",
-      "fileType": "code",
-      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\compute_journee.py",
-      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\compute_journee.py:19"
-    },
-    {
       "id": "file::fetch_stats",
       "label": "fetch_stats.py",
       "fileType": "code",
@@ -237,6 +153,139 @@
       "fileType": "code",
       "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\scoring.py",
       "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\scoring.py:178"
+    },
+    {
+      "id": "file::admin_server",
+      "label": "admin_server.py",
+      "fileType": "code",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py:1"
+    },
+    {
+      "id": "admin_server::read_json",
+      "label": "read_json",
+      "fileType": "code",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py:37"
+    },
+    {
+      "id": "admin_server::write_json",
+      "label": "write_json",
+      "fileType": "code",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py:42"
+    },
+    {
+      "id": "admin_server::adminhandler",
+      "label": "AdminHandler",
+      "fileType": "code",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py:47"
+    },
+    {
+      "id": "admin_server::adminhandler::log_message",
+      "label": ".log_message",
+      "fileType": "code",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py:49"
+    },
+    {
+      "id": "admin_server::adminhandler::send_json",
+      "label": ".send_json",
+      "fileType": "code",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py:52"
+    },
+    {
+      "id": "admin_server::adminhandler::send_error_json",
+      "label": ".send_error_json",
+      "fileType": "code",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py:61"
+    },
+    {
+      "id": "admin_server::adminhandler::do_options",
+      "label": ".do_OPTIONS",
+      "fileType": "code",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py:64"
+    },
+    {
+      "id": "admin_server::adminhandler::do_get",
+      "label": ".do_GET",
+      "fileType": "code",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py:71"
+    },
+    {
+      "id": "admin_server::adminhandler::do_post",
+      "label": ".do_POST",
+      "fileType": "code",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py:100"
+    },
+    {
+      "id": "file::compute_journee",
+      "label": "compute_journee.py",
+      "fileType": "code",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\compute_journee.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\compute_journee.py:1"
+    },
+    {
+      "id": "compute_journee::compute",
+      "label": "compute",
+      "fileType": "code",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\compute_journee.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\compute_journee.py:19"
+    },
+    {
+      "id": "file::export_excel",
+      "label": "export_excel.py",
+      "fileType": "code",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\export_excel.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\export_excel.py:1"
+    },
+    {
+      "id": "export_excel::is_new_format",
+      "label": "is_new_format",
+      "fileType": "code",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\export_excel.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\export_excel.py:38"
+    },
+    {
+      "id": "export_excel::get_name_col",
+      "label": "get_name_col",
+      "fileType": "code",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\export_excel.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\export_excel.py:42"
+    },
+    {
+      "id": "export_excel::get_offsets",
+      "label": "get_offsets",
+      "fileType": "code",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\export_excel.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\export_excel.py:48"
+    },
+    {
+      "id": "export_excel::build_player_row_map",
+      "label": "build_player_row_map",
+      "fileType": "code",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\export_excel.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\export_excel.py:64"
+    },
+    {
+      "id": "export_excel::compute_cs",
+      "label": "compute_cs",
+      "fileType": "code",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\export_excel.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\export_excel.py:78"
+    },
+    {
+      "id": "export_excel::export_journee",
+      "label": "export_journee",
+      "fileType": "code",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\export_excel.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\export_excel.py:89"
     }
   ],
   "edges": [
@@ -500,12 +549,66 @@
       "sourceFile": "C:\\Users\\boro7\\Desktop\\mal1-fantasy\\scripts\\scoring.py",
       "sourceLocation": "C:\\Users\\boro7\\Desktop\\mal1-fantasy\\scripts\\scoring.py:178",
       "weight": 1
+    },
+    {
+      "source": "file::export_excel",
+      "target": "export_excel::is_new_format",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\export_excel.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\export_excel.py:38",
+      "weight": 1
+    },
+    {
+      "source": "file::export_excel",
+      "target": "export_excel::get_name_col",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\export_excel.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\export_excel.py:42",
+      "weight": 1
+    },
+    {
+      "source": "file::export_excel",
+      "target": "export_excel::get_offsets",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\export_excel.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\export_excel.py:48",
+      "weight": 1
+    },
+    {
+      "source": "file::export_excel",
+      "target": "export_excel::build_player_row_map",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\export_excel.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\export_excel.py:64",
+      "weight": 1
+    },
+    {
+      "source": "file::export_excel",
+      "target": "export_excel::compute_cs",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\export_excel.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\export_excel.py:78",
+      "weight": 1
+    },
+    {
+      "source": "file::export_excel",
+      "target": "export_excel::export_journee",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\export_excel.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\export_excel.py:89",
+      "weight": 1
     }
   ],
   "metadata": {
-    "files": 5,
-    "nodes": 34,
-    "edges": 29,
-    "builtAt": "2026-04-28T18:06:23.818Z"
+    "files": 6,
+    "nodes": 41,
+    "edges": 35,
+    "builtAt": "2026-04-28T22:27:56.347Z"
   }
 }

@@ -133,6 +133,16 @@ class AdminHandler(BaseHTTPRequestHandler):
                 import compute_journee
                 importlib.reload(compute_journee)
                 result = compute_journee.compute(journee)
+
+                # Sync Excel après le calcul
+                try:
+                    import export_excel
+                    importlib.reload(export_excel)
+                    export_excel.export_journee(journee, verbose=False)
+                    result["excel"] = "ok"
+                except Exception as exc_xl:
+                    result["excel_warn"] = str(exc_xl)
+
                 self.send_json(result)
             except Exception as e:
                 self.send_error_json(str(e), 500)

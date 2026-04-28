@@ -11,7 +11,7 @@ BASE_DIR = Path(__file__).parent.parent
 DATA_DIR = BASE_DIR / "data"
 sys.path.insert(0, str(Path(__file__).parent))
 
-from scoring import calcul_joueur, appliquer_capitaine
+from scoring import calcul_joueur, appliquer_capitaine, CS_PTS
 
 POSTES = ["G", "D", "M", "A"]
 
@@ -67,6 +67,13 @@ def compute(journee: int) -> dict:
                     red_card      = red_card,
                     corrections   = player_corrections,
                 )
+
+                # Override CS manuel (case à cocher dans l'admin)
+                if s.get("cs") and not red_card:
+                    cs_pts = CS_PTS.get(poste, 0)
+                    if cs_pts != result["cs"]["pts"]:
+                        result["pts"] += cs_pts - result["cs"]["pts"]
+                        result["cs"] = {"val": 1, "pts": cs_pts}
 
                 cap_str = ""
                 if is_titu and nom == capitaine:
