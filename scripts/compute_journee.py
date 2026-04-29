@@ -59,6 +59,7 @@ def compute(journee: int) -> dict:
                 is_titu = nom in titulaires
                 s = j_manual.get(manager, {}).get(nom, {})
 
+                absent     = bool(s.get("absent", False))
                 minutes    = _minutes(s)
                 full_match = bool(s.get("full_match", False))
                 red_card   = bool(s.get("red_card", False))
@@ -80,15 +81,19 @@ def compute(journee: int) -> dict:
                     corrections   = player_corrections,
                 )
 
+                # Absent : 0 point, aucun bonus
+                if absent:
+                    result["pts"] = 0
+
                 # Override CS manuel (case à cocher dans l'admin)
-                if s.get("cs") and not red_card:
+                if s.get("cs") and not red_card and not absent:
                     cs_pts = CS_PTS.get(poste, 0)
                     if cs_pts != result["cs"]["pts"]:
                         result["pts"] += cs_pts - result["cs"]["pts"]
                         result["cs"] = {"val": 1, "pts": cs_pts}
 
                 cap_str = ""
-                if is_titu and nom == capitaine:
+                if is_titu and not absent and nom == capitaine:
                     pts_cap = appliquer_capitaine(result["pts"], coeff)
                     cap_str = str(coeff)
                     result["pts"] = pts_cap
@@ -100,7 +105,7 @@ def compute(journee: int) -> dict:
 
                 equipe_result[poste].append({
                     "nom":    nom,
-                    "statut": "" if is_titu else "r",
+                    "statut": "A" if (is_titu and absent) else ("" if is_titu else "r"),
                     "cap":    cap_str,
                     "tj":     result["tj"],    "tj_pts": result["tj_pts"],
                     "bm":     result["bm"],    "be":     result["be"],

@@ -167,6 +167,8 @@ header h1 { font-size: 18px; font-weight: 700; color: var(--accent); }
 .stats-tbl tr.is-titu { background: rgba(0,229,160,.05); }
 .stats-tbl tr.is-titu .col-nom { font-weight: 700; color: var(--accent); }
 .stats-tbl tr.is-rempl td { opacity: .4; }
+.stats-tbl tr.is-abs td { background: rgba(255,80,80,.13) !important; }
+.stats-tbl tr.is-abs .col-nom { color: #ff6b6b; }
 .snum {
   background: var(--surface2); border: 1px solid var(--border); color: var(--text);
   padding: 3px 4px; border-radius: 4px; width: 46px; text-align: center; font-size: 13px;
@@ -639,6 +641,7 @@ function renderStats() {
       const abs  = !!s.absent;
       const tr   = document.createElement('tr');
       tr.className = titu ? 'is-titu' : 'is-rempl';
+      if (abs) tr.classList.add('is-abs');
       tr.innerHTML = `
         <td class="col-nom">${(() => { const u = getLogoUrl(nom); return u ? `<img src="${u}" class="club-logo-adm" onerror="this.style.display='none'" alt=""> ` : ''; })()}${nom}</td>
         <td><span class="roster-poste p-${p}">${p}</span></td>
@@ -791,6 +794,7 @@ function onAbsChange(el) {
     i.disabled = abs;
     if (abs) { i.value = ''; _setStatVal(el.dataset.m, el.dataset.n, i.dataset.f, 0); }
   });
+  el.closest('tr').classList.toggle('is-abs', abs);
   _setStatVal(el.dataset.m, el.dataset.n, el.dataset.f, el.checked);
   updatePtsCell(el.dataset.m, el.dataset.n);
 }

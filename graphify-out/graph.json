@@ -183,90 +183,6 @@
       "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py:101"
     },
     {
-      "id": "file::compute_journee",
-      "label": "compute_journee.py",
-      "fileType": "code",
-      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\compute_journee.py",
-      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\compute_journee.py:1"
-    },
-    {
-      "id": "compute_journee::_minutes",
-      "label": "_minutes",
-      "fileType": "code",
-      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\compute_journee.py",
-      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\compute_journee.py:19"
-    },
-    {
-      "id": "compute_journee::compute",
-      "label": "compute",
-      "fileType": "code",
-      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\compute_journee.py",
-      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\compute_journee.py:31"
-    },
-    {
-      "id": "file::export_excel",
-      "label": "export_excel.py",
-      "fileType": "code",
-      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\export_excel.py",
-      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\export_excel.py:1"
-    },
-    {
-      "id": "export_excel::is_new_format",
-      "label": "is_new_format",
-      "fileType": "code",
-      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\export_excel.py",
-      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\export_excel.py:39"
-    },
-    {
-      "id": "export_excel::get_name_col",
-      "label": "get_name_col",
-      "fileType": "code",
-      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\export_excel.py",
-      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\export_excel.py:43"
-    },
-    {
-      "id": "export_excel::get_offsets",
-      "label": "get_offsets",
-      "fileType": "code",
-      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\export_excel.py",
-      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\export_excel.py:49"
-    },
-    {
-      "id": "export_excel::build_player_row_map",
-      "label": "build_player_row_map",
-      "fileType": "code",
-      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\export_excel.py",
-      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\export_excel.py:65"
-    },
-    {
-      "id": "export_excel::_minutes",
-      "label": "_minutes",
-      "fileType": "code",
-      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\export_excel.py",
-      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\export_excel.py:79"
-    },
-    {
-      "id": "export_excel::compute_cs",
-      "label": "compute_cs",
-      "fileType": "code",
-      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\export_excel.py",
-      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\export_excel.py:91"
-    },
-    {
-      "id": "export_excel::_create_sheet",
-      "label": "_create_sheet",
-      "fileType": "code",
-      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\export_excel.py",
-      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\export_excel.py:102"
-    },
-    {
-      "id": "export_excel::export_journee",
-      "label": "export_journee",
-      "fileType": "code",
-      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\export_excel.py",
-      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\export_excel.py:131"
-    },
-    {
       "id": "file::scoring",
       "label": "scoring.py",
       "fileType": "code",
@@ -307,6 +223,139 @@
       "fileType": "code",
       "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\scoring.py",
       "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\scoring.py:178"
+    },
+    {
+      "id": "file::compute_journee",
+      "label": "compute_journee.py",
+      "fileType": "code",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\compute_journee.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\compute_journee.py:1"
+    },
+    {
+      "id": "compute_journee::_minutes",
+      "label": "_minutes",
+      "fileType": "code",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\compute_journee.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\compute_journee.py:19"
+    },
+    {
+      "id": "compute_journee::compute",
+      "label": "compute",
+      "fileType": "code",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\compute_journee.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\compute_journee.py:31"
+    },
+    {
+      "id": "file::export_excel",
+      "label": "export_excel.py",
+      "fileType": "code",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\export_excel.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\export_excel.py:1"
+    },
+    {
+      "id": "export_excel::is_new_format",
+      "label": "is_new_format",
+      "fileType": "code",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\export_excel.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\export_excel.py:42"
+    },
+    {
+      "id": "export_excel::get_name_col",
+      "label": "get_name_col",
+      "fileType": "code",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\export_excel.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\export_excel.py:46"
+    },
+    {
+      "id": "export_excel::get_offsets",
+      "label": "get_offsets",
+      "fileType": "code",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\export_excel.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\export_excel.py:52"
+    },
+    {
+      "id": "export_excel::build_player_row_map",
+      "label": "build_player_row_map",
+      "fileType": "code",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\export_excel.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\export_excel.py:68"
+    },
+    {
+      "id": "export_excel::_minutes",
+      "label": "_minutes",
+      "fileType": "code",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\export_excel.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\export_excel.py:82"
+    },
+    {
+      "id": "export_excel::compute_cs",
+      "label": "compute_cs",
+      "fileType": "code",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\export_excel.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\export_excel.py:94"
+    },
+    {
+      "id": "export_excel::_create_sheet",
+      "label": "_create_sheet",
+      "fileType": "code",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\export_excel.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\export_excel.py:105"
+    },
+    {
+      "id": "export_excel::_save_preserving_images",
+      "label": "_save_preserving_images",
+      "fileType": "code",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\export_excel.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\export_excel.py:134"
+    },
+    {
+      "id": "export_excel::export_journee",
+      "label": "export_journee",
+      "fileType": "code",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\export_excel.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\export_excel.py:208"
+    },
+    {
+      "id": "file::apply_excel_fixes",
+      "label": "apply_excel_fixes.py",
+      "fileType": "code",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\apply_excel_fixes.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\apply_excel_fixes.py:1"
+    },
+    {
+      "id": "apply_excel_fixes::update_cr_formulas",
+      "label": "update_cr_formulas",
+      "fileType": "code",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\apply_excel_fixes.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\apply_excel_fixes.py:27"
+    },
+    {
+      "id": "file::restore_images",
+      "label": "restore_images.py",
+      "fileType": "code",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\restore_images.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\restore_images.py:1"
+    },
+    {
+      "id": "restore_images::is_drawing",
+      "label": "is_drawing",
+      "fileType": "code",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\restore_images.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\restore_images.py:15"
+    },
+    {
+      "id": "restore_images::has_drawing_ref",
+      "label": "has_drawing_ref",
+      "fileType": "code",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\restore_images.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\restore_images.py:21"
+    },
+    {
+      "id": "restore_images::transfer_images",
+      "label": "transfer_images",
+      "fileType": "code",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\restore_images.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\restore_images.py:25"
     }
   ],
   "edges": [
@@ -586,7 +635,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\export_excel.py",
-      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\export_excel.py:39",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\export_excel.py:42",
       "weight": 1
     },
     {
@@ -595,7 +644,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\export_excel.py",
-      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\export_excel.py:43",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\export_excel.py:46",
       "weight": 1
     },
     {
@@ -604,7 +653,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\export_excel.py",
-      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\export_excel.py:49",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\export_excel.py:52",
       "weight": 1
     },
     {
@@ -613,7 +662,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\export_excel.py",
-      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\export_excel.py:65",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\export_excel.py:68",
       "weight": 1
     },
     {
@@ -622,7 +671,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\export_excel.py",
-      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\export_excel.py:79",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\export_excel.py:82",
       "weight": 1
     },
     {
@@ -631,7 +680,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\export_excel.py",
-      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\export_excel.py:91",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\export_excel.py:94",
       "weight": 1
     },
     {
@@ -640,7 +689,16 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\export_excel.py",
-      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\export_excel.py:102",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\export_excel.py:105",
+      "weight": 1
+    },
+    {
+      "source": "file::export_excel",
+      "target": "export_excel::_save_preserving_images",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\export_excel.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\export_excel.py:134",
       "weight": 1
     },
     {
@@ -649,14 +707,50 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\export_excel.py",
-      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\export_excel.py:131",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\export_excel.py:208",
+      "weight": 1
+    },
+    {
+      "source": "file::apply_excel_fixes",
+      "target": "apply_excel_fixes::update_cr_formulas",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\apply_excel_fixes.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\apply_excel_fixes.py:27",
+      "weight": 1
+    },
+    {
+      "source": "file::restore_images",
+      "target": "restore_images::is_drawing",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\restore_images.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\restore_images.py:15",
+      "weight": 1
+    },
+    {
+      "source": "file::restore_images",
+      "target": "restore_images::has_drawing_ref",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\restore_images.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\restore_images.py:21",
+      "weight": 1
+    },
+    {
+      "source": "file::restore_images",
+      "target": "restore_images::transfer_images",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\restore_images.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\restore_images.py:25",
       "weight": 1
     }
   ],
   "metadata": {
-    "files": 6,
-    "nodes": 44,
-    "edges": 38,
-    "builtAt": "2026-04-29T21:44:52.152Z"
+    "files": 8,
+    "nodes": 51,
+    "edges": 43,
+    "builtAt": "2026-04-29T22:33:36.733Z"
   }
 }

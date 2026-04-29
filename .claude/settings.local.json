@@ -4,7 +4,8 @@
       "WebFetch(domain:ligue1.com)",
       "WebFetch(domain:api.ligue1.fr)",
       "Bash(python *)",
-      "Bash(python3 -c ' *)"
+      "Bash(python3 -c ' *)",
+      "Bash(python3 *)"
     ]
   }
 }

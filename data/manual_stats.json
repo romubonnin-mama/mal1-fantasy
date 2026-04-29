@@ -1,18 +1,38 @@
 {
   "32": {
-    "JEROME": {
-      "THOMASSON": {
-        "entre_a": 72,
-        "yellow_cards": true
-      }
-    },
     "ROMU": {
+      "LEPENANT": {
+        "absent": true
+      },
       "RESTES": {
-        "full_match": true,
-        "cs": true
+        "full_match": true
+      },
+      "CLAUSS": {
+        "full_match": true
+      },
+      "SIDIBE": {
+        "full_match": true
+      },
+      "M.SARR": {
+        "full_match": true
+      },
+      "BOUFAL": {
+        "full_match": true
+      },
+      "MORTON": {
+        "full_match": true
+      },
+      "DIOP": {
+        "full_match": true
+      },
+      "GOUIRI": {
+        "absent": true
+      },
+      "MORREIRA": {
+        "full_match": true
       },
       "DEL CASTILLO": {
-        "absent": true
+        "full_match": true
       }
     }
   }

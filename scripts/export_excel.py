@@ -4,8 +4,11 @@ Appelé automatiquement après chaque compute_journee.
 """
 
 import copy
+import io
 import json
+import re
 import sys
+import zipfile
 from pathlib import Path
 
 import openpyxl
@@ -128,6 +131,80 @@ def _create_sheet(wb, journee: int, new_fmt: bool, off: dict):
     return tgt
 
 
+def _save_preserving_images(wb, path: Path) -> None:
+    """
+    Sauvegarde le workbook en préservant les images/drawings que openpyxl ne gère pas.
+    Stratégie : fusionner le zip openpyxl (cellules à jour) avec le zip original (images).
+    """
+    path = Path(path)
+    buf = io.BytesIO()
+    wb.save(buf)
+    buf.seek(0)
+
+    if not path.exists():
+        with open(path, 'wb') as f:
+            f.write(buf.read())
+        return
+
+    def is_drawing(name):
+        return (name.startswith('xl/media/') or
+                name.startswith('xl/drawings/') or
+                name.startswith('xl/charts/'))
+
+    def has_drawing_ref(text):
+        return bool(re.search(r'drawings?/|/media/', text, re.IGNORECASE))
+
+    result = io.BytesIO()
+    with zipfile.ZipFile(path, 'r') as orig, \
+         zipfile.ZipFile(buf, 'r') as new_z, \
+         zipfile.ZipFile(result, 'w', zipfile.ZIP_DEFLATED) as out:
+
+        new_names = set(new_z.namelist())
+        written   = set()
+
+        # 1. Écrire chaque fichier du nouveau zip
+        for name in new_z.namelist():
+            if is_drawing(name) and name in orig.namelist():
+                # Toujours prendre les drawings depuis l'original
+                out.writestr(name, orig.read(name))
+            elif name.endswith('.rels') and name in orig.namelist():
+                orig_rels = orig.read(name).decode('utf-8', errors='replace')
+                if has_drawing_ref(orig_rels):
+                    # Conserver les rels originaux qui lient sheets ↔ drawings
+                    out.writestr(name, orig.read(name))
+                else:
+                    out.writestr(name, new_z.read(name))
+            elif name == '[Content_Types].xml':
+                # Fusionner : ajouter les entrées drawing/media manquantes depuis orig
+                new_ct  = new_z.read(name).decode('utf-8')
+                orig_ct = orig.read(name).decode('utf-8')
+                for entry in re.findall(r'<(?:Override|Default)[^/]*/>', orig_ct):
+                    if ('drawing' in entry.lower() or 'chart' in entry.lower()
+                            or re.search(r'png|jpe?g|gif|emf|wmf', entry, re.I)):
+                        key = re.search(r'(?:PartName|Extension)="([^"]+)"', entry)
+                        if key and key.group(1) not in new_ct:
+                            new_ct = new_ct.replace('</Types>', f'  {entry}\n</Types>')
+                out.writestr(name, new_ct.encode('utf-8'))
+            else:
+                out.writestr(name, new_z.read(name))
+            written.add(name)
+
+        # 2. Ajouter les fichiers drawing de l'original absents du nouveau zip
+        for name in orig.namelist():
+            if name in written:
+                continue
+            if is_drawing(name):
+                out.writestr(name, orig.read(name))
+            elif name.endswith('.rels'):
+                content = orig.read(name).decode('utf-8', errors='replace')
+                if has_drawing_ref(content):
+                    out.writestr(name, orig.read(name))
+
+    result.seek(0)
+    with open(path, 'wb') as f:
+        f.write(result.read())
+
+
 def export_journee(journee: int, verbose: bool = True) -> None:
     with open(DATA_DIR / "roster.json", encoding="utf-8") as f:
         roster = json.load(f)
@@ -244,7 +321,7 @@ def export_journee(journee: int, verbose: bool = True) -> None:
                     w("cj",   int(stats.get("yellow_cards", 0))  or None)
                     w("cr",   1 if red_card                      else None)
 
-    wb.save(EXCEL_PATH)
+    _save_preserving_images(wb, EXCEL_PATH)
     if verbose:
         print(f"Excel mis a jour : journee {journee} -> {EXCEL_PATH.name}")
 
