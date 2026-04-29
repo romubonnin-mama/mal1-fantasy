@@ -175,8 +175,12 @@ header h1 { font-size: 18px; font-weight: 700; color: var(--accent); }
 .snum.nz { border-color: var(--accent); background: rgba(0,229,160,.12); font-weight: 700; }
 .snum:disabled { opacity: .25; cursor: not-allowed; }
 .schk { width: 16px; height: 16px; cursor: pointer; accent-color: var(--accent); }
-.schk-red { accent-color: var(--red); }
-.schk-cs  { accent-color: #4fc3f7; }
+.schk-red    { accent-color: var(--red); }
+.schk-cs     { accent-color: #4fc3f7; }
+.schk-yellow { accent-color: #ffd54f; }
+.schk-abs    { accent-color: #ff7043; }
+.pts-cell { font-size: 14px; color: var(--accent); min-width: 38px; }
+.club-logo-adm { width: 16px; height: 16px; object-fit: contain; vertical-align: middle; margin-right: 4px; }
 </style>
 </head>
 <body>
@@ -268,7 +272,12 @@ header h1 { font-size: 18px; font-weight: 700; color: var(--accent); }
 
 <script>
 const API = 'http://localhost:8765/api';
-let ROSTER = {}, LINEUPS = {}, CORRECTIONS = {}, DATA = {}, MANUAL_STATS = {};
+let ROSTER = {}, LINEUPS = {}, CORRECTIONS = {}, DATA = {}, MANUAL_STATS = {}, CLUBS = {};
+
+function getLogoUrl(nom) {
+  const id = CLUBS[nom.trim().toUpperCase()];
+  return id ? `https://media.api-sports.io/football/teams/${id}.png` : '';
+}
 let currentJournee = 32;
 
 // ─── Utilitaires ─────────────────────────────────────────────────────────────
@@ -304,9 +313,10 @@ function showTab(name) {
 // ─── Chargement ───────────────────────────────────────────────────────────────
 
 async function init() {
-  [ROSTER, DATA] = await Promise.all([
+  [ROSTER, DATA, CLUBS] = await Promise.all([
     api('GET', '/roster'),
     api('GET', '/data'),
+    api('GET', '/clubs'),
   ]);
   currentJournee = document.getElementById('journeeInput').value;
   await loadJournee();
@@ -578,7 +588,6 @@ const STAT_NUM_FIELDS = [
   { f: 'pen_scored',    label: 'PM', title: 'Pénalty marqué' },
   { f: 'pen_mm_saved',  label: 'PMA',title: 'Pén. manqué (D/M/A) ou arrêté/manqué adv. (G)' },
   { f: 'own_goals',     label: 'BCSC', title: 'But contre son camp' },
-  { f: 'yellow_cards',  label: 'CJ', title: 'Carton jaune' },
 ];
 
 function renderStats() {
@@ -602,11 +611,15 @@ function renderStats() {
           <thead><tr>
             <th class="col-nom">Joueur</th>
             <th>P</th>
-            <th title="Match entier (90 min réglementaires)">Full</th>
-            <th title="Minutes jouées">Min</th>
+            <th title="Absent / blessé / non entré en jeu">ABS</th>
+            <th title="Match entier (90 min réglementaires)">Match</th>
+            <th title="Minute d'entrée en jeu (ex: 43)">Entr</th>
+            <th title="Minute de fin (ex: 73 si entré à 13 → 60 min)">Fin</th>
             ${STAT_NUM_FIELDS.map(x => `<th title="${x.title}">${x.label}</th>`).join('')}
+            <th title="Carton jaune">CJ</th>
             <th title="Clean sheet (forcer manuellement)">CS</th>
             <th title="Carton rouge">CR</th>
+            <th title="Points calculés">Pts</th>
           </tr></thead>
           <tbody id="stb-${manager}"></tbody>
         </table>
@@ -623,21 +636,32 @@ function renderStats() {
     for (const { nom, p, titu } of allPlayers) {
       const s    = mStats[nom] || {};
       const full = !!s.full_match;
+      const abs  = !!s.absent;
       const tr   = document.createElement('tr');
       tr.className = titu ? 'is-titu' : 'is-rempl';
       tr.innerHTML = `
-        <td class="col-nom">${nom}</td>
+        <td class="col-nom">${(() => { const u = getLogoUrl(nom); return u ? `<img src="${u}" class="club-logo-adm" onerror="this.style.display='none'" alt=""> ` : ''; })()}${nom}</td>
         <td><span class="roster-poste p-${p}">${p}</span></td>
         <td>
-          <input type="checkbox" class="schk" data-m="${manager}" data-n="${nom}" data-f="full_match"
-                 ${full ? 'checked' : ''} onchange="onFullChange(this)">
+          <input type="checkbox" class="schk schk-abs" data-m="${manager}" data-n="${nom}" data-f="absent"
+                 ${abs ? 'checked' : ''} onchange="onAbsChange(this)">
         </td>
         <td>
-          <input type="number" class="snum" min="0" max="90"
-                 data-m="${manager}" data-n="${nom}" data-f="minutes"
-                 value="${full ? '' : (s.minutes > 0 ? s.minutes : '')}"
-                 placeholder="${full ? 'M' : '0'}"
-                 ${full ? 'disabled' : ''}
+          <input type="checkbox" class="schk full-chk" data-m="${manager}" data-n="${nom}" data-f="full_match"
+                 ${full ? 'checked' : ''} ${abs ? 'disabled' : ''} onchange="onFullChange(this)">
+        </td>
+        <td>
+          <input type="number" class="snum tj-inp" min="0" max="120"
+                 data-m="${manager}" data-n="${nom}" data-f="entre_a"
+                 value="${s.entre_a > 0 ? s.entre_a : ''}" placeholder="—"
+                 ${full || abs ? 'disabled' : ''}
+                 onchange="onNumChange(this)">
+        </td>
+        <td>
+          <input type="number" class="snum tj-inp" min="0" max="120"
+                 data-m="${manager}" data-n="${nom}" data-f="sort_a"
+                 value="${s.sort_a > 0 ? s.sort_a : ''}" placeholder="—"
+                 ${full || abs ? 'disabled' : ''}
                  onchange="onNumChange(this)">
         </td>
         ${STAT_NUM_FIELDS.map(x => `
@@ -648,16 +672,97 @@ function renderStats() {
                    onchange="onNumChange(this)">
           </td>`).join('')}
         <td>
+          <input type="checkbox" class="schk schk-yellow" data-m="${manager}" data-n="${nom}" data-f="yellow_cards"
+                 ${s.yellow_cards ? 'checked' : ''} onchange="onCheckChange(this)">
+        </td>
+        <td>
           <input type="checkbox" class="schk schk-cs" data-m="${manager}" data-n="${nom}" data-f="cs"
                  ${s.cs ? 'checked' : ''} onchange="onCheckChange(this)">
         </td>
         <td>
           <input type="checkbox" class="schk schk-red" data-m="${manager}" data-n="${nom}" data-f="red_card"
                  ${s.red_card ? 'checked' : ''} onchange="onCheckChange(this)">
-        </td>`;
+        </td>
+        <td class="pts-cell" id="pts-${manager}-${nom}">${(() => { const pts = _calcPts(manager, nom); return pts !== null ? `<strong>${pts}</strong>` : '—'; })()}</td>`;
       tbody.appendChild(tr);
     }
   }
+}
+
+// ─── Calcul de points en temps réel ──────────────────────────────────────────
+
+function _calcPts(manager, nom) {
+  const lineup    = LINEUPS[manager] || {};
+  const titulaires = new Set(lineup.titulaires || []);
+  if (!titulaires.has(nom)) return 0;
+
+  const s0 = (MANUAL_STATS[manager] || {})[nom] || {};
+  if (s0.absent) return 0;
+
+  const rosterM = ROSTER[manager] || {};
+  let poste = null;
+  for (const [pos, noms] of Object.entries(rosterM)) {
+    if ((noms || []).includes(nom)) { poste = pos; break; }
+  }
+  if (!poste) return null;
+
+  const s = (MANUAL_STATS[manager] || {})[nom] || {};
+  if (!Object.keys(s).length) return null;
+
+  const full = !!s.full_match;
+  const red  = !!s.red_card;
+
+  const sortA  = parseInt(s.sort_a  || 0) || 0;
+  const entreA = parseInt(s.entre_a || 0) || 0;
+  const finA   = parseInt(s.fin_a   || 0) || 0;
+  let min;
+  if (entreA > 0) {
+    const end = sortA > 0 ? sortA : (finA > 0 ? finA : 90);
+    min = end - entreA;
+  } else if (sortA > 0) min = sortA;
+  else                  min = parseInt(s.minutes || 0) || 0;
+
+  const goals   = parseInt(s.goals          || 0) || 0;
+  const assists = parseInt(s.assists        || 0) || 0;
+  const gc      = parseInt(s.goals_conceded || 0) || 0;
+  const pm      = parseInt(s.pen_scored     || 0) || 0;
+  const pma     = parseInt(s.pen_mm_saved   || 0) || 0;
+  const bc      = parseInt(s.own_goals      || 0) || 0;
+  const cj      = red ? 0 : (s.yellow_cards ? 1 : 0);
+
+  const BM = {G:5, D:3, M:2, A:2};
+  let tjPts;
+  if (red)       tjPts = 0;
+  else if (full) tjPts = 4;
+  else { const m = Math.min(min, 90); tjPts = m<=0 ? 0 : m<30 ? 1 : m<=60 ? 2 : 3; }
+
+  let csPts = 0;
+  if (s.cs) {
+    csPts = poste==='G' ? 2 : poste==='D' ? 1 : 0;
+  }
+
+  const bePts  = gc >= 3 ? (poste==='G' ? -2 : poste==='D' ? -1 : 0) : 0;
+  let total = tjPts
+    + goals   * (BM[poste]||0)
+    + assists * 2
+    + pm      * 2
+    + (poste==='G' ? pma*2 : pma*-2)
+    + csPts + bePts
+    + bc * -2
+    + cj * -1;
+
+  if (nom === lineup.capitaine) {
+    const coeff = Math.min(parseInt(lineup.coeff || 1), 7);
+    total = total + total * coeff;
+  }
+  return total;
+}
+
+function updatePtsCell(manager, nom) {
+  const el = document.getElementById(`pts-${manager}-${nom}`);
+  if (!el) return;
+  const pts = _calcPts(manager, nom);
+  el.innerHTML = pts !== null ? `<strong>${pts}</strong>` : '—';
 }
 
 function _setStatVal(m, n, f, val) {
@@ -675,25 +780,43 @@ function _setStatVal(m, n, f, val) {
   el.textContent = 'Non sauvegardé*'; el.className = 'save-status err';
 }
 
+function onAbsChange(el) {
+  const row = el.closest('tr');
+  const abs = el.checked;
+  row.querySelectorAll('.full-chk').forEach(i => {
+    i.disabled = abs;
+    if (abs && i.checked) { i.checked = false; _setStatVal(el.dataset.m, el.dataset.n, 'full_match', false); }
+  });
+  row.querySelectorAll('.tj-inp').forEach(i => {
+    i.disabled = abs;
+    if (abs) { i.value = ''; _setStatVal(el.dataset.m, el.dataset.n, i.dataset.f, 0); }
+  });
+  _setStatVal(el.dataset.m, el.dataset.n, el.dataset.f, el.checked);
+  updatePtsCell(el.dataset.m, el.dataset.n);
+}
+
 function onFullChange(el) {
-  const minInput = el.closest('tr').querySelector('[data-f="minutes"]');
+  const tjInps = el.closest('tr').querySelectorAll('.tj-inp');
   if (el.checked) {
-    minInput.disabled = true; minInput.placeholder = 'M'; minInput.value = '';
-    _setStatVal(el.dataset.m, el.dataset.n, 'minutes', 0);
+    tjInps.forEach(i => { i.disabled = true; i.value = ''; });
+    ['sort_a', 'entre_a'].forEach(f => _setStatVal(el.dataset.m, el.dataset.n, f, 0));
   } else {
-    minInput.disabled = false; minInput.placeholder = '0';
+    tjInps.forEach(i => { i.disabled = false; });
   }
   _setStatVal(el.dataset.m, el.dataset.n, el.dataset.f, el.checked);
+  updatePtsCell(el.dataset.m, el.dataset.n);
 }
 
 function onNumChange(el) {
   const v = parseInt(el.value) || 0;
   el.classList.toggle('nz', v > 0);
   _setStatVal(el.dataset.m, el.dataset.n, el.dataset.f, v);
+  updatePtsCell(el.dataset.m, el.dataset.n);
 }
 
 function onCheckChange(el) {
   _setStatVal(el.dataset.m, el.dataset.n, el.dataset.f, el.checked);
+  updatePtsCell(el.dataset.m, el.dataset.n);
 }
 
 async function saveStats(quiet = false) {

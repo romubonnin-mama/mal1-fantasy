@@ -5,8 +5,8 @@ Source: règlement 2025-2026.
 Barème TJ (hors arrêts de jeu) — identique pour tous les postes :
   0 min           -> 0 pt
   1–29 min        -> 1 pt
-  30–59 min       -> 2 pts
-  60–89 min       -> 3 pts
+  30–60 min       -> 2 pts
+  61–89 min       -> 3 pts
   match entier    -> 4 pts
   carton rouge    -> 0 pt TJ (bonuses/maluses conservés, CJ annulé)
 """
@@ -55,7 +55,7 @@ def tj_points(minutes: int, is_full_match: bool, red_card: bool) -> int:
         return 0
     elif m < 30:
         return 1
-    elif m < 60:
+    elif m <= 60:
         return 2
     else:
         return 3

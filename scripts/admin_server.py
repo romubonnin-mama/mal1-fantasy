@@ -25,6 +25,7 @@ FILES = {
     "/api/corrections":   DATA_DIR / "corrections.json",
     "/api/manual-stats":  DATA_DIR / "manual_stats.json",
     "/api/data":          BASE_DIR  / "data.json",
+    "/api/clubs":         BASE_DIR  / "clubs.json",
 }
 
 JOURNEE_FILES = {

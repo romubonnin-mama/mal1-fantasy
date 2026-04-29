@@ -16,6 +16,18 @@ from scoring import calcul_joueur, appliquer_capitaine, CS_PTS
 POSTES = ["G", "D", "M", "A"]
 
 
+def _minutes(s: dict) -> int:
+    sort_a  = int(s.get("sort_a",  0) or 0)
+    entre_a = int(s.get("entre_a", 0) or 0)
+    fin_a   = int(s.get("fin_a",   0) or 0)
+    if entre_a > 0:
+        end = sort_a if sort_a > 0 else (fin_a if fin_a > 0 else 90)
+        return end - entre_a
+    if sort_a > 0:
+        return sort_a
+    return int(s.get("minutes", 0) or 0)
+
+
 def compute(journee: int) -> dict:
     with open(DATA_DIR / "roster.json",       encoding="utf-8") as f: roster      = json.load(f)
     with open(DATA_DIR / "lineups.json",      encoding="utf-8") as f: lineups     = json.load(f)
@@ -47,7 +59,7 @@ def compute(journee: int) -> dict:
                 is_titu = nom in titulaires
                 s = j_manual.get(manager, {}).get(nom, {})
 
-                minutes    = int(s.get("minutes", 0) or 0)
+                minutes    = _minutes(s)
                 full_match = bool(s.get("full_match", False))
                 red_card   = bool(s.get("red_card", False))
 

@@ -3,6 +3,7 @@ Synchronise les stats admin (manual_stats.json + lineups.json) vers le fichier E
 Appelé automatiquement après chaque compute_journee.
 """
 
+import copy
 import json
 import sys
 from pathlib import Path
@@ -75,6 +76,18 @@ def build_player_row_map(ws, group_idx: int, name_col: int, off: dict) -> dict:
     return rows
 
 
+def _minutes(s: dict) -> int:
+    sort_a  = int(s.get("sort_a",  0) or 0)
+    entre_a = int(s.get("entre_a", 0) or 0)
+    fin_a   = int(s.get("fin_a",   0) or 0)
+    if entre_a > 0:
+        end = sort_a if sort_a > 0 else (fin_a if fin_a > 0 else 90)
+        return end - entre_a
+    if sort_a > 0:
+        return sort_a
+    return int(s.get("minutes", 0) or 0)
+
+
 def compute_cs(poste: str, goals_conceded: int, minutes: int, full_match: bool) -> int:
     """Recalcule le clean sheet comme dans scoring.py."""
     if goals_conceded > 0:
@@ -90,8 +103,19 @@ def _create_sheet(wb, journee: int, new_fmt: bool, off: dict):
     """Crée la feuille journée en copiant la feuille vierge '38' comme modèle."""
     if "38" not in wb.sheetnames:
         return None
-    tgt = wb.copy_worksheet(wb["38"])
+    src = wb["38"]
+    tgt = wb.copy_worksheet(src)
     tgt.title = str(journee)
+
+    # copy_worksheet ne transfère pas toujours la mise en forme conditionnelle
+    tgt.conditional_formatting = copy.deepcopy(src.conditional_formatting)
+
+    # Zoom 72%
+    tgt.sheet_view.zoomScale = 72
+
+    # Code name VBA unique — évite qu'Excel confonde cette feuille avec "38" à la suppression
+    tgt.sheet_properties.codeName = f"J{journee}"
+
     # Déplacer la feuille à la bonne position (ordre numérique entre les journées)
     sheets = wb.sheetnames
     current_idx = sheets.index(str(journee))
@@ -176,6 +200,14 @@ def export_journee(journee: int, verbose: bool = True) -> None:
                     for field in ["bm","be","bcsc","cs","pm","pma","pd","cj","cr"]:
                         w(field, None)
 
+                elif stats.get("absent"):
+                    # Titulaire absent / blessé / non entré : 'A' en statut, tout le reste effacé
+                    w("status", "A")
+                    w("cap", None)
+                    w("tj", None)
+                    for field in ["bm","be","bcsc","cs","pm","pma","pd","cj","cr"]:
+                        w(field, None)
+
                 elif not stats:
                     # Titulaire sans stats saisies : ne rien écrire
                     pass
@@ -183,28 +215,29 @@ def export_journee(journee: int, verbose: bool = True) -> None:
                 else:
                     # Titulaire avec stats
                     full_match = bool(stats.get("full_match", False))
-                    minutes    = int(stats.get("minutes", 0) or 0)
+                    minutes    = _minutes(stats)
                     red_card   = bool(stats.get("red_card", False))
 
                     if red_card:
-                        tj_val, status = 0, "m"
+                        tj_val = minutes if minutes > 0 else None
+                        status = None  # titulaire qui a joué, carton rouge ≠ absent
                     elif full_match:
-                        tj_val, status = "M", "M"
+                        tj_val, status = "M", None
                     elif minutes > 0:
-                        tj_val, status = minutes, "m"
+                        tj_val, status = minutes, None
                     else:
-                        tj_val, status = None, "m"
+                        tj_val, status = None, "A"
 
                     w("status", status)
                     w("tj",     tj_val)
                     w("cap",    coeff if player == capitaine else None)
 
                     goals_c = int(stats.get("goals_conceded", 0))
-                    cs_val  = stats.get("cs") or compute_cs(poste, goals_c, minutes, full_match)
+                    cs_val  = 1 if (stats.get("cs") or compute_cs(poste, goals_c, minutes, full_match)) else None
                     w("bm",   int(stats.get("goals", 0))        or None)
                     w("be",   goals_c                            or None)
                     w("bcsc", int(stats.get("own_goals", 0))     or None)
-                    w("cs",   cs_val                             or None)
+                    w("cs",   cs_val)
                     w("pm",   int(stats.get("pen_scored", 0))    or None)
                     w("pma",  int(stats.get("pen_mm_saved", 0))  or None)
                     w("pd",   int(stats.get("assists", 0))       or None)
