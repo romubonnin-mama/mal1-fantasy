@@ -684,13 +684,15 @@ function renderCapStats(capMap) {
     const c = COULEURS[mgr] || { color: '#e8eaf0' };
     const totalBonus = usages.reduce((s, u) => s + u.extra, 0);
     const avgRang = (usages.reduce((s, u) => s + u.rang, 0) / usages.length).toFixed(1);
+    const avgCoeff = (usages.reduce((s, u) => s + (u.mult - 1), 0) / usages.length).toFixed(1);
     html += `<div class="cap-block">
       <div class="cap-hdr">
         <div class="cap-mgr" style="color:${c.color}">${mgr}</div>
         <div class="cap-meta">
           <div class="cap-meta-item">Bonus total <strong>+${totalBonus}</strong></div>
           <div class="cap-meta-item">Rang moyen <strong>${avgRang}e</strong></div>
-          <div class="cap-meta-item">Ratio pts/rang <strong>${(totalBonus / parseFloat(avgRang)).toFixed(1)}</strong></div>
+          <div class="cap-meta-item">Coeff moyen <strong>${avgCoeff}</strong></div>
+          <div class="cap-meta-item">Ratio pts/coeff <strong>${(totalBonus / parseFloat(avgCoeff)).toFixed(1)}</strong></div>
           <div class="cap-meta-item">Utilisations <strong>${usages.length}</strong></div>
         </div>
       </div>
