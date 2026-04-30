@@ -210,6 +210,11 @@
   .cr-badge { background: rgba(255,68,85,0.12); color: var(--danger); }
   .card-title.yellow::before { background: var(--gold); }
   .card-title.red::before { background: var(--danger); }
+  .stats-sub-tab { background: var(--surface2); border: 1px solid var(--border); color: var(--muted); font-size: 12px; font-weight: 600; padding: 8px 18px; border-radius: 8px; cursor: pointer; transition: all 0.2s; }
+  .stats-sub-tab.active { background: var(--accent); color: #000; border-color: var(--accent); }
+  .mgr-card-row { display: grid; grid-template-columns: 1fr 60px 60px 70px; align-items: center; padding: 9px 18px; border-bottom: 1px solid var(--border); font-size: 12px; gap: 8px; }
+  .mgr-card-row:last-child { border-bottom: none; }
+  .mgr-card-row .val-cell { font-family: 'Bebas Neue', sans-serif; font-size: 16px; text-align: center; }
   @media (max-width: 599px) {
     .cap-hide-mob { display: none; }
     .nav-tab { font-size: 9px; padding: 7px 2px; }
@@ -306,27 +311,44 @@
   </div>
 
   <div class="page" id="page-stats">
-    <div class="card" style="margin-bottom:16px">
-      <div class="card-header">
-        <div class="card-title">Capitaines — Bilan par manager</div>
-        <div class="tag">SAISON</div>
-      </div>
-      <div id="cap-stats-container"></div>
+    <div style="display:flex;gap:8px;margin-bottom:16px">
+      <button class="stats-sub-tab active" id="subtab-cap" onclick="showStatsSub('cap')">⭐ Capitaines</button>
+      <button class="stats-sub-tab" id="subtab-cartons" onclick="showStatsSub('cartons')">🟨 Cartons</button>
     </div>
-    <div class="grid-2">
+
+    <div id="stats-section-cap">
       <div class="card">
         <div class="card-header">
-          <div class="card-title yellow">Cartons Jaunes</div>
-          <div class="tag" style="background:rgba(245,200,66,0.1);color:var(--gold)">TOTAL</div>
+          <div class="card-title">Capitaines — Bilan par manager</div>
+          <div class="tag">SAISON</div>
         </div>
-        <div id="cj-container"></div>
+        <div id="cap-stats-container"></div>
       </div>
-      <div class="card">
+    </div>
+
+    <div id="stats-section-cartons" style="display:none">
+      <div class="card" style="margin-bottom:16px">
         <div class="card-header">
-          <div class="card-title red">Cartons Rouges</div>
-          <div class="tag" style="background:rgba(255,68,85,0.1);color:var(--danger)">TOTAL</div>
+          <div class="card-title">Total cartons par manager</div>
+          <div class="tag">MANAGERS</div>
         </div>
-        <div id="cr-container"></div>
+        <div id="cards-by-mgr-container"></div>
+      </div>
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title yellow">Cartons Jaunes</div>
+            <div class="tag" style="background:rgba(245,200,66,0.1);color:var(--gold)">TOP JOUEURS</div>
+          </div>
+          <div id="cj-container"></div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title red">Cartons Rouges</div>
+            <div class="tag" style="background:rgba(255,68,85,0.1);color:var(--danger)">TOP JOUEURS</div>
+          </div>
+          <div id="cr-container"></div>
+        </div>
       </div>
     </div>
   </div>
@@ -382,6 +404,13 @@ document.getElementById('tab-journees').onclick = () => showPage('journees');
 document.getElementById('tab-joueurs').onclick = () => showPage('joueurs');
 document.getElementById('tab-evolution').onclick = () => showPage('evolution');
 document.getElementById('tab-stats').onclick = () => showPage('stats');
+
+function showStatsSub(sub) {
+  document.querySelectorAll('.stats-sub-tab').forEach(b => b.classList.remove('active'));
+  document.getElementById('subtab-' + sub).classList.add('active');
+  document.getElementById('stats-section-cap').style.display = sub === 'cap' ? '' : 'none';
+  document.getElementById('stats-section-cartons').style.display = sub === 'cartons' ? '' : 'none';
+}
 
 function getLogoUrl(nom) {
   const club = CLUBS[nom];
@@ -607,11 +636,13 @@ function toggleJoueur(nom) {
 }
 
 function buildStats() {
-  const cjMap = {}, crMap = {}, capMap = {};
+  const cjMap = {}, crMap = {}, capMap = {}, cardsByMgr = {};
+  ORDRE_JOUEURS.forEach(mgr => { cardsByMgr[mgr] = { cj: 0, cr: 0 }; });
   Object.entries(DATA.detail_journees).forEach(([jStr, managers]) => {
     const j = parseInt(jStr);
     Object.entries(managers).forEach(([mgr, equipe]) => {
       if (!capMap[mgr]) capMap[mgr] = [];
+      if (!cardsByMgr[mgr]) cardsByMgr[mgr] = { cj: 0, cr: 0 };
       ['G','D','M','A'].forEach(poste => {
         (equipe[poste] || []).forEach(p => {
           const nom = p.nom;
@@ -620,11 +651,13 @@ function buildStats() {
             if (!cjMap[nom]) cjMap[nom] = { total: 0, mgrs: [] };
             cjMap[nom].total += cjVal;
             if (!cjMap[nom].mgrs.includes(mgr)) cjMap[nom].mgrs.push(mgr);
+            cardsByMgr[mgr].cj += cjVal;
           }
           if (p.cr && p.cr.val !== 0) {
             if (!crMap[nom]) crMap[nom] = { total: 0, mgrs: [] };
             crMap[nom].total++;
             if (!crMap[nom].mgrs.includes(mgr)) crMap[nom].mgrs.push(mgr);
+            cardsByMgr[mgr].cr++;
           }
           if (p.cap) {
             const rang = parseInt(p.cap);
@@ -639,7 +672,7 @@ function buildStats() {
     });
   });
   Object.values(capMap).forEach(a => a.sort((x, y) => x.j - y.j));
-  return { cjMap, crMap, capMap };
+  return { cjMap, crMap, capMap, cardsByMgr };
 }
 
 function renderCapStats(capMap) {
@@ -657,6 +690,7 @@ function renderCapStats(capMap) {
         <div class="cap-meta">
           <div class="cap-meta-item">Bonus total <strong>+${totalBonus}</strong></div>
           <div class="cap-meta-item">Rang moyen <strong>${avgRang}e</strong></div>
+          <div class="cap-meta-item">Ratio pts/rang <strong>${(totalBonus / parseFloat(avgRang)).toFixed(1)}</strong></div>
           <div class="cap-meta-item">Utilisations <strong>${usages.length}</strong></div>
         </div>
       </div>
@@ -679,7 +713,31 @@ function renderCapStats(capMap) {
   document.getElementById('cap-stats-container').innerHTML = html || '<div style="padding:20px;color:var(--muted);font-size:12px;text-align:center">Aucune donnée capitaine</div>';
 }
 
-function renderCardsStats(cjMap, crMap) {
+function renderCardsStats(cjMap, crMap, cardsByMgr) {
+  // Cartons par manager
+  const mgrEl = document.getElementById('cards-by-mgr-container');
+  const sortedMgr = ORDRE_JOUEURS.slice().sort((a, b) => {
+    const ta = (cardsByMgr[a]||{cj:0,cr:0}), tb = (cardsByMgr[b]||{cj:0,cr:0});
+    return (tb.cj + tb.cr) - (ta.cj + ta.cr);
+  });
+  mgrEl.innerHTML = `<div class="mgr-card-row" style="font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;font-weight:600">
+    <div>Manager</div>
+    <div style="text-align:center">🟨 CJ</div>
+    <div style="text-align:center">🟥 CR</div>
+    <div style="text-align:center">Total</div>
+  </div>` + sortedMgr.map(mgr => {
+    const d = cardsByMgr[mgr] || { cj: 0, cr: 0 };
+    const c = COULEURS[mgr] || { color: '#e8eaf0' };
+    const total = d.cj + d.cr;
+    return `<div class="mgr-card-row">
+      <div style="font-weight:600;color:${c.color}">${mgr}</div>
+      <div class="val-cell" style="color:var(--gold)">${d.cj || '—'}</div>
+      <div class="val-cell" style="color:var(--danger)">${d.cr || '—'}</div>
+      <div class="val-cell">${total || '—'}</div>
+    </div>`;
+  }).join('');
+
+  // Top joueurs CJ / CR
   const render = (map, cId, cls) => {
     const el = document.getElementById(cId);
     const items = Object.entries(map).sort((a, b) => b[1].total - a[1].total).slice(0, 15);
@@ -831,9 +889,9 @@ Promise.all([
         }
       }
     });
-    const { cjMap, crMap, capMap } = buildStats();
+    const { cjMap, crMap, capMap, cardsByMgr } = buildStats();
     renderCapStats(capMap);
-    renderCardsStats(cjMap, crMap);
+    renderCardsStats(cjMap, crMap, cardsByMgr);
 }).catch(err => console.error('Erreur:', err));
 </script>
 </body>
