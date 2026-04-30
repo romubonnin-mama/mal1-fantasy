@@ -147,7 +147,7 @@
     .logo { font-size: 20px; letter-spacing: 2px; }
     .logo-badge { font-size: 8px; padding: 2px 4px; }
     .journee-badge { font-size: 11px; padding: 4px 8px; }
-    .nav-tabs { order: 3; width: 100%; display: grid; grid-template-columns: repeat(4, 1fr); gap: 3px; padding-bottom: 2px; }
+    .nav-tabs { order: 3; width: 100%; display: grid; grid-template-columns: repeat(5, 1fr); gap: 3px; padding-bottom: 2px; }
     .nav-tab { text-align: center; padding: 7px 4px; font-size: 10px; background: var(--surface2); border-radius: 6px; }
     /* Layout général */
     .container { padding: 14px 10px; }
@@ -189,6 +189,31 @@
     /* Graphique */
     .chart-container { height: 260px; padding: 12px; }
   }
+  /* ── Stats page ───────────────────────────────────────────────────────────── */
+  .cap-block { padding: 14px 18px 12px; border-bottom: 1px solid var(--border); }
+  .cap-block:last-child { border-bottom: none; }
+  .cap-hdr { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; flex-wrap: wrap; gap: 8px; }
+  .cap-mgr { font-family: 'Barlow Condensed', sans-serif; font-size: 15px; font-weight: 700; letter-spacing: 1px; }
+  .cap-meta { display: flex; gap: 16px; flex-wrap: wrap; }
+  .cap-meta-item { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.3px; }
+  .cap-meta-item strong { font-family: 'Bebas Neue', sans-serif; font-size: 17px; color: var(--text); letter-spacing: 0; text-transform: none; }
+  .cap-tbl { width: 100%; border-collapse: collapse; font-size: 11px; }
+  .cap-tbl th { font-size: 9px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; padding: 3px 6px; text-align: right; border-bottom: 1px solid var(--border); }
+  .cap-tbl th:first-child, .cap-tbl th:nth-child(2) { text-align: left; }
+  .cap-tbl td { padding: 5px 6px; border-bottom: 1px solid rgba(255,255,255,0.03); text-align: right; }
+  .cap-tbl td:first-child { text-align: left; color: var(--muted); }
+  .cap-tbl td:nth-child(2) { text-align: left; font-weight: 600; }
+  .cap-tbl tr:last-child td { border-bottom: none; }
+  .cap-bonus { color: var(--gold); font-weight: 700; }
+  .card-count-badge { font-family: 'Bebas Neue', sans-serif; font-size: 18px; min-width: 32px; text-align: center; border-radius: 6px; padding: 2px 8px; display: inline-block; }
+  .cj-badge { background: rgba(245,200,66,0.12); color: var(--gold); }
+  .cr-badge { background: rgba(255,68,85,0.12); color: var(--danger); }
+  .card-title.yellow::before { background: var(--gold); }
+  .card-title.red::before { background: var(--danger); }
+  @media (max-width: 599px) {
+    .cap-hide-mob { display: none; }
+    .nav-tab { font-size: 9px; padding: 7px 2px; }
+  }
 </style>
 </head>
 <body>
@@ -199,6 +224,7 @@
     <button class="nav-tab" id="tab-journees">Journées</button>
     <button class="nav-tab" id="tab-joueurs">Joueurs</button>
     <button class="nav-tab" id="tab-evolution">Évolution</button>
+    <button class="nav-tab" id="tab-stats">Stats</button>
   </div>
   <div class="journee-badge" id="journee-badge">...</div>
 </header>
@@ -279,6 +305,32 @@
     </div>
   </div>
 
+  <div class="page" id="page-stats">
+    <div class="card" style="margin-bottom:16px">
+      <div class="card-header">
+        <div class="card-title">Capitaines — Bilan par manager</div>
+        <div class="tag">SAISON</div>
+      </div>
+      <div id="cap-stats-container"></div>
+    </div>
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title yellow">Cartons Jaunes</div>
+          <div class="tag" style="background:rgba(245,200,66,0.1);color:var(--gold)">TOTAL</div>
+        </div>
+        <div id="cj-container"></div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title red">Cartons Rouges</div>
+          <div class="tag" style="background:rgba(255,68,85,0.1);color:var(--danger)">TOTAL</div>
+        </div>
+        <div id="cr-container"></div>
+      </div>
+    </div>
+  </div>
+
 </div>
 
 <script>
@@ -329,6 +381,7 @@ document.getElementById('tab-classement').onclick = () => showPage('classement')
 document.getElementById('tab-journees').onclick = () => showPage('journees');
 document.getElementById('tab-joueurs').onclick = () => showPage('joueurs');
 document.getElementById('tab-evolution').onclick = () => showPage('evolution');
+document.getElementById('tab-stats').onclick = () => showPage('stats');
 
 function getLogoUrl(nom) {
   const club = CLUBS[nom];
@@ -553,6 +606,94 @@ function toggleJoueur(nom) {
   updateChart();
 }
 
+function buildStats() {
+  const cjMap = {}, crMap = {}, capMap = {};
+  Object.entries(DATA.detail_journees).forEach(([jStr, managers]) => {
+    const j = parseInt(jStr);
+    Object.entries(managers).forEach(([mgr, equipe]) => {
+      if (!capMap[mgr]) capMap[mgr] = [];
+      ['G','D','M','A'].forEach(poste => {
+        (equipe[poste] || []).forEach(p => {
+          const nom = p.nom;
+          const cjVal = p.cj ? (p.cj.val || 0) : 0;
+          if (cjVal > 0) {
+            if (!cjMap[nom]) cjMap[nom] = { total: 0, mgrs: [] };
+            cjMap[nom].total += cjVal;
+            if (!cjMap[nom].mgrs.includes(mgr)) cjMap[nom].mgrs.push(mgr);
+          }
+          if (p.cr && p.cr.val !== 0) {
+            if (!crMap[nom]) crMap[nom] = { total: 0, mgrs: [] };
+            crMap[nom].total++;
+            if (!crMap[nom].mgrs.includes(mgr)) crMap[nom].mgrs.push(mgr);
+          }
+          if (p.cap) {
+            const rang = parseInt(p.cap);
+            const coeff = Math.min(rang, 7);
+            const mult = 1 + coeff;
+            const capPts = p.pts;
+            const basePts = Math.round(capPts / mult);
+            capMap[mgr].push({ j, nom, rang, mult, basePts, capPts, extra: capPts - basePts });
+          }
+        });
+      });
+    });
+  });
+  Object.values(capMap).forEach(a => a.sort((x, y) => x.j - y.j));
+  return { cjMap, crMap, capMap };
+}
+
+function renderCapStats(capMap) {
+  const ord = n => n === 1 ? '1er' : n + 'e';
+  let html = '';
+  ORDRE_JOUEURS.forEach(mgr => {
+    const usages = capMap[mgr];
+    if (!usages || !usages.length) return;
+    const c = COULEURS[mgr] || { color: '#e8eaf0' };
+    const totalBonus = usages.reduce((s, u) => s + u.extra, 0);
+    const avgRang = (usages.reduce((s, u) => s + u.rang, 0) / usages.length).toFixed(1);
+    html += `<div class="cap-block">
+      <div class="cap-hdr">
+        <div class="cap-mgr" style="color:${c.color}">${mgr}</div>
+        <div class="cap-meta">
+          <div class="cap-meta-item">Bonus total <strong>+${totalBonus}</strong></div>
+          <div class="cap-meta-item">Rang moyen <strong>${avgRang}e</strong></div>
+          <div class="cap-meta-item">Utilisations <strong>${usages.length}</strong></div>
+        </div>
+      </div>
+      <div style="overflow-x:auto"><table class="cap-tbl">
+        <thead><tr>
+          <th>J</th><th>Joueur</th><th class="cap-hide-mob">Rang</th><th>Mult</th><th class="cap-hide-mob">Base</th><th>Pts cap</th><th>Bonus</th>
+        </tr></thead>
+        <tbody>${usages.map(u => `<tr>
+          <td>J${u.j}</td>
+          <td>${u.nom}</td>
+          <td class="cap-hide-mob">${ord(u.rang)}</td>
+          <td style="color:var(--accent)">×${u.mult}</td>
+          <td class="cap-hide-mob">${u.basePts}</td>
+          <td style="color:${c.color};font-weight:700">${u.capPts}</td>
+          <td class="cap-bonus">+${u.extra}</td>
+        </tr>`).join('')}</tbody>
+      </table></div>
+    </div>`;
+  });
+  document.getElementById('cap-stats-container').innerHTML = html || '<div style="padding:20px;color:var(--muted);font-size:12px;text-align:center">Aucune donnée capitaine</div>';
+}
+
+function renderCardsStats(cjMap, crMap) {
+  const render = (map, cId, cls) => {
+    const el = document.getElementById(cId);
+    const items = Object.entries(map).sort((a, b) => b[1].total - a[1].total).slice(0, 15);
+    if (!items.length) { el.innerHTML = '<div style="padding:20px;text-align:center;color:var(--muted);font-size:12px">Aucun carton</div>'; return; }
+    el.innerHTML = items.map(([nom, d], i) => `<div class="ranking-row">
+      <div class="rank-num">${i + 1}</div>
+      <div class="rank-name"><div>${nom}</div><div style="font-size:10px;color:var(--muted);font-weight:400">${d.mgrs.join(', ')}</div></div>
+      <div class="card-count-badge ${cls}">${d.total}</div>
+    </div>`).join('');
+  };
+  render(cjMap, 'cj-container', 'cj-badge');
+  render(crMap, 'cr-container', 'cr-badge');
+}
+
 Promise.all([
   fetch("data.json?t=" + Date.now()).then(r => r.json()),
   fetch("clubs.json?t=" + Date.now()).then(r => r.json())
@@ -690,6 +831,9 @@ Promise.all([
         }
       }
     });
+    const { cjMap, crMap, capMap } = buildStats();
+    renderCapStats(capMap);
+    renderCardsStats(cjMap, crMap);
 }).catch(err => console.error('Erreur:', err));
 </script>
 </body>
