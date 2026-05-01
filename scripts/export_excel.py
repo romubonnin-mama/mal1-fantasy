@@ -186,13 +186,19 @@ def _save_preserving_images(wb, path: Path) -> None:
                             new_ct = new_ct.replace('</Types>', f'  {entry}\n</Types>')
                 out.writestr(name, new_ct.encode('utf-8'))
             elif re.match(r'xl/worksheets/sheet\d+\.xml$', name) and name in orig.namelist():
-                # Réinjecter les balises <drawing> et <legacyDrawing> supprimées par openpyxl
-                new_content  = new_z.read(name).decode('utf-8')
                 orig_content = orig.read(name).decode('utf-8')
-                for tag in re.findall(r'<(?:drawing|legacyDrawing)\b[^>]*/>', orig_content):
-                    if tag not in new_content:
-                        new_content = new_content.replace('</worksheet>', tag + '</worksheet>')
-                out.writestr(name, new_content.encode('utf-8'))
+                if re.search(r'<(?:drawing|legacyDrawing)\b', orig_content):
+                    # Feuille avec logos : garder le XML original integralement
+                    # mais remplacer uniquement le bloc <sheetData> par celui d'openpyxl
+                    new_content = new_z.read(name).decode('utf-8')
+                    m = re.search(r'(<sheetData[^>]*>.*?</sheetData>)', new_content, re.DOTALL)
+                    if m:
+                        patched = re.sub(r'<sheetData[^>]*>.*?</sheetData>', m.group(1), orig_content, flags=re.DOTALL)
+                        out.writestr(name, patched.encode('utf-8'))
+                    else:
+                        out.writestr(name, orig_content.encode('utf-8'))
+                else:
+                    out.writestr(name, new_z.read(name))
             else:
                 out.writestr(name, new_z.read(name))
             written.add(name)
