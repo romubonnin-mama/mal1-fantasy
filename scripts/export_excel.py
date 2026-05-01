@@ -181,7 +181,13 @@ def _save_preserving_images(wb, path: Path, target_sheet: str = None) -> None:
             rels_root = ET.fromstring(zip_obj.read('xl/_rels/workbook.xml.rels'))
             for rel in rels_root:
                 if rel.get('Id') == rid:
-                    return posixpath.normpath('xl/' + rel.get('Target', ''))
+                    target = rel.get('Target', '')
+                    if target.startswith('/'):
+                        return target.lstrip('/')
+                    elif target.startswith('xl/'):
+                        return target
+                    else:
+                        return posixpath.normpath('xl/' + target)
             print(f"[img] rId '{rid}' introuvable dans workbook.xml.rels")
             return None
         except Exception as e:
@@ -301,6 +307,7 @@ def _save_preserving_images(wb, path: Path, target_sheet: str = None) -> None:
                     print(f"[img] drawing map: {new_drawing_map}")
 
         # ── Boucle principale ─────────────────────────────────────────────────────
+        print(f"[img] debut boucle: {len(new_z.namelist())} fichiers")
         for name in new_z.namelist():
             data = None
 

@@ -142,6 +142,9 @@ class AdminHandler(BaseHTTPRequestHandler):
                     export_excel.export_journee(journee, verbose=False)
                     result["excel"] = "ok"
                 except Exception as exc_xl:
+                    import traceback
+                    print(f"[excel] ERREUR: {exc_xl}")
+                    traceback.print_exc()
                     result["excel_warn"] = str(exc_xl)
 
                 self.send_json(result)
@@ -171,7 +174,7 @@ class AdminHandler(BaseHTTPRequestHandler):
 
 
 if __name__ == "__main__":
-    print(f"🚀 Interface admin : http://localhost:{PORT}")
+    print(f"Interface admin : http://localhost:{PORT}")
     print("   Ctrl+C pour arrêter.\n")
     server = HTTPServer(("localhost", PORT), AdminHandler)
     try:
