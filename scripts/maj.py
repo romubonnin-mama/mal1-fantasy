@@ -10,7 +10,6 @@ except ImportError:
 
 EXCEL_PATH = r"C:\Users\boro7\OneDrive\Documents\Draft Club\Saison 2025-2026.xlsm"
 
-# Colonne de départ et ligne de départ pour chaque joueur
 JOUEURS_CONFIG = {
     "ROMU":    {"col": 3,  "ligne": 4},
     "JEROME":  {"col": 3,  "ligne": 44},
@@ -35,61 +34,83 @@ JOUEURS_CONFIG_ANCIEN = {
     "MICKA":   {"col": 39, "ligne": 84},
 }
 
-NOMS_COLS = {
-    "ROMU":    (19, 3),
-    "JEROME":  (19, 43),
-    "VINCENT": (19, 83),
-    "ADRIEN":  (38, 3),
-    "FLORIAN": (38, 43),
-    "FAB":     (38, 83),
-    "ANTHONY": (57, 3),
-    "BASTIEN": (57, 43),
-    "MICKA":   (57, 83),
-}
+# Baremes de scoring
+BM_PTS   = {"G": 5, "D": 3, "M": 2, "A": 2}
+PMA_PTS  = {"G": 2, "D": -2, "M": -2, "A": -2}
+CS_PTS   = {"G": 2, "D": 1, "M": 0, "A": 0}
+BE_PTS   = {"G": -2, "D": -1, "M": 0, "A": 0}
 
-NOMS_COLS_ANCIEN = {
-    "ROMU":    (18, 3),
-    "JEROME":  (18, 43),
-    "VINCENT": (18, 83),
-    "ADRIEN":  (36, 3),
-    "FLORIAN": (36, 43),
-    "FAB":     (36, 83),
-    "ANTHONY": (54, 3),
-    "BASTIEN": (54, 43),
-    "MICKA":   (54, 83),
-}
+
+def to_int(v):
+    return int(v) if isinstance(v, (int, float)) else 0
+
+
+def calc_tj_pts(tj, red_card):
+    s = str(tj).strip().upper() if tj else "0"
+    if red_card:
+        return 0
+    if s == "M":
+        return 4
+    if s == "0" or not s:
+        return 0
+    if "-" in s:
+        parts = s.split("-")
+        try:
+            minutes = int(parts[1]) - int(parts[0])
+        except Exception:
+            return 0
+    else:
+        try:
+            minutes = int(s)
+        except Exception:
+            return 0
+    if minutes <= 0:
+        return 0
+    elif minutes < 30:
+        return 1
+    elif minutes <= 60:
+        return 2
+    else:
+        return 3
+
+
+def calc_pts(poste, tj, bm_val, be_val, bcsc_val, cs_val, pm_val, pma_val, pd_val, cj_val, cr_val):
+    red_card = (cr_val != 0)
+    tj_pts   = calc_tj_pts(tj, red_card)
+    bm_pts   = bm_val * BM_PTS.get(poste, 0)
+    pd_pts   = pd_val * 2
+    pm_pts   = pm_val * 2
+    bcsc_pts = bcsc_val * (-2)
+    cj_pts   = (0 if red_card else cj_val) * (-1)
+    cr_pts   = 0
+    pma_pts  = pma_val * PMA_PTS.get(poste, 0)
+    cs_pts   = cs_val * CS_PTS.get(poste, 0)
+    be_pts   = BE_PTS.get(poste, 0) if be_val >= 3 else 0
+    total = tj_pts + bm_pts + pd_pts + pm_pts + pma_pts + cs_pts + be_pts + bcsc_pts + cj_pts + cr_pts
+    return tj_pts, bm_pts, be_pts, bcsc_pts, cs_pts, pm_pts, pma_pts, pd_pts, cj_pts, cr_pts, total
+
 
 def lire_classement(ws):
     joueurs = []
     for row in range(4, 13):
         rang = ws.cell(row=row, column=2).value
-        nom = ws.cell(row=row, column=3).value
-        pts = ws.cell(row=row, column=4).value
+        nom  = ws.cell(row=row, column=3).value
+        pts  = ws.cell(row=row, column=4).value
         if nom and isinstance(pts, (int, float)):
             joueurs.append({"rang": int(rang) if rang else row-3, "nom": str(nom), "pts": int(pts)})
     return sorted(joueurs, key=lambda x: x["rang"])
 
-def lire_scores_journee(ws, ancien=False):
-    cols = NOMS_COLS_ANCIEN if ancien else NOMS_COLS
-    scores = {}
-    for nom, (col, row) in cols.items():
-        val = ws.cell(row=row, column=col).value
-        if isinstance(val, (int, float)):
-            scores[nom] = int(val)
-        else:
-            scores[nom] = 0
-    return scores
 
-def lire_joueur(ws, col, row, ancien=False):
+def lire_joueur(ws, col, row, ancien=False, poste="M"):
     decalage = 0 if ancien else 1
     nom = ws.cell(row=row, column=col).value
     if not nom or nom in ("", None):
         return None
-    statut = ws.cell(row=row, column=col+2).value
-    cap = ws.cell(row=row, column=col+3).value
+    statut    = ws.cell(row=row, column=col+2).value
+    cap       = ws.cell(row=row, column=col+3).value
     tj_entree = ws.cell(row=row, column=col+4).value
     tj_sortie = ws.cell(row=row, column=col+4+decalage).value
-    if str(tj_sortie).upper() == 'M':
+    if str(tj_sortie).upper() == "M":
         tj = "M"
     elif tj_entree and tj_sortie and tj_entree != tj_sortie:
         tj = f"{tj_entree}-{tj_sortie}"
@@ -98,101 +119,65 @@ def lire_joueur(ws, col, row, ancien=False):
     else:
         tj = "0"
 
-    def to_int(v):
-        return int(v) if isinstance(v, (int, float)) else 0
+    bm_val   = to_int(ws.cell(row=row, column=col+5+decalage).value)
+    be_val   = to_int(ws.cell(row=row, column=col+6+decalage).value)
+    bcsc_val = to_int(ws.cell(row=row, column=col+7+decalage).value)
+    cs_val   = to_int(ws.cell(row=row, column=col+8+decalage).value)
+    pm_val   = to_int(ws.cell(row=row, column=col+9+decalage).value)
+    pma_val  = to_int(ws.cell(row=row, column=col+10+decalage).value)
+    pd_val   = to_int(ws.cell(row=row, column=col+11+decalage).value)
+    cj_val   = to_int(ws.cell(row=row, column=col+12+decalage).value)
+    cr_val   = to_int(ws.cell(row=row, column=col+13+decalage).value)
 
-    # Valeurs brutes (ligne joueur)
-    bm_val   = to_int(ws.cell(row=row,   column=col+5+decalage).value)
-    be_val   = to_int(ws.cell(row=row,   column=col+6+decalage).value)
-    bcsc_val = to_int(ws.cell(row=row,   column=col+7+decalage).value)
-    cs_val   = to_int(ws.cell(row=row,   column=col+8+decalage).value)
-    pm_val   = to_int(ws.cell(row=row,   column=col+9+decalage).value)
-    pma_val  = to_int(ws.cell(row=row,   column=col+10+decalage).value)
-    pd_val   = to_int(ws.cell(row=row,   column=col+11+decalage).value)
-    cj_val   = to_int(ws.cell(row=row,   column=col+12+decalage).value)
-    cr_val   = to_int(ws.cell(row=row,   column=col+13+decalage).value)
-    pts      = to_int(ws.cell(row=row,   column=col+14+decalage).value)
-
-    # Points par stat (ligne suivante)
-    tj_pts   = to_int(ws.cell(row=row+1, column=col+4+decalage).value)
-    bm_pts   = to_int(ws.cell(row=row+1, column=col+5+decalage).value)
-    be_pts   = to_int(ws.cell(row=row+1, column=col+6+decalage).value)
-    bcsc_pts = to_int(ws.cell(row=row+1, column=col+7+decalage).value)
-    cs_pts   = to_int(ws.cell(row=row+1, column=col+8+decalage).value)
-    pm_pts   = to_int(ws.cell(row=row+1, column=col+9+decalage).value)
-    pma_pts  = to_int(ws.cell(row=row+1, column=col+10+decalage).value)
-    pd_pts   = to_int(ws.cell(row=row+1, column=col+11+decalage).value)
-    cj_pts   = to_int(ws.cell(row=row+1, column=col+12+decalage).value)
-    cr_pts   = to_int(ws.cell(row=row+1, column=col+13+decalage).value)
+    tj_pts, bm_pts, be_pts, bcsc_pts, cs_pts, pm_pts, pma_pts, pd_pts, cj_pts, cr_pts, pts = \
+        calc_pts(poste, tj, bm_val, be_val, bcsc_val, cs_val, pm_val, pma_val, pd_val, cj_val, cr_val)
 
     return {
-        "nom": str(nom),
+        "nom":    str(nom),
         "statut": str(statut).lower() if statut else "",
-        "cap": str(cap) if cap else "",
-        "tj": tj,
+        "cap":    str(cap) if cap else "",
+        "tj":     tj,
         "tj_pts": tj_pts,
-        "bm":   {"val": bm_val,   "pts": bm_pts},
-        "be":   {"val": be_val,   "pts": be_pts},
-        "bcsc": {"val": bcsc_val, "pts": bcsc_pts},
-        "cs":   {"val": cs_val,   "pts": cs_pts},
-        "pm":   {"val": pm_val,   "pts": pm_pts},
-        "pma":  {"val": pma_val,  "pts": pma_pts},
-        "pd":   {"val": pd_val,   "pts": pd_pts},
-        "cj":   {"val": cj_val,   "pts": cj_pts},
-        "cr":   {"val": cr_val,   "pts": cr_pts},
-        "pts":  pts,
+        "bm":     {"val": bm_val,   "pts": bm_pts},
+        "be":     {"val": be_val,   "pts": be_pts},
+        "bcsc":   {"val": bcsc_val, "pts": bcsc_pts},
+        "cs":     {"val": cs_val,   "pts": cs_pts},
+        "pm":     {"val": pm_val,   "pts": pm_pts},
+        "pma":    {"val": pma_val,  "pts": pma_pts},
+        "pd":     {"val": pd_val,   "pts": pd_pts},
+        "cj":     {"val": cj_val,   "pts": cj_pts},
+        "cr":     {"val": cr_val,   "pts": cr_pts},
+        "pts":    pts,
     }
-    def to_int(v):
-        return int(v) if isinstance(v, (int, float)) else 0
 
-    return {
-        "nom": str(nom),
-        "statut": str(statut) if statut else "",
-        "cap": str(cap) if cap else "",
-        "tj": tj,
-        "bm":   {"val": to_int(bm_val),   "pts": to_int(bm_pts)},
-        "be":   {"val": to_int(be_val),    "pts": to_int(be_pts)},
-        "bcsc": {"val": to_int(bcsc_val),  "pts": to_int(bcsc_pts)},
-        "cs":   {"val": to_int(cs_val),    "pts": to_int(cs_pts)},
-        "pm":   {"val": to_int(pm_val),    "pts": to_int(pm_pts)},
-        "pma":  {"val": to_int(pma_val),   "pts": to_int(pma_pts)},
-        "pd":   {"val": to_int(pd_val),    "pts": to_int(pd_pts)},
-        "cj":   {"val": to_int(cj_val),    "pts": to_int(cj_pts)},
-        "cr":   {"val": to_int(cr_val),    "pts": to_int(cr_pts)},
-        "pts":  to_int(pts),
-    }
 
 def lire_equipe(ws, nom_joueur, ancien=False):
-    cfg = (JOUEURS_CONFIG_ANCIEN if ancien else JOUEURS_CONFIG)[nom_joueur]
-    col = cfg["col"]
+    cfg   = (JOUEURS_CONFIG_ANCIEN if ancien else JOUEURS_CONFIG)[nom_joueur]
+    col   = cfg["col"]
     ligne = cfg["ligne"]
-
     equipe = {"G": [], "D": [], "M": [], "A": []}
 
-    # Gardien (ligne de base)
-    g = lire_joueur(ws, col, ligne, ancien)
+    g = lire_joueur(ws, col, ligne, ancien, poste="G")
     if g:
         equipe["G"].append(g)
 
-    # Défenseurs (ligne+3 à ligne+14, pas de 2)
     for r in range(ligne+3, ligne+15, 2):
-        d = lire_joueur(ws, col, r, ancien)
+        d = lire_joueur(ws, col, r, ancien, poste="D")
         if d:
             equipe["D"].append(d)
 
-    # Milieux (ligne+16 à ligne+27, pas de 2)
     for r in range(ligne+16, ligne+28, 2):
-        m = lire_joueur(ws, col, r, ancien)
+        m = lire_joueur(ws, col, r, ancien, poste="M")
         if m:
             equipe["M"].append(m)
 
-    # Attaquants (ligne+29 à ligne+36, pas de 2)
     for r in range(ligne+29, ligne+37, 2):
-        a = lire_joueur(ws, col, r, ancien)
+        a = lire_joueur(ws, col, r, ancien, poste="A")
         if a:
             equipe["A"].append(a)
 
     return equipe
+
 
 def main():
     print("Lecture du fichier Excel...")
@@ -203,20 +188,24 @@ def main():
         input("Appuie sur Entree pour fermer...")
         return
 
-    ws_scores = wb["SCORES"]
+    ws_scores  = wb["SCORES"]
     classement = lire_classement(ws_scores)
 
-    historique = {}
+    historique      = {}
     detail_journees = {}
 
     for j in range(1, 35):
         if str(j) in wb.sheetnames and j != 38:
-            ws_j = wb[str(j)]
+            ws_j   = wb[str(j)]
             ancien = (j < 14)
-            historique[str(j)] = lire_scores_journee(ws_j, ancien)
             detail_journees[str(j)] = {}
             for nom in JOUEURS_CONFIG:
                 detail_journees[str(j)][nom] = lire_equipe(ws_j, nom, ancien)
+            # Score journee = somme des pts de tous les joueurs
+            historique[str(j)] = {
+                nom: sum(p["pts"] for pos_players in equipe.values() for p in pos_players)
+                for nom, equipe in detail_journees[str(j)].items()
+            }
             print(f"  J{j} extraite")
 
     # Derniere journee = la plus haute avec au moins un score non nul
@@ -226,10 +215,9 @@ def main():
     )
     print(f"Derniere journee detectee : J{derniere_j}")
 
-    # Calcul evolution cumulee
     joueurs_noms = [j["nom"] for j in classement]
-    evolution = {nom: [] for nom in joueurs_noms}
-    cumul = {nom: 0 for nom in joueurs_noms}
+    evolution    = {nom: [] for nom in joueurs_noms}
+    cumul        = {nom: 0  for nom in joueurs_noms}
     for j in range(1, derniere_j + 1):
         if str(j) in historique:
             for nom in joueurs_noms:
@@ -243,14 +231,14 @@ def main():
     score_min_nom = ws_scores.cell(row=15, column=10).value
 
     data = {
-        "classement": classement,
+        "classement":      classement,
         "derniere_journee": derniere_j,
-        "scores_journee": historique[str(derniere_j)],
-        "historique": historique,
+        "scores_journee":  historique[str(derniere_j)],
+        "historique":      historique,
         "detail_journees": detail_journees,
-        "evolution": evolution,
-        "score_max": {"valeur": score_max_val, "joueur": score_max_nom},
-        "score_min": {"valeur": score_min_val, "joueur": score_min_nom},
+        "evolution":       evolution,
+        "score_max":       {"valeur": score_max_val, "joueur": score_max_nom},
+        "score_min":       {"valeur": score_min_val, "joueur": score_min_nom},
     }
 
     with open("data.json", "w", encoding="utf-8") as f:
