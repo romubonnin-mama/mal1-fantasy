@@ -968,7 +968,7 @@ async function computeJournee() {
     const r = await api('POST', `/compute/${currentJournee}`, {});
     DATA = await api('GET', '/data');
     if (r.excel_warn) {
-      toast(`✅ J${currentJournee} calculée ! ⚠️ Excel non mis à jour (ferme le fichier Excel et recalcule)`, 'err');
+      toast(`✅ J${currentJournee} calculée ! ⚠️ Excel : ${r.excel_warn}`, 'err');
     } else {
       toast(`✅ J${currentJournee} calculée + Excel mis à jour !`);
     }
