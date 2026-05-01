@@ -15,6 +15,108 @@ from scoring import calcul_joueur, appliquer_capitaine, CS_PTS
 
 POSTES = ["G", "D", "M", "A"]
 
+from scoring import BM_PTS, PMA_PTS, CS_PTS, BE_PTS
+
+
+def _stat_pts(stat: str, poste: str, old_val: int, new_val: int, player: dict):
+    """Retourne (old_pts, new_pts) pour un changement de valeur brute d'une stat."""
+    if stat == "bm":
+        return old_val * BM_PTS.get(poste, 0), new_val * BM_PTS.get(poste, 0)
+    if stat == "pd":
+        return old_val * 2, new_val * 2
+    if stat == "pm":
+        return old_val * 2, new_val * 2
+    if stat == "pma":
+        return old_val * PMA_PTS.get(poste, 0), new_val * PMA_PTS.get(poste, 0)
+    if stat == "bcsc":
+        return old_val * (-2), new_val * (-2)
+    if stat == "cs":
+        return old_val * CS_PTS.get(poste, 0), new_val * CS_PTS.get(poste, 0)
+    if stat == "be":
+        be = BE_PTS.get(poste, 0)
+        return (be if old_val >= 3 else 0), (be if new_val >= 3 else 0)
+    if stat == "cj":
+        red_card = (player.get("cr", {}).get("val", 0) != 0)
+        return (0, 0) if red_card else (old_val * (-1), new_val * (-1))
+    return 0, 0
+
+
+def _apply_corrections_past(journee: int, j_corrections: dict, data: dict) -> dict:
+    """
+    Applique des corrections à une journée passée (sans lineup disponible).
+    Utilise le detail_journees existant dans data.json comme base.
+    Vide l'entrée corrections.json de la journée après application.
+    """
+    detail_journee = data["detail_journees"].get(str(journee))
+    if not detail_journee:
+        raise ValueError(f"Aucune donnée existante pour J{journee} dans data.json.")
+
+    scores_journee = {}
+
+    for manager, equipe in detail_journee.items():
+        manager_corrections = j_corrections.get(manager, {})
+        total = 0
+
+        for poste, players in equipe.items():
+            for player in players:
+                nom      = player["nom"]
+                is_titu  = (player.get("statut", "") != "r")
+                cap      = player.get("cap", "")
+                coeff    = int(cap) if cap and str(cap).isdigit() else 0
+                multiplier = (1 + coeff) if (cap and is_titu) else 1
+
+                if is_titu and nom in manager_corrections:
+                    for stat, corr in manager_corrections[nom].items():
+                        delta_val = int(corr.get("val", 0))
+                        if not delta_val or stat not in player:
+                            continue
+                        old_val = player[stat]["val"]
+                        new_val = old_val + delta_val
+                        old_pts, new_pts = _stat_pts(stat, poste, old_val, new_val, player)
+                        player[stat] = {"val": new_val, "pts": new_pts}
+                        player["pts"] += (new_pts - old_pts) * multiplier
+
+                if is_titu:
+                    total += player["pts"]
+
+        scores_journee[manager] = total
+
+    # Mettre à jour data.json
+    data["historique"][str(journee)]      = scores_journee
+    data["detail_journees"][str(journee)] = detail_journee
+    data["scores_journee"]                = scores_journee
+    data["derniere_journee"]              = max(data.get("derniere_journee", 0), journee)
+
+    noms  = [j["nom"] for j in data["classement"]]
+    cumul = {n: 0 for n in noms}
+    evo   = {n: [] for n in noms}
+    for jj in range(1, data["derniere_journee"] + 1):
+        if str(jj) in data["historique"]:
+            for n in noms:
+                cumul[n] += data["historique"][str(jj)].get(n, 0)
+            for n in noms:
+                evo[n].append({"j": jj, "pts": cumul[n]})
+    data["evolution"] = evo
+    data["classement"] = sorted(
+        [{"rang": 0, "nom": n, "pts": cumul[n]} for n in noms],
+        key=lambda x: -x["pts"],
+    )
+    for i, entry in enumerate(data["classement"]):
+        entry["rang"] = i + 1
+
+    with open(BASE_DIR / "data.json", "w", encoding="utf-8") as f:
+        json.dump(data, f, ensure_ascii=False, indent=2)
+
+    # Vider l'entrée corrections.json pour cette journée (déjà appliquée)
+    corrections_path = DATA_DIR / "corrections.json"
+    with open(corrections_path, encoding="utf-8") as f:
+        all_corrections = json.load(f)
+    all_corrections.pop(str(journee), None)
+    with open(corrections_path, "w", encoding="utf-8") as f:
+        json.dump(all_corrections, f, ensure_ascii=False, indent=2)
+
+    return {"ok": True, "scores": scores_journee, "classement": data["classement"]}
+
 
 def _minutes(s: dict) -> int:
     sort_a  = int(s.get("sort_a",  0) or 0)
@@ -40,7 +142,9 @@ def compute(journee: int) -> dict:
     j_corrections = corrections.get(str(journee), {})
 
     if not j_lineups:
-        raise ValueError(f"Aucune composition définie pour J{journee}.")
+        if not j_corrections:
+            raise ValueError(f"Aucune composition définie pour J{journee}. Ajoutez des corrections d'abord.")
+        return _apply_corrections_past(journee, j_corrections, data)
 
     detail_journee = {}
     scores_journee = {}
