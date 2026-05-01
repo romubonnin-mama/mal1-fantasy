@@ -405,9 +405,9 @@ def _save_preserving_images(wb, path: Path, target_sheet: str = None) -> None:
                     written.add(new_drw)
                     print(f"[img] drawing copié: {new_drw}")
 
-        # ── Media/drawings de l'original non encore écrits ───────────────────────
+        # ── Tous les fichiers de l'original non encore écrits (rels, media, etc.) ──
         for name in orig.namelist():
-            if name not in written and is_media(name):
+            if name not in written:
                 out.writestr(name, orig.read(name))
                 written.add(name)
 
