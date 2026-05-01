@@ -1,4 +1,14 @@
 {
-  "32": {},
+  "32": {
+    "ROMU": {
+      "RESTES": {
+        "absent": true
+      },
+      "DEL CASTILLO": {
+        "yellow_cards": true,
+        "full_match": true
+      }
+    }
+  },
   "31": {}
 }
