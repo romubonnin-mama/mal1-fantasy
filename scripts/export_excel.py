@@ -69,7 +69,7 @@ def get_offsets(new_fmt: bool) -> dict:
 
 
 def build_player_row_map(ws, group_idx: int, name_col: int, off: dict) -> dict:
-    """Scanne la feuille pour trouver nom → numéro de ligne."""
+    """Scanne la feuille pour trouver nom -> numéro de ligne."""
     header_row = GROUP_HEADER_ROWS[group_idx]
     col = name_col + off["name"]
     rows = {}
@@ -270,8 +270,8 @@ def _save_preserving_images(wb, path: Path, target_sheet: str = None) -> None:
         s38_xml_bytes     = None
         s38_drw_rid       = 'rId1'
         s38_drw_bytes     = None
-        new_drawing_map   = {}   # new_sheet_xml → nouveau drawing path
-        new_sheet_rels    = {}   # rels_path → bytes
+        new_drawing_map   = {}   # new_sheet_xml -> nouveau drawing path
+        new_sheet_rels    = {}   # rels_path -> bytes
 
         if new_sheet_xmls:
             s38_xml = find_sheet_xml(orig, "38")
@@ -358,7 +358,7 @@ def _save_preserving_images(wb, path: Path, target_sheet: str = None) -> None:
                         base = add_missing_ns(base, new_xml)
                         base = inject_sheetdata(base, new_xml)
                         data = base.encode('utf-8')
-                        print(f"[img] nouvelle feuille: XML '38' + sheetData → {name}")
+                        print(f"[img] nouvelle feuille: XML '38' + sheetData -> {name}")
                     else:
                         # Fallback si '38' introuvable : openpyxl + injection drawing
                         if not sheet_has_drawing(new_xml):
@@ -375,7 +375,7 @@ def _save_preserving_images(wb, path: Path, target_sheet: str = None) -> None:
                     new_xml  = new_z.read(name).decode('utf-8')
                     orig_xml = add_missing_ns(orig_xml, new_xml)
                     data     = inject_sheetdata(orig_xml, new_xml).encode('utf-8')
-                    print(f"[img] feuille cible '{target_sheet}': sheetData patché → {name}")
+                    print(f"[img] feuille cible '{target_sheet}': sheetData patché -> {name}")
 
                 elif name in orig_names:
                     # ── Toute autre feuille existante : XML original INCHANGÉ ─────────
