@@ -6,10 +6,12 @@ Appelé automatiquement après chaque compute_journee.
 import copy
 import io
 import json
+import posixpath
 import re
 import sys
 import zipfile
 from pathlib import Path
+from xml.etree import ElementTree as ET
 
 import openpyxl
 
@@ -147,28 +149,69 @@ def _save_preserving_images(wb, path: Path) -> None:
             f.write(buf.read())
         return
 
-    def is_drawing(name):
+    NS_R = 'http://schemas.openxmlformats.org/officeDocument/2006/relationships'
+    NS_S = 'http://schemas.openxmlformats.org/spreadsheetml/2006/main'
+
+    def is_media(name):
         return (name.startswith('xl/media/') or
                 name.startswith('xl/drawings/') or
                 name.startswith('xl/charts/'))
 
-    def has_drawing_ref(text):
-        return bool(re.search(r'drawings?/|/media/', text, re.IGNORECASE))
+    def sheet_has_drawing(xml_text):
+        return bool(re.search(r'<(?:drawing|legacyDrawing)\b', xml_text))
 
-    def get_sheet_xml_name(zip_obj, sheet_name):
+    def rels_refs_drawing(xml_text):
+        return bool(re.search(r'[Dd]rawing|/media/', xml_text))
+
+    def find_sheet_xml(zip_obj, sheet_name):
         """Retourne 'xl/worksheets/sheetN.xml' pour un nom de feuille."""
         try:
-            wb_xml = zip_obj.read('xl/workbook.xml').decode('utf-8')
-            m = re.search(
-                rf'<sheet\b[^>]*\bname="{re.escape(sheet_name)}"[^>]*\br:id="([^"]+)"', wb_xml)
-            if not m:
+            root = ET.fromstring(zip_obj.read('xl/workbook.xml'))
+            rid = None
+            for el in root.iter(f'{{{NS_S}}}sheet'):
+                if el.get('name') == sheet_name:
+                    rid = el.get(f'{{{NS_R}}}id')
+                    break
+            if not rid:
+                print(f"[img] feuille '{sheet_name}' introuvable dans workbook.xml")
                 return None
-            rid = m.group(1)
-            rels = zip_obj.read('xl/_rels/workbook.xml.rels').decode('utf-8')
-            m2 = re.search(rf'\bId="{re.escape(rid)}"[^>]*\bTarget="([^"]+)"', rels)
-            return ('xl/' + m2.group(1)) if m2 else None
-        except Exception:
+            rels_root = ET.fromstring(zip_obj.read('xl/_rels/workbook.xml.rels'))
+            for rel in rels_root:
+                if rel.get('Id') == rid:
+                    target = rel.get('Target', '')
+                    return posixpath.normpath('xl/' + target)
+            print(f"[img] rId '{rid}' introuvable dans workbook.xml.rels")
             return None
+        except Exception as e:
+            print(f"[img] find_sheet_xml error: {e}")
+            return None
+
+    def find_drawing(zip_obj, sheet_xml_path):
+        """Retourne (chemin_drawing, bytes_drawing) ou (None, None)."""
+        try:
+            sheet_xml = zip_obj.read(sheet_xml_path).decode('utf-8')
+            if not sheet_has_drawing(sheet_xml):
+                print(f"[img] pas de drawing dans {sheet_xml_path}")
+                return None, None
+            rels_path = sheet_xml_path.replace(
+                'xl/worksheets/', 'xl/worksheets/_rels/') + '.rels'
+            if rels_path not in zip_obj.namelist():
+                print(f"[img] rels manquant: {rels_path}")
+                return None, None
+            rels_root = ET.fromstring(zip_obj.read(rels_path))
+            for rel in rels_root:
+                if 'drawing' in rel.get('Type', '').lower():
+                    target = rel.get('Target', '')
+                    drw_path = posixpath.normpath(
+                        posixpath.join('xl/worksheets', target))
+                    if drw_path in zip_obj.namelist():
+                        return drw_path, zip_obj.read(drw_path)
+                    print(f"[img] fichier drawing manquant: {drw_path}")
+            print(f"[img] aucune relation drawing dans {rels_path}")
+            return None, None
+        except Exception as e:
+            print(f"[img] find_drawing error: {e}")
+            return None, None
 
     result = io.BytesIO()
     with zipfile.ZipFile(path, 'r') as orig, \
@@ -176,87 +219,78 @@ def _save_preserving_images(wb, path: Path) -> None:
          zipfile.ZipFile(result, 'w', zipfile.ZIP_DEFLATED) as out:
 
         orig_names = set(orig.namelist())
-        new_names  = set(new_z.namelist())
         written    = set()
 
-        # ── Préparer les infos drawing pour les nouvelles feuilles ──────────────
-        # Une "nouvelle feuille" = présente dans new_z mais absente de orig
+        # ── Nouvelles feuilles = dans new_z mais absentes de orig ───────────────
         new_sheet_xmls = [n for n in new_z.namelist()
                           if re.match(r'xl/worksheets/sheet\d+\.xml$', n)
                           and n not in orig_names]
+        print(f"[img] nouvelles feuilles: {new_sheet_xmls}")
 
-        # Récupérer le drawing de la feuille "38" dans l'original
-        sheet38_drawing_bytes = None   # contenu binaire du fichier drawing de "38"
-        new_drawing_map = {}           # sheet_xml → nouveau nom drawing (xl/drawings/drawingN.xml)
-        new_sheet_rels  = {}           # sheet_rels_name → contenu XML du rels à écrire
+        sheet38_drawing_bytes = None
+        new_drawing_map = {}  # sheet_xml → chemin nouveau drawing
+        new_sheet_rels  = {}  # chemin rels → contenu XML
 
         if new_sheet_xmls:
-            s38_xml = get_sheet_xml_name(orig, "38")
+            s38_xml = find_sheet_xml(orig, "38")
+            print(f"[img] XML feuille '38': {s38_xml}")
             if s38_xml and s38_xml in orig_names:
-                s38_content = orig.read(s38_xml).decode('utf-8')
-                if re.search(r'<(?:drawing|legacyDrawing)\b', s38_content):
-                    s38_rels_name = s38_xml.replace(
-                        'xl/worksheets/', 'xl/worksheets/_rels/') + '.rels'
-                    if s38_rels_name in orig_names:
-                        s38_rels_txt = orig.read(s38_rels_name).decode('utf-8')
-                        tm = re.search(
-                            r'Target="\.\./(drawings/drawing\d+\.xml)"', s38_rels_txt)
-                        if tm:
-                            drawing_src = 'xl/' + tm.group(1)
-                            if drawing_src in orig_names:
-                                sheet38_drawing_bytes = orig.read(drawing_src)
-                                # Numéro max des drawings existants dans orig
-                                all_drw = [n for n in orig_names
-                                           if re.match(r'xl/drawings/drawing\d+\.xml$', n)]
-                                max_n = max(
-                                    (int(re.search(r'(\d+)', n).group(1)) for n in all_drw),
-                                    default=0)
-                                for i, sxml in enumerate(new_sheet_xmls):
-                                    new_drw = f'xl/drawings/drawing{max_n + 1 + i}.xml'
-                                    new_drawing_map[sxml] = new_drw
-                                    # Préparer le rels pour cette feuille
-                                    rels_path = sxml.replace(
-                                        'xl/worksheets/', 'xl/worksheets/_rels/') + '.rels'
-                                    drw_num = max_n + 1 + i
-                                    new_sheet_rels[rels_path] = (
-                                        '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n'
-                                        '<Relationships xmlns="http://schemas.openxmlformats.org'
-                                        '/package/2006/relationships">\n'
-                                        f'  <Relationship Id="rId1" Type="http://schemas.openxml'
-                                        f'formats.org/officeDocument/2006/relationships/drawing" '
-                                        f'Target="../drawings/drawing{drw_num}.xml"/>\n'
-                                        '</Relationships>'
-                                    )
+                drw_path, drw_bytes = find_drawing(orig, s38_xml)
+                print(f"[img] drawing trouvé: {drw_path}")
+                if drw_bytes:
+                    sheet38_drawing_bytes = drw_bytes
+                    all_drw = [n for n in orig_names
+                               if re.match(r'xl/drawings/drawing\d+\.xml$', n)]
+                    max_n = max(
+                        (int(re.search(r'(\d+)', n).group(1)) for n in all_drw),
+                        default=0)
+                    print(f"[img] numéro drawing max existant: {max_n}")
+                    for i, sxml in enumerate(new_sheet_xmls):
+                        drw_num = max_n + 1 + i
+                        new_drw = f'xl/drawings/drawing{drw_num}.xml'
+                        new_drawing_map[sxml] = new_drw
+                        rels_path = sxml.replace(
+                            'xl/worksheets/', 'xl/worksheets/_rels/') + '.rels'
+                        new_sheet_rels[rels_path] = (
+                            '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n'
+                            '<Relationships xmlns="http://schemas.openxmlformats.org'
+                            '/package/2006/relationships">\n'
+                            f'  <Relationship Id="rId1"'
+                            f' Type="http://schemas.openxmlformats.org/officeDocument'
+                            f'/2006/relationships/drawing"'
+                            f' Target="../drawings/drawing{drw_num}.xml"/>\n'
+                            '</Relationships>'
+                        )
+                    print(f"[img] drawing map: {new_drawing_map}")
 
-        # ── 1. Écrire chaque fichier du nouveau zip ──────────────────────────────
+        # ── 1. Parcourir les fichiers du nouveau zip ─────────────────────────────
         for name in new_z.namelist():
-            if is_drawing(name) and name in orig_names:
+
+            if is_media(name) and name in orig_names:
                 out.writestr(name, orig.read(name))
 
-            elif name.endswith('.rels') and name in orig_names:
-                orig_rels = orig.read(name).decode('utf-8', errors='replace')
-                if has_drawing_ref(orig_rels):
-                    out.writestr(name, orig.read(name))
+            elif name.endswith('.rels'):
+                if name in new_sheet_rels:
+                    out.writestr(name, new_sheet_rels[name].encode('utf-8'))
+                elif name in orig_names:
+                    orig_rels = orig.read(name).decode('utf-8', errors='replace')
+                    if rels_refs_drawing(orig_rels):
+                        out.writestr(name, orig.read(name))
+                    else:
+                        out.writestr(name, new_z.read(name))
                 else:
                     out.writestr(name, new_z.read(name))
-
-            elif name.endswith('.rels') and name in new_sheet_rels:
-                # Rels d'une nouvelle feuille créé par openpyxl : remplacer par notre version
-                out.writestr(name, new_sheet_rels[name].encode('utf-8'))
 
             elif name == '[Content_Types].xml':
                 new_ct  = new_z.read(name).decode('utf-8')
                 orig_ct = orig.read(name).decode('utf-8')
-                # Fusionner les entrées drawing/media depuis l'original
-                for entry in re.findall(r'<(?:Override|Default)[^/]*/>', orig_ct):
+                for entry in re.findall(r'<(?:Override|Default)[^>]*/>', orig_ct):
                     if ('drawing' in entry.lower() or 'chart' in entry.lower()
                             or re.search(r'png|jpe?g|gif|emf|wmf', entry, re.I)):
                         key = re.search(r'(?:PartName|Extension)="([^"]+)"', entry)
                         if key and key.group(1) not in new_ct:
                             new_ct = new_ct.replace('</Types>', f'  {entry}\n</Types>')
-                # Enregistrer les nouveaux fichiers drawing
-                drw_ct = ('application/vnd.openxmlformats-officedocument'
-                          '.drawing+xml')
+                drw_ct = ('application/vnd.openxmlformats-officedocument.drawing+xml')
                 for new_drw in new_drawing_map.values():
                     part = '/' + new_drw
                     if part not in new_ct:
@@ -265,58 +299,65 @@ def _save_preserving_images(wb, path: Path) -> None:
                             f'  <Override PartName="{part}" ContentType="{drw_ct}"/>\n</Types>')
                 out.writestr(name, new_ct.encode('utf-8'))
 
-            elif re.match(r'xl/worksheets/sheet\d+\.xml$', name) and name in orig_names:
-                # Feuille existante : garder XML original, remplacer seulement sheetData
-                orig_content = orig.read(name).decode('utf-8')
-                if re.search(r'<(?:drawing|legacyDrawing)\b', orig_content):
-                    new_content = new_z.read(name).decode('utf-8')
-                    m = re.search(r'(<sheetData[^>]*>.*?</sheetData>)', new_content, re.DOTALL)
-                    if m:
-                        patched = re.sub(
-                            r'<sheetData[^>]*>.*?</sheetData>', m.group(1),
-                            orig_content, flags=re.DOTALL)
-                        out.writestr(name, patched.encode('utf-8'))
+            elif re.match(r'xl/worksheets/sheet\d+\.xml$', name):
+                if name in orig_names:
+                    orig_content = orig.read(name).decode('utf-8')
+                    if sheet_has_drawing(orig_content):
+                        new_content = new_z.read(name).decode('utf-8')
+                        m = re.search(
+                            r'(<sheetData(?:\s[^>]*)?>.*?</sheetData>)',
+                            new_content, re.DOTALL)
+                        if m:
+                            patched = re.sub(
+                                r'<sheetData(?:\s[^>]*)?>.*?</sheetData>',
+                                m.group(1), orig_content, flags=re.DOTALL)
+                            out.writestr(name, patched.encode('utf-8'))
+                        else:
+                            out.writestr(name, orig_content.encode('utf-8'))
                     else:
-                        out.writestr(name, orig_content.encode('utf-8'))
+                        out.writestr(name, new_z.read(name))
+                elif name in new_drawing_map:
+                    new_content = new_z.read(name).decode('utf-8')
+                    if not sheet_has_drawing(new_content):
+                        new_content = new_content.replace(
+                            '</worksheet>', '  <drawing r:id="rId1"/>\n</worksheet>')
+                    out.writestr(name, new_content.encode('utf-8'))
+                    print(f"[img] drawing injecté dans {name}")
                 else:
                     out.writestr(name, new_z.read(name))
-
-            elif re.match(r'xl/worksheets/sheet\d+\.xml$', name) and name in new_drawing_map:
-                # Nouvelle feuille : injecter la référence drawing avant </worksheet>
-                new_content = new_z.read(name).decode('utf-8')
-                if not re.search(r'<(?:drawing|legacyDrawing)\b', new_content):
-                    new_content = new_content.replace(
-                        '</worksheet>', '  <drawing r:id="rId1"/>\n</worksheet>')
-                out.writestr(name, new_content.encode('utf-8'))
 
             else:
                 out.writestr(name, new_z.read(name))
 
             written.add(name)
 
-        # ── 2. Rels des nouvelles feuilles absents du nouveau zip ────────────────
+        # ── 2. Rels des nouvelles feuilles non écrits par la boucle ─────────────
         for rels_name, rels_content in new_sheet_rels.items():
             if rels_name not in written:
                 out.writestr(rels_name, rels_content.encode('utf-8'))
                 written.add(rels_name)
+                print(f"[img] rels écrit (post-boucle): {rels_name}")
 
-        # ── 3. Copier les fichiers drawing des nouvelles feuilles ────────────────
+        # ── 3. Fichiers drawing des nouvelles feuilles ───────────────────────────
         if sheet38_drawing_bytes:
             for new_drw in new_drawing_map.values():
                 if new_drw not in written:
                     out.writestr(new_drw, sheet38_drawing_bytes)
                     written.add(new_drw)
+                    print(f"[img] drawing copié: {new_drw}")
 
-        # ── 4. Ajouter les drawings de l'original absents du nouveau zip ─────────
+        # ── 4. Media/drawings de l'original non encore écrits ───────────────────
         for name in orig.namelist():
             if name in written:
                 continue
-            if is_drawing(name):
+            if is_media(name):
                 out.writestr(name, orig.read(name))
+                written.add(name)
             elif name.endswith('.rels'):
                 content = orig.read(name).decode('utf-8', errors='replace')
-                if has_drawing_ref(content):
+                if rels_refs_drawing(content):
                     out.writestr(name, orig.read(name))
+                    written.add(name)
 
     result.seek(0)
     with open(path, 'wb') as f:
