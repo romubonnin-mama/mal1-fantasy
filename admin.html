@@ -491,16 +491,18 @@ function renderClassement() {
 
 // ─── CORRECTIONS ─────────────────────────────────────────────────────────────
 
-const CORR_FIELDS = [
-  { f: 'bm',   label: 'BM',   title: 'Buts marqués' },
-  { f: 'pd',   label: 'PD',   title: 'Passes déc.' },
-  { f: 'be',   label: 'BE',   title: 'Buts encaissés' },
-  { f: 'pm',   label: 'PM',   title: 'Pénalty marqué' },
-  { f: 'pma',  label: 'PMA',  title: 'Pén. manqué/arrêté' },
-  { f: 'bcsc', label: 'BCSC', title: 'But contre son camp' },
-  { f: 'cj',   label: 'CJ',   title: 'Carton jaune' },
-  { f: 'cs',   label: 'CS',   title: 'Clean sheet' },
-  { f: 'cr',   label: 'CR',   title: 'Carton rouge' },
+const CORR_NUM_FIELDS = [
+  { f: 'bm',   label: 'BM',   title: 'Buts marqués (delta)' },
+  { f: 'pd',   label: 'PD',   title: 'Passes déc. (delta)' },
+  { f: 'be',   label: 'BE',   title: 'Buts encaissés (delta)' },
+  { f: 'pm',   label: 'PM',   title: 'Pénalty marqué (delta)' },
+  { f: 'pma',  label: 'PMA',  title: 'Pén. manqué/arrêté (delta)' },
+  { f: 'bcsc', label: 'BCSC', title: 'But contre son camp (delta)' },
+];
+const CORR_CHK_FIELDS = [
+  { f: 'cj', label: 'CJ', title: 'Carton jaune',  cls: 'schk-yellow' },
+  { f: 'cs', label: 'CS', title: 'Clean sheet',   cls: 'schk-cs'     },
+  { f: 'cr', label: 'CR', title: 'Carton rouge',  cls: 'schk-red'    },
 ];
 
 function renderCorrections() {
@@ -522,7 +524,10 @@ function renderCorrections() {
           <thead><tr>
             <th class="col-nom">Joueur</th>
             <th>P</th>
-            ${CORR_FIELDS.map(x => `<th title="${x.title}">${x.label}</th>`).join('')}
+            <th title="Absent / blessé / non entré en jeu">ABS</th>
+            <th title="Match entier (90 min)">Match</th>
+            ${CORR_NUM_FIELDS.map(x => `<th title="${x.title}">${x.label}</th>`).join('')}
+            ${CORR_CHK_FIELDS.map(x => `<th title="${x.title}">${x.label}</th>`).join('')}
           </tr></thead>
           <tbody id="ctb-${manager}"></tbody>
         </table>
@@ -540,18 +545,37 @@ function renderCorrections() {
 
     for (const { nom, p, titu } of allPlayers) {
       const playerCorr = managerCorr[nom] || {};
+      const isAbs   = (playerCorr['abs']?.val || 0) !== 0;
+      const isMatch = (playerCorr['full_match']?.val || 0) !== 0;
       const logoHtml = (() => { const u = getLogoUrl(nom); return u ? `<img src="${u}" class="club-logo-adm" onerror="this.style.display='none'" alt="">` : ''; })();
       const tr = document.createElement('tr');
       tr.className = titu ? 'is-titu' : 'is-rempl';
+      if (isAbs) tr.classList.add('is-abs');
       tr.innerHTML = `
         <td class="col-nom">${logoHtml} ${nom}</td>
         <td><span class="roster-poste p-${p}">${p}</span></td>
-        ${CORR_FIELDS.map(x => {
+        <td>
+          <input type="checkbox" class="schk schk-abs"
+                 data-m="${manager}" data-n="${nom}" data-f="abs"
+                 ${isAbs ? 'checked' : ''} onchange="onCorrAbsChange(this)">
+        </td>
+        <td>
+          <input type="checkbox" class="schk corr-stat-inp"
+                 data-m="${manager}" data-n="${nom}" data-f="full_match"
+                 ${isMatch ? 'checked' : ''} ${isAbs ? 'disabled' : ''} onchange="onCorrChkChange(this)">
+        </td>
+        ${CORR_NUM_FIELDS.map(x => {
           const val = playerCorr[x.f]?.val || 0;
-          return `<td><input type="number" class="snum ${val !== 0 ? 'nz' : ''}"
+          return `<td><input type="number" class="snum corr-stat-inp ${val !== 0 ? 'nz' : ''}"
                     data-m="${manager}" data-n="${nom}" data-f="${x.f}"
                     value="${val || ''}" placeholder="0"
-                    onchange="onCorrChange(this)"></td>`;
+                    ${isAbs ? 'disabled' : ''} onchange="onCorrChange(this)"></td>`;
+        }).join('')}
+        ${CORR_CHK_FIELDS.map(x => {
+          const isChk = (playerCorr[x.f]?.val || 0) !== 0;
+          return `<td><input type="checkbox" class="schk ${x.cls} corr-stat-inp"
+                    data-m="${manager}" data-n="${nom}" data-f="${x.f}"
+                    ${isChk ? 'checked' : ''} ${isAbs ? 'disabled' : ''} onchange="onCorrChkChange(this)"></td>`;
         }).join('')}`;
       tbody.appendChild(tr);
     }
@@ -562,6 +586,32 @@ function onCorrChange(el) {
   const v = parseInt(el.value) || 0;
   el.classList.toggle('nz', v !== 0);
   setCorrection(el.dataset.m, el.dataset.n, el.dataset.f, v);
+  const s = document.getElementById('corr-status');
+  s.textContent = 'Non sauvegardé*'; s.className = 'save-status err';
+}
+
+function onCorrAbsChange(el) {
+  const row = el.closest('tr');
+  const abs = el.checked;
+  row.querySelectorAll('.corr-stat-inp').forEach(i => {
+    i.disabled = abs;
+    if (abs && i.type === 'checkbox' && i.checked) {
+      i.checked = false;
+      setCorrection(el.dataset.m, el.dataset.n, i.dataset.f, 0);
+    }
+    if (abs && i.type === 'number') {
+      i.value = '';
+      setCorrection(el.dataset.m, el.dataset.n, i.dataset.f, 0);
+    }
+  });
+  row.classList.toggle('is-abs', abs);
+  setCorrection(el.dataset.m, el.dataset.n, 'abs', abs ? 1 : 0);
+  const s = document.getElementById('corr-status');
+  s.textContent = 'Non sauvegardé*'; s.className = 'save-status err';
+}
+
+function onCorrChkChange(el) {
+  setCorrection(el.dataset.m, el.dataset.n, el.dataset.f, el.checked ? 1 : 0);
   const s = document.getElementById('corr-status');
   s.textContent = 'Non sauvegardé*'; s.className = 'save-status err';
 }

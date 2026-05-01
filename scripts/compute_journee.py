@@ -66,15 +66,32 @@ def _apply_corrections_past(journee: int, j_corrections: dict, data: dict) -> di
                 multiplier = (1 + coeff) if (cap and is_titu) else 1
 
                 if is_titu and nom in manager_corrections:
-                    for stat, corr in manager_corrections[nom].items():
-                        delta_val = int(corr.get("val", 0))
-                        if not delta_val or stat not in player:
-                            continue
-                        old_val = player[stat]["val"]
-                        new_val = old_val + delta_val
-                        old_pts, new_pts = _stat_pts(stat, poste, old_val, new_val, player)
-                        player[stat] = {"val": new_val, "pts": new_pts}
-                        player["pts"] += (new_pts - old_pts) * multiplier
+                    nom_corr = manager_corrections[nom]
+
+                    # ABS : force le joueur absent, ignore les autres corrections
+                    if int((nom_corr.get("abs") or {}).get("val", 0) or 0):
+                        player["pts"] = 0
+                        player["statut"] = "A"
+                    else:
+                        # full_match : tj passe à "M" (4 pts)
+                        if int((nom_corr.get("full_match") or {}).get("val", 0) or 0):
+                            tj_entry = player.get("tj_pts")
+                            old_tj_pts = tj_entry.get("pts", 0) if isinstance(tj_entry, dict) else 0
+                            player["tj"]     = "M"
+                            player["tj_pts"] = {"val": "M", "pts": 4}
+                            player["pts"]   += (4 - old_tj_pts) * multiplier
+
+                        for stat, corr in nom_corr.items():
+                            if stat in ("abs", "full_match"):
+                                continue
+                            delta_val = int((corr.get("val") or 0) or 0)
+                            if not delta_val or stat not in player:
+                                continue
+                            old_val = player[stat]["val"] if isinstance(player[stat], dict) else 0
+                            new_val = old_val + delta_val
+                            old_pts, new_pts = _stat_pts(stat, poste, old_val, new_val, player)
+                            player[stat] = {"val": new_val, "pts": new_pts}
+                            player["pts"] += (new_pts - old_pts) * multiplier
 
                 if is_titu:
                     total += player["pts"]

@@ -360,8 +360,8 @@
       <div class="grid-3">
         <div class="card">
           <div class="card-header">
-            <div class="card-title">Top joueurs — Points</div>
-            <div class="tag">SAISON</div>
+            <div class="card-title">Top joueurs — Buts + Passes</div>
+            <div class="tag" style="background:rgba(255,107,53,0.1);color:var(--accent2)">BM+PD+PM−PMA</div>
           </div>
           <div id="atk-pts-container"></div>
         </div>
@@ -378,6 +378,22 @@
             <div class="tag" style="background:rgba(245,200,66,0.1);color:var(--gold)">PASSES</div>
           </div>
           <div id="atk-pd-container"></div>
+        </div>
+      </div>
+      <div class="grid-2" style="margin-top:0">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Top Milieux — Buts + Passes</div>
+            <div class="tag" style="background:rgba(16,185,129,0.1);color:#10b981">MILIEUX</div>
+          </div>
+          <div id="atk-m-container"></div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Top Attaquants — Buts + Passes</div>
+            <div class="tag" style="background:rgba(255,68,85,0.1);color:var(--danger)">ATTAQUANTS</div>
+          </div>
+          <div id="atk-a-container"></div>
         </div>
       </div>
       <div class="card">
@@ -703,6 +719,7 @@ function toggleJoueur(nom) {
 function buildStats() {
   const cjMap = {}, crMap = {}, capMap = {}, cardsByMgr = {};
   const bmMap = {}, pdMap = {}, ptsMap = {}, csMap = {}, beMap = {};
+  const bmpdM = {}, bmpdA = {};
   const attackByMgr = {}, defenseByMgr = {};
   ORDRE_JOUEURS.forEach(mgr => {
     cardsByMgr[mgr] = { cj: 0, cr: 0 };
@@ -752,11 +769,21 @@ function buildStats() {
             if (!pdMap[nom].mgrs.includes(mgr)) pdMap[nom].mgrs.push(mgr);
             attackByMgr[mgr].pd += pdVal;
           }
-          const ptsVal = p.pts || 0;
-          if (ptsVal > 0) {
-            if (!ptsMap[nom]) ptsMap[nom] = { total: 0, mgrs: [] };
-            ptsMap[nom].total += ptsVal;
-            if (!ptsMap[nom].mgrs.includes(mgr)) ptsMap[nom].mgrs.push(mgr);
+          if (poste !== 'G') {
+            const pmVal  = p.pm  ? (p.pm.val  || 0) : 0;
+            const pmaVal = p.pma ? (p.pma.val || 0) : 0;
+            const atkVal = bmVal + pdVal + pmVal - pmaVal;
+            if (atkVal !== 0) {
+              if (!ptsMap[nom]) ptsMap[nom] = { total: 0, mgrs: [] };
+              ptsMap[nom].total += atkVal;
+              if (!ptsMap[nom].mgrs.includes(mgr)) ptsMap[nom].mgrs.push(mgr);
+              if (poste === 'M' || poste === 'A') {
+                const posMap = poste === 'M' ? bmpdM : bmpdA;
+                if (!posMap[nom]) posMap[nom] = { total: 0, mgrs: [] };
+                posMap[nom].total += atkVal;
+                if (!posMap[nom].mgrs.includes(mgr)) posMap[nom].mgrs.push(mgr);
+              }
+            }
           }
           const csVal = p.cs ? (p.cs.val || 0) : 0;
           if (csVal > 0) {
@@ -779,7 +806,7 @@ function buildStats() {
     });
   });
   Object.values(capMap).forEach(a => a.sort((x, y) => x.j - y.j));
-  return { cjMap, crMap, capMap, cardsByMgr, bmMap, pdMap, ptsMap, csMap, beMap, attackByMgr, defenseByMgr };
+  return { cjMap, crMap, capMap, cardsByMgr, bmMap, pdMap, ptsMap, csMap, beMap, attackByMgr, defenseByMgr, bmpdM, bmpdA };
 }
 
 function renderCapStats(capMap) {
@@ -861,9 +888,10 @@ function renderCardsStats(cjMap, crMap, cardsByMgr) {
   render(crMap, 'cr-container', 'cr-badge');
 }
 
-function renderAttackStats(bmMap, pdMap, ptsMap, attackByMgr) {
-  const topRow = (map, cId, valColor) => {
-    const items = Object.entries(map).sort((a,b) => b[1].total - a[1].total).slice(0,10);
+function renderAttackStats(bmMap, pdMap, ptsMap, attackByMgr, bmpdM, bmpdA) {
+  const topRow = (map, cId, valColor, max = 10) => {
+    const items = Object.entries(map).sort((a,b) => b[1].total - a[1].total).slice(0, max);
+    if (!items.length) { document.getElementById(cId).innerHTML = '<div style="padding:20px;text-align:center;color:var(--muted);font-size:12px">Aucune donnée</div>'; return; }
     document.getElementById(cId).innerHTML = items.map(([nom, d], i) => `<div class="ranking-row ${i===0?'top1':i===1?'top2':i===2?'top3':''}">
       <div class="rank-num">${i+1}</div>
       <div class="rank-name"><div>${nom}</div><div style="font-size:10px;color:var(--muted);font-weight:400">${d.mgrs.join(', ')}</div></div>
@@ -873,6 +901,8 @@ function renderAttackStats(bmMap, pdMap, ptsMap, attackByMgr) {
   topRow(ptsMap, 'atk-pts-container', 'var(--accent)');
   topRow(bmMap,  'atk-bm-container',  'var(--accent2)');
   topRow(pdMap,  'atk-pd-container',  'var(--gold)');
+  topRow(bmpdM,  'atk-m-container',   '#10b981', 8);
+  topRow(bmpdA,  'atk-a-container',   'var(--danger)', 8);
 
   const colStyle = 'display:grid;grid-template-columns:1fr 60px 60px 70px;align-items:center;padding:9px 18px;gap:8px';
   const sorted = ORDRE_JOUEURS.slice().sort((a,b) => {
@@ -1069,10 +1099,10 @@ Promise.all([
         }
       }
     });
-    const { cjMap, crMap, capMap, cardsByMgr, bmMap, pdMap, ptsMap, csMap, beMap, attackByMgr, defenseByMgr } = buildStats();
+    const { cjMap, crMap, capMap, cardsByMgr, bmMap, pdMap, ptsMap, csMap, beMap, attackByMgr, defenseByMgr, bmpdM, bmpdA } = buildStats();
     renderCapStats(capMap);
     renderCardsStats(cjMap, crMap, cardsByMgr);
-    renderAttackStats(bmMap, pdMap, ptsMap, attackByMgr);
+    renderAttackStats(bmMap, pdMap, ptsMap, attackByMgr, bmpdM, bmpdA);
     renderDefenseStats(csMap, beMap, defenseByMgr);
 }).catch(err => console.error('Erreur:', err));
 </script>
