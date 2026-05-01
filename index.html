@@ -422,12 +422,21 @@
           <div id="def-cs-d-container"></div>
         </div>
       </div>
-      <div class="card">
-        <div class="card-header">
-          <div class="card-title red">Pire Défense — Malus BE</div>
-          <div class="tag" style="background:rgba(255,68,85,0.1);color:var(--danger)">≥ 3 BUTS ENCAISSÉS</div>
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title red">Gardiens — Malus BE</div>
+            <div class="tag" style="background:rgba(255,68,85,0.1);color:var(--danger)">≥ 3 BUTS ENCAISSÉS</div>
+          </div>
+          <div id="def-be-g-container"></div>
         </div>
-        <div id="def-be-container"></div>
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title red">Défenseurs — Malus BE</div>
+            <div class="tag" style="background:rgba(255,68,85,0.1);color:var(--danger)">≥ 3 BUTS ENCAISSÉS</div>
+          </div>
+          <div id="def-be-d-container"></div>
+        </div>
       </div>
       <div class="card">
         <div class="card-header">
@@ -802,7 +811,7 @@ function buildStats() {
           }
           const beMalusAbs = p.be ? Math.abs(p.be.pts || 0) : 0;
           if (beMalusAbs > 0) {
-            if (!beMap[nom]) beMap[nom] = { total: 0, mgrs: [] };
+            if (!beMap[nom]) beMap[nom] = { total: 0, mgrs: [], poste };
             beMap[nom].total += 1;
             if (!beMap[nom].mgrs.includes(mgr)) beMap[nom].mgrs.push(mgr);
             defenseByMgr[mgr].be += 1;
@@ -946,12 +955,18 @@ function renderDefenseStats(csMap, beMap, defenseByMgr) {
   csRow(topGk,  'def-cs-g-container', 'var(--accent)');
   csRow(topDef, 'def-cs-d-container', '#60a5fa');
 
-  const topBe = Object.entries(beMap).sort((a,b) => b[1].total - a[1].total).slice(0,10);
-  document.getElementById('def-be-container').innerHTML = topBe.map(([nom, d], i) => `<div class="ranking-row">
-    <div class="rank-num" style="color:${i===0?'var(--danger)':'var(--muted)'}">${i+1}</div>
-    <div class="rank-name"><div>${nom}</div><div style="font-size:10px;color:var(--muted);font-weight:400">${d.mgrs.join(', ')}</div></div>
-    <div style="font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--danger)">${d.total}</div>
-  </div>`).join('');
+  const beRow = (items, cId) => {
+    if (!items.length) { document.getElementById(cId).innerHTML = '<div style="padding:20px;text-align:center;color:var(--muted);font-size:12px">Aucune donnée</div>'; return; }
+    document.getElementById(cId).innerHTML = items.map(([nom, d], i) => `<div class="ranking-row">
+      <div class="rank-num" style="color:${i===0?'var(--danger)':'var(--muted)'}">${i+1}</div>
+      <div class="rank-name"><div>${nom}</div><div style="font-size:10px;color:var(--muted);font-weight:400">${d.mgrs.join(', ')}</div></div>
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--danger)">${d.total}</div>
+    </div>`).join('');
+  };
+  const topBeG = Object.entries(beMap).filter(([,d]) => d.poste === 'G').sort((a,b) => b[1].total - a[1].total).slice(0, 10);
+  const topBeD = Object.entries(beMap).filter(([,d]) => d.poste === 'D').sort((a,b) => b[1].total - a[1].total).slice(0, 10);
+  beRow(topBeG, 'def-be-g-container');
+  beRow(topBeD, 'def-be-d-container');
 
   const colStyle = 'display:grid;grid-template-columns:1fr 60px 80px 70px;align-items:center;padding:9px 18px;gap:8px';
   const sorted = ORDRE_JOUEURS.slice().sort((a,b) => {
