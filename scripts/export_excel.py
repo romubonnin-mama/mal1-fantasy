@@ -385,7 +385,14 @@ def _save_preserving_images(wb, path: Path, target_sheet: str = None) -> None:
                     data = new_z.read(name)
 
             else:
-                data = new_z.read(name)
+                # xl/workbook.xml doit venir d'openpyxl (référence la nouvelle feuille)
+                # Tout le reste (styles, sharedStrings, etc.) : préférer l'original
+                if name == 'xl/workbook.xml':
+                    data = new_z.read(name)
+                elif name in orig_names:
+                    data = orig.read(name)
+                else:
+                    data = new_z.read(name)
 
             out.writestr(name, data)
             written.add(name)
