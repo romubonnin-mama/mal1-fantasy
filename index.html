@@ -452,7 +452,7 @@
       <div class="card">
         <div class="card-header">
           <div class="card-title">Classement managers — Défense</div>
-          <div class="tag">CS vs MALUS</div>
+          <div class="tag">POINTS G+D SAISON</div>
         </div>
         <div id="def-mgr-container"></div>
       </div>
@@ -751,7 +751,7 @@ function buildStats() {
   ORDRE_JOUEURS.forEach(mgr => {
     cardsByMgr[mgr] = { cj: 0, cr: 0 };
     attackByMgr[mgr] = { bm: 0, pd: 0 };
-    defenseByMgr[mgr] = { cs: 0, be: 0, csPts: 0, bePts: 0 };
+    defenseByMgr[mgr] = { cs: 0, be: 0, csPts: 0, bePts: 0, pts: 0 };
   });
   Object.entries(DATA.detail_journees).forEach(([jStr, managers]) => {
     const j = parseInt(jStr);
@@ -824,6 +824,7 @@ function buildStats() {
             if (!totalPtsMap[nom]) totalPtsMap[nom] = { total: 0, mgrs: [], poste };
             totalPtsMap[nom].total += p.pts;
             if (!totalPtsMap[nom].mgrs.includes(mgr)) totalPtsMap[nom].mgrs.push(mgr);
+            if (poste === 'G' || poste === 'D') defenseByMgr[mgr].pts += p.pts;
           }
           const beMalusAbs = p.be ? Math.abs(p.be.pts || 0) : 0;
           if (beMalusAbs > 0) {
@@ -1007,23 +1008,19 @@ function renderDefenseStats(csMap, beMap, defenseByMgr) {
   beRow(topBeG, 'def-be-g-container');
   beRow(topBeD, 'def-be-d-container');
 
-  const colStyle = 'display:grid;grid-template-columns:1fr 60px 80px 70px;align-items:center;padding:9px 18px;gap:8px';
+  const colStyle = 'display:grid;grid-template-columns:1fr 80px;align-items:center;padding:9px 18px;gap:8px';
   const sorted = ORDRE_JOUEURS.slice().sort((a,b) => {
-    const da = defenseByMgr[a]||{csPts:0,bePts:0}, db = defenseByMgr[b]||{csPts:0,bePts:0};
-    return (db.csPts-db.bePts) - (da.csPts-da.bePts);
+    return (defenseByMgr[b]||{pts:0}).pts - (defenseByMgr[a]||{pts:0}).pts;
   });
   document.getElementById('def-mgr-container').innerHTML =
     `<div style="${colStyle};font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;font-weight:600;border-bottom:1px solid var(--border)">
-      <div>Manager</div><div style="text-align:center">🧤 CS</div><div style="text-align:center">🔴 Malus BE</div><div style="text-align:center">Net pts</div>
+      <div>Manager</div><div style="text-align:center">Pts G+D</div>
     </div>` + sorted.map((mgr, i) => {
-      const d = defenseByMgr[mgr]||{cs:0,csPts:0,bePts:0};
+      const d = defenseByMgr[mgr]||{pts:0};
       const c = COULEURS[mgr]||{color:'#e8eaf0'};
-      const net = d.csPts - d.bePts;
       return `<div style="${colStyle};border-bottom:1px solid var(--border);font-size:12px">
         <div style="font-weight:600;color:${c.color}">${MEDAILLES[i]||''} ${mgr}</div>
-        <div style="font-family:'Bebas Neue',sans-serif;font-size:16px;text-align:center;color:var(--accent)">${d.cs||'—'}</div>
-        <div style="font-family:'Bebas Neue',sans-serif;font-size:16px;text-align:center;color:var(--danger)">${d.bePts?'-'+d.bePts:'—'}</div>
-        <div style="font-family:'Bebas Neue',sans-serif;font-size:16px;text-align:center;color:${net>=0?'var(--accent)':'var(--danger)'}">${net>=0?'+':''}${net}</div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:16px;text-align:center;color:var(--accent)">${d.pts||'—'}</div>
       </div>`;
     }).join('');
 }
