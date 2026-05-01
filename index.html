@@ -1076,5 +1076,23 @@ Promise.all([
     renderDefenseStats(csMap, beMap, defenseByMgr);
 }).catch(err => console.error('Erreur:', err));
 </script>
+
+<button id="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Remonter en haut">↑</button>
+<style>
+  #scroll-top {
+    position: fixed; bottom: 24px; right: 24px; width: 42px; height: 42px;
+    border-radius: 50%; background: var(--accent); color: #000; border: none;
+    font-size: 20px; font-weight: 700; cursor: pointer; z-index: 999;
+    opacity: 0; visibility: hidden; transition: opacity .3s, visibility .3s;
+    box-shadow: 0 4px 16px rgba(0,229,160,.35); line-height: 1;
+  }
+  #scroll-top.visible { opacity: 1; visibility: visible; }
+  #scroll-top:hover { background: #00c88a; }
+</style>
+<script>
+  window.addEventListener('scroll', () => {
+    document.getElementById('scroll-top').classList.toggle('visible', window.scrollY > 300);
+  });
+</script>
 </body>
 </html>
