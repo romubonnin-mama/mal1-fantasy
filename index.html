@@ -318,6 +318,7 @@
       <button class="stats-sub-tab" id="subtab-cartons" onclick="showStatsSub('cartons')">🟨 Cartons</button>
       <button class="stats-sub-tab" id="subtab-attaque" onclick="showStatsSub('attaque')">⚽ Attaque</button>
       <button class="stats-sub-tab" id="subtab-defense" onclick="showStatsSub('defense')">🛡️ Défense</button>
+      <button class="stats-sub-tab" id="subtab-top" onclick="showStatsSub('top')">🏆 Top Joueurs</button>
     </div>
 
     <div id="stats-section-cap">
@@ -402,6 +403,16 @@
           <div class="tag">BUTS + PASSES</div>
         </div>
         <div id="atk-mgr-container"></div>
+      </div>
+    </div>
+
+    <div id="stats-section-top" style="display:none">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">🏆 Meilleurs joueurs — Saison</div>
+          <div class="tag">POINTS TOTAUX</div>
+        </div>
+        <div id="top-joueurs-container"></div>
       </div>
     </div>
 
@@ -504,7 +515,7 @@ document.getElementById('tab-stats').onclick = () => showPage('stats');
 function showStatsSub(sub) {
   document.querySelectorAll('.stats-sub-tab').forEach(b => b.classList.remove('active'));
   document.getElementById('subtab-' + sub).classList.add('active');
-  ['cap','cartons','attaque','defense'].forEach(s => {
+  ['cap','cartons','attaque','defense','top'].forEach(s => {
     document.getElementById('stats-section-' + s).style.display = s === sub ? '' : 'none';
   });
 }
@@ -735,7 +746,7 @@ function toggleJoueur(nom) {
 function buildStats() {
   const cjMap = {}, crMap = {}, capMap = {}, cardsByMgr = {};
   const bmMap = {}, pdMap = {}, ptsMap = {}, csMap = {}, beMap = {};
-  const bmpdM = {}, bmpdA = {};
+  const bmpdM = {}, bmpdA = {}, totalPtsMap = {};
   const attackByMgr = {}, defenseByMgr = {};
   ORDRE_JOUEURS.forEach(mgr => {
     cardsByMgr[mgr] = { cj: 0, cr: 0 };
@@ -809,6 +820,11 @@ function buildStats() {
             defenseByMgr[mgr].cs += csVal;
             defenseByMgr[mgr].csPts += (p.cs.pts || 0);
           }
+          if (p.pts > 0) {
+            if (!totalPtsMap[nom]) totalPtsMap[nom] = { total: 0, mgrs: [], poste };
+            totalPtsMap[nom].total += p.pts;
+            if (!totalPtsMap[nom].mgrs.includes(mgr)) totalPtsMap[nom].mgrs.push(mgr);
+          }
           const beMalusAbs = p.be ? Math.abs(p.be.pts || 0) : 0;
           if (beMalusAbs > 0) {
             if (!beMap[nom]) beMap[nom] = { total: 0, mgrs: [], poste };
@@ -822,7 +838,7 @@ function buildStats() {
     });
   });
   Object.values(capMap).forEach(a => a.sort((x, y) => x.j - y.j));
-  return { cjMap, crMap, capMap, cardsByMgr, bmMap, pdMap, ptsMap, csMap, beMap, attackByMgr, defenseByMgr, bmpdM, bmpdA };
+  return { cjMap, crMap, capMap, cardsByMgr, bmMap, pdMap, ptsMap, csMap, beMap, attackByMgr, defenseByMgr, bmpdM, bmpdA, totalPtsMap };
 }
 
 function renderCapStats(capMap) {
@@ -939,6 +955,29 @@ function renderAttackStats(bmMap, pdMap, ptsMap, attackByMgr, bmpdM, bmpdA) {
         <div style="font-family:'Bebas Neue',sans-serif;font-size:16px;text-align:center">${total||'—'}</div>
       </div>`;
     }).join('');
+}
+
+function renderTopJoueurs(totalPtsMap) {
+  const items = Object.entries(totalPtsMap).sort((a, b) => b[1].total - a[1].total).slice(0, 40);
+  const el = document.getElementById('top-joueurs-container');
+  if (!items.length) { el.innerHTML = '<div style="padding:20px;text-align:center;color:var(--muted);font-size:12px">Aucune donnée</div>'; return; }
+  el.innerHTML = items.map(([nom, d], i) => {
+    const logoUrl = getLogoUrl(nom);
+    const logoHtml = logoUrl ? `<img src="${logoUrl}" style="width:16px;height:16px;object-fit:contain;vertical-align:middle;margin-right:6px" onerror="this.style.display='none'" alt="">` : '';
+    const mgr = d.mgrs[0] || '—';
+    const mgrColor = (COULEURS[mgr] || {}).color || '#e8eaf0';
+    return `<div class="ranking-row ${i===0?'top1':i===1?'top2':i===2?'top3':''}">
+      <div class="rank-num">${i + 1}</div>
+      <div class="rank-name">
+        <div>${logoHtml}${nom}</div>
+        <div style="font-size:10px;color:var(--muted);font-weight:400;margin-top:2px">
+          <span class="roster-poste p-${d.poste}" style="font-size:9px;padding:1px 4px;margin-right:5px">${d.poste}</span>
+          <span style="color:${mgrColor}">${mgr}</span>
+        </div>
+      </div>
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--accent)">${d.total}</div>
+    </div>`;
+  }).join('');
 }
 
 function renderDefenseStats(csMap, beMap, defenseByMgr) {
@@ -1126,11 +1165,12 @@ Promise.all([
         }
       }
     });
-    const { cjMap, crMap, capMap, cardsByMgr, bmMap, pdMap, ptsMap, csMap, beMap, attackByMgr, defenseByMgr, bmpdM, bmpdA } = buildStats();
+    const { cjMap, crMap, capMap, cardsByMgr, bmMap, pdMap, ptsMap, csMap, beMap, attackByMgr, defenseByMgr, bmpdM, bmpdA, totalPtsMap } = buildStats();
     renderCapStats(capMap);
     renderCardsStats(cjMap, crMap, cardsByMgr);
     renderAttackStats(bmMap, pdMap, ptsMap, attackByMgr, bmpdM, bmpdA);
     renderDefenseStats(csMap, beMap, defenseByMgr);
+    renderTopJoueurs(totalPtsMap);
 }).catch(err => console.error('Erreur:', err));
 </script>
 
