@@ -356,6 +356,13 @@
       "fileType": "code",
       "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\restore_images.py",
       "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\restore_images.py:25"
+    },
+    {
+      "id": "file::download_logos",
+      "label": "download_logos.py",
+      "fileType": "code",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\download_logos.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\download_logos.py:1"
     }
   ],
   "edges": [
@@ -748,9 +755,9 @@
     }
   ],
   "metadata": {
-    "files": 8,
-    "nodes": 51,
+    "files": 9,
+    "nodes": 52,
     "edges": 43,
-    "builtAt": "2026-04-29T22:33:36.733Z"
+    "builtAt": "2026-05-01T09:47:56.847Z"
   }
 }
