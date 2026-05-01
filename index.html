@@ -409,18 +409,25 @@
       <div class="grid-2">
         <div class="card">
           <div class="card-header">
-            <div class="card-title">Meilleur Gardien — Clean Sheets</div>
+            <div class="card-title">Top Gardiens — Clean Sheets</div>
             <div class="tag">GARDIENS</div>
           </div>
-          <div id="def-cs-container"></div>
+          <div id="def-cs-g-container"></div>
         </div>
         <div class="card">
           <div class="card-header">
-            <div class="card-title red">Pire Défense — Buts Encaissés</div>
-            <div class="tag" style="background:rgba(255,68,85,0.1);color:var(--danger)">MALUS BE</div>
+            <div class="card-title">Top Défenseurs — Clean Sheets</div>
+            <div class="tag" style="background:rgba(96,165,250,0.1);color:#60a5fa">DÉFENSEURS</div>
           </div>
-          <div id="def-be-container"></div>
+          <div id="def-cs-d-container"></div>
         </div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title red">Pire Défense — Buts Encaissés</div>
+          <div class="tag" style="background:rgba(255,68,85,0.1);color:var(--danger)">MALUS BE</div>
+        </div>
+        <div id="def-be-container"></div>
       </div>
       <div class="card">
         <div class="card-header">
@@ -926,13 +933,18 @@ function renderAttackStats(bmMap, pdMap, ptsMap, attackByMgr, bmpdM, bmpdA) {
 }
 
 function renderDefenseStats(csMap, beMap, defenseByMgr) {
-  const topGk = Object.entries(csMap).filter(([,d]) => d.poste === 'G')
-    .sort((a,b) => b[1].total - a[1].total).slice(0,10);
-  document.getElementById('def-cs-container').innerHTML = topGk.map(([nom, d], i) => `<div class="ranking-row ${i===0?'top1':i===1?'top2':i===2?'top3':''}">
-    <div class="rank-num">${i+1}</div>
-    <div class="rank-name"><div>${nom}</div><div style="font-size:10px;color:var(--muted);font-weight:400">${d.mgrs.join(', ')}</div></div>
-    <div style="font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--accent)">${d.total}</div>
-  </div>`).join('');
+  const csRow = (items, cId, valColor) => {
+    if (!items.length) { document.getElementById(cId).innerHTML = '<div style="padding:20px;text-align:center;color:var(--muted);font-size:12px">Aucune donnée</div>'; return; }
+    document.getElementById(cId).innerHTML = items.map(([nom, d], i) => `<div class="ranking-row ${i===0?'top1':i===1?'top2':i===2?'top3':''}">
+      <div class="rank-num">${i+1}</div>
+      <div class="rank-name"><div>${nom}</div><div style="font-size:10px;color:var(--muted);font-weight:400">${d.mgrs.join(', ')}</div></div>
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:18px;color:${valColor}">${d.total}</div>
+    </div>`).join('');
+  };
+  const topGk  = Object.entries(csMap).filter(([,d]) => d.poste === 'G').sort((a,b) => b[1].total - a[1].total).slice(0, 10);
+  const topDef = Object.entries(csMap).filter(([,d]) => d.poste === 'D').sort((a,b) => b[1].total - a[1].total).slice(0, 10);
+  csRow(topGk,  'def-cs-g-container', 'var(--accent)');
+  csRow(topDef, 'def-cs-d-container', '#60a5fa');
 
   const topBe = Object.entries(beMap).sort((a,b) => b[1].total - a[1].total).slice(0,10);
   document.getElementById('def-be-container').innerHTML = topBe.map(([nom, d], i) => `<div class="ranking-row">
