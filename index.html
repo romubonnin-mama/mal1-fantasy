@@ -37,6 +37,8 @@
   .hero-stat .lbl { color: var(--muted); font-size: 10px; font-weight: 500; letter-spacing: 0.5px; text-transform: uppercase; }
   .divider-v { width: 1px; height: 36px; background: var(--border); }
   .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+  @media(max-width:700px) { .grid-3 { grid-template-columns: 1fr; } }
   .card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; margin-bottom: 16px; }
   .card-header { padding: 14px 18px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
   .card-title { font-family: 'Barlow Condensed', sans-serif; font-size: 14px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); display: flex; align-items: center; gap: 8px; }
@@ -314,6 +316,8 @@
     <div style="display:flex;gap:8px;margin-bottom:16px">
       <button class="stats-sub-tab active" id="subtab-cap" onclick="showStatsSub('cap')">⭐ Capitaines</button>
       <button class="stats-sub-tab" id="subtab-cartons" onclick="showStatsSub('cartons')">🟨 Cartons</button>
+      <button class="stats-sub-tab" id="subtab-attaque" onclick="showStatsSub('attaque')">⚽ Attaque</button>
+      <button class="stats-sub-tab" id="subtab-defense" onclick="showStatsSub('defense')">🛡️ Défense</button>
     </div>
 
     <div id="stats-section-cap">
@@ -351,6 +355,66 @@
         </div>
       </div>
     </div>
+
+    <div id="stats-section-attaque" style="display:none">
+      <div class="grid-3">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Top joueurs — Points</div>
+            <div class="tag">SAISON</div>
+          </div>
+          <div id="atk-pts-container"></div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Top Buteurs</div>
+            <div class="tag" style="background:rgba(255,107,53,0.1);color:var(--accent2)">BUTS</div>
+          </div>
+          <div id="atk-bm-container"></div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Top Passeurs</div>
+            <div class="tag" style="background:rgba(245,200,66,0.1);color:var(--gold)">PASSES</div>
+          </div>
+          <div id="atk-pd-container"></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Classement managers — Attaque</div>
+          <div class="tag">BUTS + PASSES</div>
+        </div>
+        <div id="atk-mgr-container"></div>
+      </div>
+    </div>
+
+    <div id="stats-section-defense" style="display:none">
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Meilleur Gardien — Clean Sheets</div>
+            <div class="tag">GARDIENS</div>
+          </div>
+          <div id="def-cs-container"></div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title red">Pire Défense — Buts Encaissés</div>
+            <div class="tag" style="background:rgba(255,68,85,0.1);color:var(--danger)">MALUS BE</div>
+          </div>
+          <div id="def-be-container"></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Classement managers — Défense</div>
+          <div class="tag">CS vs MALUS</div>
+        </div>
+        <div id="def-mgr-container"></div>
+      </div>
+    </div>
+
   </div>
 
 </div>
@@ -408,8 +472,9 @@ document.getElementById('tab-stats').onclick = () => showPage('stats');
 function showStatsSub(sub) {
   document.querySelectorAll('.stats-sub-tab').forEach(b => b.classList.remove('active'));
   document.getElementById('subtab-' + sub).classList.add('active');
-  document.getElementById('stats-section-cap').style.display = sub === 'cap' ? '' : 'none';
-  document.getElementById('stats-section-cartons').style.display = sub === 'cartons' ? '' : 'none';
+  ['cap','cartons','attaque','defense'].forEach(s => {
+    document.getElementById('stats-section-' + s).style.display = s === sub ? '' : 'none';
+  });
 }
 
 function getLogoUrl(nom) {
@@ -637,7 +702,13 @@ function toggleJoueur(nom) {
 
 function buildStats() {
   const cjMap = {}, crMap = {}, capMap = {}, cardsByMgr = {};
-  ORDRE_JOUEURS.forEach(mgr => { cardsByMgr[mgr] = { cj: 0, cr: 0 }; });
+  const bmMap = {}, pdMap = {}, ptsMap = {}, csMap = {}, beMap = {};
+  const attackByMgr = {}, defenseByMgr = {};
+  ORDRE_JOUEURS.forEach(mgr => {
+    cardsByMgr[mgr] = { cj: 0, cr: 0 };
+    attackByMgr[mgr] = { bm: 0, pd: 0 };
+    defenseByMgr[mgr] = { cs: 0, be: 0, csPts: 0, bePts: 0 };
+  });
   Object.entries(DATA.detail_journees).forEach(([jStr, managers]) => {
     const j = parseInt(jStr);
     Object.entries(managers).forEach(([mgr, equipe]) => {
@@ -667,12 +738,48 @@ function buildStats() {
             const basePts = Math.round(capPts / mult);
             capMap[mgr].push({ j, nom, rang, mult, basePts, capPts, extra: capPts - basePts });
           }
+          const bmVal = p.bm ? (p.bm.val || 0) : 0;
+          if (bmVal > 0) {
+            if (!bmMap[nom]) bmMap[nom] = { total: 0, mgrs: [] };
+            bmMap[nom].total += bmVal;
+            if (!bmMap[nom].mgrs.includes(mgr)) bmMap[nom].mgrs.push(mgr);
+            attackByMgr[mgr].bm += bmVal;
+          }
+          const pdVal = p.pd ? (p.pd.val || 0) : 0;
+          if (pdVal > 0) {
+            if (!pdMap[nom]) pdMap[nom] = { total: 0, mgrs: [] };
+            pdMap[nom].total += pdVal;
+            if (!pdMap[nom].mgrs.includes(mgr)) pdMap[nom].mgrs.push(mgr);
+            attackByMgr[mgr].pd += pdVal;
+          }
+          const ptsVal = p.pts || 0;
+          if (ptsVal > 0) {
+            if (!ptsMap[nom]) ptsMap[nom] = { total: 0, mgrs: [] };
+            ptsMap[nom].total += ptsVal;
+            if (!ptsMap[nom].mgrs.includes(mgr)) ptsMap[nom].mgrs.push(mgr);
+          }
+          const csVal = p.cs ? (p.cs.val || 0) : 0;
+          if (csVal > 0) {
+            if (!csMap[nom]) csMap[nom] = { total: 0, mgrs: [], poste };
+            csMap[nom].total += csVal;
+            if (!csMap[nom].mgrs.includes(mgr)) csMap[nom].mgrs.push(mgr);
+            defenseByMgr[mgr].cs += csVal;
+            defenseByMgr[mgr].csPts += (p.cs.pts || 0);
+          }
+          const beVal = p.be ? (p.be.val || 0) : 0;
+          if (beVal > 0) {
+            if (!beMap[nom]) beMap[nom] = { total: 0, mgrs: [] };
+            beMap[nom].total += beVal;
+            if (!beMap[nom].mgrs.includes(mgr)) beMap[nom].mgrs.push(mgr);
+            defenseByMgr[mgr].be += beVal;
+            defenseByMgr[mgr].bePts += Math.abs(p.be.pts || 0);
+          }
         });
       });
     });
   });
   Object.values(capMap).forEach(a => a.sort((x, y) => x.j - y.j));
-  return { cjMap, crMap, capMap, cardsByMgr };
+  return { cjMap, crMap, capMap, cardsByMgr, bmMap, pdMap, ptsMap, csMap, beMap, attackByMgr, defenseByMgr };
 }
 
 function renderCapStats(capMap) {
@@ -752,6 +859,77 @@ function renderCardsStats(cjMap, crMap, cardsByMgr) {
   };
   render(cjMap, 'cj-container', 'cj-badge');
   render(crMap, 'cr-container', 'cr-badge');
+}
+
+function renderAttackStats(bmMap, pdMap, ptsMap, attackByMgr) {
+  const topRow = (map, cId, valColor) => {
+    const items = Object.entries(map).sort((a,b) => b[1].total - a[1].total).slice(0,10);
+    document.getElementById(cId).innerHTML = items.map(([nom, d], i) => `<div class="ranking-row ${i===0?'top1':i===1?'top2':i===2?'top3':''}">
+      <div class="rank-num">${i+1}</div>
+      <div class="rank-name"><div>${nom}</div><div style="font-size:10px;color:var(--muted);font-weight:400">${d.mgrs.join(', ')}</div></div>
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:18px;color:${valColor}">${d.total}</div>
+    </div>`).join('');
+  };
+  topRow(ptsMap, 'atk-pts-container', 'var(--accent)');
+  topRow(bmMap,  'atk-bm-container',  'var(--accent2)');
+  topRow(pdMap,  'atk-pd-container',  'var(--gold)');
+
+  const colStyle = 'display:grid;grid-template-columns:1fr 60px 60px 70px;align-items:center;padding:9px 18px;gap:8px';
+  const sorted = ORDRE_JOUEURS.slice().sort((a,b) => {
+    const da = attackByMgr[a]||{bm:0,pd:0}, db = attackByMgr[b]||{bm:0,pd:0};
+    return (db.bm+db.pd) - (da.bm+da.pd);
+  });
+  document.getElementById('atk-mgr-container').innerHTML =
+    `<div style="${colStyle};font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;font-weight:600;border-bottom:1px solid var(--border)">
+      <div>Manager</div><div style="text-align:center">⚽ Buts</div><div style="text-align:center">🎯 Passes</div><div style="text-align:center">Total</div>
+    </div>` + sorted.map((mgr, i) => {
+      const d = attackByMgr[mgr]||{bm:0,pd:0};
+      const c = COULEURS[mgr]||{color:'#e8eaf0'};
+      const total = d.bm + d.pd;
+      return `<div style="${colStyle};border-bottom:1px solid var(--border);font-size:12px">
+        <div style="font-weight:600;color:${c.color}">${MEDAILLES[i]||''} ${mgr}</div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:16px;text-align:center;color:var(--accent2)">${d.bm||'—'}</div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:16px;text-align:center;color:var(--gold)">${d.pd||'—'}</div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:16px;text-align:center">${total||'—'}</div>
+      </div>`;
+    }).join('');
+}
+
+function renderDefenseStats(csMap, beMap, defenseByMgr) {
+  const topGk = Object.entries(csMap).filter(([,d]) => d.poste === 'G')
+    .sort((a,b) => b[1].total - a[1].total).slice(0,10);
+  document.getElementById('def-cs-container').innerHTML = topGk.map(([nom, d], i) => `<div class="ranking-row ${i===0?'top1':i===1?'top2':i===2?'top3':''}">
+    <div class="rank-num">${i+1}</div>
+    <div class="rank-name"><div>${nom}</div><div style="font-size:10px;color:var(--muted);font-weight:400">${d.mgrs.join(', ')}</div></div>
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--accent)">${d.total}</div>
+  </div>`).join('');
+
+  const topBe = Object.entries(beMap).sort((a,b) => b[1].total - a[1].total).slice(0,10);
+  document.getElementById('def-be-container').innerHTML = topBe.map(([nom, d], i) => `<div class="ranking-row">
+    <div class="rank-num" style="color:${i===0?'var(--danger)':'var(--muted)'}">${i+1}</div>
+    <div class="rank-name"><div>${nom}</div><div style="font-size:10px;color:var(--muted);font-weight:400">${d.mgrs.join(', ')}</div></div>
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--danger)">${d.total}</div>
+  </div>`).join('');
+
+  const colStyle = 'display:grid;grid-template-columns:1fr 60px 80px 70px;align-items:center;padding:9px 18px;gap:8px';
+  const sorted = ORDRE_JOUEURS.slice().sort((a,b) => {
+    const da = defenseByMgr[a]||{csPts:0,bePts:0}, db = defenseByMgr[b]||{csPts:0,bePts:0};
+    return (db.csPts-db.bePts) - (da.csPts-da.bePts);
+  });
+  document.getElementById('def-mgr-container').innerHTML =
+    `<div style="${colStyle};font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;font-weight:600;border-bottom:1px solid var(--border)">
+      <div>Manager</div><div style="text-align:center">🧤 CS</div><div style="text-align:center">🔴 Malus BE</div><div style="text-align:center">Net pts</div>
+    </div>` + sorted.map((mgr, i) => {
+      const d = defenseByMgr[mgr]||{cs:0,csPts:0,bePts:0};
+      const c = COULEURS[mgr]||{color:'#e8eaf0'};
+      const net = d.csPts - d.bePts;
+      return `<div style="${colStyle};border-bottom:1px solid var(--border);font-size:12px">
+        <div style="font-weight:600;color:${c.color}">${MEDAILLES[i]||''} ${mgr}</div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:16px;text-align:center;color:var(--accent)">${d.cs||'—'}</div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:16px;text-align:center;color:var(--danger)">${d.bePts?'-'+d.bePts:'—'}</div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:16px;text-align:center;color:${net>=0?'var(--accent)':'var(--danger)'}">${net>=0?'+':''}${net}</div>
+      </div>`;
+    }).join('');
 }
 
 Promise.all([
@@ -891,9 +1069,11 @@ Promise.all([
         }
       }
     });
-    const { cjMap, crMap, capMap, cardsByMgr } = buildStats();
+    const { cjMap, crMap, capMap, cardsByMgr, bmMap, pdMap, ptsMap, csMap, beMap, attackByMgr, defenseByMgr } = buildStats();
     renderCapStats(capMap);
     renderCardsStats(cjMap, crMap, cardsByMgr);
+    renderAttackStats(bmMap, pdMap, ptsMap, attackByMgr);
+    renderDefenseStats(csMap, beMap, defenseByMgr);
 }).catch(err => console.error('Erreur:', err));
 </script>
 </body>
