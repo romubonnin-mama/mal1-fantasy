@@ -424,8 +424,8 @@
       </div>
       <div class="card">
         <div class="card-header">
-          <div class="card-title red">Pire Défense — Buts Encaissés</div>
-          <div class="tag" style="background:rgba(255,68,85,0.1);color:var(--danger)">MALUS BE</div>
+          <div class="card-title red">Pire Défense — Malus BE</div>
+          <div class="tag" style="background:rgba(255,68,85,0.1);color:var(--danger)">≥ 3 BUTS ENCAISSÉS</div>
         </div>
         <div id="def-be-container"></div>
       </div>
@@ -800,13 +800,13 @@ function buildStats() {
             defenseByMgr[mgr].cs += csVal;
             defenseByMgr[mgr].csPts += (p.cs.pts || 0);
           }
-          const beVal = p.be ? (p.be.val || 0) : 0;
-          if (beVal > 0) {
+          const beMalusAbs = p.be ? Math.abs(p.be.pts || 0) : 0;
+          if (beMalusAbs > 0) {
             if (!beMap[nom]) beMap[nom] = { total: 0, mgrs: [] };
-            beMap[nom].total += beVal;
+            beMap[nom].total += 1;
             if (!beMap[nom].mgrs.includes(mgr)) beMap[nom].mgrs.push(mgr);
-            defenseByMgr[mgr].be += beVal;
-            defenseByMgr[mgr].bePts += Math.abs(p.be.pts || 0);
+            defenseByMgr[mgr].be += 1;
+            defenseByMgr[mgr].bePts += beMalusAbs;
           }
         });
       });
