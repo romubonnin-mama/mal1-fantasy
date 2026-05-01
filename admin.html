@@ -232,12 +232,16 @@ header h1 { font-size: 18px; font-weight: 700; color: var(--accent); }
 <div id="section-corrections" class="section">
   <div class="container">
     <p style="color:var(--muted);margin-bottom:16px;font-size:13px">
-      Corrections pour la journée sélectionnée. Les valeurs sont des <em>ajustements</em> (ex: -1 pour annuler une passe décisive).
+      Corrections pour la journée sélectionnée. Valeurs = <em>ajustements</em> (ex&nbsp;: +1 but marqué, -1 passe décisive).
+      Fonctionne même sur une journée passée.
     </p>
     <div id="corrections-body"></div>
-    <div style="margin-top:16px">
-      <button class="btn btn-primary" onclick="saveCorrections()">💾 Sauvegarder corrections</button>
-    </div>
+  </div>
+  <div class="save-bar">
+    <span class="save-status" id="corr-status"></span>
+    <button class="btn btn-primary" onclick="saveCorrections()">💾 Sauvegarder corrections</button>
+    <button class="btn btn-subtle" onclick="computeCorrections()" id="btn-corr-compute">⚙️ Calculer J<span id="corr-j-lbl">—</span></button>
+    <button class="btn btn-subtle" onclick="pushCorrGithub()" id="btn-corr-push">🚀 Publier GitHub</button>
   </div>
 </div>
 
@@ -334,6 +338,8 @@ async function loadJournee() {
   renderLineups();
   const lbl = document.getElementById('compute-j-lbl');
   if (lbl) lbl.textContent = currentJournee;
+  const corrLbl = document.getElementById('corr-j-lbl');
+  if (corrLbl) corrLbl.textContent = currentJournee;
   const statsSection = document.getElementById('section-stats');
   if (statsSection && statsSection.classList.contains('active')) renderStats();
 }
@@ -485,7 +491,17 @@ function renderClassement() {
 
 // ─── CORRECTIONS ─────────────────────────────────────────────────────────────
 
-const STAT_FIELDS = ['bm', 'be', 'bcsc', 'cs', 'pm', 'pma', 'pd', 'cj', 'cr'];
+const CORR_FIELDS = [
+  { f: 'bm',   label: 'BM',   title: 'Buts marqués' },
+  { f: 'pd',   label: 'PD',   title: 'Passes déc.' },
+  { f: 'be',   label: 'BE',   title: 'Buts encaissés' },
+  { f: 'pm',   label: 'PM',   title: 'Pénalty marqué' },
+  { f: 'pma',  label: 'PMA',  title: 'Pén. manqué/arrêté' },
+  { f: 'bcsc', label: 'BCSC', title: 'But contre son camp' },
+  { f: 'cj',   label: 'CJ',   title: 'Carton jaune' },
+  { f: 'cs',   label: 'CS',   title: 'Clean sheet' },
+  { f: 'cr',   label: 'CR',   title: 'Carton rouge' },
+];
 
 function renderCorrections() {
   const body = document.getElementById('corrections-body');
@@ -493,33 +509,61 @@ function renderCorrections() {
 
   for (const manager of Object.keys(ROSTER)) {
     const managerCorr = CORRECTIONS[manager] || {};
-    const div = document.createElement('div');
-    div.className = 'corrections-manager';
-    div.innerHTML = `<div class="corrections-manager-title">${manager}</div>`;
+    const lineup      = LINEUPS[manager] || {};
+    const titus       = new Set(lineup.titulaires || []);
+    const hasLineup   = lineup.titulaires && lineup.titulaires.length > 0;
 
-    const table = document.createElement('table');
-    table.className = 'corr-table';
-    table.innerHTML = `<thead><tr><th>Joueur</th>${STAT_FIELDS.map(s => `<th>${s.toUpperCase()}</th>`).join('')}</tr></thead>`;
-    const tbody = document.createElement('tbody');
+    const wrap = document.createElement('div');
+    wrap.className = 'stats-manager';
+    wrap.innerHTML = `
+      <div class="stats-manager-header">${manager}</div>
+      <div class="stats-table-wrap">
+        <table class="stats-tbl">
+          <thead><tr>
+            <th class="col-nom">Joueur</th>
+            <th>P</th>
+            ${CORR_FIELDS.map(x => `<th title="${x.title}">${x.label}</th>`).join('')}
+          </tr></thead>
+          <tbody id="ctb-${manager}"></tbody>
+        </table>
+      </div>`;
+    body.appendChild(wrap);
 
-    for (const poste of POSTE_ORDER) {
-      for (const nom of (ROSTER[manager][poste] || [])) {
-        const playerCorr = managerCorr[nom] || {};
-        const tr = document.createElement('tr');
-        tr.innerHTML = `<td>${nom}</td>` + STAT_FIELDS.map(stat => `
-          <td>
-            <input type="number" class="corr-input" data-manager="${manager}" data-nom="${nom}" data-stat="${stat}"
-                   value="${playerCorr[stat]?.val || 0}" style="width:55px"
-                   onchange="setCorrection('${manager}','${nom}','${stat}',this.value)">
-          </td>
-        `).join('');
-        tbody.appendChild(tr);
+    const tbody = wrap.querySelector(`#ctb-${manager}`);
+    const allPlayers = [];
+    for (const p of POSTE_ORDER) {
+      for (const nom of (ROSTER[manager][p] || [])) {
+        allPlayers.push({ nom, p, titu: !hasLineup || titus.has(nom) });
       }
     }
-    table.appendChild(tbody);
-    div.appendChild(table);
-    body.appendChild(div);
+    allPlayers.sort((a, b) => (b.titu ? 1 : 0) - (a.titu ? 1 : 0));
+
+    for (const { nom, p, titu } of allPlayers) {
+      const playerCorr = managerCorr[nom] || {};
+      const logoHtml = (() => { const u = getLogoUrl(nom); return u ? `<img src="${u}" class="club-logo-adm" onerror="this.style.display='none'" alt="">` : ''; })();
+      const tr = document.createElement('tr');
+      tr.className = titu ? 'is-titu' : 'is-rempl';
+      tr.innerHTML = `
+        <td class="col-nom">${logoHtml} ${nom}</td>
+        <td><span class="roster-poste p-${p}">${p}</span></td>
+        ${CORR_FIELDS.map(x => {
+          const val = playerCorr[x.f]?.val || 0;
+          return `<td><input type="number" class="snum ${val !== 0 ? 'nz' : ''}"
+                    data-m="${manager}" data-n="${nom}" data-f="${x.f}"
+                    value="${val || ''}" placeholder="0"
+                    onchange="onCorrChange(this)"></td>`;
+        }).join('')}`;
+      tbody.appendChild(tr);
+    }
   }
+}
+
+function onCorrChange(el) {
+  const v = parseInt(el.value) || 0;
+  el.classList.toggle('nz', v !== 0);
+  setCorrection(el.dataset.m, el.dataset.n, el.dataset.f, v);
+  const s = document.getElementById('corr-status');
+  s.textContent = 'Non sauvegardé*'; s.className = 'save-status err';
 }
 
 function setCorrection(manager, nom, stat, val) {
@@ -535,9 +579,44 @@ function setCorrection(manager, nom, stat, val) {
   }
 }
 
-async function saveCorrections() {
+async function saveCorrections(quiet = false) {
   await api('POST', `/corrections/${currentJournee}`, CORRECTIONS);
-  toast(`✅ Corrections J${currentJournee} sauvegardées`);
+  const s = document.getElementById('corr-status');
+  if (s) { s.textContent = 'Sauvegardé ✓'; s.className = 'save-status ok'; }
+  if (!quiet) toast(`✅ Corrections J${currentJournee} sauvegardées`);
+}
+
+async function computeCorrections() {
+  const btn = document.getElementById('btn-corr-compute');
+  const orig = btn.innerHTML;
+  btn.disabled = true; btn.textContent = '⏳ Calcul…';
+  try {
+    await saveCorrections(true);
+    await api('POST', `/compute/${currentJournee}`, {});
+    DATA = await api('GET', '/data');
+    CORRECTIONS = await api('GET', `/corrections/${currentJournee}`);
+    renderCorrections();
+    toast(`✅ J${currentJournee} corrigée !`);
+  } catch (e) {
+    toast('Erreur calcul : ' + e.message, 'err');
+  } finally {
+    btn.disabled = false; btn.innerHTML = orig;
+  }
+}
+
+async function pushCorrGithub() {
+  if (!confirm(`Publier J${currentJournee} sur GitHub ?`)) return;
+  const btn = document.getElementById('btn-corr-push');
+  const orig = btn.textContent;
+  btn.disabled = true; btn.textContent = '⏳ Publication…';
+  try {
+    const r = await api('POST', '/push', { journee: currentJournee });
+    toast(r.ok ? `✅ ${r.msg}` : `❌ ${r.msg}`, r.ok ? 'ok' : 'err');
+  } catch (e) {
+    toast('Erreur push : ' + e.message, 'err');
+  } finally {
+    btn.disabled = false; btn.textContent = orig;
+  }
 }
 
 // ─── EFFECTIFS (JOKERS) ──────────────────────────────────────────────────────
