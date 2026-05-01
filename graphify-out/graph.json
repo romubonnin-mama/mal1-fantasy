@@ -363,6 +363,34 @@
       "fileType": "code",
       "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\download_logos.py",
       "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\download_logos.py:1"
+    },
+    {
+      "id": "file::insert_logos",
+      "label": "insert_logos.py",
+      "fileType": "code",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\insert_logos.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\insert_logos.py:1"
+    },
+    {
+      "id": "insert_logos::name_col",
+      "label": "name_col",
+      "fileType": "code",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\insert_logos.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\insert_logos.py:36"
+    },
+    {
+      "id": "insert_logos::col_width_px",
+      "label": "col_width_px",
+      "fileType": "code",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\insert_logos.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\insert_logos.py:40"
+    },
+    {
+      "id": "insert_logos::merged_height_px",
+      "label": "merged_height_px",
+      "fileType": "code",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\insert_logos.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\insert_logos.py:46"
     }
   ],
   "edges": [
@@ -752,12 +780,39 @@
       "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\restore_images.py",
       "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\restore_images.py:25",
       "weight": 1
+    },
+    {
+      "source": "file::insert_logos",
+      "target": "insert_logos::name_col",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\insert_logos.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\insert_logos.py:36",
+      "weight": 1
+    },
+    {
+      "source": "file::insert_logos",
+      "target": "insert_logos::col_width_px",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\insert_logos.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\insert_logos.py:40",
+      "weight": 1
+    },
+    {
+      "source": "file::insert_logos",
+      "target": "insert_logos::merged_height_px",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\insert_logos.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\insert_logos.py:46",
+      "weight": 1
     }
   ],
   "metadata": {
-    "files": 9,
-    "nodes": 52,
-    "edges": 43,
-    "builtAt": "2026-05-01T09:47:56.847Z"
+    "files": 10,
+    "nodes": 56,
+    "edges": 46,
+    "builtAt": "2026-05-01T10:38:01.958Z"
   }
 }

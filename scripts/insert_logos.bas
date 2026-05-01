@@ -1,22 +1,17 @@
+Attribute VB_Name = "ModuleLogos"
 Option Explicit
 
-' InsertLogos - Insere les logos des clubs dans toutes les feuilles
-' Prerequis : lancer d'abord python scripts/download_logos.py
-' Utilisation : Alt+F11 -> Insertion -> Module -> coller -> F5
-
 Sub InsertLogos()
+
     Dim logosPath As String
     logosPath = "E:\Sauvegarde\draft club\mal1-fantasy\logos\"
 
     Application.ScreenUpdating = False
     Application.Calculation = xlCalculationManual
     Application.EnableEvents = False
+    On Error Resume Next
 
-    Dim success As Boolean
-    success = False
-    On Error GoTo Cleanup
-
-    ' Dictionnaire joueur -> club ID
+    ' --- Dictionnaire joueur -> club ID ---
     Dim cdict As Object
     Set cdict = CreateObject("Scripting.Dictionary")
     cdict.CompareMode = vbTextCompare
@@ -148,13 +143,31 @@ Sub InsertLogos()
     cdict("BALOGUN") = "91"
     cdict("SINAYOKO") = "108"
 
-    ' Structure des feuilles
-    Dim groupHeaders(2) As Integer
-    groupHeaders(0) = 2
-    groupHeaders(1) = 42
-    groupHeaders(2) = 82
+    ' --- Lignes d'en-tete des 3 groupes ---
+    Dim groupHdr(2) As Integer
+    groupHdr(0) = 2
+    groupHdr(1) = 42
+    groupHdr(2) = 82
 
-    ' Variables de boucle
+    ' --- 15 offsets de lignes joueurs (G/D/M/A) ---
+    Dim posOff(14) As Integer
+    posOff(0) = 2
+    posOff(1) = 5
+    posOff(2) = 7
+    posOff(3) = 9
+    posOff(4) = 11
+    posOff(5) = 13
+    posOff(6) = 18
+    posOff(7) = 20
+    posOff(8) = 22
+    posOff(9) = 24
+    posOff(10) = 26
+    posOff(11) = 28
+    posOff(12) = 31
+    posOff(13) = 33
+    posOff(14) = 35
+
+    ' --- Variables de boucle ---
     Dim ws As Worksheet
     Dim shNum As Integer
     Dim blockWidth As Integer
@@ -164,10 +177,21 @@ Sub InsertLogos()
     Dim shp As Shape
     Dim done As Object
     Dim colPos As Integer
+    Dim baseCol As Integer
     Dim logoCol As Integer
     Dim nameCol As Integer
     Dim grp As Integer
+    Dim pidx As Integer
+    Dim pRow As Integer
+    Dim cellVal As Variant
+    Dim pName As String
+    Dim clubId As String
+    Dim lCell As Range
+    Dim logoFile As String
+    Dim pic As Shape
+    Dim marg As Double
 
+    ' --- Parcourir toutes les feuilles numerotees ---
     For Each ws In ThisWorkbook.Worksheets
         If IsNumeric(ws.Name) Then
             shNum = CInt(ws.Name)
@@ -177,7 +201,7 @@ Sub InsertLogos()
                 blockWidth = 18
             End If
 
-            ' Supprimer les anciens logos (type 13 = msoPicture)
+            ' Supprimer les anciens logos (msoPicture = 13)
             nShapes = 0
             ReDim shapeNames(0)
             For Each shp In ws.Shapes
@@ -188,106 +212,72 @@ Sub InsertLogos()
                 End If
             Next shp
             For k = 0 To nShapes - 1
-                On Error Resume Next
                 ws.Shapes(shapeNames(k)).Delete
-                On Error GoTo Cleanup
             Next k
 
-            ' Un logo par club cree en AddPicture, les suivants en Duplicate
+            ' Cache : clubId -> chemin du fichier logo (evite Dir() repetes)
             Set done = CreateObject("Scripting.Dictionary")
 
+            marg = 3
+
             For colPos = 0 To 2
-                logoCol = 2 + colPos * blockWidth
-                nameCol = logoCol + 1
+                baseCol = 2 + colPos * blockWidth
+                nameCol = baseCol + 1
+                logoCol = baseCol + 2
+
                 For grp = 0 To 2
-                    Call DoOffsets(ws, groupHeaders(grp), Array(2), logoCol, nameCol, logosPath, cdict, done)
-                    Call DoOffsets(ws, groupHeaders(grp), Array(5, 7, 9, 11, 13), logoCol, nameCol, logosPath, cdict, done)
-                    Call DoOffsets(ws, groupHeaders(grp), Array(18, 20, 22, 24, 26, 28), logoCol, nameCol, logosPath, cdict, done)
-                    Call DoOffsets(ws, groupHeaders(grp), Array(31, 33, 35), logoCol, nameCol, logosPath, cdict, done)
+                    For pidx = 0 To 14
+                        pRow = groupHdr(grp) + posOff(pidx)
+                        cellVal = ws.Cells(pRow, nameCol).Value
+
+                        If Not IsEmpty(cellVal) Then
+                            If Not IsNull(cellVal) Then
+                                pName = UCase(Trim(CStr(cellVal)))
+                                pName = Replace(pName, Chr(214), "O")
+
+                                If Len(pName) > 0 Then
+                                    If cdict.Exists(pName) Then
+                                        clubId = CStr(cdict(pName))
+
+                                        If Not done.Exists(clubId) Then
+                                            logoFile = logosPath & clubId & ".png"
+                                            If Dir(logoFile) <> "" Then
+                                                done.Add clubId, logoFile
+                                            Else
+                                                done.Add clubId, ""
+                                            End If
+                                        End If
+
+                                        logoFile = CStr(done(clubId))
+                                        If logoFile <> "" Then
+                                            Set lCell = ws.Cells(pRow, logoCol).MergeArea
+                                            Set pic = Nothing
+                                            Set pic = ws.Shapes.AddPicture( _
+                                                logoFile, False, True, _
+                                                lCell.Left + marg, _
+                                                lCell.Top + marg, _
+                                                lCell.Width - marg * 2, _
+                                                lCell.Height - marg * 2)
+                                            If Not pic Is Nothing Then
+                                                pic.Placement = 1
+                                            End If
+                                        End If
+
+                                    End If
+                                End If
+                            End If
+                        End If
+
+                    Next pidx
                 Next grp
             Next colPos
         End If
     Next ws
 
-    success = True
-
-Cleanup:
     Application.ScreenUpdating = True
     Application.Calculation = xlCalculationAutomatic
     Application.EnableEvents = True
 
-    If Err.Number <> 0 Then
-        MsgBox "Erreur " & Err.Number & " : " & Err.Description, vbCritical
-    ElseIf success Then
-        MsgBox "Logos inseres avec succes !", vbInformation
-    End If
-End Sub
+    MsgBox "Logos inseres avec succes !", vbInformation
 
-
-Private Function NormName(s As String) As String
-    Dim r As String
-    r = UCase(Trim(s))
-    r = Replace(r, Chr(214), "O")
-    r = Replace(r, Chr(246), "O")
-    NormName = r
-End Function
-
-
-Private Sub DoOffsets(ws As Worksheet, headerRow As Integer, offsets As Variant, _
-                      logoCol As Integer, nameCol As Integer, logosPath As String, _
-                      cdict As Object, done As Object)
-    Dim i As Integer
-    Dim pRow As Integer
-    Dim cellVal As Variant
-    Dim pName As String
-    Dim clubId As String
-    Dim lCell As Range
-    Dim logoFile As String
-    Dim pic As Shape
-    Dim srcShp As Shape
-    Dim dup As Shape
-
-    For i = 0 To UBound(offsets)
-        pRow = headerRow + offsets(i)
-        cellVal = ws.Cells(pRow, nameCol).Value
-
-        If Not IsEmpty(cellVal) And Not IsNull(cellVal) Then
-            pName = NormName(CStr(cellVal))
-            If pName <> "" Then
-                If cdict.Exists(pName) Then
-                    clubId = cdict(pName)
-                    Set lCell = ws.Cells(pRow, logoCol)
-
-                    If done.Exists(clubId) Then
-                        Set srcShp = Nothing
-                        On Error Resume Next
-                        Set srcShp = ws.Shapes(CStr(done(clubId)))
-                        On Error GoTo 0
-                        If Not srcShp Is Nothing Then
-                            Set dup = srcShp.Duplicate()
-                            dup.Left = lCell.Left + 1
-                            dup.Top = lCell.Top + 1
-                            dup.Width = lCell.Width - 2
-                            dup.Height = lCell.Height - 2
-                            dup.Placement = 1
-                        End If
-                    Else
-                        logoFile = logosPath & clubId & ".png"
-                        If Dir(logoFile) <> "" Then
-                            Set pic = Nothing
-                            On Error Resume Next
-                            Set pic = ws.Shapes.AddPicture(logoFile, False, True, _
-                                lCell.Left + 1, lCell.Top + 1, _
-                                lCell.Width - 2, lCell.Height - 2)
-                            On Error GoTo 0
-                            If Not pic Is Nothing Then
-                                pic.Placement = 1
-                                done.Add clubId, pic.Name
-                            End If
-                        End If
-                    End If
-                End If
-            End If
-        End If
-    Next i
 End Sub
