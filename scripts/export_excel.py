@@ -9,6 +9,7 @@ import json
 import posixpath
 import re
 import sys
+import time
 import zipfile
 from pathlib import Path
 from xml.etree import ElementTree as ET
@@ -404,8 +405,21 @@ def _save_preserving_images(wb, path: Path, target_sheet: str = None) -> None:
                 written.add(name)
 
     result.seek(0)
-    with open(path, 'wb') as f:
-        f.write(result.read())
+    data_to_write = result.read()
+    for attempt in range(6):
+        try:
+            with open(path, 'wb') as f:
+                f.write(data_to_write)
+            break
+        except PermissionError:
+            if attempt < 5:
+                print(f"[img] Fichier verrouillé (OneDrive ?), retry dans 3s (tentative {attempt+1}/6)...")
+                time.sleep(3)
+            else:
+                raise PermissionError(
+                    f"Impossible d'écrire '{path.name}' après 6 tentatives. "
+                    "Vérifie qu'Excel et OneDrive ne bloquent pas le fichier."
+                )
 
 
 def export_journee(journee: int, verbose: bool = True) -> None:
