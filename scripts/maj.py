@@ -194,18 +194,6 @@ def lire_equipe(ws, nom_joueur, ancien=False):
 
     return equipe
 
-def derniere_journee(wb):
-    max_j = 0
-    for sheet in wb.sheetnames:
-        if sheet.isdigit() and int(sheet) != 38:
-            j = int(sheet)
-            ws = wb[sheet]
-            col = 18 if j < 14 else 19
-            val = ws.cell(row=3, column=col).value
-            if isinstance(val, (int, float)) and val > 0:
-                max_j = max(max_j, j)
-    return max_j if max_j > 0 else 1
-
 def main():
     print("Lecture du fichier Excel...")
     try:
@@ -217,8 +205,6 @@ def main():
 
     ws_scores = wb["SCORES"]
     classement = lire_classement(ws_scores)
-    derniere_j = derniere_journee(wb)
-    print(f"Derniere journee detectee : J{derniere_j}")
 
     historique = {}
     detail_journees = {}
@@ -232,6 +218,13 @@ def main():
             for nom in JOUEURS_CONFIG:
                 detail_journees[str(j)][nom] = lire_equipe(ws_j, nom, ancien)
             print(f"  J{j} extraite")
+
+    # Derniere journee = la plus haute avec au moins un score non nul
+    derniere_j = max(
+        (int(j) for j, scores in historique.items() if any(v > 0 for v in scores.values())),
+        default=1
+    )
+    print(f"Derniere journee detectee : J{derniere_j}")
 
     # Calcul evolution cumulee
     joueurs_noms = [j["nom"] for j in classement]
