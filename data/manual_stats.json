@@ -7,6 +7,16 @@
       "GOUIRI": {
         "entre_a": 65,
         "sort_a": 90
+      },
+      "DIOP": {
+        "sort_a": 91
+      },
+      "CLAUSS": {
+        "absent": true
+      },
+      "M.SARR": {
+        "full_match": true,
+        "yellow_cards": true
       }
     },
     "VINCENT": {
@@ -25,6 +35,12 @@
       "DOUE": {
         "assists": 1,
         "sort_a": 75
+      },
+      "TEZE": {
+        "full_match": true
+      },
+      "EDOUARD": {
+        "sort_a": 77
       }
     },
     "FLORIAN": {
@@ -32,6 +48,13 @@
         "full_match": true
       },
       "KOUASSI": {
+        "full_match": true
+      },
+      "HEIN": {
+        "full_match": true,
+        "assists": 1
+      },
+      "SANGARE": {
         "full_match": true
       }
     },
@@ -62,16 +85,43 @@
       },
       "PACHO": {
         "full_match": true
+      },
+      "AKLIOUCHE": {
+        "full_match": true,
+        "assists": 1
+      },
+      "SANSON": {
+        "sort_a": 73
       }
     },
     "BASTIEN": {
       "RULLI": {
         "absent": true
+      },
+      "ZAKARIA": {
+        "full_match": true
+      },
+      "BARD": {
+        "full_match": true,
+        "yellow_cards": true
+      },
+      "THAUVIN": {
+        "entre_a": 86,
+        "sort_a": 90
       }
     },
     "JEROME": {
       "VITINHA": {
-        "absent": true
+        "absent": true,
+        "assists": 1
+      },
+      "THOMASSON": {
+        "full_match": true,
+        "yellow_cards": true
+      },
+      "SAINT MAXIMAIN": {
+        "full_match": true,
+        "goals": 1
       }
     },
     "ADRIEN": {
@@ -80,6 +130,26 @@
       },
       "DEMBELE": {
         "absent": true
+      },
+      "TSITAISHVILI": {
+        "full_match": true
+      },
+      "RISSER": {
+        "full_match": true
+      },
+      "UDOL": {
+        "full_match": true
+      }
+    },
+    "MICKA": {
+      "L.CAMARA": {
+        "sort_a": 58
+      },
+      "BALOGUN": {
+        "full_match": true
+      },
+      "AGUILAR": {
+        "sort_a": 86
       }
     }
   },

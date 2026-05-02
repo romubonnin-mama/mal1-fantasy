@@ -15,6 +15,7 @@ from pathlib import Path
 from xml.etree import ElementTree as ET
 
 import openpyxl
+from openpyxl.utils import get_column_letter
 
 BASE_DIR = Path(__file__).parent.parent
 DATA_DIR = BASE_DIR / "data"
@@ -56,7 +57,7 @@ def get_offsets(new_fmt: bool) -> dict:
     """Offsets depuis name_col vers chaque cellule d'entrée."""
     if new_fmt:
         return {
-            "name": 1, "status": 3, "cap": 4, "tj": 6,
+            "name": 1, "status": 3, "cap": 4, "entre": 5, "tj": 6,
             "bm": 7, "be": 8, "bcsc": 9, "cs": 10,
             "pm": 11, "pma": 12, "pd": 13, "cj": 14, "cr": 15,
         }
@@ -434,9 +435,6 @@ def _save_preserving_images(wb, path: Path, target_sheet: str = None) -> None:
 
 
 def export_journee(journee: int, verbose: bool = True) -> None:
-    import sys as _sys
-    print(f"[TRACE] export_journee DEBUT journee={journee}", flush=True)
-    _sys.stdout.flush()
     with open(DATA_DIR / "roster.json", encoding="utf-8") as f:
         roster = json.load(f)
     with open(DATA_DIR / "lineups.json", encoding="utf-8") as f:
@@ -478,14 +476,12 @@ def export_journee(journee: int, verbose: bool = True) -> None:
         group_idx, col_pos = grid_pos
         name_col = get_name_col(col_pos, new_fmt)
         player_rows = build_player_row_map(ws, group_idx, name_col, off)
-        print(f"[dbg] {manager}: name_col={name_col}, player_rows trouvés={len(player_rows)}: {list(player_rows.keys())[:3]}...")
 
         lineup     = j_lineups.get(manager, {})
         titulaires = set(lineup.get("titulaires", []))
         capitaine  = lineup.get("capitaine", "")
         coeff      = int(lineup.get("coeff", 1))
         m_stats    = j_stats.get(manager, {})
-        print(f"[dbg] {manager}: {len(titulaires)} titu, stats saisies={list(m_stats.keys())}")
 
         for poste in ["G", "D", "M", "A"]:
             for player_idx, player in enumerate(player_positions.get(poste, [])):
@@ -503,10 +499,12 @@ def export_journee(journee: int, verbose: bool = True) -> None:
 
                 is_titu = player in titulaires
                 stats   = m_stats.get(player, {}) if is_titu else {}
-                if is_titu and stats:
-                    print(f"[dbg]   {player}: titu, stats={stats}, row={row}, col_tj={name_col+off['tj']}")
-                elif is_titu and not stats:
-                    print(f"[dbg]   {player}: titu SANS stats, row={row}")
+
+                if is_titu and "entre" in off:
+                    frow = row + 1
+                    ws.cell(row=frow, column=name_col + off["entre"]).value = (
+                        f"={get_column_letter(name_col)}{frow}"
+                    )
 
                 def w(field, value):
                     if field in off:
@@ -515,6 +513,7 @@ def export_journee(journee: int, verbose: bool = True) -> None:
                 if not is_titu:
                     w("status", "r")
                     w("cap", None)
+                    w("entre", None)
                     w("tj", None)
                     for field in ["bm","be","bcsc","cs","pm","pma","pd","cj","cr"]:
                         w(field, None)
@@ -522,6 +521,7 @@ def export_journee(journee: int, verbose: bool = True) -> None:
                 elif stats.get("absent"):
                     w("status", "A")
                     w("cap", None)
+                    w("entre", None)
                     w("tj", None)
                     for field in ["bm","be","bcsc","cs","pm","pma","pd","cj","cr"]:
                         w(field, None)
@@ -531,21 +531,30 @@ def export_journee(journee: int, verbose: bool = True) -> None:
 
                 else:
                     full_match = bool(stats.get("full_match", False))
-                    minutes    = _minutes(stats)
+                    entre_a    = int(stats.get("entre_a", 0) or 0)
+                    sort_a     = int(stats.get("sort_a",  0) or 0)
+                    fin_a      = int(stats.get("fin_a",   0) or 0)
                     red_card   = bool(stats.get("red_card", False))
+                    minutes    = _minutes(stats)
 
-                    if red_card:
-                        tj_val = minutes if minutes > 0 else None
-                        status = None
-                    elif full_match:
-                        tj_val, status = "M", None
-                    elif minutes > 0:
-                        tj_val, status = minutes, None
+                    if full_match:
+                        w("entre", None)
+                        w("tj",    "M")
+                    elif entre_a > 0:
+                        exit_min = sort_a if sort_a > 0 else (fin_a if fin_a > 0 else 90)
+                        w("entre", entre_a)
+                        w("tj",    exit_min)
+                    elif sort_a > 0:
+                        w("entre", None)
+                        w("tj",    sort_a)
+                    elif red_card and minutes > 0:
+                        w("entre", None)
+                        w("tj",    minutes)
                     else:
-                        tj_val, status = None, None  # stats sans temps de jeu (ex: CJ banc)
+                        w("entre", None)
+                        w("tj",    None)
 
-                    w("status", status)
-                    w("tj",     tj_val)
+                    w("status", None)
                     w("cap",    coeff if player == capitaine else None)
 
                     goals_c = int(stats.get("goals_conceded", 0))
