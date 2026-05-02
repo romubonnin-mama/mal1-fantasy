@@ -21,15 +21,15 @@
       "titulaires": [
         "GREIF",
         "NGOY",
-        "ZABARNYI",
-        "LOCKO",
         "AL-TAMARI",
         "THOMASSON",
         "KEBBAL",
         "SULC",
         "LEPAUL",
         "SAINT MAXIMAIN",
-        "WAHI"
+        "KLUIVERT",
+        "GANIOU",
+        "VITINHA"
       ],
       "capitaine": null,
       "coeff": 1
@@ -54,16 +54,16 @@
     "ADRIEN": {
       "titulaires": [
         "RISSER",
-        "AGUERD",
         "PERRAUD",
         "NIAKHATE",
         "UDOL",
-        "GOLOVIN",
         "PAPE DEMBA",
         "SZYMANSKI",
         "TSITAISHVILI",
         "DEMBELE",
-        "EMBOLO"
+        "EMBOLO",
+        "SENAYA",
+        "RUIZ"
       ],
       "capitaine": null,
       "coeff": 1
@@ -89,15 +89,15 @@
       "titulaires": [
         "SAMBA",
         "MANDI",
-        "WEAH",
         "LEFORT",
         "BRASSIER",
         "ABERGEL",
         "M.CAMARA",
-        "LEES-MELOU",
         "VAN DEN BOOMEN",
         "F.PARDO",
-        "ABLINE"
+        "ABLINE",
+        "HOJBJERG",
+        "KVARATSKHELIA"
       ],
       "capitaine": null,
       "coeff": 1
@@ -123,7 +123,6 @@
       "titulaires": [
         "RULLI",
         "O.CAMARA",
-        "NEGO",
         "MATA",
         "BARD",
         "ZAKARIA",
@@ -131,7 +130,8 @@
         "CASSERES",
         "BELKEBLA",
         "THAUVIN",
-        "ENDRICK"
+        "ENDRICK",
+        "GBOHO"
       ],
       "capitaine": null,
       "coeff": 1
@@ -141,14 +141,14 @@
         "DIAW",
         "AGUILAR",
         "CRESSWELL",
-        "VANDERSON",
         "NDIAYE",
         "TOLISSO",
         "L.CAMARA",
         "DONNUM",
         "SOUMARE",
         "BALOGUN",
-        "SINAYOKO"
+        "SINAYOKO",
+        "LLORIS"
       ],
       "capitaine": null,
       "coeff": 1

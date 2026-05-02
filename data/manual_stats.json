@@ -1,12 +1,85 @@
 {
   "32": {
     "ROMU": {
-      "RESTES": {
+      "LEPENANT": {
+        "full_match": true
+      },
+      "GOUIRI": {
+        "entre_a": 65,
+        "sort_a": 90
+      }
+    },
+    "VINCENT": {
+      "CABELLA": {
+        "sort_a": 69,
+        "goals": 1
+      },
+      "N.MENDES": {
         "absent": true
       },
-      "DEL CASTILLO": {
-        "yellow_cards": true,
+      "ZAIRE-EMERY": {
+        "entre_a": 61,
+        "sort_a": 90,
+        "goals": 1
+      },
+      "DOUE": {
+        "assists": 1,
+        "sort_a": 75
+      }
+    },
+    "FLORIAN": {
+      "GREENWOOD": {
         "full_match": true
+      },
+      "KOUASSI": {
+        "full_match": true
+      }
+    },
+    "FAB": {
+      "HOJBJERG": {
+        "full_match": true
+      },
+      "ABLINE": {
+        "full_match": true,
+        "goals": 1,
+        "assists": 1,
+        "yellow_cards": true
+      },
+      "ABERGEL": {
+        "full_match": true
+      },
+      "KVARATSKHELIA": {
+        "absent": true
+      }
+    },
+    "ANTHONY": {
+      "LOPES": {
+        "full_match": true,
+        "cs": true
+      },
+      "PAVARD": {
+        "absent": true
+      },
+      "PACHO": {
+        "full_match": true
+      }
+    },
+    "BASTIEN": {
+      "RULLI": {
+        "absent": true
+      }
+    },
+    "JEROME": {
+      "VITINHA": {
+        "absent": true
+      }
+    },
+    "ADRIEN": {
+      "RUIZ": {
+        "sort_a": 61
+      },
+      "DEMBELE": {
+        "absent": true
       }
     }
   },
