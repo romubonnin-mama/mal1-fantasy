@@ -3,42 +3,47 @@
     {
       "rang": 1,
       "nom": "FLORIAN",
-      "pts": 1351
+      "pts": 1379
     },
     {
       "rang": 2,
       "nom": "FAB",
-      "pts": 1267
+      "pts": 1353
     },
     {
       "rang": 3,
       "nom": "BASTIEN",
-      "pts": 1246
+      "pts": 1339
     },
     {
       "rang": 4,
       "nom": "ADRIEN",
-      "pts": 1184
+      "pts": 1307
     },
     {
       "rang": 5,
-      "nom": "JEROME",
-      "pts": 1177
+      "nom": "MICKA",
+      "pts": 1302
     },
     {
       "rang": 6,
-      "nom": "ROMU",
-      "pts": 1148
+      "nom": "JEROME",
+      "pts": 1296
     },
     {
       "rang": 7,
-      "nom": "ANTHONY",
-      "pts": 1128
+      "nom": "ROMU",
+      "pts": 1266
     },
     {
       "rang": 8,
       "nom": "VINCENT",
-      "pts": 1123
+      "pts": 1255
+    },
+    {
+      "rang": 9,
+      "nom": "ANTHONY",
+      "pts": 1241
     }
   ],
   "derniere_journee": 32,
@@ -55,356 +60,356 @@
   },
   "historique": {
     "1": {
-      "ROMU": 45,
-      "JEROME": 41,
-      "VINCENT": 36,
-      "ADRIEN": 32,
       "FLORIAN": 45,
       "FAB": 45,
-      "ANTHONY": 28,
       "BASTIEN": 41,
-      "MICKA": 36
+      "ADRIEN": 32,
+      "MICKA": 36,
+      "JEROME": 41,
+      "ROMU": 45,
+      "VINCENT": 36,
+      "ANTHONY": 28
     },
     "2": {
-      "ROMU": 33,
-      "JEROME": 39,
-      "VINCENT": 44,
-      "ADRIEN": 42,
       "FLORIAN": 45,
       "FAB": 40,
-      "ANTHONY": 41,
       "BASTIEN": 45,
-      "MICKA": 43
+      "ADRIEN": 42,
+      "MICKA": 43,
+      "JEROME": 39,
+      "ROMU": 33,
+      "VINCENT": 44,
+      "ANTHONY": 41
     },
     "3": {
-      "ROMU": 47,
-      "JEROME": 35,
-      "VINCENT": 35,
-      "ADRIEN": 47,
       "FLORIAN": 38,
       "FAB": 43,
-      "ANTHONY": 30,
       "BASTIEN": 40,
-      "MICKA": 36
+      "ADRIEN": 47,
+      "MICKA": 36,
+      "JEROME": 35,
+      "ROMU": 47,
+      "VINCENT": 35,
+      "ANTHONY": 30
     },
     "4": {
-      "ROMU": 30,
-      "JEROME": 41,
-      "VINCENT": 32,
-      "ADRIEN": 31,
       "FLORIAN": 42,
       "FAB": 39,
-      "ANTHONY": 25,
       "BASTIEN": 38,
-      "MICKA": 38
+      "ADRIEN": 31,
+      "MICKA": 38,
+      "JEROME": 41,
+      "ROMU": 30,
+      "VINCENT": 32,
+      "ANTHONY": 25
     },
     "5": {
-      "ROMU": 39,
-      "JEROME": 47,
-      "VINCENT": 31,
-      "ADRIEN": 24,
       "FLORIAN": 51,
       "FAB": 34,
-      "ANTHONY": 43,
       "BASTIEN": 40,
-      "MICKA": 35
+      "ADRIEN": 24,
+      "MICKA": 35,
+      "JEROME": 47,
+      "ROMU": 39,
+      "VINCENT": 31,
+      "ANTHONY": 43
     },
     "6": {
-      "ROMU": 47,
-      "JEROME": 47,
-      "VINCENT": 35,
-      "ADRIEN": 26,
       "FLORIAN": 38,
       "FAB": 41,
-      "ANTHONY": 27,
       "BASTIEN": 34,
-      "MICKA": 41
+      "ADRIEN": 26,
+      "MICKA": 41,
+      "JEROME": 47,
+      "ROMU": 47,
+      "VINCENT": 35,
+      "ANTHONY": 27
     },
     "7": {
-      "ROMU": 41,
-      "JEROME": 39,
-      "VINCENT": 38,
-      "ADRIEN": 42,
       "FLORIAN": 41,
       "FAB": 46,
-      "ANTHONY": 45,
-      "BASTIEN": 34,
-      "MICKA": 35
+      "BASTIEN": 64,
+      "ADRIEN": 42,
+      "MICKA": 35,
+      "JEROME": 39,
+      "ROMU": 41,
+      "VINCENT": 80,
+      "ANTHONY": 45
     },
     "8": {
-      "ROMU": 40,
-      "JEROME": 36,
-      "VINCENT": 35,
-      "ADRIEN": 36,
       "FLORIAN": 52,
-      "FAB": 41,
-      "ANTHONY": 43,
+      "FAB": 51,
       "BASTIEN": 38,
-      "MICKA": 49
+      "ADRIEN": 36,
+      "MICKA": 49,
+      "JEROME": 36,
+      "ROMU": 40,
+      "VINCENT": 35,
+      "ANTHONY": 43
     },
     "9": {
-      "ROMU": 44,
-      "JEROME": 35,
-      "VINCENT": 39,
-      "ADRIEN": 41,
       "FLORIAN": 41,
       "FAB": 46,
-      "ANTHONY": 29,
       "BASTIEN": 46,
-      "MICKA": 38
+      "ADRIEN": 41,
+      "MICKA": 59,
+      "JEROME": 35,
+      "ROMU": 98,
+      "VINCENT": 39,
+      "ANTHONY": 29
     },
     "10": {
-      "ROMU": 27,
-      "JEROME": 43,
-      "VINCENT": 45,
-      "ADRIEN": 37,
       "FLORIAN": 38,
       "FAB": 42,
-      "ANTHONY": 28,
       "BASTIEN": 37,
-      "MICKA": 48
+      "ADRIEN": 37,
+      "MICKA": 48,
+      "JEROME": 43,
+      "ROMU": 27,
+      "VINCENT": 81,
+      "ANTHONY": 77
     },
     "11": {
-      "ROMU": 36,
-      "JEROME": 40,
-      "VINCENT": 33,
-      "ADRIEN": 34,
       "FLORIAN": 41,
       "FAB": 41,
-      "ANTHONY": 43,
       "BASTIEN": 45,
-      "MICKA": 43
+      "ADRIEN": 34,
+      "MICKA": 43,
+      "JEROME": 40,
+      "ROMU": 36,
+      "VINCENT": 33,
+      "ANTHONY": 43
     },
     "12": {
-      "ROMU": 42,
-      "JEROME": 37,
-      "VINCENT": 45,
-      "ADRIEN": 34,
-      "FLORIAN": 45,
+      "FLORIAN": 57,
       "FAB": 40,
-      "ANTHONY": 39,
       "BASTIEN": 38,
-      "MICKA": 40
+      "ADRIEN": 34,
+      "MICKA": 40,
+      "JEROME": 37,
+      "ROMU": 42,
+      "VINCENT": 45,
+      "ANTHONY": 39
     },
     "13": {
-      "ROMU": 43,
-      "JEROME": 38,
-      "VINCENT": 43,
-      "ADRIEN": 42,
       "FLORIAN": 45,
       "FAB": 28,
-      "ANTHONY": 32,
       "BASTIEN": 32,
-      "MICKA": 37
+      "ADRIEN": 49,
+      "MICKA": 37,
+      "JEROME": 59,
+      "ROMU": 43,
+      "VINCENT": 43,
+      "ANTHONY": 32
     },
     "14": {
-      "ROMU": 38,
-      "JEROME": 36,
-      "VINCENT": 38,
-      "ADRIEN": 40,
       "FLORIAN": 38,
-      "FAB": 37,
-      "ANTHONY": 43,
-      "BASTIEN": 33,
-      "MICKA": 40
+      "FAB": 65,
+      "BASTIEN": 51,
+      "ADRIEN": 40,
+      "MICKA": 48,
+      "JEROME": 36,
+      "ROMU": 38,
+      "VINCENT": 38,
+      "ANTHONY": 43
     },
     "15": {
-      "ROMU": 36,
-      "JEROME": 27,
-      "VINCENT": 33,
-      "ADRIEN": 35,
       "FLORIAN": 44,
       "FAB": 32,
-      "ANTHONY": 41,
       "BASTIEN": 40,
-      "MICKA": 41
+      "ADRIEN": 35,
+      "MICKA": 41,
+      "JEROME": 27,
+      "ROMU": 36,
+      "VINCENT": 33,
+      "ANTHONY": 41
     },
     "16": {
-      "ROMU": 28,
-      "JEROME": 41,
-      "VINCENT": 40,
-      "ADRIEN": 44,
       "FLORIAN": 44,
       "FAB": 38,
-      "ANTHONY": 34,
       "BASTIEN": 47,
-      "MICKA": 42
+      "ADRIEN": 44,
+      "MICKA": 42,
+      "JEROME": 41,
+      "ROMU": 28,
+      "VINCENT": 40,
+      "ANTHONY": 34
     },
     "17": {
-      "ROMU": 38,
-      "JEROME": 34,
-      "VINCENT": 40,
-      "ADRIEN": 44,
       "FLORIAN": 48,
       "FAB": 37,
-      "ANTHONY": 33,
       "BASTIEN": 37,
-      "MICKA": 28
+      "ADRIEN": 44,
+      "MICKA": 28,
+      "JEROME": 34,
+      "ROMU": 38,
+      "VINCENT": 40,
+      "ANTHONY": 33
     },
     "18": {
-      "ROMU": 30,
-      "JEROME": 42,
-      "VINCENT": 31,
-      "ADRIEN": 45,
-      "FLORIAN": 38,
-      "FAB": 44,
-      "ANTHONY": 37,
+      "FLORIAN": 43,
+      "FAB": 59,
       "BASTIEN": 44,
-      "MICKA": 30
+      "ADRIEN": 73,
+      "MICKA": 30,
+      "JEROME": 63,
+      "ROMU": 30,
+      "VINCENT": 31,
+      "ANTHONY": 37
     },
     "19": {
-      "ROMU": 46,
-      "JEROME": 32,
-      "VINCENT": 32,
-      "ADRIEN": 36,
       "FLORIAN": 41,
       "FAB": 38,
-      "ANTHONY": 27,
-      "BASTIEN": 48,
-      "MICKA": 32
+      "BASTIEN": 75,
+      "ADRIEN": 36,
+      "MICKA": 60,
+      "JEROME": 32,
+      "ROMU": 94,
+      "VINCENT": 48,
+      "ANTHONY": 27
     },
     "20": {
-      "ROMU": 39,
-      "JEROME": 41,
-      "VINCENT": 36,
-      "ADRIEN": 45,
       "FLORIAN": 51,
       "FAB": 37,
-      "ANTHONY": 38,
       "BASTIEN": 29,
-      "MICKA": 38
+      "ADRIEN": 87,
+      "MICKA": 38,
+      "JEROME": 41,
+      "ROMU": 39,
+      "VINCENT": 36,
+      "ANTHONY": 38
     },
     "21": {
-      "ROMU": 39,
-      "JEROME": 35,
-      "VINCENT": 40,
-      "ADRIEN": 43,
       "FLORIAN": 39,
       "FAB": 40,
-      "ANTHONY": 39,
       "BASTIEN": 38,
-      "MICKA": 40
+      "ADRIEN": 43,
+      "MICKA": 40,
+      "JEROME": 35,
+      "ROMU": 39,
+      "VINCENT": 40,
+      "ANTHONY": 39
     },
     "22": {
-      "ROMU": 42,
-      "JEROME": 42,
-      "VINCENT": 31,
-      "ADRIEN": 49,
       "FLORIAN": 46,
       "FAB": 40,
-      "ANTHONY": 44,
       "BASTIEN": 44,
-      "MICKA": 40
+      "ADRIEN": 49,
+      "MICKA": 40,
+      "JEROME": 84,
+      "ROMU": 42,
+      "VINCENT": 31,
+      "ANTHONY": 44
     },
     "23": {
-      "ROMU": 40,
-      "JEROME": 36,
-      "VINCENT": 34,
-      "ADRIEN": 33,
       "FLORIAN": 47,
       "FAB": 44,
-      "ANTHONY": 36,
       "BASTIEN": 44,
-      "MICKA": 38
+      "ADRIEN": 33,
+      "MICKA": 38,
+      "JEROME": 36,
+      "ROMU": 40,
+      "VINCENT": 34,
+      "ANTHONY": 36
     },
     "24": {
-      "ROMU": 34,
-      "JEROME": 34,
-      "VINCENT": 32,
+      "FLORIAN": 55,
+      "FAB": 64,
+      "BASTIEN": 52,
       "ADRIEN": 35,
-      "FLORIAN": 49,
-      "FAB": 44,
-      "ANTHONY": 40,
-      "BASTIEN": 43,
-      "MICKA": 35
+      "MICKA": 56,
+      "JEROME": 34,
+      "ROMU": 42,
+      "VINCENT": 39,
+      "ANTHONY": 75
     },
     "25": {
-      "ROMU": 37,
-      "JEROME": 34,
-      "VINCENT": 36,
-      "ADRIEN": 37,
       "FLORIAN": 42,
       "FAB": 46,
-      "ANTHONY": 42,
       "BASTIEN": 42,
-      "MICKA": 37
+      "ADRIEN": 37,
+      "MICKA": 37,
+      "JEROME": 34,
+      "ROMU": 37,
+      "VINCENT": 36,
+      "ANTHONY": 70
     },
     "26": {
-      "ROMU": 36,
-      "JEROME": 32,
-      "VINCENT": 32,
-      "ADRIEN": 43,
       "FLORIAN": 43,
       "FAB": 47,
-      "ANTHONY": 36,
       "BASTIEN": 49,
-      "MICKA": 37
+      "ADRIEN": 43,
+      "MICKA": 37,
+      "JEROME": 32,
+      "ROMU": 44,
+      "VINCENT": 32,
+      "ANTHONY": 36
     },
     "27": {
-      "ROMU": 33,
-      "JEROME": 40,
-      "VINCENT": 49,
-      "ADRIEN": 37,
       "FLORIAN": 27,
       "FAB": 45,
-      "ANTHONY": 39,
       "BASTIEN": 46,
-      "MICKA": 32
+      "ADRIEN": 79,
+      "MICKA": 32,
+      "JEROME": 40,
+      "ROMU": 33,
+      "VINCENT": 49,
+      "ANTHONY": 39
     },
     "28": {
-      "ROMU": 34,
-      "JEROME": 38,
-      "VINCENT": 42,
-      "ADRIEN": 42,
       "FLORIAN": 46,
       "FAB": 40,
-      "ANTHONY": 45,
       "BASTIEN": 46,
-      "MICKA": 39
+      "ADRIEN": 42,
+      "MICKA": 39,
+      "JEROME": 38,
+      "ROMU": 34,
+      "VINCENT": 42,
+      "ANTHONY": 45
     },
     "29": {
-      "ROMU": 20,
-      "JEROME": 22,
-      "VINCENT": 15,
+      "FLORIAN": 46,
+      "FAB": 54,
+      "BASTIEN": 35,
       "ADRIEN": 29,
-      "FLORIAN": 39,
-      "FAB": 42,
-      "ANTHONY": 19,
-      "BASTIEN": 30,
-      "MICKA": 36
+      "MICKA": 72,
+      "JEROME": 57,
+      "ROMU": 20,
+      "VINCENT": 43,
+      "ANTHONY": 19
     },
     "30": {
-      "ROMU": 29,
-      "JEROME": 48,
-      "VINCENT": 19,
-      "ADRIEN": 36,
       "FLORIAN": 42,
       "FAB": 37,
-      "ANTHONY": 29,
       "BASTIEN": 34,
-      "MICKA": 33
+      "ADRIEN": 36,
+      "MICKA": 33,
+      "JEROME": 48,
+      "ROMU": 29,
+      "VINCENT": 19,
+      "ANTHONY": 29
     },
     "31": {
-      "ROMU": 24,
+      "FLORIAN": 45,
+      "FAB": 39,
+      "BASTIEN": 40,
+      "ADRIEN": 32,
+      "MICKA": 41,
       "JEROME": 36,
-      "VINCENT": 32,
-      "ADRIEN": 28,
-      "FLORIAN": 47,
-      "FAB": 38,
-      "ANTHONY": 34,
-      "BASTIEN": 36,
-      "MICKA": 39
+      "ROMU": 24,
+      "VINCENT": 35,
+      "ANTHONY": 35
     },
     "32": {
-      "ROMU": 11,
-      "JEROME": 9,
-      "VINCENT": 20,
-      "ADRIEN": 15,
       "FLORIAN": 18,
       "FAB": 15,
-      "ANTHONY": 19,
       "BASTIEN": 8,
-      "MICKA": 10
+      "ADRIEN": 15,
+      "MICKA": 10,
+      "JEROME": 9,
+      "ROMU": 11,
+      "VINCENT": 20,
+      "ANTHONY": 19
     }
   },
   "detail_journees": {
@@ -35521,7 +35526,7 @@
               "val": 0,
               "pts": 0
             },
-            "pts": 6
+            "pts": 48
           }
         ],
         "D": [
@@ -38651,7 +38656,7 @@
               "val": 0,
               "pts": 0
             },
-            "pts": 6
+            "pts": 36
           }
         ],
         "D": [
@@ -43035,7 +43040,7 @@
               "val": 0,
               "pts": 0
             },
-            "pts": 2
+            "pts": 12
           }
         ],
         "D": [
@@ -46031,7 +46036,7 @@
               "val": 0,
               "pts": 0
             },
-            "pts": 9
+            "pts": 63
           },
           {
             "nom": "FOFANA",
@@ -51127,7 +51132,7 @@
               "val": 0,
               "pts": 0
             },
-            "pts": 3
+            "pts": 24
           }
         ]
       }
@@ -52963,7 +52968,7 @@
               "val": 0,
               "pts": 0
             },
-            "pts": 6
+            "pts": 42
           },
           {
             "nom": "GIROUD",
@@ -55201,7 +55206,7 @@
               "val": 0,
               "pts": 0
             },
-            "pts": 7
+            "pts": 56
           },
           {
             "nom": "MAGNETTI",
@@ -65265,7 +65270,7 @@
               "val": 0,
               "pts": 0
             },
-            "pts": 4
+            "pts": 16
           },
           {
             "nom": "SANGARE",
@@ -69067,7 +69072,7 @@
               "val": 0,
               "pts": 0
             },
-            "pts": 3
+            "pts": 24
           },
           {
             "nom": "KEBBAL",
@@ -70363,7 +70368,7 @@
               "val": 0,
               "pts": 0
             },
-            "pts": 1
+            "pts": 8
           },
           {
             "nom": "TSITAISHVILI",
@@ -77163,7 +77168,7 @@
               "val": 0,
               "pts": 0
             },
-            "pts": 4
+            "pts": 32
           },
           {
             "nom": "LOPEZ",
@@ -78281,7 +78286,7 @@
               "val": 0,
               "pts": 0
             },
-            "pts": 3
+            "pts": 21
           },
           {
             "nom": "JACQUET",
@@ -78729,7 +78734,7 @@
               "val": 0,
               "pts": 0
             },
-            "pts": 2
+            "pts": 10
           }
         ],
         "D": [
@@ -97381,7 +97386,7 @@
               "val": 0,
               "pts": 0
             },
-            "pts": 3
+            "pts": 24
           },
           {
             "nom": "EMEGHA",
@@ -98721,7 +98726,7 @@
               "val": 0,
               "pts": 0
             },
-            "pts": 4
+            "pts": 32
           }
         ]
       },
@@ -98947,7 +98952,7 @@
               "val": 0,
               "pts": 0
             },
-            "pts": 5
+            "pts": 10
           },
           {
             "nom": "OTAVIO",
@@ -99485,7 +99490,7 @@
               "val": 0,
               "pts": 0
             },
-            "pts": 3
+            "pts": 18
           },
           {
             "nom": "SIERRALTA",
@@ -102301,7 +102306,7 @@
               "val": 0,
               "pts": 0
             },
-            "pts": 8
+            "pts": 56
           },
           {
             "nom": "DIOP",
@@ -103421,7 +103426,7 @@
               "val": 0,
               "pts": 0
             },
-            "pts": 4
+            "pts": 20
           },
           {
             "nom": "CABELLA",
@@ -106685,7 +106690,7 @@
               "val": 0,
               "pts": 0
             },
-            "pts": 9
+            "pts": 36
           },
           {
             "nom": "GBOHO",
@@ -107221,7 +107226,7 @@
               "val": 0,
               "pts": 0
             },
-            "pts": 4
+            "pts": 32
           }
         ],
         "A": [
@@ -109283,7 +109288,7 @@
               "val": 0,
               "pts": 0
             },
-            "pts": 6
+            "pts": 48
           }
         ],
         "D": [
@@ -119303,7 +119308,7 @@
               "val": 0,
               "pts": 0
             },
-            "pts": 6
+            "pts": 48
           }
         ],
         "D": [
@@ -129995,7 +130000,7 @@
               "val": 0,
               "pts": 0
             },
-            "pts": 4
+            "pts": 12
           },
           {
             "nom": "SIDIBE",
@@ -131247,7 +131252,7 @@
               "val": 0,
               "pts": 0
             },
-            "pts": 1
+            "pts": 8
           },
           {
             "nom": "MAITLAND-NILES",
@@ -132453,7 +132458,7 @@
               "val": 0,
               "pts": 0
             },
-            "pts": 6
+            "pts": 12
           }
         ],
         "D": [
@@ -133569,7 +133574,7 @@
               "val": 0,
               "pts": 0
             },
-            "pts": 4
+            "pts": 24
           },
           {
             "nom": "KVARATSKHELIA",
@@ -134239,7 +134244,7 @@
               "val": 0,
               "pts": 0
             },
-            "pts": 5
+            "pts": 40
           },
           {
             "nom": "SAID",
@@ -134599,7 +134604,7 @@
               "val": 0,
               "pts": 0
             },
-            "pts": 3
+            "pts": 12
           },
           {
             "nom": "CHOTARD",
@@ -135047,7 +135052,7 @@
               "val": 0,
               "pts": 0
             },
-            "pts": 3
+            "pts": 24
           },
           {
             "nom": "LLORIS",
@@ -139341,7 +139346,7 @@
               "val": 0,
               "pts": 0
             },
-            "pts": 4
+            "pts": 32
           }
         ],
         "D": [
@@ -141221,7 +141226,7 @@
               "val": 0,
               "pts": 0
             },
-            "pts": 2
+            "pts": 10
           }
         ],
         "D": [
@@ -148913,7 +148918,7 @@
               "val": 0,
               "pts": 0
             },
-            "pts": 7
+            "pts": 49
           },
           {
             "nom": "SENAYA",
@@ -158845,7 +158850,7 @@
               "val": 0,
               "pts": 0
             },
-            "pts": 5
+            "pts": 40
           },
           {
             "nom": "GANIOU",
@@ -159649,7 +159654,7 @@
               "val": 0,
               "pts": 0
             },
-            "pts": 4
+            "pts": 32
           },
           {
             "nom": "ZAIRE-EMERY",
@@ -161167,7 +161172,7 @@
               "val": 0,
               "pts": 0
             },
-            "pts": 7
+            "pts": 14
           },
           {
             "nom": "AJORQUE",
@@ -161393,7 +161398,7 @@
               "val": 0,
               "pts": 0
             },
-            "pts": 4
+            "pts": 16
           },
           {
             "nom": "LEFORT",
@@ -162645,7 +162650,7 @@
               "val": 0,
               "pts": 0
             },
-            "pts": 5
+            "pts": 10
           },
           {
             "nom": "BARD",
@@ -163671,7 +163676,7 @@
               "val": 0,
               "pts": 0
             },
-            "pts": 6
+            "pts": 42
           },
           {
             "nom": "SINAYOKO",
@@ -180677,87 +180682,87 @@
       },
       {
         "j": 12,
-        "pts": 517
+        "pts": 529
       },
       {
         "j": 13,
-        "pts": 562
+        "pts": 574
       },
       {
         "j": 14,
-        "pts": 600
+        "pts": 612
       },
       {
         "j": 15,
-        "pts": 644
+        "pts": 656
       },
       {
         "j": 16,
-        "pts": 688
+        "pts": 700
       },
       {
         "j": 17,
-        "pts": 736
+        "pts": 748
       },
       {
         "j": 18,
-        "pts": 774
+        "pts": 791
       },
       {
         "j": 19,
-        "pts": 815
+        "pts": 832
       },
       {
         "j": 20,
-        "pts": 866
+        "pts": 883
       },
       {
         "j": 21,
-        "pts": 905
+        "pts": 922
       },
       {
         "j": 22,
-        "pts": 951
+        "pts": 968
       },
       {
         "j": 23,
-        "pts": 998
+        "pts": 1015
       },
       {
         "j": 24,
-        "pts": 1047
+        "pts": 1070
       },
       {
         "j": 25,
-        "pts": 1089
+        "pts": 1112
       },
       {
         "j": 26,
-        "pts": 1132
+        "pts": 1155
       },
       {
         "j": 27,
-        "pts": 1159
+        "pts": 1182
       },
       {
         "j": 28,
-        "pts": 1205
+        "pts": 1228
       },
       {
         "j": 29,
-        "pts": 1244
+        "pts": 1274
       },
       {
         "j": 30,
-        "pts": 1286
+        "pts": 1316
       },
       {
         "j": 31,
-        "pts": 1333
+        "pts": 1361
       },
       {
         "j": 32,
-        "pts": 1351
+        "pts": 1379
       }
     ],
     "FAB": [
@@ -180791,103 +180796,103 @@
       },
       {
         "j": 8,
-        "pts": 329
+        "pts": 339
       },
       {
         "j": 9,
-        "pts": 375
+        "pts": 385
       },
       {
         "j": 10,
-        "pts": 417
+        "pts": 427
       },
       {
         "j": 11,
-        "pts": 458
+        "pts": 468
       },
       {
         "j": 12,
-        "pts": 498
+        "pts": 508
       },
       {
         "j": 13,
-        "pts": 526
+        "pts": 536
       },
       {
         "j": 14,
-        "pts": 563
+        "pts": 601
       },
       {
         "j": 15,
-        "pts": 595
-      },
-      {
-        "j": 16,
         "pts": 633
       },
       {
+        "j": 16,
+        "pts": 671
+      },
+      {
         "j": 17,
-        "pts": 670
+        "pts": 708
       },
       {
         "j": 18,
-        "pts": 714
+        "pts": 767
       },
       {
         "j": 19,
-        "pts": 752
+        "pts": 805
       },
       {
         "j": 20,
-        "pts": 789
+        "pts": 842
       },
       {
         "j": 21,
-        "pts": 829
+        "pts": 882
       },
       {
         "j": 22,
-        "pts": 869
+        "pts": 922
       },
       {
         "j": 23,
-        "pts": 913
+        "pts": 966
       },
       {
         "j": 24,
-        "pts": 957
+        "pts": 1030
       },
       {
         "j": 25,
-        "pts": 1003
+        "pts": 1076
       },
       {
         "j": 26,
-        "pts": 1050
+        "pts": 1123
       },
       {
         "j": 27,
-        "pts": 1095
+        "pts": 1168
       },
       {
         "j": 28,
-        "pts": 1135
+        "pts": 1208
       },
       {
         "j": 29,
-        "pts": 1177
+        "pts": 1262
       },
       {
         "j": 30,
-        "pts": 1214
+        "pts": 1299
       },
       {
         "j": 31,
-        "pts": 1252
+        "pts": 1338
       },
       {
         "j": 32,
-        "pts": 1267
+        "pts": 1353
       }
     ],
     "BASTIEN": [
@@ -180917,107 +180922,107 @@
       },
       {
         "j": 7,
-        "pts": 272
+        "pts": 302
       },
       {
         "j": 8,
-        "pts": 310
+        "pts": 340
       },
       {
         "j": 9,
-        "pts": 356
+        "pts": 386
       },
       {
         "j": 10,
-        "pts": 393
+        "pts": 423
       },
       {
         "j": 11,
-        "pts": 438
+        "pts": 468
       },
       {
         "j": 12,
-        "pts": 476
+        "pts": 506
       },
       {
         "j": 13,
-        "pts": 508
+        "pts": 538
       },
       {
         "j": 14,
-        "pts": 541
+        "pts": 589
       },
       {
         "j": 15,
-        "pts": 581
+        "pts": 629
       },
       {
         "j": 16,
-        "pts": 628
+        "pts": 676
       },
       {
         "j": 17,
-        "pts": 665
+        "pts": 713
       },
       {
         "j": 18,
-        "pts": 709
-      },
-      {
-        "j": 19,
         "pts": 757
       },
       {
+        "j": 19,
+        "pts": 832
+      },
+      {
         "j": 20,
-        "pts": 786
+        "pts": 861
       },
       {
         "j": 21,
-        "pts": 824
+        "pts": 899
       },
       {
         "j": 22,
-        "pts": 868
+        "pts": 943
       },
       {
         "j": 23,
-        "pts": 912
+        "pts": 987
       },
       {
         "j": 24,
-        "pts": 955
+        "pts": 1039
       },
       {
         "j": 25,
-        "pts": 997
+        "pts": 1081
       },
       {
         "j": 26,
-        "pts": 1046
+        "pts": 1130
       },
       {
         "j": 27,
-        "pts": 1092
+        "pts": 1176
       },
       {
         "j": 28,
-        "pts": 1138
+        "pts": 1222
       },
       {
         "j": 29,
-        "pts": 1168
+        "pts": 1257
       },
       {
         "j": 30,
-        "pts": 1202
+        "pts": 1291
       },
       {
         "j": 31,
-        "pts": 1238
+        "pts": 1331
       },
       {
         "j": 32,
-        "pts": 1246
+        "pts": 1339
       }
     ],
     "ADRIEN": [
@@ -181071,83 +181076,213 @@
       },
       {
         "j": 13,
-        "pts": 468
+        "pts": 475
       },
       {
         "j": 14,
-        "pts": 508
+        "pts": 515
       },
       {
         "j": 15,
-        "pts": 543
+        "pts": 550
       },
       {
         "j": 16,
-        "pts": 587
+        "pts": 594
       },
       {
         "j": 17,
-        "pts": 631
+        "pts": 638
       },
       {
         "j": 18,
-        "pts": 676
+        "pts": 711
       },
       {
         "j": 19,
-        "pts": 712
+        "pts": 747
       },
       {
         "j": 20,
-        "pts": 757
+        "pts": 834
       },
       {
         "j": 21,
-        "pts": 800
+        "pts": 877
       },
       {
         "j": 22,
-        "pts": 849
+        "pts": 926
       },
       {
         "j": 23,
-        "pts": 882
+        "pts": 959
       },
       {
         "j": 24,
-        "pts": 917
+        "pts": 994
       },
       {
         "j": 25,
-        "pts": 954
+        "pts": 1031
       },
       {
         "j": 26,
-        "pts": 997
+        "pts": 1074
       },
       {
         "j": 27,
-        "pts": 1034
+        "pts": 1153
       },
       {
         "j": 28,
-        "pts": 1076
+        "pts": 1195
       },
       {
         "j": 29,
-        "pts": 1105
+        "pts": 1224
       },
       {
         "j": 30,
-        "pts": 1141
+        "pts": 1260
       },
       {
         "j": 31,
-        "pts": 1169
+        "pts": 1292
       },
       {
         "j": 32,
-        "pts": 1184
+        "pts": 1307
+      }
+    ],
+    "MICKA": [
+      {
+        "j": 1,
+        "pts": 36
+      },
+      {
+        "j": 2,
+        "pts": 79
+      },
+      {
+        "j": 3,
+        "pts": 115
+      },
+      {
+        "j": 4,
+        "pts": 153
+      },
+      {
+        "j": 5,
+        "pts": 188
+      },
+      {
+        "j": 6,
+        "pts": 229
+      },
+      {
+        "j": 7,
+        "pts": 264
+      },
+      {
+        "j": 8,
+        "pts": 313
+      },
+      {
+        "j": 9,
+        "pts": 372
+      },
+      {
+        "j": 10,
+        "pts": 420
+      },
+      {
+        "j": 11,
+        "pts": 463
+      },
+      {
+        "j": 12,
+        "pts": 503
+      },
+      {
+        "j": 13,
+        "pts": 540
+      },
+      {
+        "j": 14,
+        "pts": 588
+      },
+      {
+        "j": 15,
+        "pts": 629
+      },
+      {
+        "j": 16,
+        "pts": 671
+      },
+      {
+        "j": 17,
+        "pts": 699
+      },
+      {
+        "j": 18,
+        "pts": 729
+      },
+      {
+        "j": 19,
+        "pts": 789
+      },
+      {
+        "j": 20,
+        "pts": 827
+      },
+      {
+        "j": 21,
+        "pts": 867
+      },
+      {
+        "j": 22,
+        "pts": 907
+      },
+      {
+        "j": 23,
+        "pts": 945
+      },
+      {
+        "j": 24,
+        "pts": 1001
+      },
+      {
+        "j": 25,
+        "pts": 1038
+      },
+      {
+        "j": 26,
+        "pts": 1075
+      },
+      {
+        "j": 27,
+        "pts": 1107
+      },
+      {
+        "j": 28,
+        "pts": 1146
+      },
+      {
+        "j": 29,
+        "pts": 1218
+      },
+      {
+        "j": 30,
+        "pts": 1251
+      },
+      {
+        "j": 31,
+        "pts": 1292
+      },
+      {
+        "j": 32,
+        "pts": 1302
       }
     ],
     "JEROME": [
@@ -181201,83 +181336,83 @@
       },
       {
         "j": 13,
-        "pts": 518
+        "pts": 539
       },
       {
         "j": 14,
-        "pts": 554
+        "pts": 575
       },
       {
         "j": 15,
-        "pts": 581
+        "pts": 602
       },
       {
         "j": 16,
-        "pts": 622
+        "pts": 643
       },
       {
         "j": 17,
-        "pts": 656
+        "pts": 677
       },
       {
         "j": 18,
-        "pts": 698
+        "pts": 740
       },
       {
         "j": 19,
-        "pts": 730
+        "pts": 772
       },
       {
         "j": 20,
-        "pts": 771
+        "pts": 813
       },
       {
         "j": 21,
-        "pts": 806
-      },
-      {
-        "j": 22,
         "pts": 848
       },
       {
+        "j": 22,
+        "pts": 932
+      },
+      {
         "j": 23,
-        "pts": 884
+        "pts": 968
       },
       {
         "j": 24,
-        "pts": 918
+        "pts": 1002
       },
       {
         "j": 25,
-        "pts": 952
+        "pts": 1036
       },
       {
         "j": 26,
-        "pts": 984
+        "pts": 1068
       },
       {
         "j": 27,
-        "pts": 1024
+        "pts": 1108
       },
       {
         "j": 28,
-        "pts": 1062
+        "pts": 1146
       },
       {
         "j": 29,
-        "pts": 1084
+        "pts": 1203
       },
       {
         "j": 30,
-        "pts": 1132
+        "pts": 1251
       },
       {
         "j": 31,
-        "pts": 1168
+        "pts": 1287
       },
       {
         "j": 32,
-        "pts": 1177
+        "pts": 1296
       }
     ],
     "ROMU": [
@@ -181315,99 +181450,229 @@
       },
       {
         "j": 9,
-        "pts": 366
+        "pts": 420
       },
       {
         "j": 10,
-        "pts": 393
+        "pts": 447
       },
       {
         "j": 11,
-        "pts": 429
+        "pts": 483
       },
       {
         "j": 12,
-        "pts": 471
+        "pts": 525
       },
       {
         "j": 13,
-        "pts": 514
+        "pts": 568
       },
       {
         "j": 14,
-        "pts": 552
+        "pts": 606
       },
       {
         "j": 15,
-        "pts": 588
+        "pts": 642
       },
       {
         "j": 16,
-        "pts": 616
+        "pts": 670
       },
       {
         "j": 17,
-        "pts": 654
+        "pts": 708
       },
       {
         "j": 18,
-        "pts": 684
+        "pts": 738
       },
       {
         "j": 19,
-        "pts": 730
+        "pts": 832
       },
       {
         "j": 20,
-        "pts": 769
+        "pts": 871
       },
       {
         "j": 21,
-        "pts": 808
+        "pts": 910
       },
       {
         "j": 22,
-        "pts": 850
+        "pts": 952
       },
       {
         "j": 23,
-        "pts": 890
+        "pts": 992
       },
       {
         "j": 24,
-        "pts": 924
+        "pts": 1034
       },
       {
         "j": 25,
-        "pts": 961
+        "pts": 1071
       },
       {
         "j": 26,
-        "pts": 997
+        "pts": 1115
       },
       {
         "j": 27,
-        "pts": 1030
+        "pts": 1148
       },
       {
         "j": 28,
-        "pts": 1064
+        "pts": 1182
       },
       {
         "j": 29,
-        "pts": 1084
+        "pts": 1202
       },
       {
         "j": 30,
-        "pts": 1113
+        "pts": 1231
       },
       {
         "j": 31,
-        "pts": 1137
+        "pts": 1255
       },
       {
         "j": 32,
-        "pts": 1148
+        "pts": 1266
+      }
+    ],
+    "VINCENT": [
+      {
+        "j": 1,
+        "pts": 36
+      },
+      {
+        "j": 2,
+        "pts": 80
+      },
+      {
+        "j": 3,
+        "pts": 115
+      },
+      {
+        "j": 4,
+        "pts": 147
+      },
+      {
+        "j": 5,
+        "pts": 178
+      },
+      {
+        "j": 6,
+        "pts": 213
+      },
+      {
+        "j": 7,
+        "pts": 293
+      },
+      {
+        "j": 8,
+        "pts": 328
+      },
+      {
+        "j": 9,
+        "pts": 367
+      },
+      {
+        "j": 10,
+        "pts": 448
+      },
+      {
+        "j": 11,
+        "pts": 481
+      },
+      {
+        "j": 12,
+        "pts": 526
+      },
+      {
+        "j": 13,
+        "pts": 569
+      },
+      {
+        "j": 14,
+        "pts": 607
+      },
+      {
+        "j": 15,
+        "pts": 640
+      },
+      {
+        "j": 16,
+        "pts": 680
+      },
+      {
+        "j": 17,
+        "pts": 720
+      },
+      {
+        "j": 18,
+        "pts": 751
+      },
+      {
+        "j": 19,
+        "pts": 799
+      },
+      {
+        "j": 20,
+        "pts": 835
+      },
+      {
+        "j": 21,
+        "pts": 875
+      },
+      {
+        "j": 22,
+        "pts": 906
+      },
+      {
+        "j": 23,
+        "pts": 940
+      },
+      {
+        "j": 24,
+        "pts": 979
+      },
+      {
+        "j": 25,
+        "pts": 1015
+      },
+      {
+        "j": 26,
+        "pts": 1047
+      },
+      {
+        "j": 27,
+        "pts": 1096
+      },
+      {
+        "j": 28,
+        "pts": 1138
+      },
+      {
+        "j": 29,
+        "pts": 1181
+      },
+      {
+        "j": 30,
+        "pts": 1200
+      },
+      {
+        "j": 31,
+        "pts": 1235
+      },
+      {
+        "j": 32,
+        "pts": 1255
       }
     ],
     "ANTHONY": [
@@ -181449,225 +181714,95 @@
       },
       {
         "j": 10,
-        "pts": 339
+        "pts": 388
       },
       {
         "j": 11,
-        "pts": 382
+        "pts": 431
       },
       {
         "j": 12,
-        "pts": 421
+        "pts": 470
       },
       {
         "j": 13,
-        "pts": 453
+        "pts": 502
       },
       {
         "j": 14,
-        "pts": 496
+        "pts": 545
       },
       {
         "j": 15,
-        "pts": 537
+        "pts": 586
       },
       {
         "j": 16,
-        "pts": 571
+        "pts": 620
       },
       {
         "j": 17,
-        "pts": 604
+        "pts": 653
       },
       {
         "j": 18,
-        "pts": 641
+        "pts": 690
       },
       {
         "j": 19,
-        "pts": 668
+        "pts": 717
       },
       {
         "j": 20,
-        "pts": 706
+        "pts": 755
       },
       {
         "j": 21,
-        "pts": 745
+        "pts": 794
       },
       {
         "j": 22,
-        "pts": 789
+        "pts": 838
       },
       {
         "j": 23,
-        "pts": 825
+        "pts": 874
       },
       {
         "j": 24,
-        "pts": 865
+        "pts": 949
       },
       {
         "j": 25,
-        "pts": 907
+        "pts": 1019
       },
       {
         "j": 26,
-        "pts": 943
+        "pts": 1055
       },
       {
         "j": 27,
-        "pts": 982
+        "pts": 1094
       },
       {
         "j": 28,
-        "pts": 1027
+        "pts": 1139
       },
       {
         "j": 29,
-        "pts": 1046
+        "pts": 1158
       },
       {
         "j": 30,
-        "pts": 1075
+        "pts": 1187
       },
       {
         "j": 31,
-        "pts": 1109
+        "pts": 1222
       },
       {
         "j": 32,
-        "pts": 1128
-      }
-    ],
-    "VINCENT": [
-      {
-        "j": 1,
-        "pts": 36
-      },
-      {
-        "j": 2,
-        "pts": 80
-      },
-      {
-        "j": 3,
-        "pts": 115
-      },
-      {
-        "j": 4,
-        "pts": 147
-      },
-      {
-        "j": 5,
-        "pts": 178
-      },
-      {
-        "j": 6,
-        "pts": 213
-      },
-      {
-        "j": 7,
-        "pts": 251
-      },
-      {
-        "j": 8,
-        "pts": 286
-      },
-      {
-        "j": 9,
-        "pts": 325
-      },
-      {
-        "j": 10,
-        "pts": 370
-      },
-      {
-        "j": 11,
-        "pts": 403
-      },
-      {
-        "j": 12,
-        "pts": 448
-      },
-      {
-        "j": 13,
-        "pts": 491
-      },
-      {
-        "j": 14,
-        "pts": 529
-      },
-      {
-        "j": 15,
-        "pts": 562
-      },
-      {
-        "j": 16,
-        "pts": 602
-      },
-      {
-        "j": 17,
-        "pts": 642
-      },
-      {
-        "j": 18,
-        "pts": 673
-      },
-      {
-        "j": 19,
-        "pts": 705
-      },
-      {
-        "j": 20,
-        "pts": 741
-      },
-      {
-        "j": 21,
-        "pts": 781
-      },
-      {
-        "j": 22,
-        "pts": 812
-      },
-      {
-        "j": 23,
-        "pts": 846
-      },
-      {
-        "j": 24,
-        "pts": 878
-      },
-      {
-        "j": 25,
-        "pts": 914
-      },
-      {
-        "j": 26,
-        "pts": 946
-      },
-      {
-        "j": 27,
-        "pts": 995
-      },
-      {
-        "j": 28,
-        "pts": 1037
-      },
-      {
-        "j": 29,
-        "pts": 1052
-      },
-      {
-        "j": 30,
-        "pts": 1071
-      },
-      {
-        "j": 31,
-        "pts": 1103
-      },
-      {
-        "j": 32,
-        "pts": 1123
+        "pts": 1241
       }
     ]
   },
