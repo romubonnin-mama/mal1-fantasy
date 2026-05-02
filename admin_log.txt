@@ -9,3 +9,4 @@ Interface admin : http://localhost:8765
   127.0.0.1 "GET /api/lineups/32 HTTP/1.1" 200 -
   127.0.0.1 "GET /api/corrections/32 HTTP/1.1" 200 -
   127.0.0.1 "GET /api/manual-stats/32 HTTP/1.1" 200 -
+warning: in the working copy of '.claude/settings.local.json', LF will be replaced by CRLF the next time Git touches it
