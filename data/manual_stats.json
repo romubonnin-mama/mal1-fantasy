@@ -152,7 +152,8 @@
       },
       "SAMBA": {
         "full_match": true,
-        "be_malus": true
+        "be_malus": true,
+        "yellow_cards": true
       },
       "BRASSIER": {
         "full_match": true,
