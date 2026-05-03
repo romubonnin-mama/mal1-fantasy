@@ -20,6 +20,20 @@
       },
       "BOUFAL": {
         "sort_a": 65
+      },
+      "DEL CASTILLO": {
+        "sort_a": 71
+      },
+      "SIDIBE": {
+        "entre_a": 78,
+        "sort_a": 90
+      },
+      "RESTES": {
+        "full_match": true
+      },
+      "MORREIRA": {
+        "entre_a": 63,
+        "sort_a": 90
       }
     },
     "VINCENT": {
@@ -47,6 +61,13 @@
       },
       "HARALDSSON": {
         "full_match": true
+      },
+      "DOUCOURE": {
+        "assists": 1,
+        "sort_a": 71
+      },
+      "PENDERS": {
+        "full_match": true
       }
     },
     "FLORIAN": {
@@ -67,6 +88,20 @@
         "full_match": true
       },
       "ANDRE": {
+        "full_match": true
+      },
+      "OWUSU": {
+        "full_match": true
+      },
+      "CHARDONNET": {
+        "full_match": true,
+        "be_malus": true,
+        "yellow_cards": true
+      },
+      "AJORQUE": {
+        "full_match": true
+      },
+      "NICOLAISEN": {
         "full_match": true
       }
     },
@@ -91,7 +126,12 @@
         "yellow_cards": true
       },
       "VAN DEN BOOMEN": {
-        "pen_mm_saved": 1
+        "pen_mm_saved": 1,
+        "sort_a": 86
+      },
+      "LEFORT": {
+        "full_match": true,
+        "be_malus": true
       }
     },
     "ANTHONY": {
@@ -113,6 +153,18 @@
       },
       "BOUADDI": {
         "sort_a": 84
+      },
+      "MAGNETTI": {
+        "sort_a": 70
+      },
+      "DANOIS": {
+        "sort_a": 87
+      },
+      "G.DOUE": {
+        "absent": true
+      },
+      "GODO": {
+        "absent": true
       }
     },
     "BASTIEN": {
@@ -129,6 +181,22 @@
       "THAUVIN": {
         "sort_a": 86,
         "yellow_cards": true
+      },
+      "CHOTARD": {
+        "sort_a": 83
+      },
+      "CASSERES": {
+        "assists": 2
+      },
+      "GBOHO": {
+        "sort_a": 82
+      },
+      "O.CAMARA": {
+        "full_match": true,
+        "be_malus": true
+      },
+      "BELKEBLA": {
+        "full_match": true
       }
     },
     "JEROME": {
@@ -149,6 +217,9 @@
       },
       "NGOY": {
         "full_match": true
+      },
+      "KEBBAL": {
+        "sort_a": 65
       }
     },
     "ADRIEN": {
@@ -169,6 +240,12 @@
       },
       "PERRAUD": {
         "sort_a": 74
+      },
+      "SENAYA": {
+        "absent": true
+      },
+      "PAPE DEMBA": {
+        "absent": true
       }
     },
     "MICKA": {
@@ -195,6 +272,16 @@
       "SOUMARE": {
         "full_match": true,
         "goals": 1,
+        "yellow_cards": true
+      },
+      "SINAYOKO": {
+        "goals": 1,
+        "full_match": true,
+        "assists": 1,
+        "yellow_cards": true
+      },
+      "DONNUM": {
+        "full_match": true,
         "yellow_cards": true
       }
     }

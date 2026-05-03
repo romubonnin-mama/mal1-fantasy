@@ -181,6 +181,7 @@ header h1 { font-size: 18px; font-weight: 700; color: var(--accent); }
 .schk-cs     { accent-color: #4fc3f7; }
 .schk-yellow { accent-color: #ffd54f; }
 .schk-abs    { accent-color: #ff7043; }
+.schk-be     { accent-color: #ff6b35; }
 .pts-cell { font-size: 14px; color: var(--accent); min-width: 38px; }
 .club-logo-adm { width: 16px; height: 16px; object-fit: contain; vertical-align: middle; margin-right: 4px; }
 </style>
@@ -494,15 +495,15 @@ function renderClassement() {
 const CORR_NUM_FIELDS = [
   { f: 'bm',   label: 'BM',   title: 'Buts marqués (delta)' },
   { f: 'pd',   label: 'PD',   title: 'Passes déc. (delta)' },
-  { f: 'be',   label: 'BE',   title: 'Buts encaissés (delta)' },
   { f: 'pm',   label: 'PM',   title: 'Pénalty marqué (delta)' },
   { f: 'pma',  label: 'PMA',  title: 'Pén. manqué/arrêté (delta)' },
   { f: 'bcsc', label: 'BCSC', title: 'But contre son camp (delta)' },
 ];
 const CORR_CHK_FIELDS = [
-  { f: 'cj', label: 'CJ', title: 'Carton jaune',  cls: 'schk-yellow' },
-  { f: 'cs', label: 'CS', title: 'Clean sheet',   cls: 'schk-cs'     },
-  { f: 'cr', label: 'CR', title: 'Carton rouge',  cls: 'schk-red'    },
+  { f: 'cj', label: 'CJ', title: 'Carton jaune',             cls: 'schk-yellow' },
+  { f: 'cs', label: 'CS', title: 'Clean sheet',              cls: 'schk-cs'     },
+  { f: 'cr', label: 'CR', title: 'Carton rouge',             cls: 'schk-red'    },
+  { f: 'be', label: 'BE', title: 'Buts encaissés ≥3 (malus)', cls: 'schk-be'   },
 ];
 
 function renderCorrections() {
@@ -611,7 +612,8 @@ function onCorrAbsChange(el) {
 }
 
 function onCorrChkChange(el) {
-  setCorrection(el.dataset.m, el.dataset.n, el.dataset.f, el.checked ? 1 : 0);
+  const val = el.checked ? (el.dataset.f === 'be' ? 3 : 1) : 0;
+  setCorrection(el.dataset.m, el.dataset.n, el.dataset.f, val);
   const s = document.getElementById('corr-status');
   s.textContent = 'Non sauvegardé*'; s.className = 'save-status err';
 }
@@ -715,7 +717,6 @@ async function saveRoster() {
 const STAT_NUM_FIELDS = [
   { f: 'goals',         label: 'BM', title: 'Buts marqués' },
   { f: 'assists',       label: 'PD', title: 'Passes déc.' },
-  { f: 'goals_conceded',label: 'BE', title: 'Buts encaissés' },
   { f: 'pen_scored',    label: 'PM', title: 'Pénalty marqué' },
   { f: 'pen_mm_saved',  label: 'PMA',title: 'Pén. manqué (D/M/A) ou arrêté/manqué adv. (G)' },
   { f: 'own_goals',     label: 'BCSC', title: 'But contre son camp' },
@@ -747,6 +748,7 @@ function renderStats() {
             <th title="Minute d'entrée en jeu (ex: 43)">Entr</th>
             <th title="Minute de fin (ex: 73 si entré à 13 → 60 min)">Fin</th>
             ${STAT_NUM_FIELDS.map(x => `<th title="${x.title}">${x.label}</th>`).join('')}
+            <th title="Buts encaissés ≥3 (malus)">BE</th>
             <th title="Carton jaune">CJ</th>
             <th title="Clean sheet (forcer manuellement)">CS</th>
             <th title="Carton rouge">CR</th>
@@ -804,6 +806,10 @@ function renderStats() {
                    onchange="onNumChange(this)">
           </td>`).join('')}
         <td>
+          <input type="checkbox" class="schk schk-be" data-m="${manager}" data-n="${nom}" data-f="be_malus"
+                 ${s.be_malus ? 'checked' : ''} onchange="onCheckChange(this)">
+        </td>
+        <td>
           <input type="checkbox" class="schk schk-yellow" data-m="${manager}" data-n="${nom}" data-f="yellow_cards"
                  ${s.yellow_cards ? 'checked' : ''} onchange="onCheckChange(this)">
         </td>
@@ -854,12 +860,11 @@ function _calcPts(manager, nom) {
   } else if (sortA > 0) min = sortA;
   else                  min = parseInt(s.minutes || 0) || 0;
 
-  const goals   = parseInt(s.goals          || 0) || 0;
-  const assists = parseInt(s.assists        || 0) || 0;
-  const gc      = parseInt(s.goals_conceded || 0) || 0;
-  const pm      = parseInt(s.pen_scored     || 0) || 0;
-  const pma     = parseInt(s.pen_mm_saved   || 0) || 0;
-  const bc      = parseInt(s.own_goals      || 0) || 0;
+  const goals   = parseInt(s.goals        || 0) || 0;
+  const assists = parseInt(s.assists      || 0) || 0;
+  const pm      = parseInt(s.pen_scored   || 0) || 0;
+  const pma     = parseInt(s.pen_mm_saved || 0) || 0;
+  const bc      = parseInt(s.own_goals    || 0) || 0;
   const cj      = red ? 0 : (s.yellow_cards ? 1 : 0);
 
   const BM = {G:5, D:3, M:2, A:2};
@@ -873,7 +878,7 @@ function _calcPts(manager, nom) {
     csPts = poste==='G' ? 2 : poste==='D' ? 1 : 0;
   }
 
-  const bePts  = gc >= 3 ? (poste==='G' ? -2 : poste==='D' ? -1 : 0) : 0;
+  const bePts = s.be_malus ? (poste==='G' ? -2 : poste==='D' ? -1 : 0) : 0;
   let total = tjPts
     + goals   * (BM[poste]||0)
     + assists * 2

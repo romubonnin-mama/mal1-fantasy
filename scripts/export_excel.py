@@ -569,10 +569,10 @@ def export_journee(journee: int, verbose: bool = True) -> None:
                     w("status", None)
                     w("cap",    coeff if player == capitaine else None)
 
-                    goals_c = int(stats.get("goals_conceded", 0))
+                    be_val  = 1 if stats.get("be_malus") else None
                     cs_val  = 1 if stats.get("cs") else None
                     w("bm",   int(stats.get("goals", 0))        or None)
-                    w("be",   goals_c                            or None)
+                    w("be",   be_val)
                     w("bcsc", int(stats.get("own_goals", 0))     or None)
                     w("cs",   cs_val)
                     w("pm",   int(stats.get("pen_scored", 0))    or None)

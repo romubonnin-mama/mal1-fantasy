@@ -192,7 +192,7 @@ def compute(journee: int) -> dict:
                     is_full_match = full_match,
                     goals_scored  = int(s.get("goals", 0)),
                     assists       = int(s.get("assists", 0)),
-                    goals_conceded = int(s.get("goals_conceded", 0)),
+                    goals_conceded = 3 if bool(s.get("be_malus", False)) else 0,
                     penalties_scored = int(s.get("pen_scored", 0)),
                     penalties_missed          = int(s.get("pen_mm_saved", 0)) if poste != "G" else 0,
                     penalties_saved_or_opp_missed = int(s.get("pen_mm_saved", 0)) if poste == "G" else 0,
@@ -206,12 +206,12 @@ def compute(journee: int) -> dict:
                 if absent:
                     result["pts"] = 0
 
-                # Override CS manuel (case à cocher dans l'admin)
-                if s.get("cs") and not red_card and not absent:
-                    cs_pts = CS_PTS.get(poste, 0)
-                    if cs_pts != result["cs"]["pts"]:
-                        result["pts"] += cs_pts - result["cs"]["pts"]
-                        result["cs"] = {"val": 1, "pts": cs_pts}
+                # CS : uniquement si la case est cochée dans l'admin
+                if not red_card and not absent:
+                    expected_cs_pts = CS_PTS.get(poste, 0) if s.get("cs") else 0
+                    if expected_cs_pts != result["cs"]["pts"]:
+                        result["pts"] += expected_cs_pts - result["cs"]["pts"]
+                        result["cs"] = {"val": 1 if expected_cs_pts else 0, "pts": expected_cs_pts}
 
                 cap_str = ""
                 if is_titu and not absent and nom == capitaine:

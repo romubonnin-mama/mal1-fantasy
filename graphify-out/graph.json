@@ -232,41 +232,6 @@
       "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\insert_logos.py:46"
     },
     {
-      "id": "file::compute_journee",
-      "label": "compute_journee.py",
-      "fileType": "code",
-      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\compute_journee.py",
-      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\compute_journee.py:1"
-    },
-    {
-      "id": "compute_journee::_stat_pts",
-      "label": "_stat_pts",
-      "fileType": "code",
-      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\compute_journee.py",
-      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\compute_journee.py:21"
-    },
-    {
-      "id": "compute_journee::_apply_corrections_past",
-      "label": "_apply_corrections_past",
-      "fileType": "code",
-      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\compute_journee.py",
-      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\compute_journee.py:44"
-    },
-    {
-      "id": "compute_journee::_minutes",
-      "label": "_minutes",
-      "fileType": "code",
-      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\compute_journee.py",
-      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\compute_journee.py:138"
-    },
-    {
-      "id": "compute_journee::compute",
-      "label": "compute",
-      "fileType": "code",
-      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\compute_journee.py",
-      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\compute_journee.py:150"
-    },
-    {
       "id": "file::admin_server",
       "label": "admin_server.py",
       "fileType": "code",
@@ -335,6 +300,41 @@
       "fileType": "code",
       "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py",
       "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py:101"
+    },
+    {
+      "id": "file::compute_journee",
+      "label": "compute_journee.py",
+      "fileType": "code",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\compute_journee.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\compute_journee.py:1"
+    },
+    {
+      "id": "compute_journee::_stat_pts",
+      "label": "_stat_pts",
+      "fileType": "code",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\compute_journee.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\compute_journee.py:21"
+    },
+    {
+      "id": "compute_journee::_apply_corrections_past",
+      "label": "_apply_corrections_past",
+      "fileType": "code",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\compute_journee.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\compute_journee.py:44"
+    },
+    {
+      "id": "compute_journee::_minutes",
+      "label": "_minutes",
+      "fileType": "code",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\compute_journee.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\compute_journee.py:138"
+    },
+    {
+      "id": "compute_journee::compute",
+      "label": "compute",
+      "fileType": "code",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\compute_journee.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\compute_journee.py:150"
     },
     {
       "id": "file::export_excel",
@@ -845,6 +845,6 @@
     "files": 10,
     "nodes": 58,
     "edges": 48,
-    "builtAt": "2026-05-03T08:31:01.028Z"
+    "builtAt": "2026-05-03T17:36:08.533Z"
   }
 }
