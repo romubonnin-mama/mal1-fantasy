@@ -279,10 +279,10 @@
         "sort_a": 90
       },
       "LEPAUL": {
-        "entre_a": 87,
         "goals": 1,
         "assists": 1,
-        "yellow_cards": true
+        "yellow_cards": true,
+        "sort_a": 87
       }
     },
     "ADRIEN": {

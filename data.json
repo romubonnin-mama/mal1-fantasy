@@ -23,7 +23,7 @@
     {
       "rang": 5,
       "nom": "JEROME",
-      "pts": 1326
+      "pts": 1328
     },
     {
       "rang": 6,
@@ -49,7 +49,7 @@
   "derniere_journee": 32,
   "scores_journee": {
     "ROMU": 26,
-    "JEROME": 39,
+    "JEROME": 41,
     "VINCENT": 41,
     "ADRIEN": 29,
     "FLORIAN": 42,
@@ -402,7 +402,7 @@
     },
     "32": {
       "ROMU": 26,
-      "JEROME": 39,
+      "JEROME": 41,
       "VINCENT": 41,
       "ADRIEN": 29,
       "FLORIAN": 42,
@@ -176120,8 +176120,8 @@
             "nom": "LEPAUL",
             "statut": "",
             "cap": "",
-            "tj": "3",
-            "tj_pts": 1,
+            "tj": "87",
+            "tj_pts": 3,
             "bm": {
               "val": 1,
               "pts": 2
@@ -176158,7 +176158,7 @@
               "val": 0,
               "pts": 0
             },
-            "pts": 4
+            "pts": 6
           },
           {
             "nom": "SAINT MAXIMAIN",
@@ -181282,7 +181282,7 @@
       },
       {
         "j": 32,
-        "pts": 1326
+        "pts": 1328
       }
     ],
     "ADRIEN": [
