@@ -534,7 +534,12 @@ def export_journee(journee: int, verbose: bool = True) -> None:
                         w(field, None)
 
                 elif not stats:
-                    pass
+                    w("status", None)
+                    w("cap", None)
+                    w("entre", None)
+                    w("tj", None)
+                    for field in ["bm","be","bcsc","cs","pm","pma","pd","cj","cr"]:
+                        w(field, None)
 
                 else:
                     full_match = bool(stats.get("full_match", False))
