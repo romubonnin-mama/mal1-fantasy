@@ -34,6 +34,9 @@
       "MORREIRA": {
         "entre_a": 63,
         "sort_a": 90
+      },
+      "MORTON": {
+        "sort_a": 84
       }
     },
     "VINCENT": {
@@ -67,6 +70,12 @@
         "sort_a": 71
       },
       "PENDERS": {
+        "full_match": true
+      },
+      "MAITLAND-NILES": {
+        "full_match": true
+      },
+      "RONGIER": {
         "full_match": true
       }
     },
@@ -103,6 +112,11 @@
       },
       "NICOLAISEN": {
         "full_match": true
+      },
+      "MERLIN": {
+        "full_match": true,
+        "be_malus": true,
+        "yellow_cards": true
       }
     },
     "FAB": {
@@ -135,6 +149,17 @@
       },
       "F.PARDO": {
         "full_match": true
+      },
+      "SAMBA": {
+        "full_match": true,
+        "be_malus": true
+      },
+      "BRASSIER": {
+        "full_match": true,
+        "be_malus": true
+      },
+      "M.CAMARA": {
+        "sort_a": 87
       }
     },
     "ANTHONY": {
@@ -193,7 +218,8 @@
         "sort_a": 83
       },
       "CASSERES": {
-        "assists": 2
+        "assists": 2,
+        "full_match": true
       },
       "GBOHO": {
         "sort_a": 82
@@ -204,6 +230,13 @@
       },
       "BELKEBLA": {
         "full_match": true
+      },
+      "MATA": {
+        "full_match": true
+      },
+      "ENDRICK": {
+        "sort_a": 84,
+        "goals": 1
       }
     },
     "JEROME": {
@@ -227,6 +260,28 @@
       },
       "KEBBAL": {
         "sort_a": 65
+      },
+      "GREIF": {
+        "full_match": true
+      },
+      "KLUIVERT": {
+        "entre_a": 84,
+        "sort_a": 90
+      },
+      "AL-TAMARI": {
+        "sort_a": 87,
+        "goals": 1,
+        "assists": 1
+      },
+      "SULC": {
+        "entre_a": 70,
+        "sort_a": 90
+      },
+      "LEPAUL": {
+        "entre_a": 87,
+        "goals": 1,
+        "assists": 1,
+        "yellow_cards": true
       }
     },
     "ADRIEN": {
@@ -253,6 +308,15 @@
       },
       "PAPE DEMBA": {
         "absent": true
+      },
+      "NIAKHATE": {
+        "full_match": true
+      },
+      "SZYMANSKI": {
+        "sort_a": 70
+      },
+      "EMBOLO": {
+        "full_match": true
       }
     },
     "MICKA": {
@@ -293,6 +357,11 @@
       },
       "CRESSWELL": {
         "full_match": true
+      },
+      "TOLISSO": {
+        "full_match": true,
+        "goals": 1,
+        "assists": 2
       }
     }
   },
