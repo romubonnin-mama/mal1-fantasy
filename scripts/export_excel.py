@@ -380,8 +380,21 @@ def _save_preserving_images(wb, path: Path, target_sheet: str = None) -> None:
             patched_ct = orig_ct
             print(f"[img] [Content_Types].xml patche")
 
+        # ── fullCalcOnLoad : force recalcul a l'ouverture (feuille nouvelle ET existante) ──
+        _wb_base = patched_wb_xml if patched_wb_xml else orig.read('xl/workbook.xml').decode('utf-8')
+        if 'fullCalcOnLoad="1"' not in _wb_base:
+            _wb_patched = re.sub(
+                r'(<calcPr\b[^>]*?)(/>|>)',
+                lambda m: m.group(1) + ' fullCalcOnLoad="1"' + m.group(2),
+                _wb_base, count=1)
+            if _wb_patched != _wb_base:
+                patched_wb_xml = _wb_patched
+                print("[img] workbook.xml: fullCalcOnLoad=1 ajoute")
+
         # ── Ecriture du ZIP final : base = orig, quelques overrides ──────────────
         for name in orig.namelist():
+            if name == 'xl/calcChain.xml':
+                continue  # supprime : force Excel a recalculer toutes les formules a l'ouverture
             if name == 'xl/workbook.xml' and patched_wb_xml:
                 out.writestr(name, patched_wb_xml.encode('utf-8'))
             elif name == 'xl/_rels/workbook.xml.rels' and patched_wb_rels:
@@ -500,12 +513,6 @@ def export_journee(journee: int, verbose: bool = True) -> None:
                 is_titu = player in titulaires
                 stats   = m_stats.get(player, {}) if is_titu else {}
 
-                if is_titu and "entre" in off:
-                    frow = row + 1
-                    ws.cell(row=frow, column=name_col + off["entre"]).value = (
-                        f"={get_column_letter(name_col)}{frow}"
-                    )
-
                 def w(field, value):
                     if field in off:
                         ws.cell(row=row, column=name_col + off[field]).value = value
@@ -558,7 +565,7 @@ def export_journee(journee: int, verbose: bool = True) -> None:
                     w("cap",    coeff if player == capitaine else None)
 
                     goals_c = int(stats.get("goals_conceded", 0))
-                    cs_val  = 1 if (stats.get("cs") or compute_cs(poste, goals_c, minutes, full_match)) else None
+                    cs_val  = 1 if stats.get("cs") else None
                     w("bm",   int(stats.get("goals", 0))        or None)
                     w("be",   goals_c                            or None)
                     w("bcsc", int(stats.get("own_goals", 0))     or None)

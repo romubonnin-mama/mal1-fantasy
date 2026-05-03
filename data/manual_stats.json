@@ -76,10 +76,6 @@
       }
     },
     "ANTHONY": {
-      "LOPES": {
-        "full_match": true,
-        "cs": true
-      },
       "PAVARD": {
         "absent": true
       },
@@ -92,6 +88,9 @@
       },
       "SANSON": {
         "sort_a": 73
+      },
+      "LOPES": {
+        "absent": true
       }
     },
     "BASTIEN": {
@@ -106,8 +105,8 @@
         "yellow_cards": true
       },
       "THAUVIN": {
-        "entre_a": 86,
-        "sort_a": 90
+        "sort_a": 86,
+        "yellow_cards": true
       }
     },
     "JEROME": {
@@ -116,11 +115,15 @@
       },
       "THOMASSON": {
         "full_match": true,
-        "yellow_cards": true
+        "yellow_cards": true,
+        "assists": 1
       },
       "SAINT MAXIMAIN": {
         "full_match": true,
         "goals": 1
+      },
+      "GANIOU": {
+        "full_match": true
       }
     },
     "ADRIEN": {
@@ -145,10 +148,12 @@
         "sort_a": 58
       },
       "BALOGUN": {
-        "full_match": true
+        "full_match": true,
+        "goals": 1
       },
       "AGUILAR": {
-        "sort_a": 86
+        "sort_a": 90,
+        "entre_a": 86
       }
     }
   },

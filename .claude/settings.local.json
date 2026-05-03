@@ -12,7 +12,8 @@
       "Bash(grep -n \"\\\\\\\\\\\\\\\\u2192\\\\|→\" scripts/export_excel.py)",
       "Bash(Get-ChildItem -Path \"E:\\\\Sauvegarde\\\\draft club\\\\mal1-fantasy\" -Recurse -Filter \"*.py\")",
       "Bash(Select-Object -ExpandProperty FullName)",
-      "Bash(Sort-Object)"
+      "Bash(Sort-Object)",
+      "PowerShell(Get-ChildItem *)"
     ]
   }
 }
