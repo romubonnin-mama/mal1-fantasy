@@ -1,0 +1,19 @@
+Interface admin : http://localhost:8765
+   Ctrl+C pour arrêter.
+
+  127.0.0.1 "GET / HTTP/1.1" 200 -
+  127.0.0.1 "GET /api/roster HTTP/1.1" 200 -
+  127.0.0.1 "GET /api/data HTTP/1.1" 200 -
+  127.0.0.1 "GET /api/clubs HTTP/1.1" 200 -
+  127.0.0.1 "GET /favicon.ico HTTP/1.1" 404 -
+  127.0.0.1 "GET /api/lineups/32 HTTP/1.1" 200 -
+  127.0.0.1 "GET /api/manual-stats/32 HTTP/1.1" 200 -
+  127.0.0.1 "GET /api/corrections/32 HTTP/1.1" 200 -
+  127.0.0.1 "POST /api/manual-stats/32 HTTP/1.1" 200 -
+  127.0.0.1 "POST /api/manual-stats/32 HTTP/1.1" 200 -
+  127.0.0.1 "POST /api/manual-stats/32 HTTP/1.1" 200 -
+[img] target='32', orig_xml=xl/worksheets/sheet33.xml, is_new=False
+[img] sheetData extrait de xl/worksheets/sheet33.xml (353684 chars)
+[img] feuille cible '32': sheetData patche
+  127.0.0.1 "POST /api/compute/32 HTTP/1.1" 200 -
+  127.0.0.1 "GET /api/data HTTP/1.1" 200 -

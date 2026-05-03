@@ -132,6 +132,9 @@
       "LEFORT": {
         "full_match": true,
         "be_malus": true
+      },
+      "F.PARDO": {
+        "full_match": true
       }
     },
     "ANTHONY": {
@@ -165,6 +168,10 @@
       },
       "GODO": {
         "absent": true
+      },
+      "LALA": {
+        "full_match": true,
+        "be_malus": true
       }
     },
     "BASTIEN": {
@@ -283,6 +290,9 @@
       "DONNUM": {
         "full_match": true,
         "yellow_cards": true
+      },
+      "CRESSWELL": {
+        "full_match": true
       }
     }
   },

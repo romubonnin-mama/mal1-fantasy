@@ -8,7 +8,7 @@
     {
       "rang": 2,
       "nom": "FAB",
-      "pts": 1360
+      "pts": 1364
     },
     {
       "rang": 3,
@@ -18,7 +18,7 @@
     {
       "rang": 4,
       "nom": "MICKA",
-      "pts": 1324
+      "pts": 1328
     },
     {
       "rang": 5,
@@ -43,7 +43,7 @@
     {
       "rang": 9,
       "nom": "ANTHONY",
-      "pts": 1244
+      "pts": 1247
     }
   ],
   "derniere_journee": 32,
@@ -53,10 +53,10 @@
     "VINCENT": 33,
     "ADRIEN": 18,
     "FLORIAN": 40,
-    "FAB": 22,
-    "ANTHONY": 22,
+    "FAB": 26,
+    "ANTHONY": 25,
     "BASTIEN": 26,
-    "MICKA": 32
+    "MICKA": 36
   },
   "historique": {
     "1": {
@@ -406,10 +406,10 @@
       "VINCENT": 33,
       "ADRIEN": 18,
       "FLORIAN": 40,
-      "FAB": 22,
-      "ANTHONY": 22,
+      "FAB": 26,
+      "ANTHONY": 25,
       "BASTIEN": 26,
-      "MICKA": 32
+      "MICKA": 36
     }
   },
   "detail_journees": {
@@ -178624,8 +178624,8 @@
             "nom": "F.PARDO",
             "statut": "",
             "cap": "",
-            "tj": "0",
-            "tj_pts": 0,
+            "tj": "M",
+            "tj_pts": 4,
             "bm": {
               "val": 0,
               "pts": 0
@@ -178662,7 +178662,7 @@
               "val": 0,
               "pts": 0
             },
-            "pts": 0
+            "pts": 4
           },
           {
             "nom": "KVARATSKHELIA",
@@ -178850,15 +178850,15 @@
             "nom": "LALA",
             "statut": "",
             "cap": "",
-            "tj": "0",
-            "tj_pts": 0,
+            "tj": "M",
+            "tj_pts": 4,
             "bm": {
               "val": 0,
               "pts": 0
             },
             "be": {
-              "val": 0,
-              "pts": 0
+              "val": 3,
+              "pts": -1
             },
             "bcsc": {
               "val": 0,
@@ -178888,7 +178888,7 @@
               "val": 0,
               "pts": 0
             },
-            "pts": 0
+            "pts": 3
           },
           {
             "nom": "PAVARD",
@@ -180102,8 +180102,8 @@
             "nom": "CRESSWELL",
             "statut": "",
             "cap": "",
-            "tj": "0",
-            "tj_pts": 0,
+            "tj": "M",
+            "tj_pts": 4,
             "bm": {
               "val": 0,
               "pts": 0
@@ -180140,7 +180140,7 @@
               "val": 0,
               "pts": 0
             },
-            "pts": 0
+            "pts": 4
           },
           {
             "nom": "LLORIS",
@@ -180892,7 +180892,7 @@
       },
       {
         "j": 32,
-        "pts": 1360
+        "pts": 1364
       }
     ],
     "BASTIEN": [
@@ -181152,7 +181152,7 @@
       },
       {
         "j": 32,
-        "pts": 1324
+        "pts": 1328
       }
     ],
     "ADRIEN": [
@@ -181802,7 +181802,7 @@
       },
       {
         "j": 32,
-        "pts": 1244
+        "pts": 1247
       }
     ]
   },
