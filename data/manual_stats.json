@@ -17,6 +17,9 @@
       "M.SARR": {
         "full_match": true,
         "yellow_cards": true
+      },
+      "BOUFAL": {
+        "sort_a": 65
       }
     },
     "VINCENT": {
@@ -41,6 +44,9 @@
       },
       "EDOUARD": {
         "sort_a": 77
+      },
+      "HARALDSSON": {
+        "full_match": true
       }
     },
     "FLORIAN": {
@@ -55,6 +61,12 @@
         "assists": 1
       },
       "SANGARE": {
+        "full_match": true
+      },
+      "ÖZER": {
+        "full_match": true
+      },
+      "ANDRE": {
         "full_match": true
       }
     },
@@ -73,6 +85,13 @@
       },
       "KVARATSKHELIA": {
         "absent": true
+      },
+      "MANDI": {
+        "full_match": true,
+        "yellow_cards": true
+      },
+      "VAN DEN BOOMEN": {
+        "pen_mm_saved": 1
       }
     },
     "ANTHONY": {
@@ -91,6 +110,9 @@
       },
       "LOPES": {
         "absent": true
+      },
+      "BOUADDI": {
+        "sort_a": 84
       }
     },
     "BASTIEN": {
@@ -124,6 +146,9 @@
       },
       "GANIOU": {
         "full_match": true
+      },
+      "NGOY": {
+        "full_match": true
       }
     },
     "ADRIEN": {
@@ -141,6 +166,9 @@
       },
       "UDOL": {
         "full_match": true
+      },
+      "PERRAUD": {
+        "sort_a": 74
       }
     },
     "MICKA": {
@@ -154,6 +182,20 @@
       "AGUILAR": {
         "sort_a": 90,
         "entre_a": 86
+      },
+      "DIAW": {
+        "full_match": true
+      },
+      "LLORIS": {
+        "full_match": true
+      },
+      "NDIAYE": {
+        "absent": true
+      },
+      "SOUMARE": {
+        "full_match": true,
+        "goals": 1,
+        "yellow_cards": true
       }
     }
   },

@@ -3,12 +3,12 @@
     {
       "rang": 1,
       "nom": "FLORIAN",
-      "pts": 1379
+      "pts": 1387
     },
     {
       "rang": 2,
       "nom": "FAB",
-      "pts": 1353
+      "pts": 1354
     },
     {
       "rang": 3,
@@ -17,46 +17,46 @@
     },
     {
       "rang": 4,
-      "nom": "ADRIEN",
-      "pts": 1307
+      "nom": "MICKA",
+      "pts": 1314
     },
     {
       "rang": 5,
-      "nom": "JEROME",
-      "pts": 1302
+      "nom": "ADRIEN",
+      "pts": 1311
     },
     {
       "rang": 6,
-      "nom": "MICKA",
-      "pts": 1301
+      "nom": "JEROME",
+      "pts": 1306
     },
     {
       "rang": 7,
       "nom": "ROMU",
-      "pts": 1266
+      "pts": 1269
     },
     {
       "rang": 8,
       "nom": "VINCENT",
-      "pts": 1255
+      "pts": 1259
     },
     {
       "rang": 9,
       "nom": "ANTHONY",
-      "pts": 1235
+      "pts": 1238
     }
   ],
   "derniere_journee": 32,
   "scores_journee": {
-    "ROMU": 11,
-    "JEROME": 15,
-    "VINCENT": 20,
-    "ADRIEN": 15,
-    "FLORIAN": 18,
-    "FAB": 15,
-    "ANTHONY": 13,
+    "ROMU": 14,
+    "JEROME": 19,
+    "VINCENT": 24,
+    "ADRIEN": 19,
+    "FLORIAN": 26,
+    "FAB": 16,
+    "ANTHONY": 16,
     "BASTIEN": 9,
-    "MICKA": 9
+    "MICKA": 22
   },
   "historique": {
     "1": {
@@ -401,15 +401,15 @@
       "ANTHONY": 35
     },
     "32": {
-      "ROMU": 11,
-      "JEROME": 15,
-      "VINCENT": 20,
-      "ADRIEN": 15,
-      "FLORIAN": 18,
-      "FAB": 15,
-      "ANTHONY": 13,
+      "ROMU": 14,
+      "JEROME": 19,
+      "VINCENT": 24,
+      "ADRIEN": 19,
+      "FLORIAN": 26,
+      "FAB": 16,
+      "ANTHONY": 16,
       "BASTIEN": 9,
-      "MICKA": 9
+      "MICKA": 22
     }
   },
   "detail_journees": {
@@ -175316,8 +175316,8 @@
             "nom": "BOUFAL",
             "statut": "",
             "cap": "",
-            "tj": "0",
-            "tj_pts": 0,
+            "tj": "65",
+            "tj_pts": 3,
             "bm": {
               "val": 0,
               "pts": 0
@@ -175354,7 +175354,7 @@
               "val": 0,
               "pts": 0
             },
-            "pts": 0
+            "pts": 3
           },
           {
             "nom": "DOUMBIA",
@@ -175720,8 +175720,8 @@
             "nom": "NGOY",
             "statut": "",
             "cap": "",
-            "tj": "0",
-            "tj_pts": 0,
+            "tj": "M",
+            "tj_pts": 4,
             "bm": {
               "val": 0,
               "pts": 0
@@ -175758,7 +175758,7 @@
               "val": 0,
               "pts": 0
             },
-            "pts": 0
+            "pts": 4
           },
           {
             "nom": "GANIOU",
@@ -176524,8 +176524,8 @@
             "nom": "HARALDSSON",
             "statut": "",
             "cap": "",
-            "tj": "0",
-            "tj_pts": 0,
+            "tj": "M",
+            "tj_pts": 4,
             "bm": {
               "val": 0,
               "pts": 0
@@ -176562,7 +176562,7 @@
               "val": 0,
               "pts": 0
             },
-            "pts": 0
+            "pts": 4
           },
           {
             "nom": "ZAIRE-EMERY",
@@ -176972,8 +176972,8 @@
             "nom": "PERRAUD",
             "statut": "",
             "cap": "",
-            "tj": "0",
-            "tj_pts": 0,
+            "tj": "74",
+            "tj_pts": 3,
             "bm": {
               "val": 0,
               "pts": 0
@@ -176987,8 +176987,8 @@
               "pts": 0
             },
             "cs": {
-              "val": 0,
-              "pts": 0
+              "val": 1,
+              "pts": 1
             },
             "pm": {
               "val": 0,
@@ -177010,7 +177010,7 @@
               "val": 0,
               "pts": 0
             },
-            "pts": 0
+            "pts": 4
           },
           {
             "nom": "NIAKHATE",
@@ -177508,8 +177508,8 @@
             "nom": "ÖZER",
             "statut": "",
             "cap": "",
-            "tj": "0",
-            "tj_pts": 0,
+            "tj": "M",
+            "tj_pts": 4,
             "bm": {
               "val": 0,
               "pts": 0
@@ -177546,7 +177546,7 @@
               "val": 0,
               "pts": 0
             },
-            "pts": 0
+            "pts": 4
           }
         ],
         "D": [
@@ -177952,8 +177952,8 @@
             "nom": "ANDRE",
             "statut": "",
             "cap": "",
-            "tj": "0",
-            "tj_pts": 0,
+            "tj": "M",
+            "tj_pts": 4,
             "bm": {
               "val": 0,
               "pts": 0
@@ -177990,7 +177990,7 @@
               "val": 0,
               "pts": 0
             },
-            "pts": 0
+            "pts": 4
           }
         ],
         "A": [
@@ -178180,8 +178180,8 @@
             "nom": "MANDI",
             "statut": "",
             "cap": "",
-            "tj": "0",
-            "tj_pts": 0,
+            "tj": "M",
+            "tj_pts": 4,
             "bm": {
               "val": 0,
               "pts": 0
@@ -178211,14 +178211,14 @@
               "pts": 0
             },
             "cj": {
-              "val": 0,
-              "pts": 0
+              "val": 1,
+              "pts": -1
             },
             "cr": {
               "val": 0,
               "pts": 0
             },
-            "pts": 0
+            "pts": 3
           },
           {
             "nom": "BARCO",
@@ -178601,8 +178601,8 @@
               "pts": 0
             },
             "pma": {
-              "val": 0,
-              "pts": 0
+              "val": 1,
+              "pts": -2
             },
             "pd": {
               "val": 0,
@@ -178616,7 +178616,7 @@
               "val": 0,
               "pts": 0
             },
-            "pts": 0
+            "pts": -2
           }
         ],
         "A": [
@@ -179160,8 +179160,8 @@
             "nom": "BOUADDI",
             "statut": "",
             "cap": "",
-            "tj": "0",
-            "tj_pts": 0,
+            "tj": "84",
+            "tj_pts": 3,
             "bm": {
               "val": 0,
               "pts": 0
@@ -179198,7 +179198,7 @@
               "val": 0,
               "pts": 0
             },
-            "pts": 0
+            "pts": 3
           },
           {
             "nom": "ENCISO",
@@ -180012,8 +180012,8 @@
             "nom": "DIAW",
             "statut": "",
             "cap": "",
-            "tj": "0",
-            "tj_pts": 0,
+            "tj": "M",
+            "tj_pts": 4,
             "bm": {
               "val": 0,
               "pts": 0
@@ -180050,7 +180050,7 @@
               "val": 0,
               "pts": 0
             },
-            "pts": 0
+            "pts": 4
           }
         ],
         "D": [
@@ -180146,8 +180146,8 @@
             "nom": "LLORIS",
             "statut": "",
             "cap": "",
-            "tj": "0",
-            "tj_pts": 0,
+            "tj": "M",
+            "tj_pts": 4,
             "bm": {
               "val": 0,
               "pts": 0
@@ -180184,7 +180184,7 @@
               "val": 0,
               "pts": 0
             },
-            "pts": 0
+            "pts": 4
           },
           {
             "nom": "ARCUS",
@@ -180278,7 +180278,7 @@
         "M": [
           {
             "nom": "NDIAYE",
-            "statut": "",
+            "statut": "A",
             "cap": "",
             "tj": "0",
             "tj_pts": 0,
@@ -180502,11 +180502,11 @@
             "nom": "SOUMARE",
             "statut": "",
             "cap": "",
-            "tj": "0",
-            "tj_pts": 0,
+            "tj": "M",
+            "tj_pts": 4,
             "bm": {
-              "val": 0,
-              "pts": 0
+              "val": 1,
+              "pts": 2
             },
             "be": {
               "val": 0,
@@ -180533,14 +180533,14 @@
               "pts": 0
             },
             "cj": {
-              "val": 0,
-              "pts": 0
+              "val": 1,
+              "pts": -1
             },
             "cr": {
               "val": 0,
               "pts": 0
             },
-            "pts": 0
+            "pts": 5
           },
           {
             "nom": "BALOGUN",
@@ -180762,7 +180762,7 @@
       },
       {
         "j": 32,
-        "pts": 1379
+        "pts": 1387
       }
     ],
     "FAB": [
@@ -180892,7 +180892,7 @@
       },
       {
         "j": 32,
-        "pts": 1353
+        "pts": 1354
       }
     ],
     "BASTIEN": [
@@ -181152,7 +181152,7 @@
       },
       {
         "j": 32,
-        "pts": 1307
+        "pts": 1311
       }
     ],
     "JEROME": [
@@ -181282,7 +181282,7 @@
       },
       {
         "j": 32,
-        "pts": 1302
+        "pts": 1306
       }
     ],
     "MICKA": [
@@ -181412,7 +181412,7 @@
       },
       {
         "j": 32,
-        "pts": 1301
+        "pts": 1314
       }
     ],
     "ROMU": [
@@ -181542,7 +181542,7 @@
       },
       {
         "j": 32,
-        "pts": 1266
+        "pts": 1269
       }
     ],
     "VINCENT": [
@@ -181672,7 +181672,7 @@
       },
       {
         "j": 32,
-        "pts": 1255
+        "pts": 1259
       }
     ],
     "ANTHONY": [
@@ -181802,7 +181802,7 @@
       },
       {
         "j": 32,
-        "pts": 1235
+        "pts": 1238
       }
     ]
   },
