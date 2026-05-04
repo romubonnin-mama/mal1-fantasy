@@ -483,20 +483,37 @@ function startClock() {
 async function loadResults() {
   const round = CONFIG.round || 1;
   const container = document.getElementById('results-container');
+
+  // Verrou : si le tour est actif et la deadline pas encore passée,
+  // on ne montre rien du tout concernant le tour courant
+  const deadlinePassed = CONFIG.deadline ? new Date() > new Date(CONFIG.deadline) : true;
+  const lockBanner = (CONFIG.actif && !deadlinePassed)
+    ? `<div class="alert alert-warn" style="margin-bottom:14px">
+        🔒 Les mises du tour ${round} sont secrètes jusqu'à la deadline.<br>
+        <span style="font-size:11px;opacity:.8">Les résultats s'afficheront après la compilation.</span>
+       </div>`
+    : '';
+
   if (round <= 1) {
-    container.innerHTML = '<div class="empty">Les résultats du premier tour apparaîtront ici après la compilation.</div>';
+    container.innerHTML = lockBanner + '<div class="empty">Les résultats du premier tour apparaîtront ici après la compilation.</div>';
     return;
   }
+
   const snap = await getDoc(doc(db, 'resultats', String(round - 1)));
   if (!snap.exists()) {
-    container.innerHTML = '<div class="empty">Pas encore de résultats pour le tour ' + (round - 1) + '.</div>';
+    container.innerHTML = lockBanner + '<div class="empty">Pas encore de résultats pour le tour ' + (round - 1) + '.</div>';
     return;
   }
 
   const data = snap.data();
-  const myEntries = Object.values(data).filter(r => r.bids && r.bids[MGR] !== undefined);
+  // On ne garde QUE les entrées où ce manager a enchéri,
+  // et on efface les mises des autres avant tout traitement
+  const myEntries = Object.values(data)
+    .filter(r => r.bids && r.bids[MGR] !== undefined)
+    .map(r => ({ ...r, myBid: r.bids[MGR], bids: null }));
+
   if (myEntries.length === 0) {
-    container.innerHTML = '<div class="empty">Tu n\'as pas participé au tour ' + (round - 1) + '.</div>';
+    container.innerHTML = lockBanner + '<div class="empty">Tu n\'as pas participé au tour ' + (round - 1) + '.</div>';
     return;
   }
 
@@ -515,13 +532,13 @@ async function loadResults() {
           <div style="font-size:11px;color:var(--text2)">${esc(r.club)}</div>
         </div>
         <div style="text-align:right">
-          <div style="font-family:'Bebas Neue',sans-serif;font-size:18px;color:${color}">${r.bids[MGR]} pts</div>
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:18px;color:${color}">${r.myBid} pts</div>
           ${r.vainqueur && r.vainqueur !== MGR ? `<div style="font-size:10px;color:var(--text2)">→ ${r.vainqueur}</div>` : ''}
         </div>
       </div>`;
     }).join('');
 
-  container.innerHTML =
+  container.innerHTML = lockBanner +
     `<div style="font-weight:700;font-size:14px;margin-bottom:12px">Tour ${round - 1} — Tes résultats</div>` +
     section('✓ Obtenus', 'var(--accent)', won) +
     section('= Égalité — rejoués', 'var(--yellow)', tied) +
