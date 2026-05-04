@@ -1058,28 +1058,6 @@ init().catch(e => {
     </div>
   </div>
 
-  <!-- GESTION JOUEURS -->
-  <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:20px">
-    <div style="padding:10px 16px;background:var(--surface2);border-bottom:1px solid var(--border);font-weight:700;font-size:13px">Joueurs disponibles (<span id="enc-player-count">0</span>)</div>
-    <div style="padding:14px 16px">
-      <div style="display:grid;grid-template-columns:1fr 1fr 80px auto;gap:8px;margin-bottom:12px">
-        <input type="text" id="enc-p-nom" placeholder="Nom du joueur" style="background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:7px 10px;border-radius:6px;font-size:13px">
-        <input type="text" id="enc-p-club" placeholder="Club" style="background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:7px 10px;border-radius:6px;font-size:13px">
-        <select id="enc-p-poste" style="background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:7px 8px;border-radius:6px;font-size:13px">
-          <option value="G">G</option><option value="D">D</option>
-          <option value="M">M</option><option value="A">A</option>
-        </select>
-        <button class="btn btn-primary" id="enc-add-player">+ Ajouter</button>
-      </div>
-      <div style="font-size:11px;color:var(--muted);margin-bottom:10px">
-        Ajout rapide (une ligne = "Nom;Club;Poste") :
-        <textarea id="enc-bulk" rows="4" placeholder="Mbappé;PSG;A&#10;Lacazette;Lyon;A&#10;Maignan;Milan;G" style="width:100%;margin-top:4px;background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:8px;border-radius:6px;font-size:12px;font-family:monospace;resize:vertical"></textarea>
-        <button class="btn btn-subtle" id="enc-bulk-import" style="margin-top:6px">Importer</button>
-      </div>
-      <div style="max-height:320px;overflow-y:auto;border:1px solid var(--border);border-radius:8px" id="enc-player-list"></div>
-    </div>
-  </div>
-
   <!-- SUIVI SOUMISSIONS -->
   <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:20px">
     <div style="padding:10px 16px;background:var(--surface2);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between">
@@ -1112,8 +1090,8 @@ init().catch(e => {
 <script type="module">
 import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-app.js";
 import {
-  getFirestore, doc, getDoc, setDoc, updateDoc, deleteDoc,
-  collection, getDocs, writeBatch
+  getFirestore, doc, getDoc, setDoc, updateDoc,
+  writeBatch
 } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-firestore.js";
 
 const FC = {
@@ -1130,15 +1108,13 @@ const db = getFirestore(fbApp);
 
 const MANAGERS = ["ROMU","ADRIEN","ANTHONY","JEROME","FLORIAN","BASTIEN","VINCENT","FAB","MICKA"];
 let encConfig = {};
-let allPlayers = [];
 
 // ── Init section ──────────────────────────────────────────
 document.querySelector('[data-tab="enchere"]').addEventListener('click', initEnchere);
 
 async function initEnchere() {
-  await Promise.all([loadEncConfig(), loadEncPlayers(), loadEncBudgets()]);
+  await Promise.all([loadEncConfig(), loadEncBudgets()]);
   buildPinsGrid();
-  renderEncPlayers();
   renderEncBudgets();
   await refreshSubmissions();
   document.getElementById('enc-suivi-round').textContent = encConfig.round || 1;
@@ -1210,84 +1186,6 @@ document.getElementById('enc-save-pins').addEventListener('click', async () => {
   await batch.commit();
   document.getElementById('enc-pins-status').textContent = '✓ PINs enregistrés';
   setTimeout(() => document.getElementById('enc-pins-status').textContent = '', 3000);
-});
-
-// ── Players ───────────────────────────────────────────────
-async function loadEncPlayers() {
-  const snap = await getDocs(collection(db, 'joueurs'));
-  allPlayers = [];
-  snap.forEach(d => allPlayers.push({ id: d.id, ...d.data() }));
-}
-
-function renderEncPlayers() {
-  document.getElementById('enc-player-count').textContent = allPlayers.length;
-  const taken = new Set(encConfig.joueurs_pris || []);
-  const container = document.getElementById('enc-player-list');
-  if (allPlayers.length === 0) {
-    container.innerHTML = '<div style="padding:14px;color:var(--muted);font-size:13px;text-align:center">Aucun joueur ajouté</div>';
-    return;
-  }
-  const POSTE_COLORS = { G:'#854d0e', D:'#1e3a5f', M:'#14532d', A:'#7f1d1d' };
-  const groups = { G: [], D: [], M: [], A: [] };
-  allPlayers.forEach(p => (groups[p.poste] || groups['A']).push(p));
-
-  container.innerHTML = Object.entries(groups).map(([poste, players]) =>
-    players.length === 0 ? '' :
-    `<div style="padding:6px 12px;background:var(--surface2);font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">
-      ${poste === 'G' ? 'Gardiens' : poste === 'D' ? 'Défenseurs' : poste === 'M' ? 'Milieux' : 'Attaquants'} (${players.length})
-    </div>` +
-    players.map(p => `
-      <div style="display:flex;align-items:center;padding:6px 12px;border-bottom:1px solid var(--border);font-size:13px;${taken.has(p.id)?'opacity:.4':''}">
-        <span style="font-weight:600;flex:1">${p.nom}</span>
-        <span style="color:var(--muted);font-size:12px;margin-right:12px">${p.club}</span>
-        ${taken.has(p.id) ? '<span style="font-size:10px;color:var(--accent);margin-right:8px">REMPORTÉ</span>' : ''}
-        <button class="btn btn-danger" style="padding:3px 8px;font-size:11px" data-del="${p.id}">✕</button>
-      </div>
-    `).join('')
-  ).join('');
-
-  container.querySelectorAll('[data-del]').forEach(btn => {
-    btn.addEventListener('click', async () => {
-      if (!confirm('Supprimer ce joueur du pool ?')) return;
-      await deleteDoc(doc(db, 'joueurs', btn.dataset.del));
-      allPlayers = allPlayers.filter(p => p.id !== btn.dataset.del);
-      renderEncPlayers();
-    });
-  });
-}
-
-async function addPlayer(nom, club, poste) {
-  nom = nom.trim(); club = club.trim();
-  if (!nom || !club || !poste) return;
-  const id = nom.toLowerCase().replace(/\s+/g, '_').replace(/[^a-z0-9_]/g, '') + '_' + Date.now();
-  await setDoc(doc(db, 'joueurs', id), { nom, club, poste });
-  allPlayers.push({ id, nom, club, poste });
-  renderEncPlayers();
-}
-
-document.getElementById('enc-add-player').addEventListener('click', () => {
-  const nom   = document.getElementById('enc-p-nom').value;
-  const club  = document.getElementById('enc-p-club').value;
-  const poste = document.getElementById('enc-p-poste').value;
-  if (!nom || !club) { alert('Nom et club requis'); return; }
-  addPlayer(nom, club, poste);
-  document.getElementById('enc-p-nom').value = '';
-  document.getElementById('enc-p-club').value = '';
-});
-
-document.getElementById('enc-bulk-import').addEventListener('click', async () => {
-  const lines = document.getElementById('enc-bulk').value.trim().split('\n');
-  let count = 0;
-  for (const line of lines) {
-    const parts = line.split(';');
-    if (parts.length < 3) continue;
-    const [nom, club, poste] = parts.map(s => s.trim());
-    if (!nom || !club || !['G','D','M','A'].includes(poste)) continue;
-    await addPlayer(nom, club, poste);
-    count++;
-  }
-  document.getElementById('enc-bulk').value = '';
-  alert(count + ' joueur(s) importé(s)');
 });
 
 // ── Soumissions ───────────────────────────────────────────
@@ -1453,22 +1351,15 @@ async function compileRound(round) {
     });
   });
 
-  // 6. Mettre à jour joueurs_pris dans config
-  const nouvellesPrises = [
-    ...(encConfig.joueurs_pris || []),
-    ...Object.entries(resultats).filter(([, r]) => r.statut === 'won').map(([id]) => id)
-  ];
-
   const newRound = round + 1;
-  encConfig = { ...encConfig, round: newRound, joueurs_pris: nouvellesPrises };
+  encConfig = { ...encConfig, round: newRound };
   batch.set(doc(db, 'config', 'enchere'), encConfig);
 
   await batch.commit();
 
   // 7. Rafraîchir UI
-  await Promise.all([loadEncBudgets(), loadEncPlayers()]);
+  await loadEncBudgets();
   renderEncBudgets();
-  renderEncPlayers();
   document.getElementById('enc-round').value = newRound;
   document.getElementById('enc-suivi-round').textContent = newRound;
   document.getElementById('enc-compile-round').textContent = newRound;
