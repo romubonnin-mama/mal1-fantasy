@@ -112,6 +112,34 @@ select:focus,input:focus{outline:none;border-color:var(--accent)}
         </div>
         <div id="login-err" class="alert alert-danger" style="display:none">Code incorrect</div>
         <button class="btn btn-primary btn-full" id="login-btn">Se connecter</button>
+        <div style="font-size:11px;color:var(--text2);text-align:center;margin-top:10px">
+          Pas encore de PIN ? Utilise le lien que tu as reçu.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SETUP PIN (premier accès via lien d'invitation) -->
+<div class="page" id="page-setup">
+  <div style="max-width:360px;margin:40px auto">
+    <div class="card">
+      <div class="card-hd"><div class="card-title">Créer ton code PIN</div></div>
+      <div style="padding:16px">
+        <div style="text-align:center;margin-bottom:18px">
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:32px;color:var(--accent)" id="setup-nom">-</div>
+          <div style="font-size:12px;color:var(--text2)">Choisis ton code PIN personnel — l'admin ne le verra pas.</div>
+        </div>
+        <div style="margin-bottom:14px">
+          <label>Code PIN</label>
+          <input type="password" id="setup-pin1" maxlength="6" inputmode="numeric" placeholder="4 à 6 chiffres">
+        </div>
+        <div style="margin-bottom:14px">
+          <label>Confirmer le PIN</label>
+          <input type="password" id="setup-pin2" maxlength="6" inputmode="numeric" placeholder="Répète le même code">
+        </div>
+        <div id="setup-err" class="alert alert-danger" style="display:none"></div>
+        <button class="btn btn-primary btn-full" id="setup-btn">Enregistrer mon PIN</button>
       </div>
     </div>
   </div>
@@ -269,6 +297,58 @@ function clubLogoHtml(club, size = 18) {
   });
 })();
 
+// ── Invitation (lien unique premier accès) ─────────────────
+let INVITE_TOKEN = null;
+let INVITE_MGR   = null;
+
+(async () => {
+  const token = new URLSearchParams(window.location.search).get('token');
+  if (!token) return;
+  const snap = await getDoc(doc(db, 'invites', token));
+  if (!snap.exists()) {
+    const e = document.getElementById('login-err');
+    e.textContent = 'Lien invalide ou déjà utilisé.';
+    e.style.display = 'block';
+    return;
+  }
+  INVITE_TOKEN = token;
+  INVITE_MGR   = snap.data().manager;
+  document.getElementById('setup-nom').textContent = INVITE_MGR;
+  document.getElementById('page-login').classList.remove('active');
+  document.getElementById('page-setup').classList.add('active');
+})();
+
+document.getElementById('setup-btn').addEventListener('click', async () => {
+  const pin1  = document.getElementById('setup-pin1').value.trim();
+  const pin2  = document.getElementById('setup-pin2').value.trim();
+  const errEl = document.getElementById('setup-err');
+  if (pin1.length < 4) {
+    errEl.textContent = 'Le PIN doit contenir au moins 4 chiffres.';
+    errEl.style.display = 'block'; return;
+  }
+  if (pin1 !== pin2) {
+    errEl.textContent = 'Les deux codes ne correspondent pas.';
+    errEl.style.display = 'block'; return;
+  }
+  errEl.style.display = 'none';
+
+  const mgrSnap = await getDoc(doc(db, 'managers', INVITE_MGR));
+  const existing = mgrSnap.exists() ? mgrSnap.data() : {};
+  await setDoc(doc(db, 'managers', INVITE_MGR), { ...existing, pin: pin1, invite_token: null });
+  await deleteDoc(doc(db, 'invites', INVITE_TOKEN));
+
+  MGR      = INVITE_MGR;
+  MGR_DATA = { ...existing, pin: pin1, invite_token: null };
+  document.getElementById('page-setup').classList.remove('active');
+  document.getElementById('page-main').classList.add('active');
+  document.getElementById('header-nom').textContent = MGR;
+  window.history.replaceState({}, '', window.location.pathname);
+  await loadConfig();
+  await loadMyBids();
+  startClock();
+  watchConfig();
+});
+
 // ── Login ──────────────────────────────────────────────────
 document.getElementById('login-btn').addEventListener('click', async () => {
   const nom = document.getElementById('login-nom').value;
@@ -276,13 +356,18 @@ document.getElementById('login-btn').addEventListener('click', async () => {
   if (!nom) { alert('Choisis ton nom'); return; }
 
   const snap = await getDoc(doc(db, 'managers', nom));
-  if (!snap.exists() || String(snap.data().pin) !== pin) {
-    document.getElementById('login-err').style.display = 'block';
+  const data = snap.exists() ? snap.data() : null;
+  if (!data || !data.pin || String(data.pin) !== pin) {
+    const e = document.getElementById('login-err');
+    e.textContent = data && !data.pin
+      ? 'Tu n\'as pas encore créé ton PIN. Utilise le lien d\'invitation reçu.'
+      : 'Code incorrect.';
+    e.style.display = 'block';
     return;
   }
 
   MGR = nom;
-  MGR_DATA = snap.data();
+  MGR_DATA = data;
   document.getElementById('login-err').style.display = 'none';
   document.getElementById('page-login').classList.remove('active');
   document.getElementById('page-main').classList.add('active');

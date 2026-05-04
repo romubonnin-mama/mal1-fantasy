@@ -1056,8 +1056,6 @@ init().catch(e => {
         <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:6px">
           <input type="text" id="enc-new-nom" placeholder="NOM" maxlength="20"
             style="flex:1;min-width:80px;background:var(--surface);border:1px solid var(--border);color:var(--text);padding:7px 10px;border-radius:6px;font-size:13px">
-          <input type="text" id="enc-new-pin" placeholder="PIN" maxlength="6"
-            style="width:80px;background:var(--surface);border:1px solid var(--border);color:var(--text);padding:7px 10px;border-radius:6px;font-size:13px">
           <input type="number" id="enc-new-budget" placeholder="Budget" value="140" min="1"
             style="width:80px;background:var(--surface);border:1px solid var(--border);color:var(--text);padding:7px 10px;border-radius:6px;font-size:13px">
           <button class="btn btn-primary" id="enc-add-mgr">+ Ajouter</button>
@@ -1169,6 +1167,34 @@ async function loadManagers() {
   MANAGERS.sort();
 }
 
+function generateToken() {
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789';
+  return Array.from({length: 20}, () => chars[Math.floor(Math.random() * chars.length)]).join('');
+}
+
+function getInviteUrl(token) {
+  return window.location.href.replace('admin.html', 'enchere.html').split('?')[0] + '?token=' + token;
+}
+
+async function generateInviteLink(nom) {
+  const d = mgrDocs[nom] || {};
+  if (d.invite_token) await deleteDoc(doc(db, 'invites', d.invite_token));
+  const token = generateToken();
+  await setDoc(doc(db, 'invites', token), { manager: nom });
+  await setDoc(doc(db, 'managers', nom), { ...d, invite_token: token, pin: null });
+  mgrDocs[nom] = { ...d, invite_token: token, pin: null };
+  renderManagersList();
+  copyToClipboard(nom);
+}
+
+function copyToClipboard(nom) {
+  const d = mgrDocs[nom] || {};
+  if (!d.invite_token) return;
+  const url = getInviteUrl(d.invite_token);
+  navigator.clipboard.writeText(url).catch(() => {});
+  alert(`Lien copié pour ${nom} !\n\nEnvoie-lui ce lien — il choisira lui-même son PIN :\n\n${url}`);
+}
+
 function renderManagersList() {
   const list = document.getElementById('enc-managers-list');
   if (MANAGERS.length === 0) {
@@ -1177,65 +1203,70 @@ function renderManagersList() {
   }
   list.innerHTML = MANAGERS.map(nom => {
     const d = mgrDocs[nom] || {};
-    return `<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+    const hasPIN   = !!d.pin;
+    const hasToken = !!d.invite_token;
+    const statusHtml = hasPIN
+      ? `<span style="font-size:12px;color:var(--accent)">✓ PIN configuré</span>`
+      : `<span style="font-size:12px;color:var(--yellow)">⏳ En attente</span>`;
+    const actionBtn = hasPIN
+      ? `<button class="btn btn-subtle btn-sm" data-reset="${nom}">Réinitialiser</button>`
+      : hasToken
+        ? `<button class="btn btn-primary btn-sm" data-copy="${nom}">📋 Copier le lien</button>`
+        : `<button class="btn btn-primary btn-sm" data-gen="${nom}">🔗 Générer le lien</button>`;
+    return `<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap">
       <div style="width:90px;font-weight:600;font-size:13px">${nom}</div>
-      <input type="text" id="pin-${nom}" value="${d.pin || ''}" maxlength="6" placeholder="PIN"
-        style="width:80px;background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:5px 8px;border-radius:6px;font-size:13px">
-      <button class="btn btn-primary btn-sm" data-save="${nom}">Sauver</button>
+      ${statusHtml}
+      <div style="flex:1"></div>
+      ${actionBtn}
       <button class="btn btn-danger btn-sm" data-del="${nom}">✕</button>
     </div>`;
   }).join('');
 
-  list.querySelectorAll('[data-save]').forEach(btn => {
-    btn.addEventListener('click', async () => {
-      const nom = btn.dataset.save;
-      const pin = document.getElementById('pin-' + nom)?.value?.trim();
-      if (!pin) { alert('PIN requis'); return; }
-      const existing = mgrDocs[nom] || {};
-      await setDoc(doc(db, 'managers', nom), { ...existing, pin });
-      mgrDocs[nom] = { ...existing, pin };
-      btn.textContent = '✓';
-      setTimeout(() => { btn.textContent = 'Sauver'; }, 2000);
-    });
-  });
-
-  list.querySelectorAll('[data-del]').forEach(btn => {
-    btn.addEventListener('click', async () => {
-      const nom = btn.dataset.del;
-      if (!confirm(`Supprimer le manager "${nom}" ? Ses données seront perdues.`)) return;
-      await deleteDoc(doc(db, 'managers', nom));
-      MANAGERS = MANAGERS.filter(m => m !== nom);
-      delete mgrDocs[nom];
-      renderManagersList();
-      renderEncBudgets();
-    });
-  });
+  list.querySelectorAll('[data-gen]').forEach(b => b.addEventListener('click', () => generateInviteLink(b.dataset.gen)));
+  list.querySelectorAll('[data-copy]').forEach(b => b.addEventListener('click', () => copyToClipboard(b.dataset.copy)));
+  list.querySelectorAll('[data-reset]').forEach(b => b.addEventListener('click', async () => {
+    const nom = b.dataset.reset;
+    if (!confirm(`Réinitialiser le PIN de ${nom} ? Il devra définir un nouveau PIN via un lien.`)) return;
+    await generateInviteLink(nom);
+  }));
+  list.querySelectorAll('[data-del]').forEach(b => b.addEventListener('click', async () => {
+    const nom = b.dataset.del;
+    if (!confirm(`Supprimer le manager "${nom}" ? Ses données seront perdues.`)) return;
+    const d = mgrDocs[nom] || {};
+    if (d.invite_token) await deleteDoc(doc(db, 'invites', d.invite_token));
+    await deleteDoc(doc(db, 'managers', nom));
+    MANAGERS = MANAGERS.filter(m => m !== nom);
+    delete mgrDocs[nom];
+    renderManagersList();
+    renderEncBudgets();
+  }));
 }
 
 document.getElementById('enc-add-mgr').addEventListener('click', async () => {
   const nom    = document.getElementById('enc-new-nom').value.trim().toUpperCase();
-  const pin    = document.getElementById('enc-new-pin').value.trim();
   const budget = parseInt(document.getElementById('enc-new-budget').value) || 140;
   const status = document.getElementById('enc-add-mgr-status');
 
   if (!nom) { status.style.color = 'var(--red)'; status.textContent = 'Nom requis.'; return; }
-  if (!pin) { status.style.color = 'var(--red)'; status.textContent = 'PIN requis.'; return; }
   if (MANAGERS.includes(nom)) { status.style.color = 'var(--red)'; status.textContent = `"${nom}" existe déjà.`; return; }
 
+  const token = generateToken();
+  await setDoc(doc(db, 'invites', token), { manager: nom });
   await setDoc(doc(db, 'managers', nom), {
-    pin, budget_max: budget, budget_restant: budget, joueurs: [], jokers_bonus: 0
+    pin: null, invite_token: token,
+    budget_max: budget, budget_restant: budget, joueurs: [], jokers_bonus: 0
   });
-  mgrDocs[nom] = { pin, budget_max: budget, budget_restant: budget, joueurs: [], jokers_bonus: 0 };
+  mgrDocs[nom] = { pin: null, invite_token: token, budget_max: budget, budget_restant: budget, joueurs: [], jokers_bonus: 0 };
   MANAGERS.push(nom); MANAGERS.sort();
 
   document.getElementById('enc-new-nom').value = '';
-  document.getElementById('enc-new-pin').value = '';
   document.getElementById('enc-new-budget').value = '140';
   status.style.color = 'var(--accent)';
-  status.textContent = `"${nom}" ajouté !`;
-  setTimeout(() => { status.textContent = ''; }, 3000);
+  status.textContent = `"${nom}" ajouté ! Copie et envoie le lien d'invitation.`;
+  setTimeout(() => { status.textContent = ''; }, 4000);
   renderManagersList();
   renderEncBudgets();
+  copyToClipboard(nom);
 });
 
 // ── Soumissions ───────────────────────────────────────────
