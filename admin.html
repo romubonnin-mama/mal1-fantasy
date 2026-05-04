@@ -203,6 +203,7 @@ header h1 { font-size: 18px; font-weight: 700; color: var(--accent); }
   <div class="tab"        data-tab="classement"   onclick="showTab('classement')">Classement</div>
   <div class="tab"        data-tab="corrections"  onclick="showTab('corrections')">Corrections</div>
   <div class="tab"        data-tab="roster"       onclick="showTab('roster')">Effectifs (Jokers)</div>
+  <div class="tab"        data-tab="enchere"      onclick="showTab('enchere')">🏷️ Enchères</div>
 </div>
 
 <div id="toast"></div>
@@ -1009,6 +1010,480 @@ init().catch(e => {
       Lance <code>admin.bat</code> puis recharge cette page.
     </div>`;
 });
+</script>
+
+<!-- ══════════════════════════════════════════════════════════
+     SECTION ENCHÈRES
+════════════════════════════════════════════════════════════ -->
+<div id="section-enchere" class="section">
+<div class="container" style="max-width:1100px">
+
+  <!-- Grille 2 colonnes -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px">
+
+    <!-- CONFIG TOUR -->
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden">
+      <div style="padding:10px 16px;background:var(--surface2);border-bottom:1px solid var(--border);font-weight:700;font-size:13px">Configuration du tour</div>
+      <div style="padding:16px;display:flex;flex-direction:column;gap:12px">
+        <div>
+          <label style="display:block;font-size:11px;color:var(--muted);margin-bottom:4px;text-transform:uppercase;font-weight:600">Tour actuel</label>
+          <div style="display:flex;align-items:center;gap:8px">
+            <input type="number" id="enc-round" min="1" value="1" style="width:70px;background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:7px 10px;border-radius:6px;font-size:14px">
+            <span style="color:var(--muted);font-size:12px">sur</span>
+            <input type="number" id="enc-total-rounds" min="1" value="5" style="width:70px;background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:7px 10px;border-radius:6px;font-size:14px">
+            <span style="color:var(--muted);font-size:12px">tours prévus</span>
+          </div>
+        </div>
+        <div>
+          <label style="display:block;font-size:11px;color:var(--muted);margin-bottom:4px;text-transform:uppercase;font-weight:600">Deadline</label>
+          <input type="datetime-local" id="enc-deadline" style="width:100%;background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:7px 10px;border-radius:6px;font-size:13px">
+        </div>
+        <div style="display:flex;gap:8px">
+          <label style="display:block;font-size:11px;color:var(--muted);margin-bottom:4px;text-transform:uppercase;font-weight:600;align-self:center">Enchères actives</label>
+          <input type="checkbox" id="enc-actif" style="width:18px;height:18px;cursor:pointer;accent-color:var(--accent)">
+        </div>
+        <button class="btn btn-primary" id="enc-save-config">Sauvegarder la config</button>
+        <div id="enc-config-status" style="font-size:12px;color:var(--accent)"></div>
+      </div>
+    </div>
+
+    <!-- CODES PIN MANAGERS -->
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden">
+      <div style="padding:10px 16px;background:var(--surface2);border-bottom:1px solid var(--border);font-weight:700;font-size:13px">Codes PIN managers</div>
+      <div style="padding:12px 16px" id="enc-pins-grid"></div>
+      <div style="padding:10px 16px;border-top:1px solid var(--border)">
+        <button class="btn btn-primary" id="enc-save-pins">Enregistrer tous les PINs</button>
+        <div id="enc-pins-status" style="font-size:12px;color:var(--accent);margin-top:6px"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GESTION JOUEURS -->
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:20px">
+    <div style="padding:10px 16px;background:var(--surface2);border-bottom:1px solid var(--border);font-weight:700;font-size:13px">Joueurs disponibles (<span id="enc-player-count">0</span>)</div>
+    <div style="padding:14px 16px">
+      <div style="display:grid;grid-template-columns:1fr 1fr 80px auto;gap:8px;margin-bottom:12px">
+        <input type="text" id="enc-p-nom" placeholder="Nom du joueur" style="background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:7px 10px;border-radius:6px;font-size:13px">
+        <input type="text" id="enc-p-club" placeholder="Club" style="background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:7px 10px;border-radius:6px;font-size:13px">
+        <select id="enc-p-poste" style="background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:7px 8px;border-radius:6px;font-size:13px">
+          <option value="G">G</option><option value="D">D</option>
+          <option value="M">M</option><option value="A">A</option>
+        </select>
+        <button class="btn btn-primary" id="enc-add-player">+ Ajouter</button>
+      </div>
+      <div style="font-size:11px;color:var(--muted);margin-bottom:10px">
+        Ajout rapide (une ligne = "Nom;Club;Poste") :
+        <textarea id="enc-bulk" rows="4" placeholder="Mbappé;PSG;A&#10;Lacazette;Lyon;A&#10;Maignan;Milan;G" style="width:100%;margin-top:4px;background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:8px;border-radius:6px;font-size:12px;font-family:monospace;resize:vertical"></textarea>
+        <button class="btn btn-subtle" id="enc-bulk-import" style="margin-top:6px">Importer</button>
+      </div>
+      <div style="max-height:320px;overflow-y:auto;border:1px solid var(--border);border-radius:8px" id="enc-player-list"></div>
+    </div>
+  </div>
+
+  <!-- SUIVI SOUMISSIONS -->
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:20px">
+    <div style="padding:10px 16px;background:var(--surface2);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between">
+      <div style="font-weight:700;font-size:13px">Suivi des soumissions — Tour <span id="enc-suivi-round">?</span></div>
+      <button class="btn btn-subtle" id="enc-refresh-bids" style="font-size:12px;padding:5px 12px">🔄 Actualiser</button>
+    </div>
+    <div id="enc-submissions-grid" style="padding:14px 16px;display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px"></div>
+  </div>
+
+  <!-- COMPILATION -->
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:20px">
+    <div style="padding:10px 16px;background:var(--surface2);border-bottom:1px solid var(--border);font-weight:700;font-size:13px">Compiler le tour <span id="enc-compile-round">?</span></div>
+    <div style="padding:14px 16px">
+      <p style="font-size:12px;color:var(--muted);margin-bottom:12px">Lance la compilation après la deadline. Les résultats sont calculés, les budgets mis à jour, et le tour suivant est ouvert.</p>
+      <button class="btn btn-primary" id="enc-compile-btn">⚡ Compiler le tour</button>
+      <div id="enc-compile-results" style="margin-top:14px"></div>
+    </div>
+  </div>
+
+  <!-- BUDGETS & EFFECTIFS -->
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden">
+    <div style="padding:10px 16px;background:var(--surface2);border-bottom:1px solid var(--border);font-weight:700;font-size:13px">Budgets & effectifs managers</div>
+    <div id="enc-budgets-grid" style="padding:14px 16px;display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px"></div>
+  </div>
+
+</div>
+</div>
+
+<!-- Firebase Enchères -->
+<script type="module">
+import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-app.js";
+import {
+  getFirestore, doc, getDoc, setDoc, updateDoc, deleteDoc,
+  collection, getDocs, writeBatch
+} from "https://www.gstatic.com/firebasejs/12.12.1/firebase-firestore.js";
+
+const FC = {
+  apiKey:"AIzaSyDaRa0yS8HohfrTr4o_InliSZ82PA4-t1I",
+  authDomain:"coach-ligue1.firebaseapp.com",
+  projectId:"coach-ligue1",
+  storageBucket:"coach-ligue1.firebasestorage.app",
+  messagingSenderId:"249358091855",
+  appId:"1:249358091855:web:be9aaa90b47a2269750c3a"
+};
+
+const fbApp = getApps().length ? getApps()[0] : initializeApp(FC);
+const db = getFirestore(fbApp);
+
+const MANAGERS = ["ROMU","ADRIEN","ANTHONY","JEROME","FLORIAN","BASTIEN","VINCENT","FAB","MICKA"];
+let encConfig = {};
+let allPlayers = [];
+
+// ── Init section ──────────────────────────────────────────
+document.querySelector('[data-tab="enchere"]').addEventListener('click', initEnchere);
+
+async function initEnchere() {
+  await Promise.all([loadEncConfig(), loadEncPlayers(), loadEncBudgets()]);
+  buildPinsGrid();
+  renderEncPlayers();
+  renderEncBudgets();
+  await refreshSubmissions();
+  document.getElementById('enc-suivi-round').textContent = encConfig.round || 1;
+  document.getElementById('enc-compile-round').textContent = encConfig.round || 1;
+}
+
+// ── Config ────────────────────────────────────────────────
+async function loadEncConfig() {
+  const snap = await getDoc(doc(db, 'config', 'enchere'));
+  encConfig = snap.exists() ? snap.data() : { round: 1, actif: false };
+  document.getElementById('enc-round').value = encConfig.round || 1;
+  document.getElementById('enc-actif').checked = encConfig.actif || false;
+  if (encConfig.deadline) {
+    // Convert ISO to datetime-local format
+    const d = new Date(encConfig.deadline);
+    const local = new Date(d - d.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
+    document.getElementById('enc-deadline').value = local;
+  }
+}
+
+document.getElementById('enc-save-config').addEventListener('click', async () => {
+  const round   = parseInt(document.getElementById('enc-round').value) || 1;
+  const actif   = document.getElementById('enc-actif').checked;
+  const dlRaw   = document.getElementById('enc-deadline').value;
+  const deadline = dlRaw ? new Date(dlRaw).toISOString() : null;
+
+  encConfig = { ...encConfig, round, actif, deadline };
+  await setDoc(doc(db, 'config', 'enchere'), encConfig);
+  document.getElementById('enc-config-status').textContent = '✓ Config sauvegardée';
+  document.getElementById('enc-suivi-round').textContent = round;
+  document.getElementById('enc-compile-round').textContent = round;
+  setTimeout(() => document.getElementById('enc-config-status').textContent = '', 3000);
+});
+
+// ── PINs ──────────────────────────────────────────────────
+let mgrDocs = {};
+
+async function buildPinsGrid() {
+  const grid = document.getElementById('enc-pins-grid');
+  // Load existing PINs
+  mgrDocs = {};
+  await Promise.all(MANAGERS.map(async nom => {
+    const snap = await getDoc(doc(db, 'managers', nom));
+    mgrDocs[nom] = snap.exists() ? snap.data() : { pin: '', budget_max: 140, budget_restant: 140, joueurs: [] };
+  }));
+
+  grid.innerHTML = MANAGERS.map(nom => `
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+      <div style="width:70px;font-weight:600;font-size:13px">${nom}</div>
+      <input type="text" id="pin-${nom}" value="${mgrDocs[nom].pin || ''}" maxlength="6"
+        placeholder="PIN" style="width:80px;background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:5px 8px;border-radius:6px;font-size:13px">
+    </div>
+  `).join('');
+}
+
+document.getElementById('enc-save-pins').addEventListener('click', async () => {
+  const batch = writeBatch(db);
+  MANAGERS.forEach(nom => {
+    const pin = document.getElementById('pin-' + nom)?.value?.trim();
+    if (!pin) return;
+    const existing = mgrDocs[nom] || {};
+    batch.set(doc(db, 'managers', nom), {
+      ...existing, pin,
+      budget_max: existing.budget_max || 140,
+      budget_restant: existing.budget_restant || 140,
+      joueurs: existing.joueurs || []
+    });
+  });
+  await batch.commit();
+  document.getElementById('enc-pins-status').textContent = '✓ PINs enregistrés';
+  setTimeout(() => document.getElementById('enc-pins-status').textContent = '', 3000);
+});
+
+// ── Players ───────────────────────────────────────────────
+async function loadEncPlayers() {
+  const snap = await getDocs(collection(db, 'joueurs'));
+  allPlayers = [];
+  snap.forEach(d => allPlayers.push({ id: d.id, ...d.data() }));
+}
+
+function renderEncPlayers() {
+  document.getElementById('enc-player-count').textContent = allPlayers.length;
+  const taken = new Set(encConfig.joueurs_pris || []);
+  const container = document.getElementById('enc-player-list');
+  if (allPlayers.length === 0) {
+    container.innerHTML = '<div style="padding:14px;color:var(--muted);font-size:13px;text-align:center">Aucun joueur ajouté</div>';
+    return;
+  }
+  const POSTE_COLORS = { G:'#854d0e', D:'#1e3a5f', M:'#14532d', A:'#7f1d1d' };
+  const groups = { G: [], D: [], M: [], A: [] };
+  allPlayers.forEach(p => (groups[p.poste] || groups['A']).push(p));
+
+  container.innerHTML = Object.entries(groups).map(([poste, players]) =>
+    players.length === 0 ? '' :
+    `<div style="padding:6px 12px;background:var(--surface2);font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">
+      ${poste === 'G' ? 'Gardiens' : poste === 'D' ? 'Défenseurs' : poste === 'M' ? 'Milieux' : 'Attaquants'} (${players.length})
+    </div>` +
+    players.map(p => `
+      <div style="display:flex;align-items:center;padding:6px 12px;border-bottom:1px solid var(--border);font-size:13px;${taken.has(p.id)?'opacity:.4':''}">
+        <span style="font-weight:600;flex:1">${p.nom}</span>
+        <span style="color:var(--muted);font-size:12px;margin-right:12px">${p.club}</span>
+        ${taken.has(p.id) ? '<span style="font-size:10px;color:var(--accent);margin-right:8px">REMPORTÉ</span>' : ''}
+        <button class="btn btn-danger" style="padding:3px 8px;font-size:11px" data-del="${p.id}">✕</button>
+      </div>
+    `).join('')
+  ).join('');
+
+  container.querySelectorAll('[data-del]').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      if (!confirm('Supprimer ce joueur du pool ?')) return;
+      await deleteDoc(doc(db, 'joueurs', btn.dataset.del));
+      allPlayers = allPlayers.filter(p => p.id !== btn.dataset.del);
+      renderEncPlayers();
+    });
+  });
+}
+
+async function addPlayer(nom, club, poste) {
+  nom = nom.trim(); club = club.trim();
+  if (!nom || !club || !poste) return;
+  const id = nom.toLowerCase().replace(/\s+/g, '_').replace(/[^a-z0-9_]/g, '') + '_' + Date.now();
+  await setDoc(doc(db, 'joueurs', id), { nom, club, poste });
+  allPlayers.push({ id, nom, club, poste });
+  renderEncPlayers();
+}
+
+document.getElementById('enc-add-player').addEventListener('click', () => {
+  const nom   = document.getElementById('enc-p-nom').value;
+  const club  = document.getElementById('enc-p-club').value;
+  const poste = document.getElementById('enc-p-poste').value;
+  if (!nom || !club) { alert('Nom et club requis'); return; }
+  addPlayer(nom, club, poste);
+  document.getElementById('enc-p-nom').value = '';
+  document.getElementById('enc-p-club').value = '';
+});
+
+document.getElementById('enc-bulk-import').addEventListener('click', async () => {
+  const lines = document.getElementById('enc-bulk').value.trim().split('\n');
+  let count = 0;
+  for (const line of lines) {
+    const parts = line.split(';');
+    if (parts.length < 3) continue;
+    const [nom, club, poste] = parts.map(s => s.trim());
+    if (!nom || !club || !['G','D','M','A'].includes(poste)) continue;
+    await addPlayer(nom, club, poste);
+    count++;
+  }
+  document.getElementById('enc-bulk').value = '';
+  alert(count + ' joueur(s) importé(s)');
+});
+
+// ── Soumissions ───────────────────────────────────────────
+async function refreshSubmissions() {
+  const round = encConfig.round || 1;
+  document.getElementById('enc-suivi-round').textContent = round;
+  const grid = document.getElementById('enc-submissions-grid');
+
+  const results = await Promise.all(MANAGERS.map(async nom => {
+    const snap = await getDoc(doc(db, 'soumissions', `${round}_${nom}`));
+    return { nom, data: snap.exists() ? snap.data() : null };
+  }));
+
+  grid.innerHTML = results.map(({ nom, data }) => {
+    const ok = data?.submitted;
+    const total = data?.total || 0;
+    const count = data?.bids?.length || 0;
+    const color = ok ? 'var(--accent)' : 'var(--muted)';
+    return `
+      <div style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:10px 12px;cursor:pointer;transition:border-color .15s"
+           data-mgr="${nom}" class="enc-mgr-card">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
+          <div style="font-weight:700;font-size:13px">${nom}</div>
+          <div style="font-size:11px;font-weight:700;color:${color}">${ok ? '✓ Envoyé' : '⏳ En attente'}</div>
+        </div>
+        <div style="font-size:11px;color:var(--muted)">${count} joueur(s) · ${total} pts misés</div>
+        ${data?.timestamp ? `<div style="font-size:10px;color:var(--muted);margin-top:3px">${new Date(data.timestamp).toLocaleString('fr-FR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})}</div>` : ''}
+      </div>`;
+  }).join('');
+
+  grid.querySelectorAll('.enc-mgr-card').forEach(card => {
+    card.addEventListener('click', () => showManagerBids(card.dataset.mgr, results, round));
+  });
+}
+
+document.getElementById('enc-refresh-bids').addEventListener('click', refreshSubmissions);
+
+function showManagerBids(nom, results, round) {
+  const r = results.find(x => x.nom === nom);
+  if (!r?.data?.bids?.length) { alert(nom + ' n\'a pas encore soumis de mises.'); return; }
+  const lines = r.data.bids.map(b =>
+    `${b.poste} | ${b.nom} (${b.club}) — ${b.mise} pts`
+  ).join('\n');
+  alert(`Mises de ${nom} — Tour ${round} :\n\n${lines}\n\nTotal : ${r.data.total} pts`);
+}
+
+// ── Budgets ───────────────────────────────────────────────
+async function loadEncBudgets() {
+  mgrDocs = {};
+  await Promise.all(MANAGERS.map(async nom => {
+    const snap = await getDoc(doc(db, 'managers', nom));
+    mgrDocs[nom] = snap.exists() ? snap.data() : { budget_max: 140, budget_restant: 140, joueurs: [] };
+  }));
+}
+
+function renderEncBudgets() {
+  const grid = document.getElementById('enc-budgets-grid');
+  grid.innerHTML = MANAGERS.map(nom => {
+    const d = mgrDocs[nom] || {};
+    const restant = d.budget_restant ?? 140;
+    const max = d.budget_max ?? 140;
+    const joueurs = d.joueurs?.length || 0;
+    const pct = Math.round((restant / Math.max(max, 1)) * 100);
+    return `
+      <div style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:10px 12px">
+        <div style="font-weight:700;font-size:13px;margin-bottom:6px">${nom}</div>
+        <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:4px">
+          <span>${joueurs}/14 joueurs</span>
+          <span style="color:var(--accent);font-weight:700">${restant}/${max} pts</span>
+        </div>
+        <div style="background:var(--border);border-radius:3px;height:5px">
+          <div style="height:100%;width:${pct}%;background:var(--accent);border-radius:3px"></div>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+// ── Compilation ───────────────────────────────────────────
+document.getElementById('enc-compile-btn').addEventListener('click', async () => {
+  const round = encConfig.round || 1;
+  if (!confirm(`Compiler le tour ${round} ? Cette action est irréversible.`)) return;
+
+  const btn = document.getElementById('enc-compile-btn');
+  btn.disabled = true; btn.textContent = '⏳ Compilation...';
+
+  try {
+    await compileRound(round);
+    btn.textContent = '✓ Tour compilé';
+  } catch (e) {
+    alert('Erreur : ' + e.message);
+    btn.disabled = false;
+    btn.textContent = '⚡ Compiler le tour';
+  }
+});
+
+async function compileRound(round) {
+  // 1. Charger toutes les soumissions du tour
+  const submissions = {};
+  await Promise.all(MANAGERS.map(async nom => {
+    const snap = await getDoc(doc(db, 'soumissions', `${round}_${nom}`));
+    if (snap.exists() && snap.data().submitted) {
+      submissions[nom] = snap.data();
+    }
+  }));
+
+  // 2. Agréger les mises par joueur
+  const playerBids = {}; // player_id → { nom, club, poste, bids: {MGR: mise} }
+  Object.entries(submissions).forEach(([mgr, sub]) => {
+    (sub.bids || []).forEach(b => {
+      if (!playerBids[b.id]) playerBids[b.id] = { nom: b.nom, club: b.club, poste: b.poste, bids: {} };
+      playerBids[b.id].bids[mgr] = b.mise;
+    });
+  });
+
+  // 3. Déterminer vainqueurs
+  const resultats = {};
+  const wonByMgr = {}; // mgr → [{id, nom, club, poste, mise}]
+  MANAGERS.forEach(m => wonByMgr[m] = []);
+
+  Object.entries(playerBids).forEach(([pid, pdata]) => {
+    const bids = pdata.bids;
+    const maxMise = Math.max(...Object.values(bids));
+    const winners = Object.entries(bids).filter(([, v]) => v === maxMise).map(([m]) => m);
+
+    let statut, vainqueur;
+    if (winners.length === 1) {
+      statut = 'won'; vainqueur = winners[0];
+      wonByMgr[vainqueur].push({ id: pid, nom: pdata.nom, club: pdata.club, poste: pdata.poste, mise: maxMise });
+    } else {
+      statut = 'tied'; vainqueur = null;
+    }
+    resultats[pid] = { ...pdata, statut, vainqueur, max_bid: maxMise };
+  });
+
+  // 4. Sauvegarder résultats
+  await setDoc(doc(db, 'resultats', String(round)), resultats);
+
+  // 5. Mettre à jour managers
+  await loadEncBudgets();
+  const batch = writeBatch(db);
+
+  MANAGERS.forEach(nom => {
+    const existing = mgrDocs[nom] || { budget_max: 140, budget_restant: 140, joueurs: [] };
+    const joueurs = [...(existing.joueurs || []), ...wonByMgr[nom]];
+
+    let budget_max = existing.budget_max || 140;
+    // Tour 1 : fixer budget_max = total soumis
+    if (round === 1 && submissions[nom]) {
+      budget_max = submissions[nom].total || 140;
+    }
+
+    // budget_restant = budget_max - somme de toutes les mises gagnées
+    const totalWon = joueurs.reduce((s, j) => s + (j.mise || 0), 0);
+    const budget_restant = budget_max - totalWon;
+
+    // Jokers bonus (tour 1 uniquement)
+    const jokers_bonus = round === 1
+      ? Math.min(3, Math.floor((140 - budget_max) / 10))
+      : (existing.jokers_bonus || 0);
+
+    batch.set(doc(db, 'managers', nom), {
+      ...existing, budget_max, budget_restant, joueurs, jokers_bonus
+    });
+  });
+
+  // 6. Mettre à jour joueurs_pris dans config
+  const nouvellesPrises = [
+    ...(encConfig.joueurs_pris || []),
+    ...Object.entries(resultats).filter(([, r]) => r.statut === 'won').map(([id]) => id)
+  ];
+
+  const newRound = round + 1;
+  encConfig = { ...encConfig, round: newRound, joueurs_pris: nouvellesPrises };
+  batch.set(doc(db, 'config', 'enchere'), encConfig);
+
+  await batch.commit();
+
+  // 7. Rafraîchir UI
+  await Promise.all([loadEncBudgets(), loadEncPlayers()]);
+  renderEncBudgets();
+  renderEncPlayers();
+  document.getElementById('enc-round').value = newRound;
+  document.getElementById('enc-suivi-round').textContent = newRound;
+  document.getElementById('enc-compile-round').textContent = newRound;
+
+  // 8. Afficher résumé
+  const won_total   = Object.values(resultats).filter(r => r.statut === 'won').length;
+  const tied_total  = Object.values(resultats).filter(r => r.statut === 'tied').length;
+  document.getElementById('enc-compile-results').innerHTML = `
+    <div style="background:rgba(0,229,160,.1);border:1px solid var(--accent);border-radius:8px;padding:12px 14px;font-size:13px">
+      <div style="font-weight:700;color:var(--accent);margin-bottom:8px">Tour ${round} compilé ✓</div>
+      <div>✅ ${won_total} joueur(s) attribué(s)</div>
+      <div>🔄 ${tied_total} joueur(s) en égalité (remis en jeu)</div>
+      <div style="margin-top:8px;font-size:12px;color:var(--muted)">Tour ${newRound} maintenant actif — pense à mettre à jour la deadline.</div>
+    </div>`;
+}
 </script>
 
 <button id="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Remonter en haut">↑</button>
