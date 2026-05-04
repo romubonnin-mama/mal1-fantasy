@@ -226,6 +226,36 @@ let myBids = [];
 let submitted = false;
 let clockTimer = null;
 
+// ── Logos clubs Ligue 1 (api-sports IDs) ──────────────────
+const CLUB_IDS = {
+  'PSG':85,'PARIS':85,'PARIS SG':85,'PARIS SAINT-GERMAIN':85,
+  'OM':81,'MARSEILLE':81,'OLYMPIQUE DE MARSEILLE':81,
+  'MONACO':91,'ASM':91,'AS MONACO':91,
+  'OL':80,'LYON':80,'OLYMPIQUE LYONNAIS':80,
+  'LOSC':79,'LILLE':79,'LILLE OSC':79,
+  'NICE':84,'OGC NICE':84,'OGCN':84,
+  'LENS':116,'RCL':116,'RC LENS':116,
+  'RENNES':94,'SRFC':94,'STADE RENNAIS':94,
+  'STRASBOURG':95,'RCSA':95,'RC STRASBOURG':95,
+  'MONTPELLIER':83,'MHSC':83,'MONTPELLIER HSC':83,
+  'REIMS':96,'SDR':96,'STADE DE REIMS':96,
+  'AUXERRE':77,'AJA':77,'AJ AUXERRE':77,
+  'LE HAVRE':111,'HAC':111,'HAVRE':111,
+  'TOULOUSE':108,'TFC':108,'FC TOULOUSE':108,
+  'NANTES':112,'FCN':112,'FC NANTES':112,
+  'SAINT-ETIENNE':97,'ASSE':97,'ST ETIENNE':97,'AS SAINT-ETIENNE':97,
+  'ANGERS':113,'SCO':113,'ANGERS SCO':113,
+  'BREST':132,'SB29':132,'STADE BRESTOIS':132,
+};
+
+function clubLogoHtml(club, size = 18) {
+  const id = CLUB_IDS[club.toUpperCase().trim()];
+  if (!id) return '';
+  return `<img src="https://media.api-sports.io/football/teams/${id}.png"
+    style="width:${size}px;height:${size}px;object-fit:contain;flex-shrink:0"
+    onerror="this.style.display='none'" alt="">`;
+}
+
 // ── Chargement dynamique des managers ─────────────────────
 (async () => {
   const snap = await getDocs(collection(db, 'managers'));
@@ -383,7 +413,7 @@ function renderBids() {
       <span class="poste-badge ${cls}">${b.poste}</span>
       <div style="flex:1;min-width:0">
         <div style="font-weight:600;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(b.nom)}</div>
-        <div style="font-size:11px;color:var(--text2)">${esc(b.club)}</div>
+        <div style="font-size:11px;color:var(--text2);display:flex;align-items:center;gap:4px">${clubLogoHtml(b.club,14)}${esc(b.club)}</div>
       </div>
       <input class="mise-input" type="number" min="1" value="${b.mise}" data-idx="${i}" style="width:60px">
       <span style="font-size:11px;color:var(--text2)">pts</span>
@@ -529,7 +559,7 @@ async function loadResults() {
         <span class="poste-badge ${cls}">${r.poste}</span>
         <div style="flex:1;min-width:0">
           <div style="font-weight:600;font-size:13px">${esc(r.nom)}</div>
-          <div style="font-size:11px;color:var(--text2)">${esc(r.club)}</div>
+          <div style="font-size:11px;color:var(--text2);display:flex;align-items:center;gap:4px">${clubLogoHtml(r.club,14)}${esc(r.club)}</div>
         </div>
         <div style="text-align:right">
           <div style="font-family:'Bebas Neue',sans-serif;font-size:18px;color:${color}">${r.myBid} pts</div>
