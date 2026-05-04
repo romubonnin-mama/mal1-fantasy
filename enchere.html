@@ -104,9 +104,6 @@ select:focus,input:focus{outline:none;border-color:var(--accent)}
           <label>Ton nom</label>
           <select id="login-nom">
             <option value="">— Choisir —</option>
-            <option>ROMU</option><option>ADRIEN</option><option>ANTHONY</option>
-            <option>JEROME</option><option>FLORIAN</option><option>BASTIEN</option>
-            <option>VINCENT</option><option>FAB</option><option>MICKA</option>
           </select>
         </div>
         <div style="margin-bottom:14px">
@@ -207,7 +204,7 @@ select:focus,input:focus{outline:none;border-color:var(--accent)}
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-app.js";
-import { getFirestore, doc, getDoc, setDoc, onSnapshot }
+import { getFirestore, doc, getDoc, setDoc, onSnapshot, getDocs, collection }
   from "https://www.gstatic.com/firebasejs/12.12.1/firebase-firestore.js";
 
 const FC = {
@@ -228,6 +225,19 @@ let CONFIG = {};
 let myBids = [];
 let submitted = false;
 let clockTimer = null;
+
+// ── Chargement dynamique des managers ─────────────────────
+(async () => {
+  const snap = await getDocs(collection(db, 'managers'));
+  const sel = document.getElementById('login-nom');
+  const noms = [];
+  snap.forEach(d => noms.push(d.id));
+  noms.sort().forEach(nom => {
+    const opt = document.createElement('option');
+    opt.value = nom; opt.textContent = nom;
+    sel.appendChild(opt);
+  });
+})();
 
 // ── Login ──────────────────────────────────────────────────
 document.getElementById('login-btn').addEventListener('click', async () => {

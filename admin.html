@@ -1047,13 +1047,22 @@ init().catch(e => {
       </div>
     </div>
 
-    <!-- CODES PIN MANAGERS -->
+    <!-- GESTION MANAGERS -->
     <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden">
-      <div style="padding:10px 16px;background:var(--surface2);border-bottom:1px solid var(--border);font-weight:700;font-size:13px">Codes PIN managers</div>
-      <div style="padding:12px 16px" id="enc-pins-grid"></div>
-      <div style="padding:10px 16px;border-top:1px solid var(--border)">
-        <button class="btn btn-primary" id="enc-save-pins">Enregistrer tous les PINs</button>
-        <div id="enc-pins-status" style="font-size:12px;color:var(--accent);margin-top:6px"></div>
+      <div style="padding:10px 16px;background:var(--surface2);border-bottom:1px solid var(--border);font-weight:700;font-size:13px">Managers participants</div>
+      <div style="padding:12px 16px" id="enc-managers-list"></div>
+      <div style="padding:12px 16px;border-top:1px solid var(--border);background:var(--surface2)">
+        <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">Ajouter un manager</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:6px">
+          <input type="text" id="enc-new-nom" placeholder="NOM" maxlength="20"
+            style="flex:1;min-width:80px;background:var(--surface);border:1px solid var(--border);color:var(--text);padding:7px 10px;border-radius:6px;font-size:13px">
+          <input type="text" id="enc-new-pin" placeholder="PIN" maxlength="6"
+            style="width:80px;background:var(--surface);border:1px solid var(--border);color:var(--text);padding:7px 10px;border-radius:6px;font-size:13px">
+          <input type="number" id="enc-new-budget" placeholder="Budget" value="140" min="1"
+            style="width:80px;background:var(--surface);border:1px solid var(--border);color:var(--text);padding:7px 10px;border-radius:6px;font-size:13px">
+          <button class="btn btn-primary" id="enc-add-mgr">+ Ajouter</button>
+        </div>
+        <div id="enc-add-mgr-status" style="font-size:12px"></div>
       </div>
     </div>
   </div>
@@ -1091,7 +1100,7 @@ init().catch(e => {
 import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-app.js";
 import {
   getFirestore, doc, getDoc, setDoc, updateDoc,
-  writeBatch
+  writeBatch, getDocs, collection, deleteDoc
 } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-firestore.js";
 
 const FC = {
@@ -1106,15 +1115,15 @@ const FC = {
 const fbApp = getApps().length ? getApps()[0] : initializeApp(FC);
 const db = getFirestore(fbApp);
 
-const MANAGERS = ["ROMU","ADRIEN","ANTHONY","JEROME","FLORIAN","BASTIEN","VINCENT","FAB","MICKA"];
+let MANAGERS = [];
 let encConfig = {};
 
 // ── Init section ──────────────────────────────────────────
 document.querySelector('[data-tab="enchere"]').addEventListener('click', initEnchere);
 
 async function initEnchere() {
-  await Promise.all([loadEncConfig(), loadEncBudgets()]);
-  buildPinsGrid();
+  await Promise.all([loadEncConfig(), loadManagers()]);
+  renderManagersList();
   renderEncBudgets();
   await refreshSubmissions();
   document.getElementById('enc-suivi-round').textContent = encConfig.round || 1;
@@ -1149,43 +1158,84 @@ document.getElementById('enc-save-config').addEventListener('click', async () =>
   setTimeout(() => document.getElementById('enc-config-status').textContent = '', 3000);
 });
 
-// ── PINs ──────────────────────────────────────────────────
+// ── Managers CRUD ─────────────────────────────────────────
 let mgrDocs = {};
 
-async function buildPinsGrid() {
-  const grid = document.getElementById('enc-pins-grid');
-  // Load existing PINs
+async function loadManagers() {
+  const snap = await getDocs(collection(db, 'managers'));
+  MANAGERS = [];
   mgrDocs = {};
-  await Promise.all(MANAGERS.map(async nom => {
-    const snap = await getDoc(doc(db, 'managers', nom));
-    mgrDocs[nom] = snap.exists() ? snap.data() : { pin: '', budget_max: 140, budget_restant: 140, joueurs: [] };
-  }));
-
-  grid.innerHTML = MANAGERS.map(nom => `
-    <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
-      <div style="width:70px;font-weight:600;font-size:13px">${nom}</div>
-      <input type="text" id="pin-${nom}" value="${mgrDocs[nom].pin || ''}" maxlength="6"
-        placeholder="PIN" style="width:80px;background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:5px 8px;border-radius:6px;font-size:13px">
-    </div>
-  `).join('');
+  snap.forEach(d => { MANAGERS.push(d.id); mgrDocs[d.id] = d.data(); });
+  MANAGERS.sort();
 }
 
-document.getElementById('enc-save-pins').addEventListener('click', async () => {
-  const batch = writeBatch(db);
-  MANAGERS.forEach(nom => {
-    const pin = document.getElementById('pin-' + nom)?.value?.trim();
-    if (!pin) return;
-    const existing = mgrDocs[nom] || {};
-    batch.set(doc(db, 'managers', nom), {
-      ...existing, pin,
-      budget_max: existing.budget_max || 140,
-      budget_restant: existing.budget_restant || 140,
-      joueurs: existing.joueurs || []
+function renderManagersList() {
+  const list = document.getElementById('enc-managers-list');
+  if (MANAGERS.length === 0) {
+    list.innerHTML = '<div style="font-size:13px;color:var(--muted);padding:4px 0">Aucun manager — ajoutes-en ci-dessous.</div>';
+    return;
+  }
+  list.innerHTML = MANAGERS.map(nom => {
+    const d = mgrDocs[nom] || {};
+    return `<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+      <div style="width:90px;font-weight:600;font-size:13px">${nom}</div>
+      <input type="text" id="pin-${nom}" value="${d.pin || ''}" maxlength="6" placeholder="PIN"
+        style="width:80px;background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:5px 8px;border-radius:6px;font-size:13px">
+      <button class="btn btn-primary btn-sm" data-save="${nom}">Sauver</button>
+      <button class="btn btn-danger btn-sm" data-del="${nom}">✕</button>
+    </div>`;
+  }).join('');
+
+  list.querySelectorAll('[data-save]').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const nom = btn.dataset.save;
+      const pin = document.getElementById('pin-' + nom)?.value?.trim();
+      if (!pin) { alert('PIN requis'); return; }
+      const existing = mgrDocs[nom] || {};
+      await setDoc(doc(db, 'managers', nom), { ...existing, pin });
+      mgrDocs[nom] = { ...existing, pin };
+      btn.textContent = '✓';
+      setTimeout(() => { btn.textContent = 'Sauver'; }, 2000);
     });
   });
-  await batch.commit();
-  document.getElementById('enc-pins-status').textContent = '✓ PINs enregistrés';
-  setTimeout(() => document.getElementById('enc-pins-status').textContent = '', 3000);
+
+  list.querySelectorAll('[data-del]').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const nom = btn.dataset.del;
+      if (!confirm(`Supprimer le manager "${nom}" ? Ses données seront perdues.`)) return;
+      await deleteDoc(doc(db, 'managers', nom));
+      MANAGERS = MANAGERS.filter(m => m !== nom);
+      delete mgrDocs[nom];
+      renderManagersList();
+      renderEncBudgets();
+    });
+  });
+}
+
+document.getElementById('enc-add-mgr').addEventListener('click', async () => {
+  const nom    = document.getElementById('enc-new-nom').value.trim().toUpperCase();
+  const pin    = document.getElementById('enc-new-pin').value.trim();
+  const budget = parseInt(document.getElementById('enc-new-budget').value) || 140;
+  const status = document.getElementById('enc-add-mgr-status');
+
+  if (!nom) { status.style.color = 'var(--red)'; status.textContent = 'Nom requis.'; return; }
+  if (!pin) { status.style.color = 'var(--red)'; status.textContent = 'PIN requis.'; return; }
+  if (MANAGERS.includes(nom)) { status.style.color = 'var(--red)'; status.textContent = `"${nom}" existe déjà.`; return; }
+
+  await setDoc(doc(db, 'managers', nom), {
+    pin, budget_max: budget, budget_restant: budget, joueurs: [], jokers_bonus: 0
+  });
+  mgrDocs[nom] = { pin, budget_max: budget, budget_restant: budget, joueurs: [], jokers_bonus: 0 };
+  MANAGERS.push(nom); MANAGERS.sort();
+
+  document.getElementById('enc-new-nom').value = '';
+  document.getElementById('enc-new-pin').value = '';
+  document.getElementById('enc-new-budget').value = '140';
+  status.style.color = 'var(--accent)';
+  status.textContent = `"${nom}" ajouté !`;
+  setTimeout(() => { status.textContent = ''; }, 3000);
+  renderManagersList();
+  renderEncBudgets();
 });
 
 // ── Soumissions ───────────────────────────────────────────
@@ -1234,11 +1284,7 @@ function showManagerBids(nom, results, round) {
 
 // ── Budgets ───────────────────────────────────────────────
 async function loadEncBudgets() {
-  mgrDocs = {};
-  await Promise.all(MANAGERS.map(async nom => {
-    const snap = await getDoc(doc(db, 'managers', nom));
-    mgrDocs[nom] = snap.exists() ? snap.data() : { budget_max: 140, budget_restant: 140, joueurs: [] };
-  }));
+  await loadManagers();
 }
 
 function renderEncBudgets() {
