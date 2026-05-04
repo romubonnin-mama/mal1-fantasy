@@ -585,7 +585,8 @@ function renderScores(scores, containerId) {
   const container = document.getElementById(containerId);
   container.innerHTML = '';
   const tries = ORDRE_JOUEURS.filter(n => scores[n] !== undefined)
-    .map(n => [n, scores[n]]);
+    .map(n => [n, scores[n]])
+    .sort((a, b) => b[1] - a[1]);
   const maxScore = Math.max(...tries.map(t => t[1]));
   tries.forEach(([nom, pts]) => {
     const c = COULEURS[nom] || {bg:'transparent', color:'#e8eaf0'};
@@ -610,9 +611,11 @@ function showJournee(j) {
   const detail = DATA.detail_journees[String(j)];
 
   let html = `<div class="journee-scores-grid">`;
-  ORDRE_JOUEURS.forEach(nom => {
+  const scoresSorted = ORDRE_JOUEURS.filter(n => scores[n] !== undefined || scores[n] === 0)
+    .map(n => [n, scores[n]])
+    .sort((a, b) => b[1] - a[1]);
+  scoresSorted.forEach(([nom, pts]) => {
     if (!scores[nom] && scores[nom] !== 0) return;
-    const pts = scores[nom];
     const c = COULEURS[nom] || {color:'#e8eaf0'};
     const equipe = detail[nom];
     html += `
