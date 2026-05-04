@@ -393,7 +393,15 @@ function renderBids() {
   let alerts = '';
   if (remaining < 0) alerts += `<div class="alert alert-danger">Budget dépassé de ${-remaining} pts !</div>`;
   if (round === 1 && myBids.length < 14) alerts += `<div class="alert alert-warn">Tour 1 : encore ${14 - myBids.length} joueur(s) à ajouter</div>`;
-  if (myBids.length >= 14 && remaining >= 0 && round === 1) alerts += `<div class="alert alert-ok">Prêt à envoyer !</div>`;
+  if (round === 1 && myBids.length >= 14 && remaining >= 0) {
+    const jokerTxt = jokers > 0
+      ? `${remaining} pts non misés → <strong>${jokers} joker(s) bonus</strong>`
+      : `Tous les points sont misés.`;
+    alerts += `<div class="alert alert-ok">✓ Prêt à envoyer — ${jokerTxt}</div>`;
+  }
+  if (round > 1 && myBids.length >= 1 && remaining >= 0) {
+    alerts += `<div class="alert alert-ok">✓ Prêt à envoyer — ${remaining} pts non misés conservés pour les prochains tours.</div>`;
+  }
   document.getElementById('alerts-zone').innerHTML = alerts;
 
   // Bouton submit
