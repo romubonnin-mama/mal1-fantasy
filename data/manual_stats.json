@@ -260,7 +260,8 @@
         "full_match": true
       },
       "KEBBAL": {
-        "sort_a": 65
+        "sort_a": 65,
+        "assists": 1
       },
       "GREIF": {
         "full_match": true
@@ -302,7 +303,8 @@
         "full_match": true
       },
       "PERRAUD": {
-        "sort_a": 74
+        "sort_a": 74,
+        "assists": 1
       },
       "SENAYA": {
         "absent": true

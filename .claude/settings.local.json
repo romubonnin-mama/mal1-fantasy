@@ -13,7 +13,10 @@
       "Bash(Get-ChildItem -Path \"E:\\\\Sauvegarde\\\\draft club\\\\mal1-fantasy\" -Recurse -Filter \"*.py\")",
       "Bash(Select-Object -ExpandProperty FullName)",
       "Bash(Sort-Object)",
-      "PowerShell(Get-ChildItem *)"
+      "PowerShell(Get-ChildItem *)",
+      "Bash(Get-ChildItem \"E:\\\\Sauvegarde\\\\draft club\\\\mal1-fantasy\\\\scripts\")",
+      "Bash(Select-Object Name)",
+      "Bash(git *)"
     ]
   }
 }

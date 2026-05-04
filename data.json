@@ -23,12 +23,12 @@
     {
       "rang": 5,
       "nom": "JEROME",
-      "pts": 1328
+      "pts": 1330
     },
     {
       "rang": 6,
       "nom": "ADRIEN",
-      "pts": 1321
+      "pts": 1323
     },
     {
       "rang": 7,
@@ -49,9 +49,9 @@
   "derniere_journee": 32,
   "scores_journee": {
     "ROMU": 26,
-    "JEROME": 41,
+    "JEROME": 43,
     "VINCENT": 41,
-    "ADRIEN": 29,
+    "ADRIEN": 31,
     "FLORIAN": 42,
     "FAB": 33,
     "ANTHONY": 25,
@@ -402,9 +402,9 @@
     },
     "32": {
       "ROMU": 26,
-      "JEROME": 41,
+      "JEROME": 43,
       "VINCENT": 41,
-      "ADRIEN": 29,
+      "ADRIEN": 31,
       "FLORIAN": 42,
       "FAB": 33,
       "ANTHONY": 25,
@@ -176057,8 +176057,8 @@
               "pts": 0
             },
             "pd": {
-              "val": 0,
-              "pts": 0
+              "val": 1,
+              "pts": 2
             },
             "cj": {
               "val": 0,
@@ -176068,7 +176068,7 @@
               "val": 0,
               "pts": 0
             },
-            "pts": 3
+            "pts": 5
           },
           {
             "nom": "SULC",
@@ -176999,8 +176999,8 @@
               "pts": 0
             },
             "pd": {
-              "val": 0,
-              "pts": 0
+              "val": 1,
+              "pts": 2
             },
             "cj": {
               "val": 0,
@@ -177010,7 +177010,7 @@
               "val": 0,
               "pts": 0
             },
-            "pts": 3
+            "pts": 5
           },
           {
             "nom": "NIAKHATE",
@@ -181282,7 +181282,7 @@
       },
       {
         "j": 32,
-        "pts": 1328
+        "pts": 1330
       }
     ],
     "ADRIEN": [
@@ -181412,7 +181412,7 @@
       },
       {
         "j": 32,
-        "pts": 1321
+        "pts": 1323
       }
     ],
     "ROMU": [
