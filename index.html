@@ -20,7 +20,7 @@
   .logo span { color: var(--accent); }
   .logo-badge { background: var(--accent); color: #000; font-size: 9px; font-weight: 600; padding: 2px 6px; border-radius: 3px; }
   .nav-tabs { display: flex; gap: 4px; flex-shrink: 0; }
-  .nav-tab { color: var(--muted); font-size: 12px; font-weight: 600; padding: 6px 10px; border-radius: 6px; cursor: pointer; transition: all 0.2s; border: none; background: none; }
+  .nav-tab { color: var(--muted); font-size: 12px; font-weight: 600; padding: 6px 10px; border-radius: 6px; cursor: pointer; transition: all 0.2s; border: none; background: none; text-decoration: none; display: inline-flex; align-items: center; }
   .nav-tab:hover { color: var(--text); background: var(--surface2); }
   .nav-tab.active { color: var(--accent); background: var(--surface2); }
   .journee-badge { background: var(--surface2); border: 1px solid var(--border); padding: 5px 12px; border-radius: 8px; font-size: 12px; font-weight: 600; color: var(--accent); flex-shrink: 0; }
@@ -232,6 +232,7 @@
     <button class="nav-tab" id="tab-joueurs">Joueurs</button>
     <button class="nav-tab" id="tab-evolution">Évolution</button>
     <button class="nav-tab" id="tab-stats">Stats</button>
+    <a class="nav-tab" href="enchere.html">Enchères</a>
   </div>
   <div class="journee-badge" id="journee-badge">...</div>
 </header>
