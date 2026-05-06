@@ -216,6 +216,7 @@ select:focus,input:focus{outline:none;border-color:var(--accent)}
         </div>
       </div>
 
+      <div id="draft-status" style="font-size:11px;color:var(--text2);text-align:right;margin-bottom:6px;min-height:16px"></div>
       <button class="btn btn-primary btn-full" id="btn-submit">Envoyer mes mises</button>
       <div style="font-size:11px;color:var(--text2);text-align:center;margin-top:6px" id="submit-hint"></div>
     </div>
@@ -253,6 +254,34 @@ let CONFIG = {};
 let myBids = [];
 let submitted = false;
 let clockTimer = null;
+let draftTimer = null;
+
+async function saveDraft() {
+  if (!MGR) return;
+  const round = CONFIG.round || 1;
+  const used = myBids.reduce((s, b) => s + (b.mise || 0), 0);
+  await setDoc(doc(db, 'soumissions', `${round}_${MGR}`), {
+    manager: MGR, round, bids: myBids,
+    submitted: false, total: used,
+    timestamp: new Date().toISOString()
+  });
+  submitted = false;
+  const el = document.getElementById('draft-status');
+  if (el) {
+    el.textContent = '💾 Brouillon sauvegardé';
+    el.style.color = 'var(--text2)';
+    clearTimeout(el._hideTimer);
+    el._hideTimer = setTimeout(() => { el.textContent = ''; }, 3000);
+  }
+}
+
+function scheduleDraft() {
+  if (!MGR) return;
+  const el = document.getElementById('draft-status');
+  if (el) { el.textContent = 'Sauvegarde…'; el.style.color = 'var(--text2)'; }
+  clearTimeout(draftTimer);
+  draftTimer = setTimeout(saveDraft, 800);
+}
 
 // ── Logos clubs Ligue 1 (api-sports IDs) ──────────────────
 const CLUB_IDS = {
@@ -442,6 +471,7 @@ document.getElementById('btn-add').addEventListener('click', () => {
   document.getElementById('p-mise').value = '1';
   document.getElementById('p-nom').focus();
   renderBids();
+  scheduleDraft();
 });
 
 // Enter dans le champ mise → ajouter
@@ -518,12 +548,14 @@ function renderBids() {
     btn.addEventListener('click', () => {
       myBids.splice(parseInt(btn.dataset.rm), 1);
       renderBids();
+      scheduleDraft();
     });
   });
   container.querySelectorAll('[data-idx]').forEach(inp => {
     inp.addEventListener('change', () => {
       myBids[parseInt(inp.dataset.idx)].mise = Math.max(1, parseInt(inp.value) || 1);
       renderBids();
+      scheduleDraft();
     });
   });
 }
