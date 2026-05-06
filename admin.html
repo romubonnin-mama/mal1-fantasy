@@ -1083,7 +1083,10 @@ init().catch(e => {
   <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:20px">
     <div style="padding:10px 16px;background:var(--surface2);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between">
       <div style="font-weight:700;font-size:13px">Suivi des soumissions — Tour <span id="enc-suivi-round">?</span></div>
-      <button class="btn btn-subtle" id="enc-refresh-bids" style="font-size:12px;padding:5px 12px">🔄 Actualiser</button>
+      <div style="display:flex;gap:8px">
+        <button class="btn btn-subtle" id="enc-refresh-bids" style="font-size:12px;padding:5px 12px">🔄 Actualiser</button>
+        <button class="btn btn-subtle" id="enc-delete-all-bids" style="font-size:12px;padding:5px 12px;color:#e57373;border-color:#e57373">🗑 Effacer toutes les mises</button>
+      </div>
     </div>
     <div id="enc-submissions-grid" style="padding:14px 16px;display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px"></div>
   </div>
@@ -1429,6 +1432,31 @@ async function refreshSubmissions() {
 }
 
 document.getElementById('enc-refresh-bids').addEventListener('click', refreshSubmissions);
+
+document.getElementById('enc-delete-all-bids').addEventListener('click', async () => {
+  if (!confirm('Supprimer TOUTES les soumissions de tous les managers (tous les tours) ?\n\nCette action est irréversible.')) return;
+  if (!confirm('Confirmation finale — effacer définitivement toutes les listes de mises ?')) return;
+
+  const btn = document.getElementById('enc-delete-all-bids');
+  btn.disabled = true; btn.textContent = '⏳ Suppression...';
+
+  try {
+    const snap = await getDocs(collection(db, 'soumissions'));
+    if (snap.empty) { alert('Aucune soumission à supprimer.'); return; }
+
+    const batch = writeBatch(db);
+    snap.docs.forEach(d => batch.delete(d.ref));
+    await batch.commit();
+
+    alert(`${snap.size} soumission(s) supprimée(s).`);
+    await refreshSubmissions();
+    await renderCompileSection();
+  } catch (e) {
+    alert('Erreur : ' + e.message);
+  } finally {
+    btn.disabled = false; btn.textContent = '🗑 Effacer toutes les mises';
+  }
+});
 
 // ── Attributions post-compilation ────────────────────────
 const POSTE_ORDER_A = ['G','D','M','A'];
