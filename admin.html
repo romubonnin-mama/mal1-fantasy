@@ -1097,6 +1097,7 @@ init().catch(e => {
     <div style="padding:14px 16px">
       <div id="enc-compile-preview" style="margin-bottom:14px"></div>
       <button class="btn btn-primary" id="enc-compile-btn">⚡ Compiler le tour</button>
+      <button class="btn btn-subtle" id="enc-reset-btn" style="margin-left:8px;font-size:12px;color:#e57373;border-color:#e57373;display:none">↩ Annuler la compilation</button>
       <div id="enc-compile-results" style="margin-top:14px"></div>
     </div>
   </div>
@@ -1459,6 +1460,18 @@ async function renderCompileSection() {
 
   btn.disabled = false;
 
+  // Afficher/masquer le bouton "Annuler la compilation" selon si déjà compilé
+  const resetBtn = document.getElementById('enc-reset-btn');
+  const alreadyCompiled = await getDoc(doc(db, 'resultats', String(round)));
+  if (alreadyCompiled.exists()) {
+    btn.disabled = true;
+    btn.title = 'Ce tour a déjà été compilé';
+    resetBtn.style.display = 'inline-block';
+  } else {
+    resetBtn.style.display = 'none';
+    btn.title = '';
+  }
+
   const results = await Promise.all(MANAGERS.map(async nom => {
     const snap = await getDoc(doc(db, 'soumissions', `${round}_${nom}`));
     return { nom, data: snap.exists() ? snap.data() : null };
@@ -1509,6 +1522,13 @@ document.getElementById('enc-compile-btn').addEventListener('click', async () =>
   if (!deadlinePassed) {
     const dlStr = new Date(encConfig.deadline).toLocaleString('fr-FR', {day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});
     alert(`Compilation impossible : la deadline n'est pas encore atteinte (${dlStr}).`);
+    return;
+  }
+
+  // Vérifier si ce tour a déjà été compilé
+  const existingResult = await getDoc(doc(db, 'resultats', String(round)));
+  if (existingResult.exists()) {
+    alert(`⚠️ Le tour ${round} a déjà été compilé.\n\nRecompiler ajouterait les joueurs en double et corromperait les budgets.\n\nSi tu dois annuler et recommencer ce tour, utilise le bouton "Annuler la compilation" ci-dessous.`);
     return;
   }
 
@@ -1621,6 +1641,79 @@ async function compileRound(round) {
       <div>🔄 ${tied_total} joueur(s) en égalité (remis en jeu)</div>
       <div style="margin-top:8px;font-size:12px;color:var(--muted)">Tour ${newRound} maintenant actif — pense à mettre à jour la deadline.</div>
     </div>`;
+}
+
+// ── Annuler une compilation ───────────────────────────────
+document.getElementById('enc-reset-btn').addEventListener('click', async () => {
+  const round = encConfig.round || 1;
+  const prevRound = round - 1;
+  if (prevRound < 1) { alert('Aucune compilation à annuler (tour 1 pas encore compilé).'); return; }
+
+  if (!confirm(`Annuler la compilation du tour ${prevRound} ?\n\nCela va :\n• Supprimer les résultats du tour ${prevRound}\n• Remettre le round à ${prevRound}\n• Restaurer les budgets managers avant ce tour\n\nLes soumissions (listes de mises) ne seront pas effacées.`)) return;
+
+  const resetBtn = document.getElementById('enc-reset-btn');
+  resetBtn.disabled = true; resetBtn.textContent = '⏳ Annulation...';
+
+  try {
+    await resetCompilation(prevRound);
+    resetBtn.style.display = 'none';
+    resetBtn.disabled = false; resetBtn.textContent = '↩ Annuler la compilation';
+    document.getElementById('enc-compile-btn').disabled = false;
+    document.getElementById('enc-compile-btn').title = '';
+    alert(`Tour ${prevRound} réinitialisé. Tu peux relancer la compilation.`);
+    await renderCompileSection();
+  } catch (e) {
+    alert('Erreur : ' + e.message);
+    resetBtn.disabled = false; resetBtn.textContent = '↩ Annuler la compilation';
+  }
+});
+
+async function resetCompilation(round) {
+  // 1. Charger les résultats du tour à annuler
+  const resSnap = await getDoc(doc(db, 'resultats', String(round)));
+  const resultats = resSnap.exists() ? resSnap.data() : {};
+
+  // Joueurs gagnés par manager dans ce tour
+  const wonInRound = {};
+  MANAGERS.forEach(m => wonInRound[m] = []);
+  Object.entries(resultats).forEach(([pid, r]) => {
+    if (r.statut === 'won' && r.vainqueur && wonInRound[r.vainqueur]) {
+      wonInRound[r.vainqueur].push(pid);
+    }
+  });
+
+  // 2. Mettre à jour les managers : retirer les joueurs gagnés ce tour
+  await loadEncBudgets();
+  const batch = writeBatch(db);
+
+  MANAGERS.forEach(nom => {
+    const existing = mgrDocs[nom] || {};
+    const joueurs = (existing.joueurs || []).filter(j => !wonInRound[nom].includes(j.id));
+    const budget_max = round === 1 ? undefined : existing.budget_max;
+    const jokers_bonus = round === 1 ? undefined : existing.jokers_bonus;
+    const totalWon = joueurs.reduce((s, j) => s + (j.mise || 0), 0);
+    const budget_restant = (budget_max || 140) - totalWon;
+
+    const update = { ...existing, joueurs, budget_restant };
+    if (round === 1) { delete update.budget_max; delete update.jokers_bonus; }
+    else { update.budget_max = budget_max; update.jokers_bonus = jokers_bonus; }
+
+    batch.set(doc(db, 'managers', nom), update);
+  });
+
+  // 3. Supprimer les résultats du tour
+  batch.delete(doc(db, 'resultats', String(round)));
+
+  // 4. Remettre le round
+  encConfig = { ...encConfig, round };
+  batch.set(doc(db, 'config', 'enchere'), encConfig);
+
+  await batch.commit();
+  await loadEncBudgets();
+  renderEncBudgets();
+  document.getElementById('enc-round').value = round;
+  document.getElementById('enc-suivi-round').textContent = round;
+  document.getElementById('enc-compile-round').textContent = round;
 }
 </script>
 
