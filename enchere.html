@@ -712,12 +712,13 @@ async function loadResults() {
     const tied = entries.filter(r => r.statut === 'tied');
     const lost = entries.filter(r => r.statut === 'won' && r.vainqueur !== mgr);
 
-    const makeRows = (list, color) =>
+    const makeRows = (list, color, label) =>
       R_POSTE_ORDER.flatMap(p => list.filter(r => r.poste === p).map(r =>
-        `<div style="display:flex;align-items:center;gap:5px;padding:2px 0;border-bottom:1px solid rgba(255,255,255,.04)">
+        `<div style="display:flex;align-items:center;gap:5px;padding:3px 0;border-bottom:1px solid rgba(255,255,255,.04)">
           <span style="width:18px;height:18px;border-radius:50%;background:${R_POSTE_BG[p]};color:${R_POSTE_FG[p]};font-size:8px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">${p}</span>
           <span style="flex:1;font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(r.nom)} <span style="color:var(--text2)">${esc(r.club)}</span></span>
-          <span style="font-size:11px;font-weight:700;color:${color};flex-shrink:0">${r.bids[mgr]}p</span>
+          <span style="font-size:11px;font-weight:700;color:${color};flex-shrink:0;margin-right:2px">${r.bids[mgr]}p</span>
+          <span style="font-size:10px;background:${color}22;color:${color};border-radius:4px;padding:1px 5px;white-space:nowrap;flex-shrink:0">${label}</span>
         </div>`
       )).join('');
 
@@ -730,7 +731,7 @@ async function loadResults() {
         <div style="font-weight:700;font-size:13px">${esc(mgr)}${isMe ? ' 👤' : ''}</div>
         <div style="font-size:11px">${summary}</div>
       </div>
-      ${makeRows(won,'var(--accent)') + makeRows(tied,'#f59e0b') + makeRows(lost,'#ef4444') || '<div style="font-size:11px;color:var(--text2)">Aucune mise</div>'}
+      ${makeRows(won,'var(--accent)','✓ Gagné') + makeRows(tied,'#f59e0b','= Remis en jeu') + makeRows(lost,'#ef4444','✗ Raté') || '<div style="font-size:11px;color:var(--text2)">Aucune mise</div>'}
     </div>`;
   });
 
