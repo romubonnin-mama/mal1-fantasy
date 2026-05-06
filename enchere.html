@@ -669,69 +669,73 @@ function startClock() {
 }
 
 // ── Résultats ──────────────────────────────────────────────
+const R_POSTE_ORDER = ['G','D','M','A'];
+const R_POSTE_BG = { G:'#854d0e', D:'#1e3a5f', M:'#14532d', A:'#7f1d1d' };
+const R_POSTE_FG = { G:'#fde68a', D:'#93c5fd', M:'#86efac', A:'#fca5a5' };
+
 async function loadResults() {
   const round = CONFIG.round || 1;
   const container = document.getElementById('results-container');
 
-  // Verrou : si le tour est actif et la deadline pas encore passée,
-  // on ne montre rien du tout concernant le tour courant
   const deadlinePassed = CONFIG.deadline ? new Date() > new Date(CONFIG.deadline) : true;
-  const lockBanner = (CONFIG.actif && !deadlinePassed)
-    ? `<div class="alert alert-warn" style="margin-bottom:14px">
-        🔒 Les mises du tour ${round} sont secrètes jusqu'à la deadline.<br>
-        <span style="font-size:11px;opacity:.8">Les résultats s'afficheront après la compilation.</span>
-       </div>`
-    : '';
+  if (CONFIG.actif && !deadlinePassed) {
+    container.innerHTML = `<div class="alert alert-warn">
+      🔒 Les mises du tour ${round} sont secrètes jusqu'à la deadline.<br>
+      <span style="font-size:11px;opacity:.8">Les résultats s'afficheront après la compilation.</span>
+    </div>`;
+    return;
+  }
 
   if (round <= 1) {
-    container.innerHTML = lockBanner + '<div class="empty">Les résultats du premier tour apparaîtront ici après la compilation.</div>';
+    container.innerHTML = '<div class="empty">Les résultats du premier tour apparaîtront ici après la compilation.</div>';
     return;
   }
 
   const snap = await getDoc(doc(db, 'resultats', String(round - 1)));
   if (!snap.exists()) {
-    container.innerHTML = lockBanner + '<div class="empty">Pas encore de résultats pour le tour ' + (round - 1) + '.</div>';
+    container.innerHTML = '<div class="empty">Pas encore de résultats pour le tour ' + (round - 1) + '.</div>';
     return;
   }
 
   const data = snap.data();
-  // On ne garde QUE les entrées où ce manager a enchéri,
-  // et on efface les mises des autres avant tout traitement
-  const myEntries = Object.values(data)
-    .filter(r => r.bids && r.bids[MGR] !== undefined)
-    .map(r => ({ ...r, myBid: r.bids[MGR], bids: null }));
 
-  if (myEntries.length === 0) {
-    container.innerHTML = lockBanner + '<div class="empty">Tu n\'as pas participé au tour ' + (round - 1) + '.</div>';
-    return;
-  }
+  // Collecter tous les managers qui ont participé
+  const allMgrs = new Set();
+  Object.values(data).forEach(r => { if (r.bids) Object.keys(r.bids).forEach(m => allMgrs.add(m)); });
 
-  const won  = myEntries.filter(r => r.vainqueur === MGR);
-  const tied = myEntries.filter(r => r.statut === 'tied');
-  const lost = myEntries.filter(r => r.statut !== 'tied' && r.vainqueur !== MGR);
+  let html = `<div style="font-weight:700;font-size:14px;margin-bottom:12px">Tour ${round - 1} — Résultats</div>`;
+  html += '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px">';
 
-  const section = (label, color, entries) => entries.length === 0 ? '' :
-    `<div style="font-size:11px;font-weight:700;color:${color};text-transform:uppercase;margin:12px 0 6px">${label} (${entries.length})</div>` +
-    entries.map(r => {
-      const cls = { G:'pg', D:'pd', M:'pm', A:'pa' }[r.poste] || '';
-      return `<div class="bid-row card" style="padding:8px 12px;margin-bottom:6px;border-color:${color}">
-        <span class="poste-badge ${cls}">${r.poste}</span>
-        <div style="flex:1;min-width:0">
-          <div style="font-weight:600;font-size:13px">${esc(r.nom)}</div>
-          <div style="font-size:11px;color:var(--text2);display:flex;align-items:center;gap:4px">${clubLogoHtml(r.club,14)}${esc(r.club)}</div>
-        </div>
-        <div style="text-align:right">
-          <div style="font-family:'Bebas Neue',sans-serif;font-size:18px;color:${color}">${r.myBid} pts</div>
-          ${r.vainqueur && r.vainqueur !== MGR ? `<div style="font-size:10px;color:var(--text2)">→ ${r.vainqueur}</div>` : ''}
-        </div>
-      </div>`;
-    }).join('');
+  allMgrs.forEach(mgr => {
+    const entries = Object.values(data).filter(r => r.bids && r.bids[mgr] !== undefined);
+    const won  = entries.filter(r => r.statut === 'won' && r.vainqueur === mgr);
+    const tied = entries.filter(r => r.statut === 'tied');
+    const lost = entries.filter(r => r.statut === 'won' && r.vainqueur !== mgr);
 
-  container.innerHTML = lockBanner +
-    `<div style="font-weight:700;font-size:14px;margin-bottom:12px">Tour ${round - 1} — Tes résultats</div>` +
-    section('✓ Obtenus', 'var(--accent)', won) +
-    section('= Égalité — rejoués', 'var(--yellow)', tied) +
-    section('✗ Ratés', 'var(--red)', lost);
+    const makeRows = (list, color) =>
+      R_POSTE_ORDER.flatMap(p => list.filter(r => r.poste === p).map(r =>
+        `<div style="display:flex;align-items:center;gap:5px;padding:2px 0;border-bottom:1px solid rgba(255,255,255,.04)">
+          <span style="width:18px;height:18px;border-radius:50%;background:${R_POSTE_BG[p]};color:${R_POSTE_FG[p]};font-size:8px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">${p}</span>
+          <span style="flex:1;font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(r.nom)} <span style="color:var(--text2)">${esc(r.club)}</span></span>
+          <span style="font-size:11px;font-weight:700;color:${color};flex-shrink:0">${r.bids[mgr]}p</span>
+        </div>`
+      )).join('');
+
+    const isMe = mgr === MGR;
+    const borderColor = isMe ? 'var(--accent)' : 'var(--border)';
+    const summary = `<span style="color:var(--accent)">${won.length}✓</span>${tied.length ? ` <span style="color:#f59e0b">${tied.length}=</span>` : ''}${lost.length ? ` <span style="color:#ef4444">${lost.length}✗</span>` : ''}`;
+
+    html += `<div style="background:var(--surface);border:1px solid ${borderColor};border-radius:8px;padding:10px 12px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+        <div style="font-weight:700;font-size:13px">${esc(mgr)}${isMe ? ' 👤' : ''}</div>
+        <div style="font-size:11px">${summary}</div>
+      </div>
+      ${makeRows(won,'var(--accent)') + makeRows(tied,'#f59e0b') + makeRows(lost,'#ef4444') || '<div style="font-size:11px;color:var(--text2)">Aucune mise</div>'}
+    </div>`;
+  });
+
+  html += '</div>';
+  container.innerHTML = html;
 }
 
 function pad(n) { return String(n).padStart(2, '0'); }
