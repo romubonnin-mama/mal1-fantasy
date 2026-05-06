@@ -216,9 +216,12 @@ select:focus,input:focus{outline:none;border-color:var(--accent)}
         </div>
       </div>
 
-      <div id="draft-status" style="font-size:11px;color:var(--text2);text-align:right;margin-bottom:6px;min-height:16px"></div>
-      <button class="btn btn-primary btn-full" id="btn-submit">Envoyer mes mises</button>
-      <div style="font-size:11px;color:var(--text2);text-align:center;margin-top:6px" id="submit-hint"></div>
+      <div style="display:flex;gap:8px;margin-bottom:4px">
+        <button class="btn btn-subtle" id="btn-save-draft" style="flex:1">💾 Sauvegarder</button>
+        <button class="btn btn-primary" id="btn-submit" style="flex:2">Envoyer mes mises</button>
+      </div>
+      <div id="draft-status" style="font-size:11px;color:var(--text2);text-align:right;min-height:16px"></div>
+      <div style="font-size:11px;color:var(--text2);text-align:center;margin-top:2px" id="submit-hint"></div>
     </div>
   </div>
 
@@ -255,6 +258,7 @@ let myBids = [];
 let submitted = false;
 let clockTimer = null;
 let draftTimer = null;
+let prevResults = {};
 
 async function saveDraft() {
   if (!MGR) return;
@@ -273,6 +277,13 @@ async function saveDraft() {
     clearTimeout(el._hideTimer);
     el._hideTimer = setTimeout(() => { el.textContent = ''; }, 3000);
   }
+}
+
+async function loadPrevResults() {
+  const round = CONFIG.round || 1;
+  if (round <= 1) { prevResults = {}; return; }
+  const snap = await getDoc(doc(db, 'resultats', String(round - 1)));
+  prevResults = snap.exists() ? snap.data() : {};
 }
 
 function scheduleDraft() {
@@ -415,17 +426,16 @@ async function loadConfig() {
 }
 
 function watchConfig() {
-  onSnapshot(doc(db, 'config', 'enchere'), snap => {
+  onSnapshot(doc(db, 'config', 'enchere'), async snap => {
     if (!snap.exists()) return;
     const prev = CONFIG.round;
     CONFIG = snap.data();
     document.getElementById('header-round').textContent = 'Tour ' + (CONFIG.round || 1);
     if (CONFIG.round !== prev) {
-      // Nouveau tour : réinitialiser les mises
       myBids = [];
       submitted = false;
       showForm();
-      renderBids();
+      await loadMyBids();
     }
     startClock();
   });
@@ -438,7 +448,15 @@ async function loadMyBids() {
     const d = snap.data();
     myBids = d.bids || [];
     submitted = d.submitted || false;
+  } else if (round > 1) {
+    // Pas encore de draft pour ce tour → reporter la liste du tour précédent
+    const prevSnap = await getDoc(doc(db, 'soumissions', `${round - 1}_${MGR}`));
+    if (prevSnap.exists()) {
+      myBids = (prevSnap.data().bids || []).map(b => ({ ...b }));
+    }
+    submitted = false;
   }
+  await loadPrevResults();
   renderBids();
   if (submitted) showSubmitted();
 }
@@ -532,11 +550,22 @@ function renderBids() {
 
   container.innerHTML = myBids.map((b, i) => {
     const cls = { G:'pg', D:'pd', M:'pm', A:'pa' }[b.poste] || '';
+    const key = `${b.nom.trim().toLowerCase()}__${b.club.trim().toLowerCase()}__${b.poste}`;
+    const pr = prevResults[key];
+    let badge = '';
+    if (pr) {
+      if (pr.statut === 'won' && pr.vainqueur === MGR)
+        badge = `<span style="font-size:10px;background:rgba(0,229,160,.15);color:var(--accent);border-radius:4px;padding:1px 5px;white-space:nowrap">✓ Gagné</span>`;
+      else if (pr.statut === 'tied')
+        badge = `<span style="font-size:10px;background:rgba(245,158,11,.15);color:#f59e0b;border-radius:4px;padding:1px 5px;white-space:nowrap">= Égalité</span>`;
+      else
+        badge = `<span style="font-size:10px;background:rgba(239,68,68,.15);color:#ef4444;border-radius:4px;padding:1px 5px;white-space:nowrap">✗ Raté</span>`;
+    }
     return `<div class="bid-row">
       <span class="poste-badge ${cls}">${b.poste}</span>
       <div style="flex:1;min-width:0">
         <div style="font-weight:600;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(b.nom)}</div>
-        <div style="font-size:11px;color:var(--text2);display:flex;align-items:center;gap:4px">${clubLogoHtml(b.club,14)}${esc(b.club)}</div>
+        <div style="font-size:11px;color:var(--text2);display:flex;align-items:center;gap:4px">${clubLogoHtml(b.club,14)}${esc(b.club)}${badge}</div>
       </div>
       <input class="mise-input" type="number" min="1" value="${b.mise}" data-idx="${i}" style="width:60px">
       <span style="font-size:11px;color:var(--text2)">pts</span>
@@ -559,6 +588,11 @@ function renderBids() {
     });
   });
 }
+
+// ── Sauvegarde manuelle ────────────────────────────────────
+document.getElementById('btn-save-draft').addEventListener('click', async () => {
+  await saveDraft();
+});
 
 // ── Submit ─────────────────────────────────────────────────
 document.getElementById('btn-submit').addEventListener('click', async () => {
