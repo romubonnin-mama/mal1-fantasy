@@ -38,7 +38,7 @@ select:focus,input:focus{outline:none;border-color:var(--accent)}
 .btn-full{width:100%}
 .btn-sm{padding:5px 10px;font-size:12px}
 
-.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}
 .stat-box{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:10px;text-align:center}
 .stat-val{font-family:'Bebas Neue',sans-serif;font-size:26px;color:var(--accent)}
 .stat-lbl{font-size:10px;color:var(--text2);text-transform:uppercase;font-weight:600;margin-top:2px}
@@ -152,6 +152,7 @@ select:focus,input:focus{outline:none;border-color:var(--accent)}
     <div class="stat-box"><div class="stat-val" id="s-budget">140</div><div class="stat-lbl">Pts restants</div></div>
     <div class="stat-box"><div class="stat-val" id="s-mises">0</div><div class="stat-lbl">Pts misés</div></div>
     <div class="stat-box"><div class="stat-val" id="s-count">0</div><div class="stat-lbl">Joueurs</div></div>
+    <div class="stat-box"><div class="stat-val" id="s-jokers">0</div><div class="stat-lbl">Jokers</div></div>
   </div>
 
   <div class="card">
@@ -221,7 +222,6 @@ select:focus,input:focus{outline:none;border-color:var(--accent)}
         <button class="btn btn-primary" id="btn-submit" style="flex:2">Envoyer mes mises</button>
       </div>
       <div id="draft-status" style="font-size:11px;color:var(--text2);text-align:right;min-height:16px"></div>
-      <div style="font-size:11px;color:var(--text2);text-align:center;margin-top:2px" id="submit-hint"></div>
     </div>
   </div>
 
@@ -515,12 +515,12 @@ function renderBids() {
   fill.style.width = pct + '%';
   fill.className = 'budget-fill' + (remaining < 0 ? ' over' : pct > 75 ? ' warn' : '');
 
-  // Hint tour 1
-  const saved = 140 - used;
-  const jokers = Math.min(3, Math.floor(Math.max(0, saved) / 10));
-  document.getElementById('submit-hint').textContent = round === 1
-    ? `Tour 1 : 14 joueurs obligatoires — ${Math.max(0, saved)} pts économisés = ${jokers} joker(s) bonus`
-    : `Tour ${round} — mise minimum 1 pt par joueur`;
+  // Jokers
+  const saved = budgetMax - used;
+  const jokers = round === 1
+    ? Math.min(3, Math.floor(Math.max(0, saved) / 10))
+    : (MGR_DATA.jokers_bonus || 0);
+  document.getElementById('s-jokers').textContent = jokers;
 
   // Alertes
   let alerts = '';
