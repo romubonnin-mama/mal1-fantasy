@@ -1543,12 +1543,12 @@ async function renderAttributions() {
   footer.style.display = 'flex';
 }
 
-function attrMarkDirty(el) {
+window.attrMarkDirty = function(el) {
   el.style.borderColor = 'var(--yellow)';
   const status = document.getElementById('enc-attr-status');
   status.textContent = '● Modifications non sauvegardées';
   status.style.color = 'var(--yellow)';
-}
+};
 
 async function saveAttributions() {
   const btn = document.getElementById('enc-attr-save');
@@ -1722,31 +1722,32 @@ document.getElementById('enc-refresh-compile').addEventListener('click', renderC
 
 // ── Compilation ───────────────────────────────────────────
 document.getElementById('enc-compile-btn').addEventListener('click', async () => {
-  const round = encConfig.round || 1;
-
-  const deadlinePassed = !encConfig.deadline || new Date() > new Date(encConfig.deadline);
-  if (!deadlinePassed) {
-    const dlStr = new Date(encConfig.deadline).toLocaleString('fr-FR', {day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});
-    if (!confirm(`⚠️ La deadline n'est pas encore atteinte (${dlStr}).\n\nVoulez-vous compiler quand même ?`)) return;
-  }
-
-  // Vérifier si ce tour a déjà été compilé
-  const existingResult = await getDoc(doc(db, 'resultats', String(round)));
-  if (existingResult.exists()) {
-    alert(`⚠️ Le tour ${round} a déjà été compilé.\n\nRecompiler ajouterait les joueurs en double et corromperait les budgets.\n\nSi tu dois annuler et recommencer ce tour, utilise le bouton "Annuler la compilation" ci-dessous.`);
-    return;
-  }
-
-  if (!confirm(`Compiler le tour ${round} ? Cette action est irréversible.`)) return;
-
-  const btn = document.getElementById('enc-compile-btn');
-  btn.disabled = true; btn.textContent = '⏳ Compilation...';
-
   try {
+    const round = encConfig.round || 1;
+
+    const deadlinePassed = !encConfig.deadline || new Date() > new Date(encConfig.deadline);
+    if (!deadlinePassed) {
+      const dlStr = new Date(encConfig.deadline).toLocaleString('fr-FR', {day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});
+      if (!confirm(`⚠️ La deadline n'est pas encore atteinte (${dlStr}).\n\nVoulez-vous compiler quand même ?`)) return;
+    }
+
+    // Vérifier si ce tour a déjà été compilé
+    const existingResult = await getDoc(doc(db, 'resultats', String(round)));
+    if (existingResult.exists()) {
+      alert(`⚠️ Le tour ${round} a déjà été compilé.\n\nRecompiler ajouterait les joueurs en double et corromperait les budgets.\n\nSi tu dois annuler et recommencer ce tour, utilise le bouton "Annuler la compilation" ci-dessous.`);
+      return;
+    }
+
+    if (!confirm(`Compiler le tour ${round} ? Cette action est irréversible.`)) return;
+
+    const btn = document.getElementById('enc-compile-btn');
+    btn.disabled = true; btn.textContent = '⏳ Compilation...';
+
     await compileRound(round);
     btn.textContent = '✓ Tour compilé';
   } catch (e) {
-    alert('Erreur : ' + e.message);
+    alert('Erreur compilation : ' + e.message);
+    const btn = document.getElementById('enc-compile-btn');
     btn.disabled = false;
     btn.textContent = '⚡ Compiler le tour';
   }
