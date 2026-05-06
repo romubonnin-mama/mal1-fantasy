@@ -1088,6 +1088,21 @@ init().catch(e => {
     <div id="enc-submissions-grid" style="padding:14px 16px;display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px"></div>
   </div>
 
+  <!-- CORRECTIONS DES MISES -->
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:20px">
+    <div style="padding:10px 16px;background:var(--surface2);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between">
+      <div style="font-weight:700;font-size:13px">Corrections des mises — Tour <span id="enc-corr-round">?</span></div>
+      <button class="btn btn-subtle" id="enc-corr-refresh" style="font-size:12px;padding:5px 12px">🔄 Actualiser</button>
+    </div>
+    <div id="enc-corr-body" style="padding:14px 16px">
+      <div style="font-size:12px;color:var(--muted)">Cliquez sur Actualiser pour charger les mises.</div>
+    </div>
+    <div style="padding:10px 16px;border-top:1px solid var(--border);display:flex;gap:8px;align-items:center">
+      <button class="btn btn-primary" id="enc-corr-save" style="display:none">💾 Sauvegarder les corrections</button>
+      <span id="enc-corr-status" style="font-size:12px;color:var(--accent)"></span>
+    </div>
+  </div>
+
   <!-- COMPILATION -->
   <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:20px">
     <div style="padding:10px 16px;background:var(--surface2);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between">
@@ -1142,9 +1157,11 @@ async function initEnchere() {
   renderManagersList();
   renderEncBudgets();
   await refreshSubmissions();
+  await renderCorrections();
   await renderCompileSection();
   document.getElementById('enc-suivi-round').textContent = encConfig.round || 1;
   document.getElementById('enc-compile-round').textContent = encConfig.round || 1;
+  document.getElementById('enc-corr-round').textContent = encConfig.round || 1;
 }
 
 // ── Config ────────────────────────────────────────────────
@@ -1410,6 +1427,176 @@ async function refreshSubmissions() {
 }
 
 document.getElementById('enc-refresh-bids').addEventListener('click', refreshSubmissions);
+
+// ── Corrections des mises ─────────────────────────────────
+const POSTE_ORDER_K = ['G','D','M','A'];
+const POSTE_BG_K = { G:'#854d0e', D:'#1e3a5f', M:'#14532d', A:'#7f1d1d' };
+const POSTE_FG_K = { G:'#fde68a', D:'#93c5fd', M:'#86efac', A:'#fca5a5' };
+
+let corrOriginal = {}; // soumissions originales (pour save)
+
+async function renderCorrections() {
+  const round = encConfig.round || 1;
+  document.getElementById('enc-corr-round').textContent = round;
+  const body = document.getElementById('enc-corr-body');
+  body.innerHTML = '<div style="font-size:12px;color:var(--muted)">Chargement…</div>';
+
+  // Charger toutes les soumissions
+  const submissions = {};
+  await Promise.all(MANAGERS.map(async nom => {
+    const snap = await getDoc(doc(db, 'soumissions', `${round}_${nom}`));
+    if (snap.exists()) submissions[nom] = snap.data();
+  }));
+  corrOriginal = JSON.parse(JSON.stringify(submissions));
+
+  if (!Object.keys(submissions).length) {
+    body.innerHTML = '<div style="font-size:12px;color:var(--muted)">Aucune soumission pour ce tour.</div>';
+    return;
+  }
+
+  // Construire liste plate de toutes les mises avec index de traçabilité
+  const allBids = [];
+  Object.entries(submissions).forEach(([mgr, sub]) => {
+    (sub.bids || []).forEach((b, i) => {
+      allBids.push({ mgr, idx: i, poste: b.poste, club: b.club, nom: b.nom, mise: b.mise,
+        clubKey: b.club.trim().toLowerCase(), nomKey: b.nom.trim().toLowerCase() });
+    });
+  });
+
+  // Grouper par poste + club normalisé
+  const groups = {};
+  allBids.forEach(b => {
+    const key = `${b.poste}__${b.clubKey}`;
+    if (!groups[key]) groups[key] = { poste: b.poste, clubKey: b.clubKey, entries: [] };
+    groups[key].entries.push(b);
+  });
+
+  // Détecter les doublons potentiels : même poste+club, noms différents entre managers
+  const conflicts = [];
+  Object.values(groups).forEach(g => {
+    const noms = [...new Set(g.entries.map(e => e.nomKey))];
+    if (g.entries.length > 1 && noms.length > 1) {
+      conflicts.push(g);
+    }
+  });
+
+  let html = '';
+
+  // Avertissements doublons
+  if (conflicts.length) {
+    html += `<div style="background:rgba(245,158,11,.1);border:1px solid var(--yellow);border-radius:8px;padding:10px 12px;margin-bottom:14px">
+      <div style="font-size:12px;font-weight:700;color:var(--yellow);margin-bottom:6px">⚠️ ${conflicts.length} doublon(s) potentiel(s) détecté(s)</div>
+      <div style="font-size:11px;color:var(--text2)">Même poste + même club, noms différents. Les lignes sont surlignées ci-dessous.</div>
+    </div>`;
+  } else if (allBids.length) {
+    html += `<div style="font-size:12px;color:var(--accent);margin-bottom:12px">✓ Aucun doublon détecté — les noms semblent cohérents.</div>`;
+  }
+
+  // Tableau éditable trié par poste puis club
+  const conflictKeys = new Set(conflicts.map(g => `${g.poste}__${g.clubKey}`));
+
+  html += `<div style="overflow-x:auto">
+  <table style="width:100%;border-collapse:collapse;font-size:12px">
+    <thead>
+      <tr style="color:var(--muted);font-size:10px;text-transform:uppercase;border-bottom:1px solid var(--border)">
+        <th style="padding:6px 8px;text-align:left;width:40px">Poste</th>
+        <th style="padding:6px 8px;text-align:left">Club</th>
+        <th style="padding:6px 8px;text-align:left">Nom du joueur</th>
+        <th style="padding:6px 8px;text-align:left">Manager</th>
+        <th style="padding:6px 8px;text-align:right;width:50px">Mise</th>
+      </tr>
+    </thead>
+    <tbody id="enc-corr-table">`;
+
+  // Trier par poste (ordre GDMA) puis club
+  const sortedBids = [...allBids].sort((a, b) => {
+    const pi = POSTE_ORDER_K.indexOf(a.poste) - POSTE_ORDER_K.indexOf(b.poste);
+    if (pi !== 0) return pi;
+    return a.clubKey.localeCompare(b.clubKey);
+  });
+
+  sortedBids.forEach((b, rowIdx) => {
+    const gKey = `${b.poste}__${b.clubKey}`;
+    const isConflict = conflictKeys.has(gKey);
+    const rowBg = isConflict ? 'background:rgba(245,158,11,.07);' : '';
+    const rowBorder = isConflict ? 'border-left:2px solid var(--yellow);' : 'border-left:2px solid transparent;';
+    html += `<tr style="${rowBg}${rowBorder}border-bottom:1px solid rgba(255,255,255,.04)" data-mgr="${b.mgr}" data-idx="${b.idx}">
+      <td style="padding:5px 8px">
+        <span style="width:20px;height:20px;border-radius:50%;background:${POSTE_BG_K[b.poste]};color:${POSTE_FG_K[b.poste]};font-size:9px;font-weight:700;display:inline-flex;align-items:center;justify-content:center">${b.poste}</span>
+      </td>
+      <td style="padding:5px 8px">
+        <input type="text" value="${esc(b.club)}" data-field="club"
+          style="width:100%;background:transparent;border:1px solid transparent;color:var(--text);padding:2px 4px;border-radius:4px;font-size:12px"
+          onfocus="this.style.borderColor='var(--border)'" onblur="this.style.borderColor='transparent'" oninput="corrMarkDirty()">
+      </td>
+      <td style="padding:5px 8px">
+        <input type="text" value="${esc(b.nom)}" data-field="nom"
+          style="width:100%;background:transparent;border:1px solid transparent;color:var(--text);padding:2px 4px;border-radius:4px;font-size:12px"
+          onfocus="this.style.borderColor='var(--border)'" onblur="this.style.borderColor='transparent'" oninput="corrMarkDirty()">
+      </td>
+      <td style="padding:5px 8px;color:var(--muted)">${esc(b.mgr)}</td>
+      <td style="padding:5px 8px;text-align:right;font-weight:700;color:var(--accent)">${b.mise}p</td>
+    </tr>`;
+  });
+
+  html += `</tbody></table></div>`;
+  body.innerHTML = html;
+  document.getElementById('enc-corr-save').style.display = allBids.length ? 'inline-block' : 'none';
+}
+
+function corrMarkDirty() {
+  const status = document.getElementById('enc-corr-status');
+  status.textContent = '● Modifications non sauvegardées';
+  status.style.color = 'var(--yellow)';
+}
+
+async function saveCorrections() {
+  const round = encConfig.round || 1;
+  const btn = document.getElementById('enc-corr-save');
+  btn.disabled = true; btn.textContent = '⏳ Sauvegarde…';
+
+  // Reconstruire les bids depuis le tableau HTML
+  const rows = document.querySelectorAll('#enc-corr-table tr');
+  const changes = {}; // mgr → { idx → { nom, club } }
+  rows.forEach(row => {
+    const mgr = row.dataset.mgr;
+    const idx = parseInt(row.dataset.idx);
+    if (!mgr) return;
+    const inputs = row.querySelectorAll('input[data-field]');
+    const vals = {};
+    inputs.forEach(inp => vals[inp.dataset.field] = inp.value.trim());
+    if (!changes[mgr]) changes[mgr] = {};
+    changes[mgr][idx] = vals;
+  });
+
+  // Appliquer les changements sur les copies originales
+  const batch = writeBatch(db);
+  Object.entries(changes).forEach(([mgr, idxMap]) => {
+    const sub = JSON.parse(JSON.stringify(corrOriginal[mgr]));
+    Object.entries(idxMap).forEach(([idx, vals]) => {
+      if (sub.bids[parseInt(idx)]) {
+        if (vals.nom  !== undefined) sub.bids[parseInt(idx)].nom  = vals.nom;
+        if (vals.club !== undefined) sub.bids[parseInt(idx)].club = vals.club;
+      }
+    });
+    batch.set(doc(db, 'soumissions', `${round}_${mgr}`), sub);
+  });
+
+  await batch.commit();
+  corrOriginal = {}; // reset
+
+  btn.disabled = false; btn.textContent = '💾 Sauvegarder les corrections';
+  const status = document.getElementById('enc-corr-status');
+  status.textContent = '✓ Corrections sauvegardées';
+  status.style.color = 'var(--accent)';
+  setTimeout(() => { status.textContent = ''; }, 3000);
+
+  // Recharger pour refléter les corrections
+  await renderCorrections();
+}
+
+document.getElementById('enc-corr-refresh').addEventListener('click', renderCorrections);
+document.getElementById('enc-corr-save').addEventListener('click', saveCorrections);
 
 // ── Budgets ───────────────────────────────────────────────
 async function loadEncBudgets() {
