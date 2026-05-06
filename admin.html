@@ -1071,7 +1071,7 @@ init().catch(e => {
       <div style="font-weight:700;font-size:13px">Suivi des soumissions — Tour <span id="enc-suivi-round">?</span></div>
       <button class="btn btn-subtle" id="enc-refresh-bids" style="font-size:12px;padding:5px 12px">🔄 Actualiser</button>
     </div>
-    <div id="enc-submissions-grid" style="padding:14px 16px;display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px"></div>
+    <div id="enc-submissions-grid" style="padding:14px 16px;display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px"></div>
   </div>
 
   <!-- COMPILATION -->
@@ -1269,6 +1269,10 @@ document.getElementById('enc-add-mgr').addEventListener('click', async () => {
   copyToClipboard(nom);
 });
 
+function esc(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
 // ── Soumissions ───────────────────────────────────────────
 async function refreshSubmissions() {
   const round = encConfig.round || 1;
@@ -1280,38 +1284,64 @@ async function refreshSubmissions() {
     return { nom, data: snap.exists() ? snap.data() : null };
   }));
 
+  const POSTE_ORDER = ['G','D','M','A'];
+  const POSTE_COLOR = { G:'#854d0e', D:'#1e3a5f', M:'#14532d', A:'#7f1d1d' };
+  const POSTE_TEXT  = { G:'#fde68a', D:'#93c5fd', M:'#86efac', A:'#fca5a5' };
+
   grid.innerHTML = results.map(({ nom, data }) => {
-    const ok = data?.submitted;
-    const total = data?.total || 0;
-    const count = data?.bids?.length || 0;
-    const color = ok ? 'var(--accent)' : 'var(--muted)';
+    const submitted = data?.submitted || false;
+    const hasDraft  = !submitted && data?.bids?.length > 0;
+    const total  = data?.total || 0;
+    const bids   = data?.bids || [];
+    const budget = (mgrDocs[nom]?.budget_max) || 140;
+    const restant = budget - total;
+
+    const statusColor = submitted ? 'var(--accent)' : hasDraft ? 'var(--yellow)' : 'var(--muted)';
+    const statusLabel = submitted ? '✓ Envoyé' : hasDraft ? '📝 Brouillon' : '⏳ En attente';
+    const timeLabel = data?.timestamp
+      ? new Date(data.timestamp).toLocaleString('fr-FR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})
+      : '';
+
+    const borderColor = submitted ? 'var(--accent)' : hasDraft ? 'var(--yellow)' : 'var(--border)';
+
+    let bidsHtml = '';
+    if (bids.length > 0) {
+      bidsHtml = `<div style="margin-top:10px;border-top:1px solid var(--border);padding-top:8px">`;
+      POSTE_ORDER.forEach(poste => {
+        const group = bids.filter(b => b.poste === poste);
+        if (!group.length) return;
+        bidsHtml += group.map(b => `
+          <div style="display:flex;align-items:center;gap:6px;padding:3px 0;border-bottom:1px solid rgba(255,255,255,.04)">
+            <span style="width:20px;height:20px;border-radius:50%;background:${POSTE_COLOR[poste]};color:${POSTE_TEXT[poste]};font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">${poste}</span>
+            <span style="flex:1;font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(b.nom)}</span>
+            <span style="font-size:11px;color:var(--muted);flex-shrink:0;margin-right:4px">${esc(b.club)}</span>
+            <span style="font-size:12px;font-weight:700;color:var(--accent);flex-shrink:0;min-width:36px;text-align:right">${b.mise} pts</span>
+          </div>`).join('');
+      });
+      bidsHtml += `</div>`;
+    } else {
+      bidsHtml = `<div style="font-size:11px;color:var(--muted);margin-top:8px;text-align:center">Aucune mise pour l'instant</div>`;
+    }
+
     return `
-      <div style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:10px 12px;cursor:pointer;transition:border-color .15s"
-           data-mgr="${nom}" class="enc-mgr-card">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
+      <div style="background:var(--surface2);border:1px solid ${borderColor};border-radius:8px;padding:10px 12px">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:2px">
           <div style="font-weight:700;font-size:13px">${nom}</div>
-          <div style="font-size:11px;font-weight:700;color:${color}">${ok ? '✓ Envoyé' : '⏳ En attente'}</div>
+          <div style="font-size:11px;font-weight:700;color:${statusColor}">${statusLabel}${timeLabel ? ' · ' + timeLabel : ''}</div>
         </div>
-        <div style="font-size:11px;color:var(--muted)">${count} joueur(s) · ${total} pts misés</div>
-        ${data?.timestamp ? `<div style="font-size:10px;color:var(--muted);margin-top:3px">${new Date(data.timestamp).toLocaleString('fr-FR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})}</div>` : ''}
+        <div style="display:flex;align-items:center;justify-content:space-between">
+          <div style="font-size:11px;color:var(--muted)">${bids.length} joueur(s)</div>
+          <div style="font-size:12px;font-weight:700">
+            <span style="color:var(--accent)">${total} pts misés</span>
+            <span style="color:var(--muted);font-weight:400"> · ${restant >= 0 ? restant + ' restants' : '<span style=color:var(--red)>' + Math.abs(restant) + ' dépassés</span>'}</span>
+          </div>
+        </div>
+        ${bidsHtml}
       </div>`;
   }).join('');
-
-  grid.querySelectorAll('.enc-mgr-card').forEach(card => {
-    card.addEventListener('click', () => showManagerBids(card.dataset.mgr, results, round));
-  });
 }
 
 document.getElementById('enc-refresh-bids').addEventListener('click', refreshSubmissions);
-
-function showManagerBids(nom, results, round) {
-  const r = results.find(x => x.nom === nom);
-  if (!r?.data?.bids?.length) { alert(nom + ' n\'a pas encore soumis de mises.'); return; }
-  const lines = r.data.bids.map(b =>
-    `${b.poste} | ${b.nom} (${b.club}) — ${b.mise} pts`
-  ).join('\n');
-  alert(`Mises de ${nom} — Tour ${round} :\n\n${lines}\n\nTotal : ${r.data.total} pts`);
-}
 
 // ── Budgets ───────────────────────────────────────────────
 async function loadEncBudgets() {
