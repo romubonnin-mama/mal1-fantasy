@@ -1195,10 +1195,35 @@ async function generateInviteLink(nom) {
 function copyToClipboard(nom) {
   const d = mgrDocs[nom] || {};
   if (!d.invite_token) return;
-  const url = getInviteUrl(d.invite_token);
-  navigator.clipboard.writeText(url).catch(() => {});
-  alert(`Lien copié pour ${nom} !\n\nEnvoie-lui ce lien — il choisira lui-même son PIN :\n\n${url}`);
+  showLinkModal(nom, getInviteUrl(d.invite_token));
 }
+
+function showLinkModal(nom, url) {
+  document.getElementById('invite-modal-name').textContent = 'Pour : ' + nom;
+  document.getElementById('invite-modal-url').value = url;
+  document.getElementById('invite-modal-status').textContent = '';
+  const modal = document.getElementById('invite-modal');
+  modal.style.display = 'flex';
+  setTimeout(() => document.getElementById('invite-modal-url').select(), 50);
+}
+
+document.getElementById('invite-modal-copy').addEventListener('click', () => {
+  const url = document.getElementById('invite-modal-url').value;
+  navigator.clipboard.writeText(url).then(() => {
+    document.getElementById('invite-modal-status').textContent = '✓ Lien copié dans le presse-papiers !';
+  }).catch(() => {
+    document.getElementById('invite-modal-url').select();
+    document.getElementById('invite-modal-status').textContent = 'Sélectionne le texte et fais Ctrl+C';
+  });
+});
+
+document.getElementById('invite-modal-close').addEventListener('click', () => {
+  document.getElementById('invite-modal').style.display = 'none';
+});
+
+document.getElementById('invite-modal').addEventListener('click', e => {
+  if (e.target === e.currentTarget) e.currentTarget.style.display = 'none';
+});
 
 function renderManagersList() {
   const list = document.getElementById('enc-managers-list');
@@ -1515,6 +1540,23 @@ async function compileRound(round) {
     </div>`;
 }
 </script>
+
+<!-- Modal lien d'invitation -->
+<div id="invite-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:999;align-items:center;justify-content:center;padding:16px">
+  <div style="background:#1e2535;border:1px solid #2a3348;border-radius:12px;padding:20px;width:100%;max-width:480px">
+    <div style="font-weight:700;font-size:14px;margin-bottom:4px">Lien d'invitation</div>
+    <div id="invite-modal-name" style="font-size:12px;color:#8892a4;margin-bottom:14px"></div>
+    <div style="font-size:11px;color:#8892a4;margin-bottom:6px;font-weight:600;text-transform:uppercase;letter-spacing:.5px">Lien à envoyer au manager</div>
+    <div style="display:flex;gap:8px;margin-bottom:14px">
+      <input id="invite-modal-url" type="text" readonly
+        style="flex:1;background:#0d0f14;border:1px solid #2a3348;color:#e8eaf0;padding:9px 12px;border-radius:8px;font-size:12px;font-family:monospace;cursor:text"
+        onclick="this.select()">
+      <button id="invite-modal-copy" style="padding:9px 14px;background:#00e5a0;color:#0d0f14;border:none;border-radius:8px;font-weight:700;font-size:13px;cursor:pointer;white-space:nowrap">📋 Copier</button>
+    </div>
+    <div id="invite-modal-status" style="font-size:12px;color:#00e5a0;min-height:16px;margin-bottom:12px"></div>
+    <button id="invite-modal-close" style="width:100%;padding:9px;background:#1e2535;border:1px solid #2a3348;color:#e8eaf0;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer">Fermer</button>
+  </div>
+</div>
 
 <button id="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Remonter en haut">↑</button>
 <style>
