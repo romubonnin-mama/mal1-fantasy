@@ -528,11 +528,13 @@ document.getElementById('p-mise').addEventListener('keydown', e => {
 
 // ── Render bids ────────────────────────────────────────────
 function renderBids() {
-  const budgetMax = MGR_DATA.budget_max || 140;
-  const used = myBids.reduce((s, b) => s + (b.mise || 0), 0);
-  const remaining = budgetMax - used;
-  const pct = Math.min(100, (used / budgetMax) * 100);
   const round = CONFIG.round || 1;
+  // Tour 1 : plafond fixe 140 (budget_max n'est fixé qu'après compilation du T1)
+  // Tour 2+ : budget_restant = ce qui reste après les joueurs gagnés aux tours précédents
+  const budgetCap = round === 1 ? 140 : (MGR_DATA.budget_restant !== undefined ? MGR_DATA.budget_restant : 0);
+  const used = myBids.reduce((s, b) => s + (b.mise || 0), 0);
+  const remaining = budgetCap - used;
+  const pct = budgetCap > 0 ? Math.min(100, (used / budgetCap) * 100) : 100;
 
   document.getElementById('s-budget').textContent = Math.max(0, remaining);
   document.getElementById('s-mises').textContent = used;
@@ -545,9 +547,8 @@ function renderBids() {
   fill.className = 'budget-fill' + (remaining < 0 ? ' over' : pct > 75 ? ' warn' : '');
 
   // Jokers
-  const saved = budgetMax - used;
   const jokers = round === 1
-    ? Math.min(3, Math.floor(Math.max(0, saved) / 10))
+    ? Math.min(3, Math.floor(Math.max(0, 140 - used) / 10))
     : (MGR_DATA.jokers_bonus || 0);
   document.getElementById('s-jokers').textContent = jokers;
 
@@ -625,10 +626,10 @@ document.getElementById('btn-save-draft').addEventListener('click', async () => 
 
 // ── Submit ─────────────────────────────────────────────────
 document.getElementById('btn-submit').addEventListener('click', async () => {
-  const budgetMax = MGR_DATA.budget_max || 140;
-  const used = myBids.reduce((s, b) => s + (b.mise || 0), 0);
-  if (used > budgetMax) { alert('Budget dépassé !'); return; }
   const round = CONFIG.round || 1;
+  const budgetCap = round === 1 ? 140 : (MGR_DATA.budget_restant !== undefined ? MGR_DATA.budget_restant : 0);
+  const used = myBids.reduce((s, b) => s + (b.mise || 0), 0);
+  if (used > budgetCap) { alert('Budget dépassé !'); return; }
   await setDoc(doc(db, 'soumissions', `${round}_${MGR}`), {
     manager: MGR, round, bids: myBids,
     submitted: true, total: used,
