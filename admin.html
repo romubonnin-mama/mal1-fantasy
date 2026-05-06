@@ -1660,10 +1660,8 @@ async function renderCompileSection() {
   if (!deadlinePassed) {
     const dlStr = new Date(encConfig.deadline).toLocaleString('fr-FR', {day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});
     preview.innerHTML = `<div style="font-size:12px;color:var(--yellow);background:rgba(245,158,11,.1);border:1px solid var(--yellow);border-radius:6px;padding:8px 12px;margin-bottom:4px">
-      🔒 Deadline pas encore atteinte (${dlStr}) — compilation bloquée.
+      🔒 Deadline pas encore atteinte (${dlStr}) — clique sur Compiler pour passer outre.
     </div>`;
-    btn.disabled = true;
-    return;
   }
 
   btn.disabled = false;
@@ -1729,8 +1727,7 @@ document.getElementById('enc-compile-btn').addEventListener('click', async () =>
   const deadlinePassed = !encConfig.deadline || new Date() > new Date(encConfig.deadline);
   if (!deadlinePassed) {
     const dlStr = new Date(encConfig.deadline).toLocaleString('fr-FR', {day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});
-    alert(`Compilation impossible : la deadline n'est pas encore atteinte (${dlStr}).`);
-    return;
+    if (!confirm(`⚠️ La deadline n'est pas encore atteinte (${dlStr}).\n\nVoulez-vous compiler quand même ?`)) return;
   }
 
   // Vérifier si ce tour a déjà été compilé
