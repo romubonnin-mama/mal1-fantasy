@@ -88,9 +88,12 @@ select:focus,input:focus{outline:none;border-color:var(--accent)}
     <div class="header-title">MA L1 — ENCHÈRES</div>
     <div class="header-sub" id="header-round">Mercato d'été</div>
   </div>
-  <div style="text-align:right">
-    <div style="font-size:13px;font-weight:700;color:var(--accent)" id="header-nom"></div>
-    <div class="header-sub" id="header-status"></div>
+  <div style="text-align:right;display:flex;align-items:center;gap:10px">
+    <button id="btn-refresh" title="Actualiser" style="background:none;border:1px solid var(--border);border-radius:6px;color:var(--text2);font-size:15px;padding:4px 8px;cursor:pointer;line-height:1" onclick="refreshData()">↻</button>
+    <div>
+      <div style="font-size:13px;font-weight:700;color:var(--accent)" id="header-nom"></div>
+      <div class="header-sub" id="header-status"></div>
+    </div>
   </div>
 </div>
 
@@ -266,10 +269,9 @@ async function saveDraft() {
   const used = myBids.reduce((s, b) => s + (b.mise || 0), 0);
   await setDoc(doc(db, 'soumissions', `${round}_${MGR}`), {
     manager: MGR, round, bids: myBids,
-    submitted: false, total: used,
+    submitted: submitted, total: used,
     timestamp: new Date().toISOString()
   });
-  submitted = false;
   const el = document.getElementById('draft-status');
   if (el) {
     el.textContent = '💾 Brouillon sauvegardé';
@@ -288,6 +290,7 @@ async function loadPrevResults() {
 
 function scheduleDraft() {
   if (!MGR) return;
+  if (submitted) return;
   const el = document.getElementById('draft-status');
   if (el) { el.textContent = 'Sauvegarde…'; el.style.color = 'var(--text2)'; }
   clearTimeout(draftTimer);
@@ -476,6 +479,17 @@ async function loadMyBids() {
   if (submitted) showSubmitted();
 }
 
+async function refreshData() {
+  if (!MGR) return;
+  const btn = document.getElementById('btn-refresh');
+  if (btn) { btn.textContent = '↻'; btn.style.opacity = '0.4'; btn.disabled = true; }
+  const snap = await getDoc(doc(db, 'managers', MGR));
+  if (snap.exists()) MGR_DATA = snap.data();
+  await loadConfig();
+  await loadMyBids();
+  if (btn) { btn.style.opacity = '1'; btn.disabled = false; }
+}
+
 // ── Ajout joueur ───────────────────────────────────────────
 document.getElementById('btn-add').addEventListener('click', () => {
   const nom   = document.getElementById('p-nom').value.trim();
@@ -629,6 +643,7 @@ document.getElementById('btn-reopen').addEventListener('click', () => {
     alert('La deadline est passée, les mises sont verrouillées.');
     return;
   }
+  submitted = false;
   showForm();
 });
 
