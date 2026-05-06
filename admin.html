@@ -1178,7 +1178,8 @@ function generateToken() {
 }
 
 function getInviteUrl(token) {
-  return window.location.href.replace('admin.html', 'enchere.html').split('?')[0] + '?token=' + token;
+  const base = 'https://romubonnin-mama.github.io/mal1-fantasy/enchere.html';
+  return base + '?token=' + token;
 }
 
 async function generateInviteLink(nom) {
