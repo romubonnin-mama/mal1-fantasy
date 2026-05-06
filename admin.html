@@ -1076,9 +1076,12 @@ init().catch(e => {
 
   <!-- COMPILATION -->
   <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:20px">
-    <div style="padding:10px 16px;background:var(--surface2);border-bottom:1px solid var(--border);font-weight:700;font-size:13px">Compiler le tour <span id="enc-compile-round">?</span></div>
+    <div style="padding:10px 16px;background:var(--surface2);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between">
+      <div style="font-weight:700;font-size:13px">Compiler le tour <span id="enc-compile-round">?</span></div>
+      <button class="btn btn-subtle" id="enc-refresh-compile" style="font-size:12px;padding:5px 12px">🔄 Actualiser</button>
+    </div>
     <div style="padding:14px 16px">
-      <p style="font-size:12px;color:var(--muted);margin-bottom:12px">Lance la compilation après la deadline. Les résultats sont calculés, les budgets mis à jour, et le tour suivant est ouvert.</p>
+      <div id="enc-compile-preview" style="margin-bottom:14px"></div>
       <button class="btn btn-primary" id="enc-compile-btn">⚡ Compiler le tour</button>
       <div id="enc-compile-results" style="margin-top:14px"></div>
     </div>
@@ -1124,6 +1127,7 @@ async function initEnchere() {
   renderManagersList();
   renderEncBudgets();
   await refreshSubmissions();
+  await renderCompileSection();
   document.getElementById('enc-suivi-round').textContent = encConfig.round || 1;
   document.getElementById('enc-compile-round').textContent = encConfig.round || 1;
 }
@@ -1154,6 +1158,7 @@ document.getElementById('enc-save-config').addEventListener('click', async () =>
   document.getElementById('enc-suivi-round').textContent = round;
   document.getElementById('enc-compile-round').textContent = round;
   setTimeout(() => document.getElementById('enc-config-status').textContent = '', 3000);
+  await renderCompileSection();
 });
 
 // ── Managers CRUD ─────────────────────────────────────────
@@ -1324,9 +1329,81 @@ function renderEncBudgets() {
   }).join('');
 }
 
+// ── Compilation — prévisualisation ────────────────────────
+const POSTE_ORDER_C = ['G','D','M','A'];
+const POSTE_BG_C = { G:'#854d0e', D:'#1e3a5f', M:'#14532d', A:'#7f1d1d' };
+const POSTE_FG_C = { G:'#fde68a', D:'#93c5fd', M:'#86efac', A:'#fca5a5' };
+
+async function renderCompileSection() {
+  const round = encConfig.round || 1;
+  const preview = document.getElementById('enc-compile-preview');
+  const btn = document.getElementById('enc-compile-btn');
+  const deadlinePassed = !encConfig.deadline || new Date() > new Date(encConfig.deadline);
+
+  if (!deadlinePassed) {
+    const dlStr = new Date(encConfig.deadline).toLocaleString('fr-FR', {day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});
+    preview.innerHTML = `<div style="font-size:12px;color:var(--yellow);background:rgba(245,158,11,.1);border:1px solid var(--yellow);border-radius:6px;padding:8px 12px;margin-bottom:4px">
+      🔒 Deadline pas encore atteinte (${dlStr}) — compilation bloquée.
+    </div>`;
+    btn.disabled = true;
+    return;
+  }
+
+  btn.disabled = false;
+
+  const results = await Promise.all(MANAGERS.map(async nom => {
+    const snap = await getDoc(doc(db, 'soumissions', `${round}_${nom}`));
+    return { nom, data: snap.exists() ? snap.data() : null };
+  }));
+
+  const submitted = results.filter(r => r.data?.submitted);
+  const pending   = results.filter(r => !r.data?.submitted);
+
+  let html = `<div style="font-size:11px;color:var(--muted);margin-bottom:6px">${submitted.length}/${MANAGERS.length} manager(s) ont soumis leurs mises${pending.length ? ` — <span style="color:var(--yellow)">pas encore soumis : ${pending.map(r => r.nom).join(', ')}</span>` : ' ✓'}.</div>`;
+  html += `<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px">`;
+
+  results.forEach(({ nom, data }) => {
+    const ok   = data?.submitted || false;
+    const bids = data?.bids || [];
+    const total = data?.total || 0;
+    const statusColor = ok ? 'var(--accent)' : 'var(--muted)';
+    const statusLabel = ok ? '✓ Envoyé' : '⏳ En attente';
+
+    const bidsHtml = bids.length > 0
+      ? POSTE_ORDER_C.flatMap(p => bids.filter(b => b.poste === p).map(b =>
+          `<div style="display:flex;align-items:center;gap:5px;padding:2px 0;border-bottom:1px solid rgba(255,255,255,.04)">
+            <span style="width:18px;height:18px;border-radius:50%;background:${POSTE_BG_C[p]};color:${POSTE_FG_C[p]};font-size:8px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">${p}</span>
+            <span style="flex:1;font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(b.nom)} <span style="color:var(--muted)">${esc(b.club)}</span></span>
+            <span style="font-size:11px;font-weight:700;color:var(--accent);flex-shrink:0">${b.mise}p</span>
+          </div>`)).join('')
+      : `<div style="font-size:11px;color:var(--muted);padding:4px 0">Aucune mise</div>`;
+
+    html += `<div style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:10px 12px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+        <div style="font-weight:700;font-size:13px">${nom}</div>
+        <div style="font-size:11px;font-weight:700;color:${statusColor}">${statusLabel}${ok ? ' · ' + total + ' pts' : ''}</div>
+      </div>
+      ${bidsHtml}
+    </div>`;
+  });
+
+  html += '</div>';
+  preview.innerHTML = html;
+}
+
+document.getElementById('enc-refresh-compile').addEventListener('click', renderCompileSection);
+
 // ── Compilation ───────────────────────────────────────────
 document.getElementById('enc-compile-btn').addEventListener('click', async () => {
   const round = encConfig.round || 1;
+
+  const deadlinePassed = !encConfig.deadline || new Date() > new Date(encConfig.deadline);
+  if (!deadlinePassed) {
+    const dlStr = new Date(encConfig.deadline).toLocaleString('fr-FR', {day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});
+    alert(`Compilation impossible : la deadline n'est pas encore atteinte (${dlStr}).`);
+    return;
+  }
+
   if (!confirm(`Compiler le tour ${round} ? Cette action est irréversible.`)) return;
 
   const btn = document.getElementById('enc-compile-btn');
@@ -1352,12 +1429,13 @@ async function compileRound(round) {
     }
   }));
 
-  // 2. Agréger les mises par joueur
-  const playerBids = {}; // player_id → { nom, club, poste, bids: {MGR: mise} }
+  // 2. Agréger les mises par joueur (clé composite nom+club+poste, pas d'id)
+  const playerBids = {};
   Object.entries(submissions).forEach(([mgr, sub]) => {
     (sub.bids || []).forEach(b => {
-      if (!playerBids[b.id]) playerBids[b.id] = { nom: b.nom, club: b.club, poste: b.poste, bids: {} };
-      playerBids[b.id].bids[mgr] = b.mise;
+      const pid = `${b.nom.trim().toLowerCase()}__${b.club.trim().toLowerCase()}__${b.poste}`;
+      if (!playerBids[pid]) playerBids[pid] = { nom: b.nom, club: b.club, poste: b.poste, bids: {} };
+      playerBids[pid].bids[mgr] = b.mise;
     });
   });
 
