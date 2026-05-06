@@ -1047,6 +1047,20 @@ init().catch(e => {
       </div>
     </div>
 
+    <!-- CLUBS -->
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:20px">
+      <div style="padding:10px 16px;background:var(--surface2);border-bottom:1px solid var(--border);font-weight:700;font-size:13px">Clubs de la saison</div>
+      <div style="padding:14px 16px">
+        <div id="enc-clubs-list" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px"></div>
+        <div style="display:flex;gap:8px">
+          <input type="text" id="enc-club-input" placeholder="Nom du club (ex: PSG, OM, Lens…)"
+            style="flex:1;background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:8px 12px;border-radius:6px;font-size:13px">
+          <button class="btn btn-primary" id="enc-club-add">Ajouter</button>
+        </div>
+        <div id="enc-clubs-status" style="font-size:12px;color:var(--accent);margin-top:8px;min-height:16px"></div>
+      </div>
+    </div>
+
     <!-- GESTION MANAGERS -->
     <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden">
       <div style="padding:10px 16px;background:var(--surface2);border-bottom:1px solid var(--border);font-weight:700;font-size:13px">Managers participants</div>
@@ -1123,7 +1137,7 @@ let encConfig = {};
 document.querySelector('[data-tab="enchere"]').addEventListener('click', initEnchere);
 
 async function initEnchere() {
-  await Promise.all([loadEncConfig(), loadManagers()]);
+  await Promise.all([loadEncConfig(), loadManagers(), loadClubsList()]);
   renderManagersList();
   renderEncBudgets();
   await refreshSubmissions();
@@ -1303,6 +1317,74 @@ document.getElementById('enc-add-mgr').addEventListener('click', async () => {
 function esc(s) {
   return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
+
+// ── Clubs ─────────────────────────────────────────────────
+const DEFAULT_CLUBS = ['PSG','OM','Monaco','OL','LOSC','Nice','Lens','Rennes',
+  'Strasbourg','Montpellier','Reims','Auxerre','Le Havre','Toulouse','Nantes',
+  'Saint-Etienne','Angers','Brest'];
+let encClubs = [];
+
+async function loadClubsList() {
+  const snap = await getDoc(doc(db, 'config', 'clubs'));
+  if (snap.exists()) {
+    encClubs = snap.data().list || [];
+  } else {
+    encClubs = [...DEFAULT_CLUBS];
+    await setDoc(doc(db, 'config', 'clubs'), { list: encClubs });
+  }
+  renderClubsList();
+}
+
+async function saveClubsList() {
+  await setDoc(doc(db, 'config', 'clubs'), { list: encClubs });
+  const el = document.getElementById('enc-clubs-status');
+  if (el) {
+    el.textContent = '✓ Clubs sauvegardés';
+    setTimeout(() => { el.textContent = ''; }, 2000);
+  }
+}
+
+function renderClubsList() {
+  const container = document.getElementById('enc-clubs-list');
+  if (!container) return;
+  if (encClubs.length === 0) {
+    container.innerHTML = '<span style="font-size:12px;color:var(--muted)">Aucun club — ajoute-en ci-dessous.</span>';
+    return;
+  }
+  container.innerHTML = encClubs.map(club =>
+    `<span style="background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:4px 10px;font-size:12px;display:inline-flex;align-items:center;gap:6px">
+      ${club}
+      <button data-del-club="${club}" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:13px;line-height:1;padding:0" title="Supprimer">✕</button>
+    </span>`
+  ).join('');
+  container.querySelectorAll('[data-del-club]').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      encClubs = encClubs.filter(c => c !== btn.dataset.delClub);
+      renderClubsList();
+      await saveClubsList();
+    });
+  });
+}
+
+document.getElementById('enc-club-add').addEventListener('click', async () => {
+  const input = document.getElementById('enc-club-input');
+  const nom = input.value.trim();
+  const status = document.getElementById('enc-clubs-status');
+  if (!nom) return;
+  if (encClubs.map(c => c.toLowerCase()).includes(nom.toLowerCase())) {
+    status.textContent = `"${nom}" existe déjà.`;
+    setTimeout(() => { status.textContent = ''; }, 2000);
+    return;
+  }
+  encClubs.push(nom);
+  input.value = '';
+  renderClubsList();
+  await saveClubsList();
+});
+
+document.getElementById('enc-club-input').addEventListener('keydown', e => {
+  if (e.key === 'Enter') document.getElementById('enc-club-add').click();
+});
 
 // ── Soumissions ───────────────────────────────────────────
 async function refreshSubmissions() {

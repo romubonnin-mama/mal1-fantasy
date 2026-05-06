@@ -190,7 +190,7 @@ select:focus,input:focus{outline:none;border-color:var(--accent)}
         <div style="font-size:11px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px">Ajouter un joueur</div>
         <div class="add-form-grid">
           <input class="field-input" type="text" id="p-nom" placeholder="Nom du joueur">
-          <input class="field-input" type="text" id="p-club" placeholder="Club">
+          <select class="field-input" id="p-club"><option value="">— Club —</option></select>
           <select class="field-input" id="p-poste">
             <option value="G">G</option>
             <option value="D">D</option>
@@ -384,6 +384,7 @@ document.getElementById('setup-btn').addEventListener('click', async () => {
   document.getElementById('header-nom').textContent = MGR;
   window.history.replaceState({}, '', window.location.pathname);
   await loadConfig();
+  await loadClubs();
   await loadMyBids();
   startClock();
   watchConfig();
@@ -414,6 +415,7 @@ document.getElementById('login-btn').addEventListener('click', async () => {
   document.getElementById('header-nom').textContent = nom;
 
   await loadConfig();
+  await loadClubs();
   await loadMyBids();
   startClock();
   watchConfig();
@@ -423,6 +425,18 @@ async function loadConfig() {
   const snap = await getDoc(doc(db, 'config', 'enchere'));
   CONFIG = snap.exists() ? snap.data() : { round: 1, actif: false };
   document.getElementById('header-round').textContent = 'Tour ' + (CONFIG.round || 1);
+}
+
+async function loadClubs() {
+  const snap = await getDoc(doc(db, 'config', 'clubs'));
+  const clubs = snap.exists() ? (snap.data().list || []) : [];
+  const sel = document.getElementById('p-club');
+  sel.innerHTML = '<option value="">— Club —</option>';
+  clubs.sort().forEach(c => {
+    const opt = document.createElement('option');
+    opt.value = c; opt.textContent = c;
+    sel.appendChild(opt);
+  });
 }
 
 function watchConfig() {
@@ -470,7 +484,7 @@ document.getElementById('btn-add').addEventListener('click', () => {
   const errEl = document.getElementById('add-err');
 
   if (!nom || !club) {
-    errEl.textContent = 'Nom et club obligatoires.';
+    errEl.textContent = nom ? 'Choisis un club dans la liste.' : 'Nom et club obligatoires.';
     errEl.style.display = 'block';
     return;
   }
