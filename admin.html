@@ -1665,17 +1665,25 @@ async function renderCompileSection() {
   }
 
   btn.disabled = false;
+  btn.title = '';
 
-  // Afficher/masquer le bouton "Annuler la compilation" selon si déjà compilé
+  // Afficher/masquer le bouton "Annuler la compilation"
+  // Cas 1 : resultats/{round} existe → compilation partielle (round pas encore incrémenté)
+  // Cas 2 : resultats/{round-1} existe → compilation réussie (round déjà incrémenté)
   const resetBtn = document.getElementById('enc-reset-btn');
-  const alreadyCompiled = await getDoc(doc(db, 'resultats', String(round)));
-  if (alreadyCompiled.exists()) {
+  const [curSnap, prevSnap] = await Promise.all([
+    getDoc(doc(db, 'resultats', String(round))),
+    round > 1 ? getDoc(doc(db, 'resultats', String(round - 1))) : Promise.resolve({ exists: () => false })
+  ]);
+
+  if (curSnap.exists()) {
     btn.disabled = true;
     btn.title = 'Ce tour a déjà été compilé';
     resetBtn.style.display = 'inline-block';
+  } else if (prevSnap.exists()) {
+    resetBtn.style.display = 'inline-block';
   } else {
     resetBtn.style.display = 'none';
-    btn.title = '';
   }
 
   const results = await Promise.all(MANAGERS.map(async nom => {
@@ -1696,19 +1704,22 @@ async function renderCompileSection() {
     const statusColor = ok ? 'var(--accent)' : 'var(--muted)';
     const statusLabel = ok ? '✓ Envoyé' : '⏳ En attente';
 
-    const bidsHtml = bids.length > 0
-      ? POSTE_ORDER_C.flatMap(p => bids.filter(b => b.poste === p).map(b =>
-          `<div style="display:flex;align-items:center;gap:5px;padding:2px 0;border-bottom:1px solid rgba(255,255,255,.04)">
-            <span style="width:18px;height:18px;border-radius:50%;background:${POSTE_BG_C[p]};color:${POSTE_FG_C[p]};font-size:8px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">${p}</span>
-            <span style="flex:1;font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(b.nom)} <span style="color:var(--muted)">${esc(b.club)}</span></span>
-            <span style="font-size:11px;font-weight:700;color:var(--accent);flex-shrink:0">${b.mise}p</span>
-          </div>`)).join('')
-      : `<div style="font-size:11px;color:var(--muted);padding:4px 0">Aucune mise</div>`;
+    // Compositions visibles seulement après la deadline
+    const bidsHtml = deadlinePassed
+      ? (bids.length > 0
+          ? POSTE_ORDER_C.flatMap(p => bids.filter(b => b.poste === p).map(b =>
+              `<div style="display:flex;align-items:center;gap:5px;padding:2px 0;border-bottom:1px solid rgba(255,255,255,.04)">
+                <span style="width:18px;height:18px;border-radius:50%;background:${POSTE_BG_C[p]};color:${POSTE_FG_C[p]};font-size:8px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">${p}</span>
+                <span style="flex:1;font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(b.nom)} <span style="color:var(--muted)">${esc(b.club)}</span></span>
+                <span style="font-size:11px;font-weight:700;color:var(--accent);flex-shrink:0">${b.mise}p</span>
+              </div>`)).join('')
+          : `<div style="font-size:11px;color:var(--muted);padding:4px 0">Aucune mise</div>`)
+      : `<div style="font-size:11px;color:var(--muted);padding:4px 0;font-style:italic">🔒 Visible après la deadline</div>`;
 
     html += `<div style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:10px 12px">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
         <div style="font-weight:700;font-size:13px">${nom}</div>
-        <div style="font-size:11px;font-weight:700;color:${statusColor}">${statusLabel}${ok ? ' · ' + total + ' pts' : ''}</div>
+        <div style="font-size:11px;font-weight:700;color:${statusColor}">${statusLabel}${ok && deadlinePassed ? ' · ' + total + ' pts' : ''}</div>
       </div>
       ${bidsHtml}
     </div>`;
@@ -1852,21 +1863,31 @@ async function compileRound(round) {
 // ── Annuler une compilation ───────────────────────────────
 document.getElementById('enc-reset-btn').addEventListener('click', async () => {
   const round = encConfig.round || 1;
-  const prevRound = round - 1;
-  if (prevRound < 1) { alert('Aucune compilation à annuler (tour 1 pas encore compilé).'); return; }
 
-  if (!confirm(`Annuler la compilation du tour ${prevRound} ?\n\nCela va :\n• Supprimer les résultats du tour ${prevRound}\n• Remettre le round à ${prevRound}\n• Restaurer les budgets managers avant ce tour\n\nLes soumissions (listes de mises) ne seront pas effacées.`)) return;
+  // Déterminer quel tour annuler (même logique que renderCompileSection)
+  const [curSnap, prevSnap] = await Promise.all([
+    getDoc(doc(db, 'resultats', String(round))),
+    round > 1 ? getDoc(doc(db, 'resultats', String(round - 1))) : Promise.resolve({ exists: () => false })
+  ]);
+
+  let roundToReset = null;
+  if (curSnap.exists()) roundToReset = round;          // compilation partielle
+  else if (prevSnap.exists()) roundToReset = round - 1; // compilation réussie
+
+  if (!roundToReset) { alert('Aucune compilation à annuler.'); return; }
+
+  if (!confirm(`Annuler la compilation du tour ${roundToReset} ?\n\nCela va :\n• Supprimer les résultats du tour ${roundToReset}\n• Remettre le round à ${roundToReset}\n• Restaurer les budgets managers avant ce tour\n\nLes soumissions (listes de mises) ne seront pas effacées.`)) return;
 
   const resetBtn = document.getElementById('enc-reset-btn');
   resetBtn.disabled = true; resetBtn.textContent = '⏳ Annulation...';
 
   try {
-    await resetCompilation(prevRound);
+    await resetCompilation(roundToReset);
     resetBtn.style.display = 'none';
     resetBtn.disabled = false; resetBtn.textContent = '↩ Annuler la compilation';
     document.getElementById('enc-compile-btn').disabled = false;
     document.getElementById('enc-compile-btn').title = '';
-    alert(`Tour ${prevRound} réinitialisé. Tu peux relancer la compilation.`);
+    alert(`Tour ${roundToReset} réinitialisé. Tu peux relancer la compilation.`);
     await renderCompileSection();
   } catch (e) {
     alert('Erreur : ' + e.message);
