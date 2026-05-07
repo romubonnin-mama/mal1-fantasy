@@ -23,6 +23,11 @@
   .nav-tab { color: var(--muted); font-size: 12px; font-weight: 600; padding: 6px 10px; border-radius: 6px; cursor: pointer; transition: all 0.2s; border: none; background: none; text-decoration: none; display: inline-flex; align-items: center; }
   .nav-tab:hover { color: var(--text); background: var(--surface2); }
   .nav-tab.active { color: var(--accent); background: var(--surface2); }
+  .nav-dropdown { position: relative; }
+  .nav-dropdown-menu { display: none; position: absolute; top: calc(100% + 8px); right: 0; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 6px; min-width: 150px; z-index: 200; box-shadow: 0 8px 24px rgba(0,0,0,0.5); }
+  .nav-dropdown.open .nav-dropdown-menu { display: block; }
+  .nav-dropdown-menu a { display: block; padding: 8px 12px; color: var(--muted); font-size: 12px; font-weight: 600; border-radius: 6px; text-decoration: none; transition: all 0.15s; }
+  .nav-dropdown-menu a:hover { color: var(--text); background: var(--surface2); }
   .journee-badge { background: var(--surface2); border: 1px solid var(--border); padding: 5px 12px; border-radius: 8px; font-size: 12px; font-weight: 600; color: var(--accent); flex-shrink: 0; }
   .container { max-width: 1200px; margin: 0 auto; padding: 24px 16px; }
   .page { display: none; }
@@ -149,7 +154,7 @@
     .logo { font-size: 20px; letter-spacing: 2px; }
     .logo-badge { font-size: 8px; padding: 2px 4px; }
     .journee-badge { font-size: 11px; padding: 4px 8px; }
-    .nav-tabs { order: 3; width: 100%; display: grid; grid-template-columns: repeat(5, 1fr); gap: 3px; padding-bottom: 2px; }
+    .nav-tabs { order: 3; width: 100%; display: grid; grid-template-columns: repeat(4, 1fr); gap: 3px; padding-bottom: 2px; }
     .nav-tab { text-align: center; padding: 7px 4px; font-size: 10px; background: var(--surface2); border-radius: 6px; }
     /* Layout général */
     .container { padding: 14px 10px; }
@@ -233,6 +238,12 @@
     <button class="nav-tab" id="tab-evolution">Évolution</button>
     <button class="nav-tab" id="tab-stats">Stats</button>
     <a class="nav-tab" href="enchere.html">Enchères</a>
+    <div class="nav-dropdown">
+      <button class="nav-tab" id="tab-archives">Archives ▾</button>
+      <div class="nav-dropdown-menu">
+        <a href="archive-2025-26.html">Saison 2025/26</a>
+      </div>
+    </div>
   </div>
   <div class="journee-badge" id="journee-badge">...</div>
 </header>
@@ -512,6 +523,14 @@ document.getElementById('tab-journees').onclick = () => showPage('journees');
 document.getElementById('tab-joueurs').onclick = () => showPage('joueurs');
 document.getElementById('tab-evolution').onclick = () => showPage('evolution');
 document.getElementById('tab-stats').onclick = () => showPage('stats');
+
+document.getElementById('tab-archives').addEventListener('click', function(e) {
+  e.stopPropagation();
+  this.closest('.nav-dropdown').classList.toggle('open');
+});
+document.addEventListener('click', () => {
+  document.querySelectorAll('.nav-dropdown').forEach(d => d.classList.remove('open'));
+});
 
 function showStatsSub(sub) {
   document.querySelectorAll('.stats-sub-tab').forEach(b => b.classList.remove('active'));
