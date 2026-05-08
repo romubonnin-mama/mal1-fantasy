@@ -368,5 +368,56 @@
       }
     }
   },
-  "31": {}
+  "31": {},
+  "33": {
+    "ROMU": {
+      "M.SARR": {
+        "full_match": true,
+        "cs": true
+      },
+      "LEPENANT": {
+        "full_match": true
+      }
+    },
+    "JEROME": {
+      "GANIOU": {
+        "full_match": true,
+        "cs": true
+      }
+    },
+    "VINCENT": {
+      "CABELLA": {
+        "absent": true
+      },
+      "EDOUARD": {
+        "sort_a": 59
+      }
+    },
+    "ADRIEN": {
+      "RISSER": {
+        "full_match": true,
+        "cs": true
+      },
+      "UDOL": {
+        "full_match": true,
+        "cs": true
+      }
+    },
+    "FAB": {
+      "ABLINE": {
+        "sort_a": 81
+      }
+    },
+    "ANTHONY": {
+      "LOPES": {
+        "full_match": true
+      }
+    },
+    "MICKA": {
+      "AGUILAR": {
+        "entre_a": 59,
+        "sort_a": 89
+      }
+    }
+  }
 }

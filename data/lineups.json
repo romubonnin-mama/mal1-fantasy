@@ -22,14 +22,14 @@
         "GREIF",
         "NGOY",
         "AL-TAMARI",
-        "THOMASSON",
         "KEBBAL",
         "SULC",
         "LEPAUL",
-        "SAINT MAXIMAIN",
         "KLUIVERT",
         "GANIOU",
-        "VITINHA"
+        "VITINHA",
+        "WAHI",
+        "ZABARNYI"
       ],
       "capitaine": null,
       "coeff": 1
@@ -60,10 +60,10 @@
         "PAPE DEMBA",
         "SZYMANSKI",
         "TSITAISHVILI",
-        "DEMBELE",
         "EMBOLO",
         "SENAYA",
-        "RUIZ"
+        "RUIZ",
+        "GOLOVIN"
       ],
       "capitaine": null,
       "coeff": 1
@@ -76,11 +76,11 @@
         "CHARDONNET",
         "MERLIN",
         "HEIN",
-        "SANGARE",
         "OWUSU",
         "ANDRE",
         "GREENWOOD",
-        "AJORQUE"
+        "AJORQUE",
+        "MUNETSI"
       ],
       "capitaine": null,
       "coeff": 1
@@ -129,7 +129,128 @@
         "CHOTARD",
         "CASSERES",
         "BELKEBLA",
-        "THAUVIN",
+        "ENDRICK",
+        "GBOHO",
+        "MBOW"
+      ],
+      "capitaine": null,
+      "coeff": 1
+    },
+    "MICKA": {
+      "titulaires": [
+        "DIAW",
+        "AGUILAR",
+        "CRESSWELL",
+        "TOLISSO",
+        "L.CAMARA",
+        "DONNUM",
+        "SOUMARE",
+        "BALOGUN",
+        "SINAYOKO",
+        "LLORIS",
+        "ARCUS"
+      ],
+      "capitaine": null,
+      "coeff": 1
+    }
+  },
+  "33": {
+    "ROMU": {
+      "titulaires": [
+        "RESTES",
+        "CLAUSS",
+        "SIDIBE",
+        "M.SARR",
+        "LEPENANT",
+        "BOUFAL",
+        "MORTON",
+        "DIOP",
+        "MORREIRA",
+        "DEL CASTILLO",
+        "GOUIRI"
+      ],
+      "capitaine": null,
+      "coeff": 1
+    },
+    "JEROME": {
+      "titulaires": [
+        "GREIF",
+        "KLUIVERT",
+        "NGOY",
+        "GANIOU",
+        "ZABARNYI",
+        "AL-TAMARI",
+        "VITINHA",
+        "KEBBAL",
+        "SULC",
+        "LEPAUL",
+        "WAHI"
+      ],
+      "capitaine": null,
+      "coeff": 1
+    },
+    "VINCENT": {
+      "titulaires": [
+        "PENDERS",
+        "N.MENDES",
+        "MAITLAND-NILES",
+        "TEZE",
+        "DOUCOURE",
+        "HARALDSSON",
+        "ZAIRE-EMERY",
+        "CABELLA",
+        "RONGIER",
+        "DOUE",
+        "EDOUARD"
+      ],
+      "capitaine": null,
+      "coeff": 1
+    },
+    "ADRIEN": {
+      "titulaires": [
+        "RISSER",
+        "PERRAUD",
+        "NIAKHATE",
+        "UDOL",
+        "SENAYA",
+        "GOLOVIN",
+        "PAPE DEMBA",
+        "SZYMANSKI",
+        "RUIZ",
+        "TSITAISHVILI",
+        "EMBOLO"
+      ],
+      "capitaine": null,
+      "coeff": 1
+    },
+    "FLORIAN": {
+      "titulaires": [
+        "ÖZER",
+        "KOUASSI",
+        "NICOLAISEN",
+        "CHARDONNET",
+        "MERLIN",
+        "MUNETSI",
+        "HEIN",
+        "OWUSU",
+        "ANDRE",
+        "GREENWOOD",
+        "AJORQUE"
+      ],
+      "capitaine": null,
+      "coeff": 1
+    },
+    "BASTIEN": {
+      "titulaires": [
+        "RULLI",
+        "O.CAMARA",
+        "MATA",
+        "BARD",
+        "MBOW",
+        "ZAKARIA",
+        "CHOTARD",
+        "CASSERES",
+        "BELKEBLA",
         "ENDRICK",
         "GBOHO"
       ],
@@ -141,14 +262,48 @@
         "DIAW",
         "AGUILAR",
         "CRESSWELL",
-        "NDIAYE",
+        "LLORIS",
+        "ARCUS",
         "TOLISSO",
         "L.CAMARA",
         "DONNUM",
         "SOUMARE",
         "BALOGUN",
-        "SINAYOKO",
-        "LLORIS"
+        "SINAYOKO"
+      ],
+      "capitaine": null,
+      "coeff": 1
+    },
+    "ANTHONY": {
+      "titulaires": [
+        "LOPES",
+        "G.DOUE",
+        "LALA",
+        "PAVARD",
+        "PACHO",
+        "DANOIS",
+        "AKLIOUCHE",
+        "MAGNETTI",
+        "SANSON",
+        "BOUADDI",
+        "GODO"
+      ],
+      "capitaine": null,
+      "coeff": 1
+    },
+    "FAB": {
+      "titulaires": [
+        "SAMBA",
+        "MANDI",
+        "LEFORT",
+        "BRASSIER",
+        "ABERGEL",
+        "HOJBJERG",
+        "M.CAMARA",
+        "VAN DEN BOOMEN",
+        "F.PARDO",
+        "KVARATSKHELIA",
+        "ABLINE"
       ],
       "capitaine": null,
       "coeff": 1
