@@ -242,7 +242,7 @@ select:focus,input:focus{outline:none;border-color:var(--accent)}
       <div class="add-form">
         <div style="font-size:11px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px">Ajouter un joueur</div>
         <div class="add-form-grid">
-          <input class="field-input" type="text" id="p-nom" placeholder="Nom du joueur">
+          <input class="field-input" type="text" id="p-nom" placeholder="Ex: J.CLAUSS" maxlength="20" autocomplete="off" autocorrect="off" spellcheck="false">
           <select class="field-input" id="p-club"><option value="">— Club —</option></select>
           <select class="field-input" id="p-poste">
             <option value="G">G</option>
@@ -252,6 +252,7 @@ select:focus,input:focus{outline:none;border-color:var(--accent)}
           </select>
           <input class="mise-input" type="number" id="p-mise" min="1" value="1" placeholder="Pts">
         </div>
+        <div style="font-size:11px;color:var(--text2);margin-bottom:8px">Format nom : <strong style="color:var(--text)">J.CLAUSS</strong> (initiale prénom + point + nom en majuscules)</div>
         <button class="btn btn-primary" id="btn-add" style="width:100%">+ Ajouter à ma liste</button>
         <div id="add-err" style="font-size:12px;color:var(--red);margin-top:6px;display:none"></div>
       </div>
@@ -560,6 +561,13 @@ document.getElementById('btn-add').addEventListener('click', () => {
     return;
   }
 
+  const NOM_RE = /^[A-Z]\.[A-Z][A-Z'\-]*$/;
+  if (!NOM_RE.test(nom)) {
+    errEl.textContent = 'Format requis : initiale + point + nom — ex: J.CLAUSS ou T.DA-SILVA';
+    errEl.style.display = 'block';
+    return;
+  }
+
   // Contrainte : pas 2 joueurs du même club au même poste
   if (myBids.some(b => b.club.toLowerCase() === club.toLowerCase() && b.poste === poste)) {
     errEl.textContent = `Tu as déjà un ${poste} de ${club} dans ta liste.`;
@@ -585,6 +593,13 @@ document.getElementById('btn-add').addEventListener('click', () => {
   document.getElementById('p-nom').focus();
   renderBids();
   scheduleDraft();
+});
+
+// Auto-majuscule sur le champ nom
+document.getElementById('p-nom').addEventListener('input', function() {
+  const pos = this.selectionStart;
+  this.value = this.value.toUpperCase();
+  this.setSelectionRange(pos, pos);
 });
 
 // Enter dans le champ mise → ajouter
