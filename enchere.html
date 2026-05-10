@@ -622,55 +622,56 @@ document.getElementById('p-mise').addEventListener('keydown', e => {
   if (e.key === 'Enter') document.getElementById('btn-add').click();
 });
 
-// ── Résumé tour précédent ──────────────────────────────────
+// ── Résumé tour précédent (tous les managers) ─────────────
 function renderPrevSummary(round) {
   const el = document.getElementById('prev-results-summary');
   if (!el) return;
   if (round <= 1 || !Object.keys(prevResults).length) { el.style.display = 'none'; return; }
 
-  const myWon = [], myTied = [], myLost = [];
-  Object.values(prevResults).forEach(r => {
-    if (!r.bids || r.bids[MGR] === undefined) return;
-    if (r.statut === 'won' && r.vainqueur === MGR) myWon.push(r);
-    else if (r.statut === 'tied') myTied.push(r);
-    else myLost.push(r);
-  });
-  if (!myWon.length && !myTied.length && !myLost.length) { el.style.display = 'none'; return; }
+  const allMgrs = new Set();
+  Object.values(prevResults).forEach(r => { if (r.bids) Object.keys(r.bids).forEach(m => allMgrs.add(m)); });
+  if (!allMgrs.size) { el.style.display = 'none'; return; }
 
   const sortPC = (a, b) => {
     const pi = R_POSTE_ORDER.indexOf(a.poste) - R_POSTE_ORDER.indexOf(b.poste);
     return pi !== 0 ? pi : (a.club||'').localeCompare(b.club||'');
   };
-  const makeRows = list => list.sort(sortPC).map(r => {
+  const makeRows = (list, mgr) => list.sort(sortPC).map(r => {
     const bg = R_POSTE_BG[r.poste]||'#333', fg = R_POSTE_FG[r.poste]||'#fff';
-    return `<div style="display:flex;align-items:center;gap:6px;padding:4px 0;border-bottom:1px solid rgba(255,255,255,.04)">
-      <span style="width:18px;height:18px;border-radius:50%;background:${bg};color:${fg};font-size:8px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0">${r.poste}</span>
-      <div style="flex:1;min-width:0;font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(r.nom)}</div>
-      <div style="font-size:11px;color:var(--text2);display:flex;align-items:center;gap:3px;flex-shrink:0">${clubLogoHtml(r.club,13)}${esc(r.club)}</div>
-      <span style="font-size:11px;font-weight:700;color:var(--text2);flex-shrink:0;margin-left:4px">${r.bids[MGR]}p</span>
+    return `<div style="display:flex;align-items:center;gap:5px;padding:3px 0;border-bottom:1px solid rgba(255,255,255,.04)">
+      <span style="width:16px;height:16px;border-radius:50%;background:${bg};color:${fg};font-size:7px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0">${r.poste}</span>
+      <span style="flex:1;font-size:11px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(r.nom)}</span>
+      <span style="font-size:10px;color:var(--text2);display:flex;align-items:center;gap:2px;flex-shrink:0">${clubLogoHtml(r.club,12)}${esc(r.club)}</span>
+      <span style="font-size:11px;font-weight:700;color:var(--text2);flex-shrink:0;margin-left:2px">${r.bids[mgr]}p</span>
     </div>`;
   }).join('');
 
-  let html = `<div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden">
-    <div style="padding:10px 16px;background:var(--surface2);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between">
-      <div style="font-weight:700;font-size:13px">Résultats Tour ${round - 1}</div>
-      <div style="font-size:12px">
-        <span style="color:var(--accent)">${myWon.length}✓</span>
-        ${myTied.length ? ` <span style="color:#f59e0b">${myTied.length}=</span>` : ''}
-        ${myLost.length ? ` <span style="color:#ef4444">${myLost.length}✗</span>` : ''}
+  let html = `<div style="font-weight:700;font-size:14px;margin-bottom:10px">Résultats Tour ${round - 1}</div>`;
+  html += '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px">';
+
+  [...allMgrs].sort().forEach(mgr => {
+    const entries = Object.values(prevResults).filter(r => r.bids && r.bids[mgr] !== undefined);
+    const won  = entries.filter(r => r.statut === 'won' && r.vainqueur === mgr);
+    const tied = entries.filter(r => r.statut === 'tied');
+    const lost = entries.filter(r => r.statut === 'won' && r.vainqueur !== mgr);
+    const isMe = mgr === MGR;
+    const summary = `<span style="color:var(--accent)">${won.length}✓</span>${tied.length ? ` <span style="color:#f59e0b">${tied.length}=</span>` : ''}${lost.length ? ` <span style="color:#ef4444">${lost.length}✗</span>` : ''}`;
+    let content = '';
+    if (won.length)  content += `<div style="padding:3px 0 2px;font-size:10px;font-weight:700;color:var(--accent)">✓ Gagnés</div>${makeRows(won, mgr)}`;
+    if (tied.length) content += `<div style="padding:3px 0 2px;font-size:10px;font-weight:700;color:#f59e0b;${won.length?'margin-top:4px':''}">= Égalités</div>${makeRows(tied, mgr)}`;
+    if (lost.length) content += `<div style="padding:3px 0 2px;font-size:10px;font-weight:700;color:#ef4444;${(won.length||tied.length)?'margin-top:4px':''}">✗ Ratés</div>${makeRows(lost, mgr)}`;
+    if (!content)    content  = '<div style="font-size:11px;color:var(--text2)">Aucune mise</div>';
+
+    html += `<div style="background:var(--surface);border:1px solid ${isMe ? 'var(--accent)' : 'var(--border)'};border-radius:8px;padding:10px 12px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+        <div style="font-weight:700;font-size:13px">${esc(mgr)}${isMe ? ' 👤' : ''}</div>
+        <div style="font-size:11px">${summary}</div>
       </div>
-    </div>
-    <div style="padding:0 16px">`;
-  if (myWon.length) {
-    html += `<div style="padding:5px 0 3px;font-size:11px;font-weight:700;color:var(--accent)">✓ Gagnés — dans ton effectif</div>${makeRows(myWon)}`;
-  }
-  if (myTied.length) {
-    html += `<div style="padding:5px 0 3px;font-size:11px;font-weight:700;color:#f59e0b;${myWon.length?'margin-top:6px':''}">= Égalités — remis en jeu</div>${makeRows(myTied)}`;
-  }
-  if (myLost.length) {
-    html += `<div style="padding:5px 0 3px;font-size:11px;font-weight:700;color:#ef4444;${(myWon.length||myTied.length)?'margin-top:6px':''}">✗ Ratés</div>${makeRows(myLost)}`;
-  }
-  html += '</div></div>';
+      ${content}
+    </div>`;
+  });
+
+  html += '</div>';
   el.innerHTML = html;
   el.style.display = 'block';
 }
