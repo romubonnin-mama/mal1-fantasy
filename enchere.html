@@ -14,9 +14,22 @@
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-height:100vh}
 
-.header{background:var(--surface);border-bottom:1px solid var(--border);padding:12px 16px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
-.header-title{font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--accent);letter-spacing:1px}
+header{background:var(--surface);border-bottom:1px solid var(--border);padding:0 16px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;height:60px;gap:12px}
 .header-sub{font-size:11px;color:var(--text2)}
+.nav-tabs{display:flex;gap:4px;flex-shrink:0}
+.nav-tab{color:var(--text2);font-size:12px;font-weight:600;padding:6px 10px;border-radius:6px;cursor:pointer;transition:all .2s;border:none;background:none;text-decoration:none;display:inline-flex;align-items:center;font-family:'Inter',sans-serif}
+.nav-tab:hover{color:var(--text);background:var(--surface2)}
+.nav-tab.active{color:var(--accent);background:var(--surface2)}
+.nav-dropdown{position:relative}
+.nav-dropdown-menu{display:none;position:absolute;top:calc(100% + 8px);right:0;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:6px;min-width:150px;z-index:200;box-shadow:0 8px 24px rgba(0,0,0,.5)}
+.nav-dropdown.open .nav-dropdown-menu{display:block}
+.nav-dropdown-menu a{display:block;padding:8px 12px;color:var(--text2);font-size:12px;font-weight:600;border-radius:6px;text-decoration:none;transition:all .15s}
+.nav-dropdown-menu a:hover{color:var(--text);background:var(--surface2)}
+@media(max-width:599px){
+  header{height:auto;min-height:50px;padding:8px 12px;flex-wrap:wrap;gap:6px}
+  .nav-tabs{order:3;width:100%;display:grid;grid-template-columns:repeat(4,1fr);gap:3px;padding-bottom:2px}
+  .nav-tab{text-align:center;padding:7px 4px;font-size:10px;background:var(--surface2);border-radius:6px}
+}
 
 .page{display:none;padding:16px;max-width:560px;margin:0 auto}
 .page.active{display:block}
@@ -83,19 +96,32 @@ select:focus,input:focus{outline:none;border-color:var(--accent)}
 </head>
 <body>
 
-<div class="header">
-  <div>
-    <div class="header-title">MA L1 — ENCHÈRES</div>
-    <div class="header-sub" id="header-round">Mercato d'été</div>
+<header>
+  <div style="display:flex;align-items:center;gap:8px;flex-shrink:0">
+    <a href="index.html" style="font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--text);letter-spacing:2px;text-decoration:none">MA <span style="color:var(--accent)">L1</span></a>
+    <div class="header-sub" id="header-round" style="padding-top:3px">Mercato d'été</div>
   </div>
-  <div style="text-align:right;display:flex;align-items:center;gap:10px">
+  <div class="nav-tabs">
+    <a class="nav-tab" href="index.html">Classement</a>
+    <a class="nav-tab" href="index.html">Journées</a>
+    <a class="nav-tab" href="index.html">Joueurs</a>
+    <a class="nav-tab" href="index.html">Stats</a>
+    <a class="nav-tab active" href="enchere.html">Enchères</a>
+    <div class="nav-dropdown">
+      <button class="nav-tab" onclick="this.closest('.nav-dropdown').classList.toggle('open')">Archives ▾</button>
+      <div class="nav-dropdown-menu">
+        <a href="archive-2025-26.html">Saison 2025/26</a>
+      </div>
+    </div>
+  </div>
+  <div style="display:flex;align-items:center;gap:10px;flex-shrink:0">
     <button id="btn-refresh" title="Actualiser" style="background:none;border:1px solid var(--border);border-radius:6px;color:var(--text2);font-size:15px;padding:4px 8px;cursor:pointer;line-height:1" onclick="refreshData()">↻</button>
-    <div>
+    <div style="text-align:right">
       <div style="font-size:13px;font-weight:700;color:var(--accent)" id="header-nom"></div>
       <div class="header-sub" id="header-status"></div>
     </div>
   </div>
-</div>
+</header>
 
 <!-- LOGIN -->
 <div class="page active" id="page-login">

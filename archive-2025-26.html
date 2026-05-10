@@ -25,8 +25,20 @@
   .logo { font-family: 'Bebas Neue', sans-serif; font-size: 24px; letter-spacing: 3px; color: var(--text); display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
   .logo span { color: var(--accent); }
   .logo-badge { background: var(--surface2); border: 1px solid var(--border); color: var(--muted); font-size: 9px; font-weight: 600; padding: 2px 6px; border-radius: 3px; letter-spacing: 1px; }
-  .back-link { color: var(--muted); font-size: 12px; font-weight: 600; padding: 6px 12px; border-radius: 6px; text-decoration: none; border: 1px solid var(--border); transition: all 0.2s; flex-shrink: 0; }
-  .back-link:hover { color: var(--text); background: var(--surface2); }
+  .nav-tabs { display: flex; gap: 4px; flex-shrink: 0; }
+  .nav-tab { color: var(--muted); font-size: 12px; font-weight: 600; padding: 6px 10px; border-radius: 6px; cursor: pointer; transition: all 0.2s; border: none; background: none; text-decoration: none; display: inline-flex; align-items: center; font-family: 'DM Sans', sans-serif; }
+  .nav-tab:hover { color: var(--text); background: var(--surface2); }
+  .nav-tab.active { color: var(--accent); background: var(--surface2); }
+  .nav-dropdown { position: relative; }
+  .nav-dropdown-menu { display: none; position: absolute; top: calc(100% + 8px); right: 0; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 6px; min-width: 150px; z-index: 200; box-shadow: 0 8px 24px rgba(0,0,0,0.5); }
+  .nav-dropdown.open .nav-dropdown-menu { display: block; }
+  .nav-dropdown-menu a { display: block; padding: 8px 12px; color: var(--muted); font-size: 12px; font-weight: 600; border-radius: 6px; text-decoration: none; transition: all 0.15s; }
+  .nav-dropdown-menu a:hover { color: var(--text); background: var(--surface2); }
+  @media(max-width: 599px) {
+    header { height: auto; min-height: 50px; padding: 8px 12px; flex-wrap: wrap; gap: 6px; }
+    .nav-tabs { order: 3; width: 100%; display: grid; grid-template-columns: repeat(4, 1fr); gap: 3px; padding-bottom: 2px; }
+    .nav-tab { text-align: center; padding: 7px 4px; font-size: 10px; background: var(--surface2); border-radius: 6px; }
+  }
 
   .container { max-width: 900px; margin: 0 auto; padding: 24px 16px; }
 
@@ -149,7 +161,19 @@
 
 <header>
   <div class="logo">MA <span>L1</span><span class="logo-badge">ARCHIVE</span></div>
-  <a class="back-link" href="index.html">← Saison en cours</a>
+  <div class="nav-tabs">
+    <a class="nav-tab" href="index.html">Classement</a>
+    <a class="nav-tab" href="index.html">Journées</a>
+    <a class="nav-tab" href="index.html">Joueurs</a>
+    <a class="nav-tab" href="index.html">Stats</a>
+    <a class="nav-tab" href="enchere.html">Enchères</a>
+    <div class="nav-dropdown">
+      <button class="nav-tab active" onclick="this.closest('.nav-dropdown').classList.toggle('open')">Archives ▾</button>
+      <div class="nav-dropdown-menu">
+        <a href="archive-2025-26.html" style="color:var(--accent)">Saison 2025/26</a>
+      </div>
+    </div>
+  </div>
 </header>
 
 <div class="container">
