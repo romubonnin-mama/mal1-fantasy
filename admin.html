@@ -869,10 +869,11 @@ function _calcPts(manager, nom) {
   const cj      = red ? 0 : (s.yellow_cards ? 1 : 0);
 
   const BM = {G:5, D:3, M:2, A:2};
+  const isSub = entreA > 0;
   let tjPts;
   if (red)       tjPts = 0;
   else if (full) tjPts = 4;
-  else { const m = Math.min(min, 90); tjPts = m<=0 ? 0 : m<30 ? 1 : m<=60 ? 2 : 3; }
+  else { const m = Math.min(min, 90); tjPts = m<=0 ? 0 : (isSub ? m<30 : m<=30) ? 1 : m<=60 ? 2 : 3; }
 
   let csPts = 0;
   if (s.cs) {
