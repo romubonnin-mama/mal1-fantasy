@@ -53,7 +53,8 @@ def calc_tj_pts(tj, red_card):
         return 4
     if s == "0" or not s:
         return 0
-    if "-" in s:
+    is_sub = "-" in s
+    if is_sub:
         parts = s.split("-")
         try:
             minutes = int(parts[1]) - int(parts[0])
@@ -66,12 +67,15 @@ def calc_tj_pts(tj, red_card):
             return 0
     if minutes <= 0:
         return 0
-    elif minutes <= 30:
-        return 1
-    elif minutes <= 60:
-        return 2
+    # Titulaire sortant : <=30 = 1pt | Remplaçant entrant : <30 = 1pt (30min exact = 2pts)
+    if is_sub:
+        if minutes < 30:   return 1
+        elif minutes <= 60: return 2
+        else:               return 3
     else:
-        return 3
+        if minutes <= 30:  return 1
+        elif minutes <= 60: return 2
+        else:               return 3
 
 
 def calc_pts(poste, tj, bm_val, be_val, bcsc_val, cs_val, pm_val, pma_val, pd_val, cj_val, cr_val):

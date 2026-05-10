@@ -40,11 +40,12 @@ BE_PTS = {"G": -2, "D": -1, "M": 0, "A": 0}
 
 # ─── TJ ────────────────────────────────────────────────────────────────────────
 
-def tj_points(minutes: int, is_full_match: bool, red_card: bool) -> int:
+def tj_points(minutes: int, is_full_match: bool, red_card: bool, is_sub: bool = False) -> int:
     """
     minutes      : minutes played (excluding stoppage time, capped at 90)
     is_full_match: True si le joueur a joué les 90 min réglementaires entières
     red_card     : True si carton rouge reçu (annule les points TJ)
+    is_sub       : True si remplaçant entrant (format G-H) — règle <30 au lieu de <=30
     """
     if red_card:
         return 0
@@ -53,12 +54,14 @@ def tj_points(minutes: int, is_full_match: bool, red_card: bool) -> int:
     m = min(minutes, 90)
     if m <= 0:
         return 0
-    elif m <= 30:
-        return 1
-    elif m <= 60:
-        return 2
+    if is_sub:
+        if m < 30:   return 1
+        elif m <= 60: return 2
+        else:         return 3
     else:
-        return 3
+        if m <= 30:  return 1
+        elif m <= 60: return 2
+        else:         return 3
 
 
 # ─── CS et BE ──────────────────────────────────────────────────────────────────
