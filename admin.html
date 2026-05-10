@@ -1556,7 +1556,7 @@ async function renderAttributions() {
       <th style="padding:6px 8px;text-align:left">Joueur</th>
       <th style="padding:6px 8px;text-align:left">Mises</th>
       <th style="padding:6px 8px;text-align:left">Attribué à</th>
-      <th style="padding:6px 8px;text-align:left">Statut</th>
+      <th style="padding:6px 8px;text-align:left">Résultat</th>
     </tr></thead><tbody>`;
 
   entries.forEach(([pid, r]) => {
@@ -1566,17 +1566,20 @@ async function renderAttributions() {
     const currentWinner = r.vainqueur || '';
     const currentStatut = r.statut || 'won';
 
-    // Dropdown vainqueur
-    const winnerSel = `<select data-pid="${pid}" data-field="vainqueur"
+    // Attribué à : lecture seule
+    const winnerDisplay = currentWinner
+      ? `<span style="font-size:12px;color:var(--text);font-weight:500">${esc(currentWinner)}</span>`
+      : `<span style="font-size:11px;color:var(--muted)">—</span>`;
+
+    // Dropdown résultat
+    const sv = currentStatut === 'won' ? 'won' : (currentStatut === 'tied' ? 'tied' : 'lost');
+    const statutSel = `<select data-pid="${pid}" data-field="statut"
       style="background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:3px 6px;border-radius:5px;font-size:12px"
       onchange="attrMarkDirty(this)">
-      ${MANAGERS.map(m => `<option value="${m}"${m===currentWinner?' selected':''}>${m}</option>`).join('')}
-      <option value=""${ !currentWinner ? ' selected' : '' }>— Remis en jeu —</option>
+      <option value="won"${sv==='won'?' selected':''}>✓ Gagné</option>
+      <option value="lost"${sv==='lost'?' selected':''}>✗ Raté</option>
+      <option value="tied"${sv==='tied'?' selected':''}>↩ Remis en jeu</option>
     </select>`;
-
-    const statutLabel = currentStatut === 'won'
-      ? `<span style="font-size:10px;background:rgba(0,229,160,.15);color:var(--accent);padding:2px 6px;border-radius:4px">Gagné</span>`
-      : `<span style="font-size:10px;background:rgba(245,158,11,.15);color:var(--yellow);padding:2px 6px;border-radius:4px">Égalité</span>`;
 
     // Mises triées par montant décroissant
     const bidsHtml = r.bids && Object.keys(r.bids).length
@@ -1593,8 +1596,8 @@ async function renderAttributions() {
       <td style="padding:5px 8px">${attrLogoHtml(r.club)}<span style="font-size:11px;color:var(--muted)">${esc(r.club||'')}</span></td>
       <td style="padding:5px 8px;font-weight:600">${esc(r.nom||'')}</td>
       <td style="padding:5px 8px">${bidsHtml}</td>
-      <td style="padding:5px 8px">${winnerSel}</td>
-      <td style="padding:5px 8px">${statutLabel}</td>
+      <td style="padding:5px 8px">${winnerDisplay}</td>
+      <td style="padding:5px 8px">${statutSel}</td>
     </tr>`;
   });
 
@@ -1614,16 +1617,24 @@ async function saveAttributions() {
   const btn = document.getElementById('enc-attr-save');
   btn.disabled = true; btn.textContent = '⏳ Sauvegarde…';
 
-  // Lire les changements depuis les selects
-  const selects = document.querySelectorAll('[data-field="vainqueur"]');
+  // Lire les changements depuis les selects résultat
+  const selects = document.querySelectorAll('[data-field="statut"]');
   const newResultats = JSON.parse(JSON.stringify(attrResultats));
 
   selects.forEach(sel => {
     const pid = sel.dataset.pid;
     if (!newResultats[pid]) return;
-    const newWinner = sel.value;
-    newResultats[pid].vainqueur = newWinner || null;
-    newResultats[pid].statut = newWinner ? 'won' : 'tied';
+    const newStatut = sel.value;
+    if (newStatut === 'won') {
+      newResultats[pid].statut = 'won';
+      // vainqueur inchangé (celui de la compilation)
+    } else if (newStatut === 'tied') {
+      newResultats[pid].statut = 'tied';
+      newResultats[pid].vainqueur = null;
+    } else {
+      newResultats[pid].statut = 'lost';
+      newResultats[pid].vainqueur = null;
+    }
   });
 
   // Recalculer les joueurs et budgets de chaque manager
