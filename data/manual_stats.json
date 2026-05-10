@@ -692,7 +692,8 @@
       },
       "ENDRICK": {
         "assists": 1,
-        "full_match": true
+        "full_match": true,
+        "yellow_cards": true
       },
       "BARD": {
         "sort_a": 59
