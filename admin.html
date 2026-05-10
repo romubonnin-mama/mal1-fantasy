@@ -1125,7 +1125,10 @@ init().catch(e => {
 
   <!-- BUDGETS & EFFECTIFS -->
   <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden">
-    <div style="padding:10px 16px;background:var(--surface2);border-bottom:1px solid var(--border);font-weight:700;font-size:13px">Budgets & effectifs managers</div>
+    <div style="padding:10px 16px;background:var(--surface2);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between">
+      <div style="font-weight:700;font-size:13px">Budgets & effectifs managers</div>
+      <button class="btn btn-subtle" id="enc-recalc-btn" style="font-size:12px;padding:5px 12px" title="Recalcule les budgets depuis les résultats stockés">🔄 Recalculer</button>
+    </div>
     <div id="enc-budgets-grid" style="padding:14px 16px;display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px"></div>
   </div>
 
@@ -1686,6 +1689,60 @@ function renderEncBudgets() {
       </div>`;
   }).join('');
 }
+
+// ── Recalcul budgets depuis résultats ─────────────────────
+document.getElementById('enc-recalc-btn').addEventListener('click', async () => {
+  const lastRound = (encConfig.round || 1) - 1;
+  if (lastRound < 1) { alert('Aucun tour compilé.'); return; }
+  if (!confirm(`Recalculer les budgets de tous les managers depuis les résultats T1→T${lastRound} ?\nLes valeurs actuelles seront écrasées.`)) return;
+
+  const btn = document.getElementById('enc-recalc-btn');
+  btn.disabled = true; btn.textContent = '⏳…';
+
+  // Charger tous les résultats compilés
+  const allResultats = {};
+  await Promise.all(
+    Array.from({length: lastRound}, (_, i) => i + 1).map(async r => {
+      const snap = await getDoc(doc(db, 'resultats', String(r)));
+      if (snap.exists()) allResultats[r] = snap.data();
+    })
+  );
+
+  // Charger les soumissions T1 pour budget_max
+  const subs1 = {};
+  await Promise.all(MANAGERS.map(async m => {
+    const snap = await getDoc(doc(db, 'soumissions', `1_${m}`));
+    if (snap.exists()) subs1[m] = snap.data();
+  }));
+
+  const batch = writeBatch(db);
+
+  MANAGERS.forEach(nom => {
+    const budget_max = subs1[nom]?.total || 140;
+    const joueurs = [];
+
+    for (let r = 1; r <= lastRound; r++) {
+      if (!allResultats[r]) continue;
+      Object.entries(allResultats[r]).forEach(([pid, res]) => {
+        if (res.statut === 'won' && res.vainqueur === nom) {
+          joueurs.push({ id: pid, nom: res.nom, club: res.club, poste: res.poste, mise: res.bids?.[nom] || 0 });
+        }
+      });
+    }
+
+    const totalWon = joueurs.reduce((s, j) => s + (j.mise || 0), 0);
+    const budget_restant = budget_max - totalWon;
+    const jokers_bonus = Math.min(3, Math.floor((140 - budget_max) / 10));
+    const existing = mgrDocs[nom] || {};
+    batch.set(doc(db, 'managers', nom), { ...existing, budget_max, budget_restant, joueurs, jokers_bonus });
+  });
+
+  await batch.commit();
+  await loadEncBudgets();
+  renderEncBudgets();
+  btn.disabled = false; btn.textContent = '🔄 Recalculer';
+  alert('✓ Budgets recalculés depuis les résultats');
+});
 
 // ── Compilation — prévisualisation ────────────────────────
 const POSTE_ORDER_C = ['G','D','M','A'];
