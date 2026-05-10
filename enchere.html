@@ -753,7 +753,7 @@ function renderBids() {
         <div style="font-size:11px;color:var(--text2);display:flex;align-items:center;gap:4px">${clubLogoHtml(b.club,14)}${esc(b.club)}${badge}</div>
       </div>
       ${miseCell}
-      <button class="btn btn-danger btn-sm" data-rm="${i}">✕</button>
+      ${isWon ? '<span style="width:32px;flex-shrink:0"></span>' : `<button class="btn btn-danger btn-sm" data-rm="${i}">✕</button>`}
     </div>`;
   }).join('');
 
