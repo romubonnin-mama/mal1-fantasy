@@ -148,6 +148,25 @@ select:focus,input:focus{outline:none;border-color:var(--accent)}
   </div>
 </div>
 
+<!-- CONFIRMATION PIN -->
+<div class="page" id="page-confirm">
+  <div style="max-width:360px;margin:40px auto">
+    <div class="card">
+      <div style="padding:28px 20px;text-align:center">
+        <div class="big-check">✅</div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--accent);margin-bottom:4px" id="confirm-nom">-</div>
+        <div style="font-size:15px;font-weight:700;margin-bottom:6px">Ton code PIN est enregistré !</div>
+        <div style="font-size:12px;color:var(--text2);margin-bottom:24px">Tu peux maintenant accéder à l'interface d'enchères à chaque tour.</div>
+        <button class="btn btn-primary btn-full" id="btn-goto-enchere" style="margin-bottom:12px">Accéder aux enchères →</button>
+        <a href="https://romubonnin-mama.github.io/mal1-fantasy/" target="_blank"
+          style="display:block;font-size:13px;color:var(--text2);text-decoration:none;padding:6px">
+          Voir le site Ma L1 ↗
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- MAIN -->
 <div class="page" id="page-main">
 
@@ -383,10 +402,16 @@ document.getElementById('setup-btn').addEventListener('click', async () => {
 
   MGR      = INVITE_MGR;
   MGR_DATA = { ...existing, pin: pin1, invite_token: null };
-  document.getElementById('page-setup').classList.remove('active');
-  document.getElementById('page-main').classList.add('active');
+  document.getElementById('confirm-nom').textContent = MGR;
   document.getElementById('header-nom').textContent = MGR;
+  document.getElementById('page-setup').classList.remove('active');
+  document.getElementById('page-confirm').classList.add('active');
   window.history.replaceState({}, '', window.location.pathname);
+});
+
+document.getElementById('btn-goto-enchere').addEventListener('click', async () => {
+  document.getElementById('page-confirm').classList.remove('active');
+  document.getElementById('page-main').classList.add('active');
   await loadConfig();
   await loadClubs();
   await loadMyBids();
