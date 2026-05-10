@@ -53,7 +53,7 @@ def tj_points(minutes: int, is_full_match: bool, red_card: bool) -> int:
     m = min(minutes, 90)
     if m <= 0:
         return 0
-    elif m < 30:
+    elif m <= 30:
         return 1
     elif m <= 60:
         return 2

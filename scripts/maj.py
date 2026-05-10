@@ -66,7 +66,7 @@ def calc_tj_pts(tj, red_card):
             return 0
     if minutes <= 0:
         return 0
-    elif minutes < 30:
+    elif minutes <= 30:
         return 1
     elif minutes <= 60:
         return 2
