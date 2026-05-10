@@ -1674,18 +1674,32 @@ function renderEncBudgets() {
     const d = mgrDocs[nom] || {};
     const restant = d.budget_restant ?? 140;
     const max = d.budget_max ?? 140;
-    const joueurs = d.joueurs?.length || 0;
+    const joueurs = d.joueurs || [];
     const pct = Math.round((restant / Math.max(max, 1)) * 100);
+
+    const joueursHtml = POSTE_ORDER_A.flatMap(p =>
+      joueurs.filter(j => j.poste === p).map(j => {
+        const bg = POSTE_BG_A[p]||'#333', fg = POSTE_FG_A[p]||'#fff';
+        return `<div style="display:flex;align-items:center;gap:4px;padding:2px 0;border-bottom:1px solid rgba(255,255,255,.04)">
+          <span style="width:14px;height:14px;border-radius:50%;background:${bg};color:${fg};font-size:7px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0">${p}</span>
+          <span style="flex:1;font-size:11px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(j.nom)}</span>
+          ${attrLogoHtml(j.club||'')}<span style="font-size:10px;color:var(--muted);flex-shrink:0">${esc(j.club||'')}</span>
+          <span style="font-size:10px;font-weight:700;color:var(--accent);flex-shrink:0;margin-left:2px">${j.mise}p</span>
+        </div>`;
+      })
+    ).join('');
+
     return `
       <div style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:10px 12px">
         <div style="font-weight:700;font-size:13px;margin-bottom:6px">${nom}</div>
         <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:4px">
-          <span>${joueurs}/14 joueurs</span>
+          <span>${joueurs.length}/14 joueurs</span>
           <span style="color:var(--accent);font-weight:700">${restant}/${max} pts</span>
         </div>
-        <div style="background:var(--border);border-radius:3px;height:5px">
+        <div style="background:var(--border);border-radius:3px;height:5px;margin-bottom:8px">
           <div style="height:100%;width:${pct}%;background:var(--accent);border-radius:3px"></div>
         </div>
+        ${joueurs.length ? joueursHtml : '<div style="font-size:11px;color:var(--muted);padding:2px 0">Aucun joueur acquis</div>'}
       </div>`;
   }).join('');
 }
