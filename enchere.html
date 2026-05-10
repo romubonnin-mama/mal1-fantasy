@@ -522,6 +522,9 @@ function watchConfig() {
 
 async function loadMyBids() {
   const round = CONFIG.round || 1;
+  // Recharger les données manager pour avoir le budget_restant à jour (peut avoir changé après compilation)
+  const mgrSnap = await getDoc(doc(db, 'managers', MGR));
+  if (mgrSnap.exists()) MGR_DATA = mgrSnap.data();
   const snap = await getDoc(doc(db, 'soumissions', `${round}_${MGR}`));
   if (snap.exists()) {
     const d = snap.data();
