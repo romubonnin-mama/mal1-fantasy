@@ -1518,22 +1518,23 @@ async function renderAttributions() {
   attrResultats = snap.data();
   const entries = Object.entries(attrResultats);
 
-  // Trier par poste puis nom
+  // Trier par poste, puis club, puis nom
   entries.sort(([,a],[,b]) => {
     const pi = POSTE_ORDER_A.indexOf(a.poste) - POSTE_ORDER_A.indexOf(b.poste);
-    return pi !== 0 ? pi : (a.nom||'').localeCompare(b.nom||'');
+    if (pi !== 0) return pi;
+    const ci = (a.club||'').localeCompare(b.club||'');
+    if (ci !== 0) return ci;
+    return (a.nom||'').localeCompare(b.nom||'');
   });
 
   const mgrOptions = MANAGERS.map(m => `<option value="${m}">${m}</option>`).join('');
 
-  let html = `<div style="font-size:11px;color:var(--muted);margin-bottom:12px">
-    Les mises ne sont pas affichées. Modifie uniquement les attributions contestées, avec l'accord de l'ensemble des managers.
-  </div>
-  <div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:12px">
+  let html = `<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:12px">
     <thead><tr style="color:var(--muted);font-size:10px;text-transform:uppercase;border-bottom:1px solid var(--border)">
       <th style="padding:6px 8px;text-align:left;width:40px">Poste</th>
       <th style="padding:6px 8px;text-align:left">Club</th>
       <th style="padding:6px 8px;text-align:left">Joueur</th>
+      <th style="padding:6px 8px;text-align:left">Mises</th>
       <th style="padding:6px 8px;text-align:left">Attribué à</th>
       <th style="padding:6px 8px;text-align:left">Statut</th>
     </tr></thead><tbody>`;
@@ -1557,10 +1558,21 @@ async function renderAttributions() {
       ? `<span style="font-size:10px;background:rgba(0,229,160,.15);color:var(--accent);padding:2px 6px;border-radius:4px">Gagné</span>`
       : `<span style="font-size:10px;background:rgba(245,158,11,.15);color:var(--yellow);padding:2px 6px;border-radius:4px">Égalité</span>`;
 
+    // Mises triées par montant décroissant
+    const bidsHtml = r.bids && Object.keys(r.bids).length
+      ? Object.entries(r.bids).sort(([,a],[,b]) => b - a).map(([mgr, mise]) => {
+          const isWinner = currentStatut === 'won' && mgr === currentWinner;
+          const isTied   = currentStatut === 'tied';
+          const color = isWinner ? 'var(--accent)' : (isTied ? 'var(--yellow)' : 'var(--muted)');
+          return `<span style="font-size:11px;color:${color};white-space:nowrap;margin-right:8px">${esc(mgr)} <strong>${mise}p</strong></span>`;
+        }).join('')
+      : '<span style="color:var(--muted);font-size:11px">—</span>';
+
     html += `<tr data-pid="${pid}" style="border-bottom:1px solid rgba(255,255,255,.04)">
       <td style="padding:5px 8px"><span style="width:20px;height:20px;border-radius:50%;background:${bg};color:${fg};font-size:9px;font-weight:700;display:inline-flex;align-items:center;justify-content:center">${poste}</span></td>
       <td style="padding:5px 8px">${attrLogoHtml(r.club)}<span style="font-size:11px;color:var(--muted)">${esc(r.club||'')}</span></td>
       <td style="padding:5px 8px;font-weight:600">${esc(r.nom||'')}</td>
+      <td style="padding:5px 8px">${bidsHtml}</td>
       <td style="padding:5px 8px">${winnerSel}</td>
       <td style="padding:5px 8px">${statutLabel}</td>
     </tr>`;
