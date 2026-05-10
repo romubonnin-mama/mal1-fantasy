@@ -1779,9 +1779,11 @@ document.getElementById('enc-compile-btn').addEventListener('click', async () =>
   try {
     const round = encConfig.round || 1;
 
-    const deadlinePassed = !encConfig.deadline || new Date() > new Date(encConfig.deadline);
+    const deadlinePassed = !!encConfig.deadline && new Date() > new Date(encConfig.deadline);
     if (!deadlinePassed) {
-      const dlStr = new Date(encConfig.deadline).toLocaleString('fr-FR', {day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});
+      const dlStr = encConfig.deadline
+        ? new Date(encConfig.deadline).toLocaleString('fr-FR', {day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})
+        : 'non définie';
       if (!confirm(`⚠️ La deadline n'est pas encore atteinte (${dlStr}).\n\nVoulez-vous compiler quand même ?`)) return;
     }
 
@@ -1879,7 +1881,7 @@ async function compileRound(round) {
   });
 
   const newRound = round + 1;
-  encConfig = { ...encConfig, round: newRound };
+  encConfig = { ...encConfig, round: newRound, deadline: null, actif: false };
   batch.set(doc(db, 'config', 'enchere'), encConfig);
 
   await batch.commit();
@@ -1890,6 +1892,8 @@ async function compileRound(round) {
   document.getElementById('enc-round').value = newRound;
   document.getElementById('enc-suivi-round').textContent = newRound;
   document.getElementById('enc-compile-round').textContent = newRound;
+  document.getElementById('enc-deadline').value = '';
+  document.getElementById('enc-actif').checked = false;
 
   // 8. Afficher résumé
   const won_total   = Object.values(resultats).filter(r => r.statut === 'won').length;
