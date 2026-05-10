@@ -525,7 +525,18 @@ async function loadMyBids() {
   const snap = await getDoc(doc(db, 'soumissions', `${round}_${MGR}`));
   if (snap.exists()) {
     const d = snap.data();
-    myBids = d.bids || [];
+    // Pour les tours 2+, filtrer les joueurs gagnés au tour précédent (déjà déduits du budget)
+    if (round > 1) {
+      const resultSnap = await getDoc(doc(db, 'resultats', String(round - 1)));
+      const resultData = resultSnap.exists() ? resultSnap.data() : {};
+      myBids = (d.bids || []).filter(b => {
+        const key = `${b.nom.trim().toLowerCase()}__${b.club.trim().toLowerCase()}__${b.poste}`;
+        const r = resultData[key];
+        return !(r && r.statut === 'won' && r.vainqueur === MGR);
+      });
+    } else {
+      myBids = d.bids || [];
+    }
     submitted = d.submitted || false;
   } else if (round > 1) {
     // Pas encore de draft pour ce tour → reporter uniquement les joueurs non gagnés au tour précédent
