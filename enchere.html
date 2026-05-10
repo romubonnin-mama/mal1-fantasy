@@ -536,6 +536,16 @@ document.getElementById('btn-add').addEventListener('click', () => {
     return;
   }
 
+  // Contrainte budget
+  const _round = CONFIG.round || 1;
+  const _cap   = _round === 1 ? 140 : (MGR_DATA.budget_restant !== undefined ? MGR_DATA.budget_restant : 0);
+  const _used  = myBids.reduce((s, b) => s + (b.mise || 0), 0);
+  if (_used + mise > _cap) {
+    errEl.textContent = `Budget insuffisant — il te reste ${_cap - _used} pt(s).`;
+    errEl.style.display = 'block';
+    return;
+  }
+
   errEl.style.display = 'none';
   myBids.push({ nom, club, poste, mise });
   document.getElementById('p-nom').value = '';
@@ -651,10 +661,15 @@ document.getElementById('btn-save-draft').addEventListener('click', async () => 
 
 // ── Submit ─────────────────────────────────────────────────
 document.getElementById('btn-submit').addEventListener('click', async () => {
+  // Sync toutes les valeurs DOM des inputs de mise (cas où change event n'a pas encore déclenché)
+  document.querySelectorAll('#bid-list-container [data-idx]').forEach(inp => {
+    const idx = parseInt(inp.dataset.idx);
+    if (myBids[idx] !== undefined) myBids[idx].mise = Math.max(1, parseInt(inp.value) || 1);
+  });
   const round = CONFIG.round || 1;
   const budgetCap = round === 1 ? 140 : (MGR_DATA.budget_restant !== undefined ? MGR_DATA.budget_restant : 0);
   const used = myBids.reduce((s, b) => s + (b.mise || 0), 0);
-  if (used > budgetCap) { alert('Budget dépassé !'); return; }
+  if (used > budgetCap) { renderBids(); return; }
   await setDoc(doc(db, 'soumissions', `${round}_${MGR}`), {
     manager: MGR, round, bids: myBids,
     submitted: true, total: used,
