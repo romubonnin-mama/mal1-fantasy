@@ -21,7 +21,10 @@
       "WebFetch(domain:www.api-football.com)",
       "WebFetch(domain:raw.githubusercontent.com)",
       "Bash(pip show *)",
-      "PowerShell(Get-ChildItem -Path \"E:\\\\Sauvegarde\\\\draft club\\\\mal1-fantasy\" -Force | Select-Object Name, @{Name=\"Type\";Expression={if\\($_.PSIsContainer\\){\"DIR\"}else{\"FILE\"}}} | Format-Table -AutoSize)"
+      "PowerShell(Get-ChildItem -Path \"E:\\\\Sauvegarde\\\\draft club\\\\mal1-fantasy\" -Force | Select-Object Name, @{Name=\"Type\";Expression={if\\($_.PSIsContainer\\){\"DIR\"}else{\"FILE\"}}} | Format-Table -AutoSize)",
+      "Bash(Get-ChildItem \"E:\\\\Sauvegarde\\\\draft club\\\\mal1-fantasy\" -Filter \"*.html\")",
+      "PowerShell(head *)",
+      "PowerShell(python \"E:\\\\Sauvegarde\\\\draft club\\\\Saisons\\\\extract_archives.py\")"
     ]
   }
 }
