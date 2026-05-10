@@ -643,7 +643,13 @@ document.getElementById('p-mise').addEventListener('keydown', e => {
 function renderMySquad(round) {
   const el = document.getElementById('my-squad-card');
   if (!el) return;
-  const squad = MGR_DATA.joueurs || [];
+  const squadRaw = MGR_DATA.joueurs || [];
+  // Dédupliquer par nom+club (même joueur, poste erroné possible)
+  const seenSq = new Set();
+  const squad = squadRaw.filter(j => {
+    const k = `${(j.nom||'').trim().toLowerCase()}__${(j.club||'').trim().toLowerCase()}`;
+    if (seenSq.has(k)) return false; seenSq.add(k); return true;
+  });
   if (round <= 1 || !squad.length) { el.style.display = 'none'; return; }
 
   const rows = R_POSTE_ORDER.flatMap(p =>
@@ -985,7 +991,12 @@ async function loadResults() {
     html += '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px">';
 
     [...allMgrs].sort().forEach(mgr => {
-      const squad = mgrSquads[mgr] || [];
+      const squadRaw = mgrSquads[mgr] || [];
+      const seenSq2 = new Set();
+      const squad = squadRaw.filter(j => {
+        const k = `${(j.nom||'').trim().toLowerCase()}__${(j.club||'').trim().toLowerCase()}`;
+        if (seenSq2.has(k)) return false; seenSq2.add(k); return true;
+      });
       const isMe = mgr === MGR;
       const squadHtml = R_POSTE_ORDER.flatMap(p =>
         squad.filter(j => j.poste === p).map(j =>

@@ -1678,7 +1678,7 @@ function renderEncBudgets() {
     // Dédupliquer à l'affichage par poste+club
     const seen2 = new Set();
     const joueurs = joueursRaw2.filter(j => {
-      const k = `${j.poste}__${(j.club||'').trim().toLowerCase()}`;
+      const k = `${(j.nom||'').trim().toLowerCase()}__${(j.club||'').trim().toLowerCase()}`;
       if (seen2.has(k)) return false;
       seen2.add(k);
       return true;
@@ -1755,7 +1755,7 @@ document.getElementById('enc-recalc-btn').addEventListener('click', async () => 
     // Dédupliquer par poste+club (même joueur, orthographe différente = clé différente)
     const seen = new Set();
     const joueurs = joueursRaw.filter(j => {
-      const k = `${j.poste}__${(j.club||'').trim().toLowerCase()}`;
+      const k = `${(j.nom||'').trim().toLowerCase()}__${(j.club||'').trim().toLowerCase()}`;
       if (seen.has(k)) return false;
       seen.add(k);
       return true;
