@@ -1674,7 +1674,15 @@ function renderEncBudgets() {
     const d = mgrDocs[nom] || {};
     const restant = d.budget_restant ?? 140;
     const max = d.budget_max ?? 140;
-    const joueurs = d.joueurs || [];
+    const joueursRaw2 = d.joueurs || [];
+    // Dédupliquer à l'affichage par poste+club
+    const seen2 = new Set();
+    const joueurs = joueursRaw2.filter(j => {
+      const k = `${j.poste}__${(j.club||'').trim().toLowerCase()}`;
+      if (seen2.has(k)) return false;
+      seen2.add(k);
+      return true;
+    });
     const pct = Math.round((restant / Math.max(max, 1)) * 100);
 
     const joueursHtml = POSTE_ORDER_A.flatMap(p =>
@@ -1733,16 +1741,25 @@ document.getElementById('enc-recalc-btn').addEventListener('click', async () => 
 
   MANAGERS.forEach(nom => {
     const budget_max = subs1[nom]?.total || 140;
-    const joueurs = [];
+    const joueursRaw = [];
 
     for (let r = 1; r <= lastRound; r++) {
       if (!allResultats[r]) continue;
       Object.entries(allResultats[r]).forEach(([pid, res]) => {
         if (res.statut === 'won' && res.vainqueur === nom) {
-          joueurs.push({ id: pid, nom: res.nom, club: res.club, poste: res.poste, mise: res.bids?.[nom] || 0 });
+          joueursRaw.push({ id: pid, nom: res.nom, club: res.club, poste: res.poste, mise: res.bids?.[nom] || 0 });
         }
       });
     }
+
+    // Dédupliquer par poste+club (même joueur, orthographe différente = clé différente)
+    const seen = new Set();
+    const joueurs = joueursRaw.filter(j => {
+      const k = `${j.poste}__${(j.club||'').trim().toLowerCase()}`;
+      if (seen.has(k)) return false;
+      seen.add(k);
+      return true;
+    });
 
     const totalWon = joueurs.reduce((s, j) => s + (j.mise || 0), 0);
     const budget_restant = budget_max - totalWon;
