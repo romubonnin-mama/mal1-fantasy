@@ -1132,6 +1132,21 @@ init().catch(e => {
     <div id="enc-budgets-grid" style="padding:14px 16px;display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px"></div>
   </div>
 
+  <!-- HISTORIQUE DES MISES -->
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-top:20px">
+    <div style="padding:10px 16px;background:var(--surface2);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between">
+      <div>
+        <div style="font-weight:700;font-size:13px">Historique des mises</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:2px">Mises brutes non impactées par les corrections — trace de contrôle</div>
+      </div>
+      <button class="btn btn-subtle" id="enc-history-refresh" style="font-size:12px;padding:5px 12px">🔄 Actualiser</button>
+    </div>
+    <div id="enc-history-rounds" style="padding:10px 16px;border-bottom:1px solid var(--border);display:flex;gap:6px;flex-wrap:wrap;min-height:44px;align-items:center">
+      <span style="font-size:12px;color:var(--muted)">Aucune soumission enregistrée.</span>
+    </div>
+    <div id="enc-history-body" style="padding:14px 16px"></div>
+  </div>
+
   <!-- ZONE DANGEREUSE -->
   <div style="background:var(--surface);border:1px solid #ef4444;border-radius:10px;overflow:hidden;margin-top:20px">
     <div style="padding:10px 16px;background:rgba(239,68,68,.08);border-bottom:1px solid #ef4444">
@@ -1184,6 +1199,7 @@ async function initEnchere() {
   await refreshSubmissions();
   await renderCompileSection();
   await renderAttributions();
+  await loadBidHistory();
   document.getElementById('enc-suivi-round').textContent = encConfig.round || 1;
   document.getElementById('enc-compile-round').textContent = encConfig.round || 1;
 }
@@ -1874,12 +1890,102 @@ document.getElementById('enc-reset-all-btn').addEventListener('click', async () 
   document.getElementById('enc-compile-round').textContent = 1;
   await renderCompileSection();
   await renderAttributions();
+  await loadBidHistory();
 
   btn.disabled = false; btn.textContent = '🗑 Tout réinitialiser';
   status.textContent = '✓ Enchères réinitialisées — tour 1, budgets à 140 pts';
   status.style.display = 'block';
   setTimeout(() => { status.style.display = 'none'; }, 5000);
 });
+
+// ── Historique des mises ─────────────────────────────────
+let bidHistoryData = {};
+let bidHistoryRound = null;
+
+async function loadBidHistory() {
+  const snaps = await getDocs(collection(db, 'soumissions'));
+  bidHistoryData = {};
+  snaps.forEach(d => {
+    const data = d.data();
+    const round = data.round || parseInt((d.id.match(/^(\d+)_/) || [])[1]) || 1;
+    if (!bidHistoryData[round]) bidHistoryData[round] = {};
+    const mgr = data.manager || d.id.replace(/^\d+_/, '');
+    bidHistoryData[round][mgr] = data;
+  });
+  renderBidHistoryRounds();
+}
+
+function renderBidHistoryRounds() {
+  const rounds = Object.keys(bidHistoryData).map(Number).sort((a, b) => a - b);
+  const roundsEl = document.getElementById('enc-history-rounds');
+  const body = document.getElementById('enc-history-body');
+  if (rounds.length === 0) {
+    roundsEl.innerHTML = '<span style="font-size:12px;color:var(--muted)">Aucune soumission enregistrée.</span>';
+    body.innerHTML = '';
+    return;
+  }
+  if (!bidHistoryRound || !bidHistoryData[bidHistoryRound]) bidHistoryRound = rounds[rounds.length - 1];
+  roundsEl.innerHTML = rounds.map(r =>
+    `<button class="btn ${r === bidHistoryRound ? 'btn-primary' : 'btn-subtle'}"
+      style="font-size:12px;padding:4px 14px" onclick="selectHistoryRound(${r})">Tour ${r}</button>`
+  ).join('');
+  renderBidHistoryBody();
+}
+
+window.selectHistoryRound = function(r) { bidHistoryRound = r; renderBidHistoryRounds(); };
+
+function renderBidHistoryBody() {
+  const body = document.getElementById('enc-history-body');
+  const roundData = bidHistoryData[bidHistoryRound] || {};
+  const managers = Object.keys(roundData).sort();
+  if (managers.length === 0) {
+    body.innerHTML = '<div style="font-size:12px;color:var(--muted)">Aucune mise pour ce tour.</div>';
+    return;
+  }
+  const cards = managers.map(mgr => {
+    const data = roundData[mgr];
+    const bids = data.bids || [];
+    const total = data.total || bids.reduce((s, b) => s + (b.mise || 0), 0);
+    const submitted = data.submitted;
+    let ts = '';
+    if (data.timestamp) {
+      try {
+        const dt = data.timestamp.toDate ? data.timestamp.toDate() : new Date(data.timestamp);
+        ts = dt.toLocaleString('fr-FR', { day:'2-digit', month:'2-digit', hour:'2-digit', minute:'2-digit' });
+      } catch(e) {}
+    }
+    const sortedBids = [...bids].sort((a, b) => {
+      const pi = POSTE_ORDER_A.indexOf(a.poste) - POSTE_ORDER_A.indexOf(b.poste);
+      return pi !== 0 ? pi : (a.club||'').localeCompare(b.club||'');
+    });
+    const rows = sortedBids.map(b => {
+      const bg = POSTE_BG_A[b.poste] || '#333';
+      const fg = POSTE_FG_A[b.poste] || '#fff';
+      return `<div style="display:flex;align-items:center;gap:5px;padding:3px 0;border-bottom:1px solid rgba(255,255,255,.04)">
+        <span style="width:18px;height:18px;border-radius:50%;background:${bg};color:${fg};font-size:8px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0">${esc(b.poste||'?')}</span>
+        <span style="flex:1;font-size:11px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(b.nom||'')}</span>
+        ${attrLogoHtml(b.club||'')}<span style="font-size:10px;color:var(--muted);flex-shrink:0">${esc(b.club||'')}</span>
+        <span style="font-size:11px;font-weight:700;color:var(--accent);flex-shrink:0;margin-left:4px">${b.mise||0}p</span>
+      </div>`;
+    }).join('');
+    const statusColor = submitted ? 'var(--accent)' : 'var(--yellow)';
+    const statusLabel = submitted ? '✓ Envoyé' : '⏳ Brouillon';
+    return `<div style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:10px 12px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+        <div style="font-weight:700;font-size:13px">${esc(mgr)}</div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <span style="font-size:11px;color:${statusColor};font-weight:600">${statusLabel}</span>
+          <span style="font-size:12px;font-weight:700;color:var(--accent)">${total}p</span>
+        </div>
+      </div>
+      ${ts ? `<div style="font-size:10px;color:var(--muted);margin-bottom:6px">${ts}</div>` : ''}
+      ${rows || '<div style="font-size:11px;color:var(--muted)">Aucune mise</div>'}
+    </div>`;
+  });
+  body.innerHTML = `<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px">${cards.join('')}</div>`;
+}
+
+document.getElementById('enc-history-refresh').addEventListener('click', loadBidHistory);
 
 // ── Compilation — prévisualisation ────────────────────────
 const POSTE_ORDER_C = ['G','D','M','A'];
