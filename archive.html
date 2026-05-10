@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ma L1 — Saison 2025/26 Archive</title>
+<title>Ma L1 — Archive</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=Barlow+Condensed:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -30,10 +30,11 @@
   .nav-tab:hover { color: var(--text); background: var(--surface2); }
   .nav-tab.active { color: var(--accent); background: var(--surface2); }
   .nav-dropdown { position: relative; }
-  .nav-dropdown-menu { display: none; position: absolute; top: calc(100% + 8px); right: 0; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 6px; min-width: 150px; z-index: 200; box-shadow: 0 8px 24px rgba(0,0,0,0.5); }
+  .nav-dropdown-menu { display: none; position: absolute; top: calc(100% + 8px); right: 0; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 6px; min-width: 160px; z-index: 200; box-shadow: 0 8px 24px rgba(0,0,0,0.5); }
   .nav-dropdown.open .nav-dropdown-menu { display: block; }
   .nav-dropdown-menu a { display: block; padding: 8px 12px; color: var(--muted); font-size: 12px; font-weight: 600; border-radius: 6px; text-decoration: none; transition: all 0.15s; }
   .nav-dropdown-menu a:hover { color: var(--text); background: var(--surface2); }
+  .nav-dropdown-menu a.active-season { color: var(--accent); }
   @media(max-width: 599px) {
     header { height: auto; min-height: 50px; padding: 8px 12px; flex-wrap: wrap; gap: 6px; }
     .nav-tabs { order: 3; width: 100%; display: grid; grid-template-columns: repeat(4, 1fr); gap: 3px; padding-bottom: 2px; }
@@ -42,17 +43,8 @@
 
   .container { max-width: 900px; margin: 0 auto; padding: 24px 16px; }
 
-  .hero {
-    background: var(--surface); border: 1px solid var(--border);
-    border-radius: 16px; padding: 24px; margin-bottom: 20px;
-    position: relative; overflow: hidden;
-  }
-  .hero::before {
-    content: ''; position: absolute; top: -60px; right: -60px;
-    width: 200px; height: 200px;
-    background: radial-gradient(circle, rgba(245,200,66,0.08) 0%, transparent 70%);
-    pointer-events: none;
-  }
+  .hero { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 24px; margin-bottom: 20px; position: relative; overflow: hidden; }
+  .hero::before { content: ''; position: absolute; top: -60px; right: -60px; width: 200px; height: 200px; background: radial-gradient(circle, rgba(245,200,66,0.08) 0%, transparent 70%); pointer-events: none; }
   .hero h1 { font-family: 'Bebas Neue', sans-serif; font-size: 36px; letter-spacing: 2px; line-height: 1; margin-bottom: 4px; }
   .hero h1 em { color: var(--gold); font-style: normal; }
   .hero p { color: var(--muted); font-size: 12px; margin-bottom: 16px; }
@@ -66,17 +58,12 @@
   .card-title { font-family: 'Barlow Condensed', sans-serif; font-size: 14px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); display: flex; align-items: center; gap: 8px; }
   .card-title::before { content: ''; display: block; width: 3px; height: 14px; background: var(--gold); border-radius: 2px; }
 
-  /* Podium */
   .podium { display: flex; gap: 12px; padding: 24px 18px 0; justify-content: center; align-items: flex-end; }
   .podium-item { flex: 1; max-width: 200px; text-align: center; }
   .podium-item.first { order: 2; }
   .podium-item.second { order: 1; }
   .podium-item.third { order: 3; }
-  .podium-block {
-    border-radius: 10px 10px 0 0;
-    display: flex; flex-direction: column; align-items: center; justify-content: flex-end;
-    padding: 16px 12px 14px;
-  }
+  .podium-block { border-radius: 10px 10px 0 0; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; padding: 16px 12px 14px; }
   .first .podium-block { background: linear-gradient(180deg, rgba(245,200,66,0.15) 0%, rgba(245,200,66,0.04) 100%); border: 1px solid rgba(245,200,66,0.2); border-bottom: none; min-height: 130px; }
   .second .podium-block { background: linear-gradient(180deg, rgba(176,184,200,0.10) 0%, rgba(176,184,200,0.03) 100%); border: 1px solid rgba(176,184,200,0.15); border-bottom: none; min-height: 95px; }
   .third .podium-block { background: linear-gradient(180deg, rgba(205,127,58,0.10) 0%, rgba(205,127,58,0.03) 100%); border: 1px solid rgba(205,127,58,0.15); border-bottom: none; min-height: 72px; }
@@ -92,7 +79,6 @@
   .podium-lbl { font-size: 9px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2px; }
   .podium-footer { height: 16px; }
 
-  /* Classement table */
   .cl-table { width: 100%; border-collapse: collapse; }
   .cl-table th { font-size: 9px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; padding: 8px 18px; text-align: right; border-bottom: 1px solid var(--border); }
   .cl-table th:nth-child(1) { width: 44px; text-align: center; }
@@ -114,7 +100,6 @@
   .pts-min { color: var(--danger); font-weight: 600; }
   .j-hint { color: var(--muted); font-size: 9px; margin-left: 3px; }
 
-  /* Records */
   .records-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; }
   .record-item { padding: 18px 16px; text-align: center; border-right: 1px solid var(--border); }
   .record-item:last-child { border-right: none; }
@@ -126,7 +111,6 @@
   .record-label { font-size: 9px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 3px; }
   .record-sub { font-size: 11px; font-weight: 600; margin-top: 5px; }
 
-  /* Stats par manager */
   .mgr-stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; padding: 16px 18px; }
   .mgr-stat-card { background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; padding: 14px; }
   .mgr-stat-name { font-family: 'Barlow Condensed', sans-serif; font-size: 15px; font-weight: 700; letter-spacing: 1px; margin-bottom: 10px; }
@@ -147,9 +131,6 @@
     .record-item:nth-child(4) { border-right: none; border-top: 1px solid var(--border); }
     .mgr-stats-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
     .hide-mob { display: none; }
-    .podium-item.first .podium-pts { font-size: 26px; }
-    .podium-item.second .podium-pts { font-size: 20px; }
-    .podium-item.third .podium-pts { font-size: 18px; }
   }
   @media (max-width: 400px) {
     .mgr-stats-grid { grid-template-columns: 1fr 1fr; }
@@ -160,7 +141,7 @@
 <body>
 
 <header>
-  <div class="logo">MA <span>L1</span><span class="logo-badge">ARCHIVE</span></div>
+  <div class="logo">MA <span>L1</span><span class="logo-badge" id="season-badge">ARCHIVE</span></div>
   <div class="nav-tabs">
     <a class="nav-tab" href="index.html">Classement</a>
     <a class="nav-tab" href="index.html">Journées</a>
@@ -169,13 +150,13 @@
     <a class="nav-tab" href="enchere.html">Enchères</a>
     <div class="nav-dropdown">
       <button class="nav-tab active" onclick="this.closest('.nav-dropdown').classList.toggle('open')">Archives ▾</button>
-      <div class="nav-dropdown-menu">
-        <a href="archive-2025-26.html" style="color:var(--accent)">Saison 2025/26</a>
-        <a href="archive.html?s=2024-25">Saison 2024/25</a>
-        <a href="archive.html?s=2023-24">Saison 2023/24</a>
-        <a href="archive.html?s=2022-23">Saison 2022/23</a>
-        <a href="archive.html?s=2021-22">Saison 2021/22</a>
-        <a href="archive.html?s=2018-19">Saison 2018/19</a>
+      <div class="nav-dropdown-menu" id="archives-menu">
+        <a href="archive-2025-26.html">Saison 2025/26</a>
+        <a href="archive.html?s=2024-25" data-s="2024-25">Saison 2024/25</a>
+        <a href="archive.html?s=2023-24" data-s="2023-24">Saison 2023/24</a>
+        <a href="archive.html?s=2022-23" data-s="2022-23">Saison 2022/23</a>
+        <a href="archive.html?s=2021-22" data-s="2021-22">Saison 2021/22</a>
+        <a href="archive.html?s=2018-19" data-s="2018-19">Saison 2018/19</a>
       </div>
     </div>
   </div>
@@ -184,8 +165,8 @@
 <div class="container">
 
   <div class="hero">
-    <h1>SAISON <em>2025</em>/26</h1>
-    <p>Archive · 9 participants · <span id="nb-journees">—</span> journées</p>
+    <h1 id="hero-title">ARCHIVE</h1>
+    <p>Archive · <span id="nb-participants">—</span> participants · <span id="nb-journees">—</span> journées</p>
     <div class="hero-stats">
       <div class="hero-stat"><div class="val" id="stat-champion">—</div><div class="lbl">Champion</div></div>
       <div class="divider-v"></div>
@@ -198,7 +179,7 @@
   <div class="card">
     <div class="card-header">
       <div class="card-title">Podium</div>
-      <span style="font-size:11px;color:var(--muted)">Saison 2025/26</span>
+      <span style="font-size:11px;color:var(--muted)" id="podium-label">—</span>
     </div>
     <div class="podium" id="podium"></div>
     <div class="podium-footer"></div>
@@ -209,12 +190,8 @@
     <table class="cl-table">
       <thead>
         <tr>
-          <th>#</th>
-          <th>Manager</th>
-          <th>Total</th>
-          <th class="hide-mob">Moy/J</th>
-          <th>Meilleure J</th>
-          <th class="hide-mob">Pire J</th>
+          <th>#</th><th>Manager</th><th>Total</th>
+          <th class="hide-mob">Moy/J</th><th>Meilleure J</th><th class="hide-mob">Pire J</th>
         </tr>
       </thead>
       <tbody id="classement-body"></tbody>
@@ -234,26 +211,42 @@
 </div>
 
 <script>
-fetch('data-archive-2025-26.json')
+const slug = new URLSearchParams(window.location.search).get('s') || '2024-25';
+
+// Marquer la saison active dans le menu
+document.querySelectorAll('#archives-menu [data-s]').forEach(a => {
+  if (a.dataset.s === slug) a.classList.add('active-season');
+});
+
+fetch(`data-archive-${slug}.json`)
   .then(r => r.json())
   .then(render)
   .catch(() => {
     document.querySelector('.container').innerHTML =
-      '<p style="color:var(--muted);padding:60px;text-align:center;font-size:14px">Données non disponibles.</p>';
+      '<p style="color:var(--muted);padding:60px;text-align:center;font-size:14px">Données non disponibles pour cette saison.</p>';
   });
 
 function render(data) {
-  const cl = data.classement;
+  const cl   = data.classement;
   const hist = data.historique;
-  const nbJ = data.derniere_journee;
-  const medals = ['🥇','🥈','🥉'];
-  const rowCls = ['top1','top2','top3'];
+  const nbJ  = data.derniere_journee;
+  const saison = data.saison || slug;
+  const medals  = ['🥇','🥈','🥉'];
+  const rowCls  = ['top1','top2','top3'];
 
+  // Titre et badge
+  document.title = `Ma L1 — Saison ${saison}`;
+  document.getElementById('season-badge').textContent = saison;
+  const [y1, y2] = saison.split('/');
+  document.getElementById('hero-title').innerHTML = `SAISON <em>${y1}</em>/${y2}`;
+  document.getElementById('podium-label').textContent = `Saison ${saison}`;
   document.getElementById('nb-journees').textContent = nbJ;
+  document.getElementById('nb-participants').textContent = cl.length;
   document.getElementById('stat-champion').textContent = cl[0].nom;
   document.getElementById('stat-total').textContent = cl[0].pts;
-  document.getElementById('stat-ecart').textContent = cl[0].pts - cl[1].pts;
+  document.getElementById('stat-ecart').textContent = cl.length > 1 ? cl[0].pts - cl[1].pts : '—';
 
+  // Stats par manager
   const stats = {};
   for (const m of cl) {
     const scores = [];
@@ -267,10 +260,8 @@ function render(data) {
     stats[m.nom] = {
       total: m.pts,
       avg: vals.length ? (vals.reduce((a, b) => a + b, 0) / vals.length).toFixed(1) : '—',
-      max: maxVal,
-      maxJ: vals.length ? scores.find(x => x.s === maxVal).j : 0,
-      min: minVal,
-      minJ: vals.length ? scores.find(x => x.s === minVal).j : 0,
+      max: maxVal, maxJ: vals.length ? scores.find(x => x.s === maxVal).j : 0,
+      min: minVal, minJ: vals.length ? scores.find(x => x.s === minVal).j : 0,
     };
   }
 
@@ -285,17 +276,16 @@ function render(data) {
       </div>
     </div>`;
   document.getElementById('podium').innerHTML =
-    podiumItem(cl[1], 'second', '🥈') +
+    (cl[1] ? podiumItem(cl[1], 'second', '🥈') : '') +
     podiumItem(cl[0], 'first', '🏆') +
-    podiumItem(cl[2], 'third', '🥉');
+    (cl[2] ? podiumItem(cl[2], 'third', '🥉') : '');
 
-  // Classement table
+  // Classement
   let tbody = '';
   for (const m of cl) {
     const s = stats[m.nom];
     const i = m.rang - 1;
-    const cls = rowCls[i] || '';
-    tbody += `<tr class="${cls}">
+    tbody += `<tr class="${rowCls[i] || ''}">
       <td><span class="rank-num">${m.rang}</span></td>
       <td>${i < 3 ? medals[i] + ' ' : ''}${m.nom}</td>
       <td><span class="pts-total">${s.total}</span></td>
@@ -307,13 +297,13 @@ function render(data) {
   document.getElementById('classement-body').innerHTML = tbody;
 
   // Records
-  let bestScore = { val: 0, manager: '', j: 0 };
-  let worstScore = { val: Infinity, manager: '', j: 0 };
+  let bestScore  = { val: 0,        manager: '', j: 0 };
+  let worstScore = { val: Infinity,  manager: '', j: 0 };
   for (let j = 1; j <= nbJ; j++) {
     const jData = hist[String(j)];
     if (!jData) continue;
     for (const [mgr, s] of Object.entries(jData)) {
-      if (s > bestScore.val) bestScore = { val: s, manager: mgr, j };
+      if (s > bestScore.val)  bestScore  = { val: s, manager: mgr, j };
       if (s < worstScore.val) worstScore = { val: s, manager: mgr, j };
     }
   }
@@ -321,7 +311,7 @@ function render(data) {
     const avg = parseFloat(stats[m.nom].avg);
     return avg > (best.avg || 0) ? { nom: m.nom, avg } : best;
   }, {});
-  const ecart12 = cl[0].pts - cl[1].pts;
+  const ecart12 = cl.length > 1 ? cl[0].pts - cl[1].pts : '—';
 
   document.getElementById('records-grid').innerHTML = `
     <div class="record-item">
@@ -335,17 +325,17 @@ function render(data) {
       <div class="record-sub">${worstScore.manager} · J${worstScore.j}</div>
     </div>
     <div class="record-item">
-      <div class="record-val green">${bestAvg.avg}</div>
+      <div class="record-val green">${bestAvg.avg || '—'}</div>
       <div class="record-label">Meilleure moyenne</div>
-      <div class="record-sub">${bestAvg.nom}</div>
+      <div class="record-sub">${bestAvg.nom || '—'}</div>
     </div>
     <div class="record-item">
       <div class="record-val orange">${ecart12}</div>
       <div class="record-label">Écart 1<sup>er</sup>/2<sup>e</sup></div>
-      <div class="record-sub">${cl[0].nom} / ${cl[1].nom}</div>
+      <div class="record-sub">${cl[0].nom}${cl[1] ? ' / ' + cl[1].nom : ''}</div>
     </div>`;
 
-  // Stats par manager (same order as classement)
+  // Stats managers
   let mgr = '';
   for (const m of cl) {
     const s = stats[m.nom];

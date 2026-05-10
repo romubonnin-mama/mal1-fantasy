@@ -1,0 +1,299 @@
+{
+  "saison": "2021/22",
+  "derniere_journee": 38,
+  "classement": [
+    {
+      "rang": 1,
+      "nom": "JEROME",
+      "pts": 1665
+    },
+    {
+      "rang": 2,
+      "nom": "ANTHONY",
+      "pts": 1597
+    },
+    {
+      "rang": 3,
+      "nom": "ROMU",
+      "pts": 1591
+    },
+    {
+      "rang": 4,
+      "nom": "ADRIEN",
+      "pts": 1496
+    },
+    {
+      "rang": 5,
+      "nom": "VINCENT",
+      "pts": 1113
+    }
+  ],
+  "historique": {
+    "1": {
+      "ROMU": 43,
+      "ADRIEN": 34,
+      "ANTHONY": 39,
+      "JEROME": 45,
+      "VINCENT": 33
+    },
+    "2": {
+      "ROMU": 41,
+      "ADRIEN": 31,
+      "ANTHONY": 44,
+      "JEROME": 37,
+      "VINCENT": 27
+    },
+    "3": {
+      "ROMU": 42,
+      "ADRIEN": 41,
+      "ANTHONY": 53,
+      "JEROME": 49,
+      "VINCENT": 23
+    },
+    "4": {
+      "ROMU": 53,
+      "ADRIEN": 45,
+      "ANTHONY": 46,
+      "JEROME": 51,
+      "VINCENT": 27
+    },
+    "5": {
+      "ROMU": 42,
+      "ADRIEN": 47,
+      "ANTHONY": 41,
+      "JEROME": 44,
+      "VINCENT": 33
+    },
+    "6": {
+      "ROMU": 45,
+      "ADRIEN": 42,
+      "ANTHONY": 38,
+      "JEROME": 42,
+      "VINCENT": 39
+    },
+    "7": {
+      "ROMU": 40,
+      "ADRIEN": 33,
+      "ANTHONY": 42,
+      "JEROME": 43,
+      "VINCENT": 37
+    },
+    "8": {
+      "ROMU": 42,
+      "ADRIEN": 42,
+      "ANTHONY": 46,
+      "JEROME": 38,
+      "VINCENT": 30
+    },
+    "9": {
+      "ROMU": 44,
+      "ADRIEN": 51,
+      "ANTHONY": 36,
+      "JEROME": 57,
+      "VINCENT": 31
+    },
+    "10": {
+      "ROMU": 29,
+      "ADRIEN": 42,
+      "ANTHONY": 33,
+      "JEROME": 51,
+      "VINCENT": 39
+    },
+    "11": {
+      "ROMU": 38,
+      "ADRIEN": 49,
+      "ANTHONY": 42,
+      "JEROME": 47,
+      "VINCENT": 31
+    },
+    "12": {
+      "ROMU": 45,
+      "ADRIEN": 38,
+      "ANTHONY": 39,
+      "JEROME": 50,
+      "VINCENT": 41
+    },
+    "13": {
+      "ROMU": 37,
+      "ADRIEN": 52,
+      "ANTHONY": 53,
+      "JEROME": 41,
+      "VINCENT": 37
+    },
+    "14": {
+      "ROMU": 48,
+      "ADRIEN": 37,
+      "ANTHONY": 24,
+      "JEROME": 38,
+      "VINCENT": 25
+    },
+    "15": {
+      "ROMU": 53,
+      "ADRIEN": 52,
+      "ANTHONY": 29,
+      "JEROME": 46,
+      "VINCENT": 48
+    },
+    "16": {
+      "ROMU": 44,
+      "ADRIEN": 40,
+      "ANTHONY": 41,
+      "JEROME": 52,
+      "VINCENT": 32
+    },
+    "17": {
+      "ROMU": 39,
+      "ADRIEN": 46,
+      "ANTHONY": 34,
+      "JEROME": 46,
+      "VINCENT": 44
+    },
+    "18": {
+      "ROMU": 40,
+      "ADRIEN": 48,
+      "ANTHONY": 30,
+      "JEROME": 37,
+      "VINCENT": 43
+    },
+    "19": {
+      "ROMU": 43,
+      "ADRIEN": 32,
+      "ANTHONY": 48,
+      "JEROME": 42,
+      "VINCENT": 37
+    },
+    "20": {
+      "ROMU": 35,
+      "ADRIEN": 47,
+      "ANTHONY": 43,
+      "JEROME": 47,
+      "VINCENT": 31
+    },
+    "21": {
+      "ROMU": 37,
+      "ADRIEN": 45,
+      "ANTHONY": 50,
+      "JEROME": 47,
+      "VINCENT": 30
+    },
+    "22": {
+      "ROMU": 44,
+      "ADRIEN": 40,
+      "ANTHONY": 43,
+      "JEROME": 34,
+      "VINCENT": 27
+    },
+    "23": {
+      "ROMU": 48,
+      "ADRIEN": 39,
+      "ANTHONY": 45,
+      "JEROME": 40,
+      "VINCENT": 21
+    },
+    "24": {
+      "ROMU": 41,
+      "ADRIEN": 33,
+      "ANTHONY": 36,
+      "JEROME": 43,
+      "VINCENT": 23
+    },
+    "25": {
+      "ROMU": 36,
+      "ADRIEN": 27,
+      "ANTHONY": 52,
+      "JEROME": 38,
+      "VINCENT": 24
+    },
+    "26": {
+      "ROMU": 46,
+      "ADRIEN": 35,
+      "ANTHONY": 49,
+      "JEROME": 43,
+      "VINCENT": 22
+    },
+    "27": {
+      "ROMU": 45,
+      "ADRIEN": 29,
+      "ANTHONY": 45,
+      "JEROME": 55,
+      "VINCENT": 27
+    },
+    "28": {
+      "ROMU": 36,
+      "ADRIEN": 31,
+      "ANTHONY": 40,
+      "JEROME": 35,
+      "VINCENT": 23
+    },
+    "29": {
+      "ROMU": 34,
+      "ADRIEN": 31,
+      "ANTHONY": 41,
+      "JEROME": 36,
+      "VINCENT": 17
+    },
+    "30": {
+      "ROMU": 48,
+      "ADRIEN": 50,
+      "ANTHONY": 45,
+      "JEROME": 41,
+      "VINCENT": 33
+    },
+    "31": {
+      "ROMU": 41,
+      "ADRIEN": 40,
+      "ANTHONY": 40,
+      "JEROME": 41,
+      "VINCENT": 29
+    },
+    "32": {
+      "ROMU": 33,
+      "ADRIEN": 32,
+      "ANTHONY": 35,
+      "JEROME": 41,
+      "VINCENT": 27
+    },
+    "33": {
+      "ROMU": 35,
+      "ADRIEN": 49,
+      "ANTHONY": 36,
+      "JEROME": 50,
+      "VINCENT": 26
+    },
+    "34": {
+      "ROMU": 37,
+      "ADRIEN": 41,
+      "ANTHONY": 60,
+      "JEROME": 41,
+      "VINCENT": 26
+    },
+    "35": {
+      "ROMU": 30,
+      "ADRIEN": 34,
+      "ANTHONY": 42,
+      "JEROME": 45,
+      "VINCENT": 16
+    },
+    "36": {
+      "ROMU": 56,
+      "ADRIEN": 30,
+      "ANTHONY": 46,
+      "JEROME": 45,
+      "VINCENT": 20
+    },
+    "37": {
+      "ROMU": 51,
+      "ADRIEN": 30,
+      "ANTHONY": 49,
+      "JEROME": 44,
+      "VINCENT": 14
+    },
+    "38": {
+      "ROMU": 50,
+      "ADRIEN": 31,
+      "ANTHONY": 42,
+      "JEROME": 43,
+      "VINCENT": 20
+    }
+  }
+}
