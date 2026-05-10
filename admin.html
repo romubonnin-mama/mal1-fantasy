@@ -1688,11 +1688,13 @@ function renderEncBudgets() {
     const joueursHtml = POSTE_ORDER_A.flatMap(p =>
       joueurs.filter(j => j.poste === p).map(j => {
         const bg = POSTE_BG_A[p]||'#333', fg = POSTE_FG_A[p]||'#fff';
+        const jKey = encodeURIComponent(JSON.stringify({nom:j.nom,club:j.club,poste:j.poste}));
         return `<div style="display:flex;align-items:center;gap:4px;padding:2px 0;border-bottom:1px solid rgba(255,255,255,.04)">
           <span style="width:14px;height:14px;border-radius:50%;background:${bg};color:${fg};font-size:7px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0">${p}</span>
           <span style="flex:1;font-size:11px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(j.nom)}</span>
           ${attrLogoHtml(j.club||'')}<span style="font-size:10px;color:var(--muted);flex-shrink:0">${esc(j.club||'')}</span>
           <span style="font-size:10px;font-weight:700;color:var(--accent);flex-shrink:0;margin-left:2px">${j.mise}p</span>
+          <button onclick="removeJoueur('${nom}','${jKey}')" style="background:none;border:none;color:var(--red);cursor:pointer;font-size:12px;padding:0 2px;line-height:1;flex-shrink:0" title="Retirer ce joueur">✕</button>
         </div>`;
       })
     ).join('');
@@ -1711,6 +1713,23 @@ function renderEncBudgets() {
       </div>`;
   }).join('');
 }
+
+// ── Retirer un joueur de l'effectif d'un manager ──────────
+window.removeJoueur = async function(nom, jKeyEncoded) {
+  const j = JSON.parse(decodeURIComponent(jKeyEncoded));
+  if (!confirm(`Retirer ${j.nom} (${j.club}, ${j.poste}) de l'effectif de ${nom} ?`)) return;
+
+  const existing = mgrDocs[nom] || {};
+  const joueurs = (existing.joueurs || []).filter(x =>
+    !(x.nom === j.nom && x.club === j.club && x.poste === j.poste)
+  );
+  const totalWon = joueurs.reduce((s, x) => s + (x.mise || 0), 0);
+  const budget_restant = (existing.budget_max || 140) - totalWon;
+
+  await setDoc(doc(db, 'managers', nom), { ...existing, joueurs, budget_restant });
+  mgrDocs[nom] = { ...existing, joueurs, budget_restant };
+  renderEncBudgets();
+};
 
 // ── Recalcul budgets depuis résultats ─────────────────────
 document.getElementById('enc-recalc-btn').addEventListener('click', async () => {
