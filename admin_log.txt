@@ -268,3 +268,11 @@ Interface admin : http://localhost:8765
   127.0.0.1 "GET /api/lineups/33 HTTP/1.1" 200 -
   127.0.0.1 "GET /api/corrections/33 HTTP/1.1" 200 -
   127.0.0.1 "GET /api/manual-stats/33 HTTP/1.1" 200 -
+  127.0.0.1 "POST /api/manual-stats/33 HTTP/1.1" 200 -
+  127.0.0.1 "POST /api/manual-stats/33 HTTP/1.1" 200 -
+[img] target='33', orig_xml=xl/worksheets/sheet34.xml, is_new=False
+[img] sheetData extrait de xl/worksheets/sheet34.xml (354006 chars)
+[img] feuille cible '33': sheetData patche
+  127.0.0.1 "POST /api/compute/33 HTTP/1.1" 200 -
+  127.0.0.1 "GET /api/data HTTP/1.1" 200 -
+warning: in the working copy of '.claude/settings.local.json', LF will be replaced by CRLF the next time Git touches it

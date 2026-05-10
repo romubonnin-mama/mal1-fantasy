@@ -614,10 +614,12 @@
         "full_match": true
       },
       "TOLISSO": {
-        "goals": 1
+        "goals": 1,
+        "full_match": true
       },
       "DONNUM": {
-        "red_card": true
+        "red_card": true,
+        "sort_a": 79
       },
       "ARCUS": {
         "absent": true
@@ -649,7 +651,8 @@
         "cs": true
       },
       "MERLIN": {
-        "assists": 1
+        "assists": 1,
+        "full_match": true
       },
       "OWUSU": {
         "full_match": true
@@ -688,7 +691,8 @@
         "cs": true
       },
       "ENDRICK": {
-        "assists": 1
+        "assists": 1,
+        "full_match": true
       },
       "BARD": {
         "sort_a": 59
