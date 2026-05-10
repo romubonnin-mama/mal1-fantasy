@@ -755,10 +755,14 @@ function renderBids() {
   const remaining = budgetCap - used;
   const pct = budgetCap > 0 ? Math.min(100, (used / budgetCap) * 100) : 100;
 
+  const wonCount = round > 1
+    ? new Set((MGR_DATA.joueurs||[]).map(j=>`${(j.nom||'').trim().toLowerCase()}__${(j.club||'').trim().toLowerCase()}`)).size
+    : 0;
+
   document.getElementById('s-budget').textContent = Math.max(0, remaining);
   document.getElementById('s-mises').textContent = used;
-  document.getElementById('s-count').textContent = myBids.length;
-  document.getElementById('bid-count').textContent = myBids.length;
+  document.getElementById('s-count').textContent = myBids.length + wonCount;
+  document.getElementById('bid-count').textContent = myBids.length + wonCount;
   document.getElementById('bid-remaining').textContent = Math.max(0, remaining);
 
   const fill = document.getElementById('budget-fill');
