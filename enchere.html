@@ -525,10 +525,21 @@ async function loadMyBids() {
     myBids = d.bids || [];
     submitted = d.submitted || false;
   } else if (round > 1) {
-    // Pas encore de draft pour ce tour → reporter la liste du tour précédent
-    const prevSnap = await getDoc(doc(db, 'soumissions', `${round - 1}_${MGR}`));
+    // Pas encore de draft pour ce tour → reporter uniquement les joueurs non gagnés au tour précédent
+    const [prevSnap, resultSnap] = await Promise.all([
+      getDoc(doc(db, 'soumissions', `${round - 1}_${MGR}`)),
+      getDoc(doc(db, 'resultats', String(round - 1)))
+    ]);
+    const resultData = resultSnap.exists() ? resultSnap.data() : {};
     if (prevSnap.exists()) {
-      myBids = (prevSnap.data().bids || []).map(b => ({ ...b }));
+      myBids = (prevSnap.data().bids || [])
+        .map(b => ({ ...b }))
+        .filter(b => {
+          const key = `${b.nom.trim().toLowerCase()}__${b.club.trim().toLowerCase()}__${b.poste}`;
+          const r = resultData[key];
+          // Exclure les joueurs déjà gagnés par ce manager (déjà déduits du budget_restant)
+          return !(r && r.statut === 'won' && r.vainqueur === MGR);
+        });
     }
     submitted = false;
   }
