@@ -700,7 +700,8 @@
         "sort_a": 59
       },
       "O.CAMARA": {
-        "full_match": true
+        "full_match": true,
+        "yellow_cards": true
       },
       "BELKEBLA": {
         "full_match": true
