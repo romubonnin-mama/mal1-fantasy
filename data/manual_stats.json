@@ -450,9 +450,6 @@
       }
     },
     "VINCENT": {
-      "CABELLA": {
-        "absent": true
-      },
       "EDOUARD": {
         "sort_a": 59
       },
@@ -476,14 +473,18 @@
       "PENDERS": {
         "full_match": true
       },
-      "ZAIRE-EMERY": {
-        "absent": true
-      },
-      "N.MENDES": {
-        "absent": true
-      },
       "RONGIER": {
         "full_match": true
+      },
+      "CABELLA": {
+        "absent": true
+      },
+      "MCKENZIE": {
+        "full_match": true,
+        "yellow_cards": true
+      },
+      "GIROUD": {
+        "absent": true
       }
     },
     "ADRIEN": {
