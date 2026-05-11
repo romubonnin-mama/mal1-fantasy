@@ -33,7 +33,7 @@
     {
       "rang": 7,
       "nom": "ROMU",
-      "pts": 1318
+      "pts": 1316
     },
     {
       "rang": 8,
@@ -48,7 +48,7 @@
   ],
   "derniere_journee": 33,
   "scores_journee": {
-    "ROMU": 37,
+    "ROMU": 35,
     "JEROME": 32,
     "VINCENT": 29,
     "ADRIEN": 35,
@@ -412,7 +412,7 @@
       "MICKA": 46
     },
     "33": {
-      "ROMU": 37,
+      "ROMU": 35,
       "JEROME": 32,
       "VINCENT": 29,
       "ADRIEN": 35,
@@ -181256,8 +181256,8 @@
               "pts": 0
             },
             "pd": {
-              "val": 1,
-              "pts": 2
+              "val": 0,
+              "pts": 0
             },
             "cj": {
               "val": 0,
@@ -181267,7 +181267,7 @@
               "val": 0,
               "pts": 0
             },
-            "pts": 5
+            "pts": 3
           }
         ]
       },
@@ -187217,7 +187217,7 @@
       },
       {
         "j": 33,
-        "pts": 1318
+        "pts": 1316
       }
     ],
     "VINCENT": [
