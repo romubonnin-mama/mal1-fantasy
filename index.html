@@ -226,19 +226,6 @@
     .cap-hide-mob { display: none; }
     .nav-tab { font-size: 9px; padding: 7px 2px; }
   }
-  .florian-name {
-    color: #ff69b4;
-    background: radial-gradient(circle, #ff69b4 40%, #ffffff 40%) center / 8px 8px;
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-shadow:
-      1px 0 0 #c0c0c0, -1px 0 0 #c0c0c0,
-      0 1px 0 #c0c0c0, 0 -1px 0 #c0c0c0,
-      1px 1px 0 #c0c0c0, -1px 1px 0 #c0c0c0,
-      1px -1px 0 #c0c0c0, -1px -1px 0 #c0c0c0;
-    font-weight: 700;
-  }
 </style>
 </head>
 <body>
@@ -495,7 +482,7 @@
 <script>
 const COULEURS = {
   "ROMU":    {bg:"rgba(21,128,61,0.12)",   color:"#15803d", chart:"rgba(21,128,61,1)"},
-  "FLORIAN": {bg:"rgba(255,105,180,0.18)",  color:"#ff69b4", chart:"rgba(255,105,180,1)"},
+  "FLORIAN": {bg:"rgba(245,200,66,0.12)",  color:"#f5c842", chart:"rgba(245,200,66,1)"},
   "FAB":     {bg:"rgba(96,165,250,0.1)",   color:"#60a5fa", chart:"rgba(96,165,250,1)"},
   "BASTIEN": {bg:"rgba(192,132,252,0.1)",  color:"#c084fc", chart:"rgba(192,132,252,1)"},
   "ADRIEN":  {bg:"rgba(255,255,255,0.06)", color:"#ffffff", chart:"rgba(255,255,255,1)"},
@@ -508,9 +495,6 @@ const MEDAILLES = ["🥇","🥈","🥉"];
 const POSTES = {"G":"Gardien","D":"Défenseurs","M":"Milieux","A":"Attaquants"};
 const POS_CLASS = {"G":"pos-G","D":"pos-D","M":"pos-M","A":"pos-A"};
 const ORDRE_JOUEURS = ["ROMU","ADRIEN","ANTHONY","JEROME","FLORIAN","BASTIEN","VINCENT","FAB","MICKA"];
-function fmtNom(n) {
-  return n === 'FLORIAN' ? `<span class="florian-name">${n}</span>` : n;
-}
 let DATA = null;
 let CLUBS = {};
 let evolutionChart = null;
@@ -636,7 +620,7 @@ function renderScores(scores, containerId) {
     div.innerHTML = `
       <div class="j-player-info">
         <div class="j-avatar" style="background:${c.bg};color:${c.color}">${nom.substring(0,2)}</div>
-        <div class="j-name" style="color:${c.color}">${fmtNom(nom)}</div>
+        <div class="j-name" style="color:${c.color}">${nom}</div>
       </div>
       <div class="j-pts${pts===maxScore?' best':''}">${pts}</div>`;
     container.appendChild(div);
@@ -664,7 +648,7 @@ function showJournee(j) {
         <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:var(--surface2);border-bottom:1px solid var(--border);">
           <div style="display:flex;align-items:center;gap:10px;">
             <div style="width:28px;height:28px;border-radius:50%;background:${COULEURS[nom]?.bg};color:${c.color};display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;">${nom.substring(0,2)}</div>
-            <div style="font-weight:700;font-size:13px;color:${c.color}">${fmtNom(nom)}</div>
+            <div style="font-weight:700;font-size:13px;color:${c.color}">${nom}</div>
           </div>
           <div style="font-family:'Bebas Neue',sans-serif;font-size:24px;color:${c.color}">${pts} pts</div>
         </div>
@@ -898,7 +882,7 @@ function renderCapStats(capMap) {
     const avgCoeff = (usages.reduce((s, u) => s + (u.mult - 1), 0) / usages.length).toFixed(1);
     html += `<div class="cap-block">
       <div class="cap-hdr">
-        <div class="cap-mgr" style="color:${c.color}">${fmtNom(mgr)}</div>
+        <div class="cap-mgr" style="color:${c.color}">${mgr}</div>
         <div class="cap-meta">
           <div class="cap-meta-item">Bonus total <strong>+${totalBonus}</strong></div>
           <div class="cap-meta-item">Rang moyen <strong>${avgRang}e</strong></div>
@@ -943,7 +927,7 @@ function renderCardsStats(cjMap, crMap, cardsByMgr) {
     const c = COULEURS[mgr] || { color: '#e8eaf0' };
     const total = d.cj + d.cr;
     return `<div class="mgr-card-row">
-      <div style="font-weight:600;color:${c.color}">${fmtNom(mgr)}</div>
+      <div style="font-weight:600;color:${c.color}">${mgr}</div>
       <div class="val-cell" style="color:var(--gold)">${d.cj || '—'}</div>
       <div class="val-cell" style="color:var(--danger)">${d.cr || '—'}</div>
       <div class="val-cell">${total || '—'}</div>
@@ -994,7 +978,7 @@ function renderAttackStats(bmMap, pdMap, ptsMap, attackByMgr, bmpdM, bmpdA) {
       const c = COULEURS[mgr]||{color:'#e8eaf0'};
       const total = d.bm + d.pd;
       return `<div style="${colStyle};border-bottom:1px solid var(--border);font-size:12px">
-        <div style="font-weight:600;color:${c.color}">${MEDAILLES[i]||''} ${fmtNom(mgr)}</div>
+        <div style="font-weight:600;color:${c.color}">${MEDAILLES[i]||''} ${mgr}</div>
         <div style="font-family:'Bebas Neue',sans-serif;font-size:16px;text-align:center;color:var(--accent2)">${d.bm||'—'}</div>
         <div style="font-family:'Bebas Neue',sans-serif;font-size:16px;text-align:center;color:var(--gold)">${d.pd||'—'}</div>
         <div style="font-family:'Bebas Neue',sans-serif;font-size:16px;text-align:center">${total||'—'}</div>
@@ -1017,7 +1001,7 @@ function renderTopJoueurs(totalPtsMap) {
         <div>${logoHtml}${nom}</div>
         <div style="font-size:10px;color:var(--muted);font-weight:400;margin-top:2px">
           <span class="roster-poste p-${d.poste}" style="font-size:9px;padding:1px 4px;margin-right:5px">${d.poste}</span>
-          <span style="color:${mgrColor}">${fmtNom(mgr)}</span>
+          <span style="color:${mgrColor}">${mgr}</span>
         </div>
       </div>
       <div style="font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--accent)">${d.total}</div>
@@ -1063,7 +1047,7 @@ function renderDefenseStats(csMap, beMap, defenseByMgr) {
       const d = defenseByMgr[mgr]||{pts:0};
       const c = COULEURS[mgr]||{color:'#e8eaf0'};
       return `<div style="${colStyle};border-bottom:1px solid var(--border);font-size:12px">
-        <div style="font-weight:600;color:${c.color}">${MEDAILLES[i]||''} ${fmtNom(mgr)}</div>
+        <div style="font-weight:600;color:${c.color}">${MEDAILLES[i]||''} ${mgr}</div>
         <div style="font-family:'Bebas Neue',sans-serif;font-size:16px;text-align:center;color:var(--accent)">${d.pts||'—'}</div>
       </div>`;
     }).join('');
@@ -1102,7 +1086,7 @@ Promise.all([
       row.innerHTML = `
         <div class="rank-num" style="color:${i===0?'#f5c842':i===1?'#b0b8c8':i===2?'#cd7f3a':'#6b7280'}">${joueur.rang}</div>
         <div class="rank-medal">${MEDAILLES[i]||'—'}</div>
-        <div class="rank-name" style="color:${isRomu?'#00e5a0':'#e8eaf0'}">${fmtNom(joueur.nom)}${isRomu?' <span style="font-size:10px;color:#6b7280;font-weight:400">(vous)</span>':''}</div>
+        <div class="rank-name" style="color:${isRomu?'#00e5a0':'#e8eaf0'}">${joueur.nom}${isRomu?' <span style="font-size:10px;color:#6b7280;font-weight:400">(vous)</span>':''}</div>
         <div class="rank-points" style="color:${isRomu?'#00e5a0':'#e8eaf0'}">${joueur.pts}</div>`;
       cc.appendChild(row);
     });
@@ -1125,7 +1109,7 @@ Promise.all([
       const btn = document.createElement('button');
       btn.className = 'joueur-btn';
       btn.dataset.nom = nom;
-      btn.innerHTML = fmtNom(nom);
+      btn.textContent = nom;
       btn.onclick = () => showJoueur(nom);
       joueurSel.appendChild(btn);
     });
@@ -1138,10 +1122,10 @@ Promise.all([
       const btn = document.createElement('button');
       btn.className = 'chart-btn active';
       btn.dataset.nom = joueur.nom;
-      btn.innerHTML = fmtNom(joueur.nom);
+      btn.textContent = joueur.nom;
       btn.style.background = c.chart;
       btn.style.borderColor = c.chart;
-      btn.style.color = joueur.nom === 'FLORIAN' ? '#fff' : '#000';
+      btn.style.color = '#000';
       btn.onclick = () => toggleJoueur(joueur.nom);
       filters.appendChild(btn);
     });
