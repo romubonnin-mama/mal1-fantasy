@@ -65,24 +65,49 @@ def _apply_corrections_past(journee: int, j_corrections: dict, data: dict) -> di
                 coeff    = int(cap) if cap and str(cap).isdigit() else 0
                 multiplier = (1 + coeff) if (cap and is_titu) else 1
 
-                if is_titu and nom in manager_corrections:
-                    nom_corr = manager_corrections[nom]
+                nom_corr = manager_corrections.get(nom, {})
 
+                # set_titu : bascule le statut titulaire/remplaçant
+                titu_override = int((nom_corr.get("set_titu") or {}).get("val", 0) or 0)
+                if titu_override > 0:
+                    is_titu = True
+                    player["statut"] = ""
+                elif titu_override < 0:
+                    is_titu = False
+                    player["statut"] = "r"
+                    player["pts"] = 0
+
+                if is_titu and nom_corr:
                     # ABS : force le joueur absent, ignore les autres corrections
                     if int((nom_corr.get("abs") or {}).get("val", 0) or 0):
                         player["pts"] = 0
                         player["statut"] = "A"
                     else:
+                        # entre/fin : recalcule le TJ avec les nouvelles minutes
+                        corr_entre = int((nom_corr.get("entre") or {}).get("val", 0) or 0)
+                        corr_fin   = int((nom_corr.get("fin")   or {}).get("val", 0) or 0)
+                        if corr_entre > 0:
+                            end = corr_fin if corr_fin > 0 else 90
+                            mins = end - corr_entre
+                            red  = isinstance(player.get("cr"), dict) and player["cr"].get("val", 0) < 0
+                            from scoring import tj_points
+                            new_tj_pts = tj_points(mins, False, red, is_sub=True)
+                            tj_entry   = player.get("tj_pts")
+                            old_tj_pts = tj_entry if isinstance(tj_entry, int) else (tj_entry.get("pts", 0) if isinstance(tj_entry, dict) else 0)
+                            player["tj"]     = f"{corr_entre}-{end}"
+                            player["tj_pts"] = new_tj_pts
+                            player["pts"]   += (new_tj_pts - old_tj_pts) * multiplier
+
                         # full_match : tj passe à "M" (4 pts)
                         if int((nom_corr.get("full_match") or {}).get("val", 0) or 0):
-                            tj_entry = player.get("tj_pts")
-                            old_tj_pts = tj_entry.get("pts", 0) if isinstance(tj_entry, dict) else 0
+                            tj_entry   = player.get("tj_pts")
+                            old_tj_pts = tj_entry if isinstance(tj_entry, int) else (tj_entry.get("pts", 0) if isinstance(tj_entry, dict) else 0)
                             player["tj"]     = "M"
                             player["tj_pts"] = {"val": "M", "pts": 4}
                             player["pts"]   += (4 - old_tj_pts) * multiplier
 
                         for stat, corr in nom_corr.items():
-                            if stat in ("abs", "full_match"):
+                            if stat in ("abs", "full_match", "set_titu", "entre", "fin"):
                                 continue
                             delta_val = int((corr.get("val") or 0) or 0)
                             if not delta_val or stat not in player:
@@ -92,6 +117,34 @@ def _apply_corrections_past(journee: int, j_corrections: dict, data: dict) -> di
                             old_pts, new_pts = _stat_pts(stat, poste, old_val, new_val, player)
                             player[stat] = {"val": new_val, "pts": new_pts}
                             player["pts"] += (new_pts - old_pts) * multiplier
+
+                        # Remplaçant promu titulaire : recalcule les pts depuis les stats stockées
+                        if titu_override > 0:
+                            from scoring import tj_points
+                            tj_raw = player.get("tj", "0")
+                            mins_p, full_p, sub_p = 0, False, False
+                            if str(tj_raw) == "M":
+                                full_p = True
+                            elif "-" in str(tj_raw):
+                                parts = str(tj_raw).split("-")
+                                try:
+                                    mins_p = int(parts[1]) - int(parts[0])
+                                    sub_p  = True
+                                except ValueError:
+                                    pass
+                            else:
+                                try:
+                                    mins_p = int(tj_raw)
+                                except ValueError:
+                                    pass
+                            red_p = isinstance(player.get("cr"), dict) and player["cr"].get("val", 0) < 0
+                            tj_pts_new = tj_points(mins_p, full_p, red_p, is_sub=sub_p)
+                            player["tj_pts"] = tj_pts_new
+                            stat_pts = tj_pts_new
+                            for stat_k in ("bm", "pd", "pm", "pma", "bcsc", "cs", "be", "cj", "cr"):
+                                if isinstance(player.get(stat_k), dict):
+                                    stat_pts += player[stat_k].get("pts", 0)
+                            player["pts"] = stat_pts
 
                 if is_titu:
                     total += player["pts"]
@@ -180,13 +233,35 @@ def compute(journee: int) -> dict:
                 is_titu = nom in titulaires
                 s = j_manual.get(manager, {}).get(nom, {})
 
+                player_corrections = j_corrections.get(manager, {}).get(nom, {})
+
+                # set_titu : bascule le statut avant le calcul
+                titu_override = int((player_corrections.get("set_titu") or {}).get("val", 0) or 0)
+                if titu_override > 0:
+                    is_titu = True
+                elif titu_override < 0:
+                    is_titu = False
+
+                # entre/fin : surcharge les minutes manuelles
+                corr_entre = int((player_corrections.get("entre") or {}).get("val", 0) or 0)
+                corr_fin   = int((player_corrections.get("fin")   or {}).get("val", 0) or 0)
+                if corr_entre > 0:
+                    s = dict(s)
+                    s["entre_a"]    = corr_entre
+                    s["fin_a"]      = corr_fin if corr_fin > 0 else 90
+                    s["full_match"] = False
+                    s.pop("sort_a", None)
+
                 absent     = bool(s.get("absent", False))
                 minutes    = _minutes(s)
                 full_match = bool(s.get("full_match", False))
                 red_card   = bool(s.get("red_card", False))
                 is_sub     = int(s.get("entre_a", 0) or 0) > 0
 
-                player_corrections = j_corrections.get(manager, {}).get(nom, {})
+                # Ne pas passer set_titu/entre/fin à calcul_joueur (traités ci-dessus)
+                scoring_corrections = {k: v for k, v in player_corrections.items()
+                                       if k not in ("set_titu", "entre", "fin")}
+
                 result = calcul_joueur(
                     poste       = poste,
                     minutes     = minutes,
@@ -200,7 +275,7 @@ def compute(journee: int) -> dict:
                     own_goals     = int(s.get("own_goals", 0)),
                     yellow_cards  = int(s.get("yellow_cards", 0)),
                     red_card      = red_card,
-                    corrections   = player_corrections,
+                    corrections   = scoring_corrections,
                     is_sub        = is_sub,
                 )
 

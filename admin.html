@@ -176,6 +176,15 @@ header h1 { font-size: 18px; font-weight: 700; color: var(--accent); }
 .snum:focus { border-color: var(--accent); outline: none; }
 .snum.nz { border-color: var(--accent); background: rgba(0,229,160,.12); font-weight: 700; }
 .snum:disabled { opacity: .25; cursor: not-allowed; }
+.snum-abs { border-color: var(--blue); background: rgba(88,166,255,.08); }
+.snum-abs.nz { border-color: var(--blue); background: rgba(88,166,255,.18); font-weight: 700; }
+.corr-tr-btn {
+  font-size: 11px; padding: 2px 7px; border-radius: 4px; cursor: pointer; font-weight: 700;
+  border: 1px solid var(--border); background: var(--surface2); color: var(--muted);
+}
+.corr-tr-btn.eff-titu  { background: var(--accent); color: #0d1117; border-color: var(--accent); }
+.corr-tr-btn.eff-rempl { background: var(--surface2); color: var(--muted); }
+.corr-tr-btn.overridden { outline: 2px solid var(--yellow); outline-offset: 1px; }
 .schk { width: 16px; height: 16px; cursor: pointer; accent-color: var(--accent); }
 .schk-red    { accent-color: var(--red); }
 .schk-cs     { accent-color: #4fc3f7; }
@@ -526,8 +535,11 @@ function renderCorrections() {
           <thead><tr>
             <th class="col-nom">Joueur</th>
             <th>P</th>
+            <th title="Basculer titulaire ↔ remplaçant">T/R</th>
             <th title="Absent / blessé / non entré en jeu">ABS</th>
             <th title="Match entier (90 min)">Match</th>
+            <th title="Minute d'entrée (remplaçant entrant)" style="color:var(--blue)">Entre</th>
+            <th title="Minute de sortie" style="color:var(--blue)">Fin</th>
             ${CORR_NUM_FIELDS.map(x => `<th title="${x.title}">${x.label}</th>`).join('')}
             ${CORR_CHK_FIELDS.map(x => `<th title="${x.title}">${x.label}</th>`).join('')}
           </tr></thead>
@@ -549,13 +561,29 @@ function renderCorrections() {
       const playerCorr = managerCorr[nom] || {};
       const isAbs   = (playerCorr['abs']?.val || 0) !== 0;
       const isMatch = (playerCorr['full_match']?.val || 0) !== 0;
+      const corrEntre = playerCorr['entre']?.val || 0;
+      const corrFin   = playerCorr['fin']?.val   || 0;
+
+      // Statut effectif : lineup + éventuelle correction set_titu
+      const trCorr = playerCorr['set_titu']?.val || 0;
+      const effTitu = trCorr > 0 ? true : trCorr < 0 ? false : titu;
+      const trOverridden = trCorr !== 0;
+
       const logoHtml = (() => { const u = getLogoUrl(nom); return u ? `<img src="${u}" class="club-logo-adm" onerror="this.style.display='none'" alt="">` : ''; })();
       const tr = document.createElement('tr');
-      tr.className = titu ? 'is-titu' : 'is-rempl';
+      tr.className = effTitu ? 'is-titu' : 'is-rempl';
       if (isAbs) tr.classList.add('is-abs');
       tr.innerHTML = `
         <td class="col-nom">${logoHtml} ${nom}</td>
         <td><span class="roster-poste p-${p}">${p}</span></td>
+        <td>
+          <button class="corr-tr-btn ${effTitu ? 'eff-titu' : 'eff-rempl'} ${trOverridden ? 'overridden' : ''}"
+                  data-m="${manager}" data-n="${nom}"
+                  data-lineup-titu="${titu ? '1' : '0'}"
+                  data-eff-titu="${effTitu ? '1' : '0'}"
+                  title="${effTitu ? 'Titulaire — cliquer pour passer remplaçant' : 'Remplaçant — cliquer pour passer titulaire'}"
+                  onclick="onCorrTRToggle(this)">${effTitu ? 'T' : 'R'}</button>
+        </td>
         <td>
           <input type="checkbox" class="schk schk-abs"
                  data-m="${manager}" data-n="${nom}" data-f="abs"
@@ -566,6 +594,14 @@ function renderCorrections() {
                  data-m="${manager}" data-n="${nom}" data-f="full_match"
                  ${isMatch ? 'checked' : ''} ${isAbs ? 'disabled' : ''} onchange="onCorrChkChange(this)">
         </td>
+        <td><input type="number" class="snum snum-abs corr-stat-inp ${corrEntre ? 'nz' : ''}"
+              data-m="${manager}" data-n="${nom}" data-f="entre"
+              value="${corrEntre || ''}" placeholder="—" min="1" max="89"
+              ${isAbs ? 'disabled' : ''} onchange="onCorrAbsValChange(this)"></td>
+        <td><input type="number" class="snum snum-abs corr-stat-inp ${corrFin ? 'nz' : ''}"
+              data-m="${manager}" data-n="${nom}" data-f="fin"
+              value="${corrFin || ''}" placeholder="—" min="2" max="90"
+              ${isAbs ? 'disabled' : ''} onchange="onCorrAbsValChange(this)"></td>
         ${CORR_NUM_FIELDS.map(x => {
           const val = playerCorr[x.f]?.val || 0;
           return `<td><input type="number" class="snum corr-stat-inp ${val !== 0 ? 'nz' : ''}"
@@ -584,12 +620,64 @@ function renderCorrections() {
   }
 }
 
+function markCorrUnsaved() {
+  const s = document.getElementById('corr-status');
+  if (s) { s.textContent = 'Non sauvegardé*'; s.className = 'save-status err'; }
+}
+
 function onCorrChange(el) {
   const v = parseInt(el.value) || 0;
   el.classList.toggle('nz', v !== 0);
   setCorrection(el.dataset.m, el.dataset.n, el.dataset.f, v);
-  const s = document.getElementById('corr-status');
-  s.textContent = 'Non sauvegardé*'; s.className = 'save-status err';
+  markCorrUnsaved();
+}
+
+// Entre / Fin : valeurs absolues (minutes directes, pas delta)
+function onCorrAbsValChange(el) {
+  const v = parseInt(el.value) || 0;
+  el.classList.toggle('nz', v !== 0);
+  if (v === 0) {
+    if (!CORRECTIONS[el.dataset.m]) CORRECTIONS[el.dataset.m] = {};
+    if (!CORRECTIONS[el.dataset.m][el.dataset.n]) CORRECTIONS[el.dataset.m][el.dataset.n] = {};
+    delete CORRECTIONS[el.dataset.m][el.dataset.n][el.dataset.f];
+    if (!Object.keys(CORRECTIONS[el.dataset.m][el.dataset.n]).length) delete CORRECTIONS[el.dataset.m][el.dataset.n];
+    if (!Object.keys(CORRECTIONS[el.dataset.m]).length) delete CORRECTIONS[el.dataset.m];
+  } else {
+    if (!CORRECTIONS[el.dataset.m]) CORRECTIONS[el.dataset.m] = {};
+    if (!CORRECTIONS[el.dataset.m][el.dataset.n]) CORRECTIONS[el.dataset.m][el.dataset.n] = {};
+    CORRECTIONS[el.dataset.m][el.dataset.n][el.dataset.f] = { val: v };
+  }
+  markCorrUnsaved();
+}
+
+// T/R : bascule titulaire ↔ remplaçant
+function onCorrTRToggle(btn) {
+  const m = btn.dataset.m;
+  const n = btn.dataset.n;
+  const lineupTitu = btn.dataset.lineupTitu === '1';
+  const currentEffTitu = btn.dataset.effTitu === '1';
+  const newEffTitu = !currentEffTitu;
+
+  // Si le nouvel état = état lineup → aucune correction nécessaire
+  if (newEffTitu === lineupTitu) {
+    setCorrection(m, n, 'set_titu', 0);
+    btn.classList.remove('overridden');
+  } else {
+    setCorrection(m, n, 'set_titu', newEffTitu ? 1 : -1);
+    btn.classList.add('overridden');
+  }
+
+  btn.dataset.effTitu = newEffTitu ? '1' : '0';
+  btn.textContent = newEffTitu ? 'T' : 'R';
+  btn.title = newEffTitu ? 'Titulaire — cliquer pour passer remplaçant' : 'Remplaçant — cliquer pour passer titulaire';
+  btn.classList.toggle('eff-titu',  newEffTitu);
+  btn.classList.toggle('eff-rempl', !newEffTitu);
+
+  const row = btn.closest('tr');
+  row.classList.toggle('is-titu',  newEffTitu);
+  row.classList.toggle('is-rempl', !newEffTitu);
+
+  markCorrUnsaved();
 }
 
 function onCorrAbsChange(el) {
@@ -608,15 +696,13 @@ function onCorrAbsChange(el) {
   });
   row.classList.toggle('is-abs', abs);
   setCorrection(el.dataset.m, el.dataset.n, 'abs', abs ? 1 : 0);
-  const s = document.getElementById('corr-status');
-  s.textContent = 'Non sauvegardé*'; s.className = 'save-status err';
+  markCorrUnsaved();
 }
 
 function onCorrChkChange(el) {
   const val = el.checked ? (el.dataset.f === 'be' ? 3 : 1) : 0;
   setCorrection(el.dataset.m, el.dataset.n, el.dataset.f, val);
-  const s = document.getElementById('corr-status');
-  s.textContent = 'Non sauvegardé*'; s.className = 'save-status err';
+  markCorrUnsaved();
 }
 
 function setCorrection(manager, nom, stat, val) {

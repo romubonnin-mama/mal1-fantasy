@@ -228,7 +228,9 @@ class AdminHandler(BaseHTTPRequestHandler):
             try:
                 sys.path.insert(0, str(SCRIPTS_DIR))
                 import importlib
+                import scoring
                 import compute_journee
+                importlib.reload(scoring)
                 importlib.reload(compute_journee)
                 result = compute_journee.compute(journee)
 
