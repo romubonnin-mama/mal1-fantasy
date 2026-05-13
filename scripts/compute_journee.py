@@ -184,6 +184,7 @@ def compute(journee: int) -> dict:
                 minutes    = _minutes(s)
                 full_match = bool(s.get("full_match", False))
                 red_card   = bool(s.get("red_card", False))
+                is_sub     = int(s.get("entre_a", 0) or 0) > 0
 
                 player_corrections = j_corrections.get(manager, {}).get(nom, {})
                 result = calcul_joueur(
@@ -200,6 +201,7 @@ def compute(journee: int) -> dict:
                     yellow_cards  = int(s.get("yellow_cards", 0)),
                     red_card      = red_card,
                     corrections   = player_corrections,
+                    is_sub        = is_sub,
                 )
 
                 # Absent : 0 point, aucun bonus

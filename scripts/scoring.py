@@ -104,6 +104,7 @@ def calcul_joueur(
     yellow_cards: int,
     red_card: bool,
     corrections: dict = None,
+    is_sub: bool = False,
 ) -> dict:
     """
     Calcule les points d'un joueur et retourne un dict au format data.json.
@@ -133,7 +134,7 @@ def calcul_joueur(
     if red_card:
         yellow_cards = 0
 
-    tj_p   = tj_points(minutes, is_full_match, red_card)
+    tj_p   = tj_points(minutes, is_full_match, red_card, is_sub)
     bm_p   = goals_scored * BM_PTS[poste]
     pd_p   = assists * PD_PTS
     pm_p   = penalties_scored * PM_PTS
