@@ -722,5 +722,106 @@
         "full_match": true
       }
     }
+  },
+  "29": {
+    "FLORIAN": {
+      "AJORQUE": {
+        "goals": 1,
+        "full_match": true
+      },
+      "SANGARE": {
+        "full_match": true
+      }
+    },
+    "VINCENT": {
+      "PENDERS": {
+        "full_match": true
+      },
+      "DOUCOURE": {
+        "absent": true
+      },
+      "N.MENDES": {
+        "absent": true
+      },
+      "ZAIRE-EMERY": {
+        "absent": true
+      },
+      "DOUE": {
+        "full_match": true,
+        "assists": 1
+      }
+    },
+    "BASTIEN": {
+      "CHOTARD": {
+        "sort_a": 83
+      }
+    },
+    "ROMU": {
+      "DEL CASTILLO": {
+        "sort_a": 78
+      },
+      "M.SARR": {
+        "full_match": true
+      }
+    },
+    "ANTHONY": {
+      "LALA": {
+        "full_match": true,
+        "assists": 1
+      },
+      "MAGNETTI": {
+        "sort_a": 84
+      },
+      "GODO": {
+        "sort_a": 84
+      },
+      "PACHO": {
+        "absent": true
+      }
+    },
+    "MICKA": {
+      "AGUILAR": {
+        "sort_a": 85
+      }
+    },
+    "JEROME": {
+      "GANIOU": {
+        "full_match": true
+      },
+      "ZABARNYI": {
+        "full_match": true,
+        "yellow_cards": true
+      },
+      "THOMASSON": {
+        "full_match": true
+      },
+      "SAINT MAXIMAIN": {
+        "entre_a": 61
+      },
+      "VITINHA": {
+        "entre_a": 46
+      }
+    },
+    "FAB": {
+      "KVARATSKHELIA": {
+        "sort_a": 72,
+        "goals": 1
+      }
+    },
+    "ADRIEN": {
+      "RISSER": {
+        "full_match": true
+      },
+      "UDOL": {
+        "full_match": true
+      },
+      "RUIZ": {
+        "entre_a": 61
+      },
+      "DEMBELE": {
+        "sort_a": 76,
+        "assists": 1
+      }
+    }
   }
 }

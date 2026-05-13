@@ -308,5 +308,160 @@
       "capitaine": null,
       "coeff": 1
     }
+  },
+  "29": {
+    "MICKA": {
+      "titulaires": [
+        "DIAW",
+        "AGUILAR",
+        "CRESSWELL",
+        "LLORIS",
+        "NDIAYE",
+        "TOLISSO",
+        "L.CAMARA",
+        "DONNUM",
+        "SOUMARE",
+        "BALOGUN",
+        "SINAYOKO"
+      ],
+      "capitaine": null,
+      "coeff": 1
+    },
+    "JEROME": {
+      "titulaires": [
+        "GREIF",
+        "NGOY",
+        "GANIOU",
+        "ZABARNYI",
+        "AL-TAMARI",
+        "THOMASSON",
+        "VITINHA",
+        "KEBBAL",
+        "LEPAUL",
+        "SAINT MAXIMAIN",
+        "WAHI"
+      ],
+      "capitaine": null,
+      "coeff": 1
+    },
+    "FAB": {
+      "titulaires": [
+        "SAMBA",
+        "WEAH",
+        "LEFORT",
+        "BRASSIER",
+        "HOJBJERG",
+        "M.CAMARA",
+        "LEES-MELOU",
+        "VAN DEN BOOMEN",
+        "F.PARDO",
+        "ABLINE",
+        "KVARATSKHELIA"
+      ],
+      "capitaine": null,
+      "coeff": 1
+    },
+    "FLORIAN": {
+      "titulaires": [
+        "ÖZER",
+        "KOUASSI",
+        "NICOLAISEN",
+        "MERLIN",
+        "MUNETSI",
+        "HEIN",
+        "SANGARE",
+        "OWUSU",
+        "H.DIALLO",
+        "GREENWOOD",
+        "AJORQUE"
+      ],
+      "capitaine": null,
+      "coeff": 1
+    },
+    "VINCENT": {
+      "titulaires": [
+        "PENDERS",
+        "N.MENDES",
+        "MAITLAND-NILES",
+        "TEZE",
+        "MCKENZIE",
+        "DOUCOURE",
+        "HARALDSSON",
+        "ZAIRE-EMERY",
+        "RONGIER",
+        "DOUE",
+        "EDOUARD"
+      ],
+      "capitaine": null,
+      "coeff": 1
+    },
+    "BASTIEN": {
+      "titulaires": [
+        "RULLI",
+        "NEGO",
+        "MATA",
+        "BARD",
+        "MBOW",
+        "ZAKARIA",
+        "CHOTARD",
+        "BELKEBLA",
+        "THAUVIN",
+        "ENDRICK",
+        "GBOHO"
+      ],
+      "capitaine": null,
+      "coeff": 1
+    },
+    "ADRIEN": {
+      "titulaires": [
+        "RISSER",
+        "PERRAUD",
+        "NIAKHATE",
+        "UDOL",
+        "SENAYA",
+        "PAPE DEMBA",
+        "SZYMANSKI",
+        "RUIZ",
+        "TSITAISHVILI",
+        "DEMBELE",
+        "EMBOLO"
+      ],
+      "capitaine": null,
+      "coeff": 1
+    },
+    "ANTHONY": {
+      "titulaires": [
+        "LOPES",
+        "G.DOUE",
+        "LALA",
+        "PAVARD",
+        "PACHO",
+        "DANOIS",
+        "AKLIOUCHE",
+        "MAGNETTI",
+        "SANSON",
+        "BOUADDI",
+        "GODO"
+      ],
+      "capitaine": null,
+      "coeff": 1
+    },
+    "ROMU": {
+      "titulaires": [
+        "RESTES",
+        "CLAUSS",
+        "SIDIBE",
+        "M.SARR",
+        "LEPENANT",
+        "BOUFAL",
+        "MORTON",
+        "DIOP",
+        "MORREIRA",
+        "DEL CASTILLO",
+        "GOUIRI"
+      ],
+      "capitaine": null,
+      "coeff": 1
+    }
   }
 }
