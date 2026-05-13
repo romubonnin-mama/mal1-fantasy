@@ -324,8 +324,8 @@
         "BALOGUN",
         "SINAYOKO"
       ],
-      "capitaine": null,
-      "coeff": 1
+      "capitaine": "BALOGUN",
+      "coeff": 6
     },
     "JEROME": {
       "titulaires": [
@@ -341,8 +341,8 @@
         "SAINT MAXIMAIN",
         "WAHI"
       ],
-      "capitaine": null,
-      "coeff": 1
+      "capitaine": "NGOY",
+      "coeff": 7
     },
     "FAB": {
       "titulaires": [
@@ -358,8 +358,8 @@
         "ABLINE",
         "KVARATSKHELIA"
       ],
-      "capitaine": null,
-      "coeff": 1
+      "capitaine": "WEAH",
+      "coeff": 3
     },
     "FLORIAN": {
       "titulaires": [
@@ -375,7 +375,7 @@
         "GREENWOOD",
         "AJORQUE"
       ],
-      "capitaine": null,
+      "capitaine": "GREENWOOD",
       "coeff": 1
     },
     "VINCENT": {
@@ -392,8 +392,8 @@
         "DOUE",
         "EDOUARD"
       ],
-      "capitaine": null,
-      "coeff": 1
+      "capitaine": "HARALDSSON",
+      "coeff": 9
     },
     "BASTIEN": {
       "titulaires": [
@@ -409,7 +409,7 @@
         "ENDRICK",
         "GBOHO"
       ],
-      "capitaine": null,
+      "capitaine": "MATA",
       "coeff": 1
     },
     "ADRIEN": {

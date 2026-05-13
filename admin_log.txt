@@ -15,3 +15,40 @@ Interface admin : http://localhost:8765
   127.0.0.1 "GET /api/lineups/29 HTTP/1.1" 200 -
   127.0.0.1 "GET /api/corrections/29 HTTP/1.1" 200 -
   127.0.0.1 "GET /api/manual-stats/29 HTTP/1.1" 200 -
+  127.0.0.1 "POST /api/lineups/29 HTTP/1.1" 200 -
+  127.0.0.1 "POST /api/lineups/29 HTTP/1.1" 200 -
+  127.0.0.1 "POST /api/manual-stats/29 HTTP/1.1" 200 -
+  127.0.0.1 "POST /api/manual-stats/29 HTTP/1.1" 200 -
+  127.0.0.1 "POST /api/manual-stats/29 HTTP/1.1" 200 -
+  127.0.0.1 "POST /api/manual-stats/29 HTTP/1.1" 200 -
+  127.0.0.1 "POST /api/manual-stats/29 HTTP/1.1" 200 -
+  127.0.0.1 "POST /api/manual-stats/29 HTTP/1.1" 200 -
+  127.0.0.1 "POST /api/manual-stats/29 HTTP/1.1" 200 -
+  127.0.0.1 "POST /api/lineups/29 HTTP/1.1" 200 -
+  127.0.0.1 "POST /api/manual-stats/29 HTTP/1.1" 200 -
+  127.0.0.1 "POST /api/manual-stats/29 HTTP/1.1" 200 -
+  127.0.0.1 "POST /api/manual-stats/29 HTTP/1.1" 200 -
+[img] target='29', orig_xml=xl/worksheets/sheet30.xml, is_new=False
+[img] sheetData extrait de xl/worksheets/sheet30.xml (352323 chars)
+[img] feuille cible '29': sheetData patche
+  127.0.0.1 "POST /api/compute/29 HTTP/1.1" 200 -
+  127.0.0.1 "GET /api/data HTTP/1.1" 200 -
+  127.0.0.1 "POST /api/manual-stats/29 HTTP/1.1" 200 -
+[img] target='29', orig_xml=xl/worksheets/sheet30.xml, is_new=False
+[img] sheetData extrait de xl/worksheets/sheet30.xml (352323 chars)
+[img] feuille cible '29': sheetData patche
+  127.0.0.1 "POST /api/compute/29 HTTP/1.1" 200 -
+  127.0.0.1 "GET /api/data HTTP/1.1" 200 -
+To https://github.com/romubonnin-mama/mal1-fantasy.git
+   011ac75..02d1501  main -> main
+  127.0.0.1 "POST /api/push HTTP/1.1" 200 -
+  127.0.0.1 "GET / HTTP/1.1" 200 -
+  127.0.0.1 "GET /api/roster HTTP/1.1" 200 -
+  127.0.0.1 "GET /api/data HTTP/1.1" 200 -
+  127.0.0.1 "GET /api/clubs HTTP/1.1" 200 -
+  127.0.0.1 "GET /api/lineups/32 HTTP/1.1" 200 -
+  127.0.0.1 "GET /api/corrections/32 HTTP/1.1" 200 -
+  127.0.0.1 "GET /api/manual-stats/32 HTTP/1.1" 200 -
+  127.0.0.1 "GET /api/lineups/29 HTTP/1.1" 200 -
+  127.0.0.1 "GET /api/corrections/29 HTTP/1.1" 200 -
+  127.0.0.1 "GET /api/manual-stats/29 HTTP/1.1" 200 -

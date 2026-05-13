@@ -40,6 +40,96 @@ def read_json(path: Path):
         return json.load(f)
 
 
+def _reconstruct_player_stats(player: dict) -> dict:
+    """Convertit un joueur de detail_journees en entrée manual_stats."""
+    tj   = str(player.get("tj", "0"))
+    bm   = (player.get("bm")   or {}).get("val", 0) or 0
+    pd   = (player.get("pd")   or {}).get("val", 0) or 0
+    cs   = (player.get("cs")   or {}).get("val", 0) or 0
+    be   = (player.get("be")   or {}).get("val", 0) or 0
+    bcsc = (player.get("bcsc") or {}).get("val", 0) or 0
+    pm   = (player.get("pm")   or {}).get("val", 0) or 0
+    pma  = (player.get("pma")  or {}).get("val", 0) or 0
+    cj   = (player.get("cj")   or {}).get("val", 0) or 0
+    cr   = (player.get("cr")   or {}).get("val", 0) or 0
+
+    s = {}
+    if tj == "M":
+        s["full_match"] = True
+    elif "-" in tj:
+        parts = tj.split("-")
+        try:
+            s["entre_a"] = int(parts[0])
+            s["fin_a"]   = int(parts[1])
+        except ValueError:
+            pass
+    elif tj != "0":
+        try:
+            v = int(tj)
+            if v > 0:
+                s["sort_a"] = v
+        except ValueError:
+            pass
+
+    if bm   > 0:  s["goals"]       = bm
+    if pd   > 0:  s["assists"]      = pd
+    if cs   > 0:  s["cs"]           = True
+    if be   >= 3: s["be_malus"]     = True
+    if bcsc > 0:  s["own_goals"]    = bcsc
+    if pm   > 0:  s["pen_scored"]   = pm
+    if pma  > 0:  s["pen_mm_saved"] = pma
+    if cj   > 0:  s["yellow_cards"] = cj
+    if cr   < 0:  s["red_card"]     = True
+
+    return s
+
+
+def _merge_manual_from_detail(journee: str, current: dict) -> dict:
+    """
+    Si data.json contient detail_journees[journee], reconstruit les stats
+    manquantes et les fusionne avec current (les stats manuelles existantes
+    ont priorité sur les données reconstituées).
+    """
+    data_path = BASE_DIR / "data.json"
+    if not data_path.exists():
+        return current
+
+    try:
+        site_data = read_json(data_path)
+    except Exception:
+        return current
+
+    detail = site_data.get("detail_journees", {}).get(journee)
+    if not detail:
+        return current
+
+    reconstructed = {}
+    for manager, postes in detail.items():
+        m_stats = {}
+        for poste, players in postes.items():
+            for p in players:
+                nom    = p.get("nom", "")
+                statut = p.get("statut", "")
+                if statut == "r":
+                    continue
+                if statut == "A":
+                    m_stats[nom] = {"absent": True}
+                    continue
+                m_stats[nom] = _reconstruct_player_stats(p)
+        if m_stats:
+            reconstructed[manager] = m_stats
+
+    # Fusion : base = reconstruit, overlay = manual existant (priorité)
+    merged = {}
+    all_managers = set(list(reconstructed.keys()) + list(current.keys()))
+    for manager in all_managers:
+        base    = reconstructed.get(manager, {})
+        overlay = current.get(manager, {})
+        merged[manager] = {**base, **overlay}
+
+    return merged
+
+
 def write_json(path: Path, data):
     with open(path, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
@@ -93,7 +183,14 @@ class AdminHandler(BaseHTTPRequestHandler):
             if path.startswith(prefix):
                 journee = path[len(prefix):]
                 data = read_json(DATA_DIR / fname)
-                self.send_json(data.get(journee, {}))
+                result = data.get(journee, {})
+
+                # Pour manual-stats : si la journée est vide ou incomplète,
+                # pré-remplir depuis detail_journees de data.json
+                if fname == "manual_stats.json":
+                    result = _merge_manual_from_detail(journee, result)
+
+                self.send_json(result)
                 return
 
         self.send_error_json("Not found", 404)
