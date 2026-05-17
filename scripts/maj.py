@@ -229,10 +229,18 @@ def main():
             for nom in joueurs_noms:
                 evolution[nom].append({"j": j, "pts": cumul[nom]})
 
-    score_max_val = ws_scores.cell(row=14, column=9).value
-    score_max_nom = ws_scores.cell(row=14, column=10).value
-    score_min_val = ws_scores.cell(row=15, column=9).value
-    score_min_nom = ws_scores.cell(row=15, column=10).value
+    all_scores = [
+        (nom, pts)
+        for scores in historique.values()
+        for nom, pts in scores.items()
+        if pts > 0
+    ]
+    if all_scores:
+        score_max_nom, score_max_val = max(all_scores, key=lambda x: x[1])
+        score_min_nom, score_min_val = min(all_scores, key=lambda x: x[1])
+    else:
+        score_max_val = score_min_val = None
+        score_max_nom = score_min_nom = "—"
 
     data = {
         "classement":      classement,

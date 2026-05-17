@@ -17,3 +17,27 @@ Interface admin : http://localhost:8765
   127.0.0.1 "POST /api/lineups/34 HTTP/1.1" 200 -
   127.0.0.1 "POST /api/lineups/34 HTTP/1.1" 200 -
   127.0.0.1 "POST /api/lineups/34 HTTP/1.1" 200 -
+  127.0.0.1 "POST /api/manual-stats/34 HTTP/1.1" 200 -
+  127.0.0.1 "POST /api/manual-stats/34 HTTP/1.1" 200 -
+[img] '34' introuvable dans workbook.xml
+[img] target='34', orig_xml=None, is_new=True
+[img] sheetData extrait de xl/worksheets/sheet35.xml (354021 chars)
+[img] nouvelle feuille -> xl/worksheets/sheet37.xml
+[img] drawing rels '38': xl/drawings/_rels/drawing3.xml.rels (2742 bytes)
+[img] drawing '38': xl/drawings/drawing3.xml (155854 bytes)
+[img] '38' XML: xl/worksheets/sheet35.xml, drawing: True
+[img] nouveau drawing: xl/drawings/drawing5.xml
+[img] XML nouvelle feuille: '38' + sheetData patche
+[img] nouveau rId: rId43
+[img] workbook.xml patche: sheetId=38, rId=rId43
+[img] workbook.xml.rels patche: worksheets/sheet37.xml
+[img] [Content_Types].xml patche
+[img] ecrit: xl/worksheets/sheet37.xml
+[img] ecrit: xl/worksheets/_rels/sheet37.xml.rels
+[img] ecrit: xl/drawings/drawing5.xml
+[img] ecrit: xl/drawings/_rels/drawing5.xml.rels
+  127.0.0.1 "POST /api/compute/34 HTTP/1.1" 200 -
+  127.0.0.1 "GET /api/data HTTP/1.1" 200 -
+To https://github.com/romubonnin-mama/mal1-fantasy.git
+   4a0a345..11ec1df  main -> main
+  127.0.0.1 "POST /api/push HTTP/1.1" 200 -
