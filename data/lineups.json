@@ -8,11 +8,11 @@
         "M.SARR",
         "LEPENANT",
         "BOUFAL",
-        "MORTON",
         "DIOP",
         "MORREIRA",
         "DEL CASTILLO",
-        "GOUIRI"
+        "GOUIRI",
+        "DOUMBIA"
       ],
       "capitaine": null,
       "coeff": 1
@@ -73,14 +73,14 @@
         "ÖZER",
         "KOUASSI",
         "NICOLAISEN",
-        "CHARDONNET",
         "MERLIN",
         "HEIN",
         "OWUSU",
         "ANDRE",
         "GREENWOOD",
         "AJORQUE",
-        "MUNETSI"
+        "MUNETSI",
+        "H.DIALLO"
       ],
       "capitaine": null,
       "coeff": 1
@@ -143,12 +143,12 @@
         "CRESSWELL",
         "TOLISSO",
         "L.CAMARA",
-        "DONNUM",
         "SOUMARE",
         "BALOGUN",
         "SINAYOKO",
         "LLORIS",
-        "ARCUS"
+        "ARCUS",
+        "NDIAYE"
       ],
       "capitaine": null,
       "coeff": 1
@@ -459,6 +459,161 @@
         "MORREIRA",
         "DEL CASTILLO",
         "GOUIRI"
+      ],
+      "capitaine": null,
+      "coeff": 1
+    }
+  },
+  "34": {
+    "ROMU": {
+      "titulaires": [
+        "RESTES",
+        "CLAUSS",
+        "SIDIBE",
+        "M.SARR",
+        "LEPENANT",
+        "BOUFAL",
+        "DOUMBIA",
+        "DIOP",
+        "MORREIRA",
+        "DEL CASTILLO",
+        "GOUIRI"
+      ],
+      "capitaine": null,
+      "coeff": 1
+    },
+    "BASTIEN": {
+      "titulaires": [
+        "RULLI",
+        "O.CAMARA",
+        "MATA",
+        "ZAKARIA",
+        "CHOTARD",
+        "CASSERES",
+        "BELKEBLA",
+        "ENDRICK",
+        "GBOHO",
+        "NEGO",
+        "THAUVIN"
+      ],
+      "capitaine": null,
+      "coeff": 1
+    },
+    "FLORIAN": {
+      "titulaires": [
+        "ÖZER",
+        "KOUASSI",
+        "NICOLAISEN",
+        "MERLIN",
+        "HEIN",
+        "OWUSU",
+        "ANDRE",
+        "H.DIALLO",
+        "GREENWOOD",
+        "AJORQUE",
+        "CHARDONNET"
+      ],
+      "capitaine": null,
+      "coeff": 1
+    },
+    "FAB": {
+      "titulaires": [
+        "SAMBA",
+        "MANDI",
+        "LEFORT",
+        "HOJBJERG",
+        "M.CAMARA",
+        "LEES-MELOU",
+        "VAN DEN BOOMEN",
+        "F.PARDO",
+        "BARCO",
+        "WEAH",
+        "KVARATSKHELIA"
+      ],
+      "capitaine": null,
+      "coeff": 1
+    },
+    "MICKA": {
+      "titulaires": [
+        "DIAW",
+        "AGUILAR",
+        "CRESSWELL",
+        "LLORIS",
+        "ARCUS",
+        "NDIAYE",
+        "TOLISSO",
+        "L.CAMARA",
+        "SOUMARE",
+        "BALOGUN",
+        "SINAYOKO"
+      ],
+      "capitaine": null,
+      "coeff": 1
+    },
+    "ADRIEN": {
+      "titulaires": [
+        "RISSER",
+        "PERRAUD",
+        "NIAKHATE",
+        "UDOL",
+        "SENAYA",
+        "GOLOVIN",
+        "PAPE DEMBA",
+        "SZYMANSKI",
+        "RUIZ",
+        "EMBOLO",
+        "DEMBELE"
+      ],
+      "capitaine": null,
+      "coeff": 1
+    },
+    "ANTHONY": {
+      "titulaires": [
+        "LOPES",
+        "G.DOUE",
+        "LALA",
+        "PAVARD",
+        "PACHO",
+        "DANOIS",
+        "AKLIOUCHE",
+        "MAGNETTI",
+        "SANSON",
+        "BOUADDI",
+        "GODO"
+      ],
+      "capitaine": null,
+      "coeff": 1
+    },
+    "VINCENT": {
+      "titulaires": [
+        "PENDERS",
+        "MAITLAND-NILES",
+        "TEZE",
+        "MCKENZIE",
+        "DOUCOURE",
+        "HARALDSSON",
+        "RONGIER",
+        "DOUE",
+        "EDOUARD",
+        "ZAIRE-EMERY",
+        "N.MENDES"
+      ],
+      "capitaine": null,
+      "coeff": 1
+    },
+    "JEROME": {
+      "titulaires": [
+        "GREIF",
+        "NGOY",
+        "GANIOU",
+        "ZABARNYI",
+        "AL-TAMARI",
+        "VITINHA",
+        "SULC",
+        "LEPAUL",
+        "WAHI",
+        "THOMASSON",
+        "SAINT MAXIMAIN"
       ],
       "capitaine": null,
       "coeff": 1

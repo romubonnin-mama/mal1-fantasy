@@ -1088,5 +1088,368 @@
         "full_match": true
       }
     }
+  },
+  "34": {
+    "ROMU": {
+      "DOUMBIA": {
+        "sort_a": 73,
+        "assists": 1
+      },
+      "DEL CASTILLO": {
+        "sort_a": 64,
+        "goals": 1
+      },
+      "BOUFAL": {
+        "sort_a": 85,
+        "assists": 1
+      },
+      "M.SARR": {
+        "sort_a": 46,
+        "yellow_cards": true
+      },
+      "LEPENANT": {
+        "sort_a": 22
+      },
+      "RESTES": {
+        "sort_a": 22
+      },
+      "SIDIBE": {
+        "sort_a": 22
+      },
+      "GOUIRI": {
+        "full_match": true,
+        "goals": 1,
+        "yellow_cards": true
+      },
+      "CLAUSS": {
+        "sort_a": 78,
+        "cs": true
+      },
+      "DIOP": {
+        "sort_a": 72
+      },
+      "MORREIRA": {
+        "full_match": true,
+        "goals": 1,
+        "assists": 2
+      }
+    },
+    "FLORIAN": {
+      "AJORQUE": {
+        "full_match": true
+      },
+      "CHARDONNET": {
+        "full_match": true,
+        "yellow_cards": true
+      },
+      "ÖZER": {
+        "full_match": true
+      },
+      "OWUSU": {
+        "full_match": true,
+        "yellow_cards": true
+      },
+      "ANDRE": {
+        "full_match": true
+      },
+      "KOUASSI": {
+        "full_match": true
+      },
+      "MERLIN": {
+        "full_match": true,
+        "be_malus": true
+      },
+      "GREENWOOD": {
+        "full_match": true,
+        "assists": 1
+      },
+      "NICOLAISEN": {
+        "sort_a": 22
+      },
+      "HEIN": {
+        "full_match": true
+      },
+      "H.DIALLO": {
+        "absent": true
+      }
+    },
+    "FAB": {
+      "LEFORT": {
+        "full_match": true
+      },
+      "MANDI": {
+        "full_match": true
+      },
+      "F.PARDO": {
+        "full_match": true
+      },
+      "WEAH": {
+        "sort_a": 88
+      },
+      "HOJBJERG": {
+        "sort_a": 82,
+        "goals": 1,
+        "assists": 1,
+        "yellow_cards": true
+      },
+      "M.CAMARA": {
+        "full_match": true,
+        "yellow_cards": true
+      },
+      "LEES-MELOU": {
+        "full_match": true,
+        "assists": 1
+      },
+      "KVARATSKHELIA": {
+        "sort_a": 58
+      },
+      "SAMBA": {
+        "absent": true
+      },
+      "VAN DEN BOOMEN": {
+        "full_match": true
+      },
+      "BARCO": {
+        "sort_a": 59,
+        "be_malus": true
+      }
+    },
+    "ANTHONY": {
+      "LALA": {
+        "full_match": true
+      },
+      "MAGNETTI": {
+        "entre_a": 73
+      },
+      "DANOIS": {
+        "full_match": true
+      },
+      "BOUADDI": {
+        "full_match": true
+      },
+      "PAVARD": {
+        "entre_a": 87
+      },
+      "LOPES": {
+        "sort_a": 22
+      },
+      "SANSON": {
+        "sort_a": 87
+      },
+      "PACHO": {
+        "absent": true
+      },
+      "G.DOUE": {
+        "full_match": true,
+        "be_malus": true
+      },
+      "AKLIOUCHE": {
+        "sort_a": 67
+      },
+      "GODO": {
+        "full_match": true,
+        "goals": 2
+      }
+    },
+    "BASTIEN": {
+      "O.CAMARA": {
+        "full_match": true
+      },
+      "CHOTARD": {
+        "entre_a": 73
+      },
+      "BELKEBLA": {
+        "full_match": true
+      },
+      "NEGO": {
+        "entre_a": 73
+      },
+      "THAUVIN": {
+        "sort_a": 61,
+        "goals": 1,
+        "assists": 1
+      },
+      "ENDRICK": {
+        "sort_a": 69
+      },
+      "RULLI": {
+        "full_match": true
+      },
+      "GBOHO": {
+        "sort_a": 22
+      },
+      "CASSERES": {
+        "sort_a": 21
+      },
+      "MATA": {
+        "full_match": true,
+        "be_malus": true
+      },
+      "ZAKARIA": {
+        "full_match": true
+      }
+    },
+    "MICKA": {
+      "ARCUS": {
+        "entre_a": 67
+      },
+      "SINAYOKO": {
+        "full_match": true,
+        "goals": 2
+      },
+      "DIAW": {
+        "full_match": true,
+        "pen_mm_saved": 1,
+        "cs": true
+      },
+      "LLORIS": {
+        "full_match": true,
+        "cs": true
+      },
+      "NDIAYE": {
+        "full_match": true
+      },
+      "SOUMARE": {
+        "full_match": true,
+        "goals": 1
+      },
+      "AGUILAR": {
+        "entre_a": 46,
+        "yellow_cards": true,
+        "cs": true
+      },
+      "CRESSWELL": {
+        "absent": true
+      },
+      "L.CAMARA": {
+        "full_match": true,
+        "goals": 2,
+        "yellow_cards": true
+      },
+      "BALOGUN": {
+        "sort_a": 76
+      },
+      "TOLISSO": {
+        "full_match": true
+      }
+    },
+    "JEROME": {
+      "NGOY": {
+        "full_match": true,
+        "yellow_cards": true
+      },
+      "GREIF": {
+        "full_match": true,
+        "be_malus": true
+      },
+      "GANIOU": {
+        "entre_a": 39,
+        "cs": true
+      },
+      "THOMASSON": {
+        "entre_a": 61
+      },
+      "SAINT MAXIMAIN": {
+        "absent": true
+      },
+      "SULC": {
+        "full_match": true,
+        "yellow_cards": true
+      },
+      "AL-TAMARI": {
+        "sort_a": 67
+      },
+      "LEPAUL": {
+        "full_match": true
+      },
+      "WAHI": {
+        "full_match": true,
+        "yellow_cards": true
+      },
+      "ZABARNYI": {
+        "full_match": true
+      },
+      "VITINHA": {
+        "sort_a": 67
+      }
+    },
+    "VINCENT": {
+      "HARALDSSON": {
+        "sort_a": 82
+      },
+      "MAITLAND-NILES": {
+        "sort_a": 46,
+        "be_malus": true
+      },
+      "EDOUARD": {
+        "absent": true
+      },
+      "RONGIER": {
+        "full_match": true
+      },
+      "MCKENZIE": {
+        "sort_a": 22
+      },
+      "N.MENDES": {
+        "absent": true
+      },
+      "ZAIRE-EMERY": {
+        "sort_a": 58
+      },
+      "DOUE": {
+        "absent": true
+      },
+      "PENDERS": {
+        "full_match": true,
+        "be_malus": true
+      },
+      "TEZE": {
+        "sort_a": 67,
+        "be_malus": true
+      },
+      "DOUCOURE": {
+        "full_match": true,
+        "own_goals": 1,
+        "be_malus": true
+      }
+    },
+    "ADRIEN": {
+      "SENAYA": {
+        "entre_a": 82
+      },
+      "RISSER": {
+        "absent": true
+      },
+      "UDOL": {
+        "entre_a": 46,
+        "cs": true
+      },
+      "NIAKHATE": {
+        "full_match": true,
+        "be_malus": true
+      },
+      "EMBOLO": {
+        "entre_a": 46
+      },
+      "SZYMANSKI": {
+        "sort_a": 46
+      },
+      "PAPE DEMBA": {
+        "sort_a": 22
+      },
+      "RUIZ": {
+        "full_match": true,
+        "assists": 1
+      },
+      "DEMBELE": {
+        "sort_a": 27
+      },
+      "GOLOVIN": {
+        "absent": true
+      },
+      "PERRAUD": {
+        "sort_a": 46
+      }
+    }
   }
 }
