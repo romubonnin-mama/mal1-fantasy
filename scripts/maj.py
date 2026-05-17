@@ -136,10 +136,18 @@ def lire_joueur(ws, col, row, ancien=False, poste="M"):
     tj_pts, bm_pts, be_pts, bcsc_pts, cs_pts, pm_pts, pma_pts, pd_pts, cj_pts, cr_pts, pts = \
         calc_pts(poste, tj, bm_val, be_val, bcsc_val, cs_val, pm_val, pma_val, pd_val, cj_val, cr_val)
 
+    cap_str = str(cap) if cap else ""
+    if cap_str:
+        try:
+            rang = min(int(float(cap_str)), 7)
+            pts = pts * (1 + rang)
+        except (ValueError, TypeError):
+            pass
+
     return {
         "nom":    str(nom),
         "statut": str(statut).lower() if statut else "",
-        "cap":    str(cap) if cap else "",
+        "cap":    cap_str,
         "tj":     tj,
         "tj_pts": tj_pts,
         "bm":     {"val": bm_val,   "pts": bm_pts},
