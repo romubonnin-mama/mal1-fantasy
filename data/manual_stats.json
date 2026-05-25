@@ -159,11 +159,6 @@
       "THAUVIN": {
         "sort_a": 86,
         "yellow_cards": true
-      },
-      "MBOW": {
-        "full_match": true,
-        "yellow_cards": true,
-        "cs": true
       }
     },
     "JEROME": {
@@ -210,12 +205,6 @@
       "SAINT MAXIMAIN": {
         "full_match": true,
         "goals": 1
-      },
-      "ZABARNYI": {
-        "absent": true
-      },
-      "WAHI": {
-        "absent": true
       }
     },
     "ADRIEN": {
@@ -234,9 +223,6 @@
       },
       "SENAYA": {
         "absent": true
-      },
-      "GOLOVIN": {
-        "sort_a": 74
       },
       "PAPE DEMBA": {
         "absent": true
@@ -362,9 +348,6 @@
       },
       "BOUFAL": {
         "sort_a": 65
-      },
-      "DOUMBIA": {
-        "entre_a": 70
       },
       "DIOP": {
         "sort_a": 91

@@ -8,7 +8,7 @@
     {
       "rang": 2,
       "nom": "BASTIEN",
-      "pts": 1455
+      "pts": 1453
     },
     {
       "rang": 3,
@@ -22,18 +22,18 @@
     },
     {
       "rang": 5,
-      "nom": "ADRIEN",
-      "pts": 1396
+      "nom": "JEROME",
+      "pts": 1406
     },
     {
       "rang": 6,
-      "nom": "JEROME",
-      "pts": 1395
+      "nom": "ADRIEN",
+      "pts": 1393
     },
     {
       "rang": 7,
       "nom": "ROMU",
-      "pts": 1365
+      "pts": 1367
     },
     {
       "rang": 8,
@@ -48,14 +48,14 @@
   ],
   "derniere_journee": 34,
   "scores_journee": {
-    "ROMU": 24,
-    "JEROME": 32,
+    "ROMU": 26,
+    "JEROME": 43,
     "VINCENT": 41,
-    "ADRIEN": 34,
+    "ADRIEN": 31,
     "FLORIAN": 42,
     "FAB": 33,
     "ANTHONY": 25,
-    "BASTIEN": 41,
+    "BASTIEN": 39,
     "MICKA": 46
   },
   "historique": {
@@ -401,14 +401,14 @@
       "MICKA": 39
     },
     "32": {
-      "ROMU": 24,
-      "JEROME": 32,
+      "ROMU": 26,
+      "JEROME": 43,
       "VINCENT": 41,
-      "ADRIEN": 34,
+      "ADRIEN": 31,
       "FLORIAN": 42,
       "FAB": 33,
       "ANTHONY": 25,
-      "BASTIEN": 41,
+      "BASTIEN": 39,
       "MICKA": 46
     },
     "33": {
@@ -175380,10 +175380,10 @@
           },
           {
             "nom": "DOUMBIA",
-            "statut": "",
+            "statut": "r",
             "cap": "",
-            "tj": "20",
-            "tj_pts": 1,
+            "tj": "0",
+            "tj_pts": 0,
             "bm": {
               "val": 0,
               "pts": 0
@@ -175420,11 +175420,11 @@
               "val": 0,
               "pts": 0
             },
-            "pts": 1
+            "pts": 0
           },
           {
             "nom": "MORTON",
-            "statut": "r",
+            "statut": "",
             "cap": "",
             "tj": "84",
             "tj_pts": 3,
@@ -175464,7 +175464,7 @@
               "val": 0,
               "pts": 0
             },
-            "pts": 0
+            "pts": 3
           },
           {
             "nom": "DIOP",
@@ -175828,7 +175828,7 @@
           },
           {
             "nom": "ZABARNYI",
-            "statut": "A",
+            "statut": "r",
             "cap": "",
             "tj": "0",
             "tj_pts": 0,
@@ -175962,7 +175962,7 @@
           },
           {
             "nom": "THOMASSON",
-            "statut": "r",
+            "statut": "",
             "cap": "",
             "tj": "M",
             "tj_pts": 4,
@@ -176002,7 +176002,7 @@
               "val": 0,
               "pts": 0
             },
-            "pts": 0
+            "pts": 5
           },
           {
             "nom": "VITINHA",
@@ -176184,7 +176184,7 @@
           },
           {
             "nom": "SAINT MAXIMAIN",
-            "statut": "r",
+            "statut": "",
             "cap": "",
             "tj": "M",
             "tj_pts": 4,
@@ -176224,11 +176224,11 @@
               "val": 0,
               "pts": 0
             },
-            "pts": 0
+            "pts": 6
           },
           {
             "nom": "WAHI",
-            "statut": "A",
+            "statut": "r",
             "cap": "",
             "tj": "0",
             "tj_pts": 0,
@@ -177170,10 +177170,10 @@
         "M": [
           {
             "nom": "GOLOVIN",
-            "statut": "",
+            "statut": "r",
             "cap": "",
-            "tj": "74",
-            "tj_pts": 3,
+            "tj": "0",
+            "tj_pts": 0,
             "bm": {
               "val": 0,
               "pts": 0
@@ -177210,7 +177210,7 @@
               "val": 0,
               "pts": 0
             },
-            "pts": 3
+            "pts": 0
           },
           {
             "nom": "PAPE DEMBA",
@@ -177392,7 +177392,7 @@
         "A": [
           {
             "nom": "DEMBELE",
-            "statut": "r",
+            "statut": "A",
             "cap": "",
             "tj": "0",
             "tj_pts": 0,
@@ -179628,10 +179628,10 @@
           },
           {
             "nom": "MBOW",
-            "statut": "",
+            "statut": "r",
             "cap": "",
-            "tj": "M",
-            "tj_pts": 4,
+            "tj": "0",
+            "tj_pts": 0,
             "bm": {
               "val": 0,
               "pts": 0
@@ -179645,8 +179645,8 @@
               "pts": 0
             },
             "cs": {
-              "val": 1,
-              "pts": 1
+              "val": 0,
+              "pts": 0
             },
             "pm": {
               "val": 0,
@@ -179661,14 +179661,14 @@
               "pts": 0
             },
             "cj": {
-              "val": 1,
-              "pts": -1
+              "val": 0,
+              "pts": 0
             },
             "cr": {
               "val": 0,
               "pts": 0
             },
-            "pts": 4
+            "pts": 0
           }
         ],
         "M": [
@@ -179896,7 +179896,7 @@
         "A": [
           {
             "nom": "THAUVIN",
-            "statut": "r",
+            "statut": "",
             "cap": "",
             "tj": "86",
             "tj_pts": 3,
@@ -179936,7 +179936,7 @@
               "val": 0,
               "pts": 0
             },
-            "pts": 0
+            "pts": 2
           },
           {
             "nom": "ENDRICK",
@@ -192194,15 +192194,15 @@
       },
       {
         "j": 32,
-        "pts": 1377
+        "pts": 1375
       },
       {
         "j": 33,
-        "pts": 1422
+        "pts": 1420
       },
       {
         "j": 34,
-        "pts": 1455
+        "pts": 1453
       }
     ],
     "FAB": [
@@ -192608,15 +192608,15 @@
       },
       {
         "j": 32,
-        "pts": 1340
+        "pts": 1337
       },
       {
         "j": 33,
-        "pts": 1375
+        "pts": 1372
       },
       {
         "j": 34,
-        "pts": 1396
+        "pts": 1393
       }
     ],
     "JEROME": [
@@ -192746,15 +192746,15 @@
       },
       {
         "j": 32,
-        "pts": 1334
+        "pts": 1345
       },
       {
         "j": 33,
-        "pts": 1366
+        "pts": 1377
       },
       {
         "j": 34,
-        "pts": 1395
+        "pts": 1406
       }
     ],
     "ROMU": [
@@ -192884,15 +192884,15 @@
       },
       {
         "j": 32,
-        "pts": 1289
+        "pts": 1291
       },
       {
         "j": 33,
-        "pts": 1324
+        "pts": 1326
       },
       {
         "j": 34,
-        "pts": 1365
+        "pts": 1367
       }
     ],
     "VINCENT": [
