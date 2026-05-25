@@ -3,7 +3,7 @@
     {
       "rang": 1,
       "nom": "FLORIAN",
-      "pts": 1492
+      "pts": 1493
     },
     {
       "rang": 2,
@@ -52,7 +52,7 @@
     "JEROME": 32,
     "VINCENT": 41,
     "ADRIEN": 34,
-    "FLORIAN": 41,
+    "FLORIAN": 42,
     "FAB": 33,
     "ANTHONY": 25,
     "BASTIEN": 41,
@@ -405,7 +405,7 @@
       "JEROME": 32,
       "VINCENT": 41,
       "ADRIEN": 34,
-      "FLORIAN": 41,
+      "FLORIAN": 42,
       "FAB": 33,
       "ANTHONY": 25,
       "BASTIEN": 41,
@@ -177662,7 +177662,7 @@
           },
           {
             "nom": "CHARDONNET",
-            "statut": "r",
+            "statut": "",
             "cap": "",
             "tj": "M",
             "tj_pts": 4,
@@ -177702,7 +177702,7 @@
               "val": 0,
               "pts": 0
             },
-            "pts": 0
+            "pts": 2
           },
           {
             "nom": "MERLIN",
@@ -177886,8 +177886,8 @@
             "nom": "SANGARE",
             "statut": "r",
             "cap": "",
-            "tj": "M",
-            "tj_pts": 4,
+            "tj": "0",
+            "tj_pts": 0,
             "bm": {
               "val": 0,
               "pts": 0
@@ -178018,10 +178018,10 @@
         "A": [
           {
             "nom": "H.DIALLO",
-            "statut": "",
+            "statut": "r",
             "cap": "",
-            "tj": "9",
-            "tj_pts": 1,
+            "tj": "0",
+            "tj_pts": 0,
             "bm": {
               "val": 0,
               "pts": 0
@@ -178058,7 +178058,7 @@
               "val": 0,
               "pts": 0
             },
-            "pts": 1
+            "pts": 0
           },
           {
             "nom": "GREENWOOD",
@@ -192056,15 +192056,15 @@
       },
       {
         "j": 32,
-        "pts": 1412
+        "pts": 1413
       },
       {
         "j": 33,
-        "pts": 1456
+        "pts": 1457
       },
       {
         "j": 34,
-        "pts": 1492
+        "pts": 1493
       }
     ],
     "BASTIEN": [
