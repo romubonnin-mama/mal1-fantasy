@@ -335,7 +335,8 @@ async function init() {
     api('GET', '/data'),
     api('GET', '/clubs'),
   ]);
-  currentJournee = document.getElementById('journeeInput').value;
+  currentJournee = DATA.derniere_journee || 1;
+  document.getElementById('journeeInput').value = currentJournee;
   await loadJournee();
 }
 
@@ -818,12 +819,21 @@ function renderStats() {
     const titus  = new Set(lineup.titulaires || []);
     const mStats = MANUAL_STATS[manager] || {};
 
+    let managerTotal = 0;
+    for (const p of POSTE_ORDER) {
+      for (const nom of (ROSTER[manager][p] || [])) {
+        const pts = _calcPts(manager, nom);
+        if (pts !== null) managerTotal += pts;
+      }
+    }
+
     const wrap = document.createElement('div');
     wrap.className = 'stats-manager';
     wrap.innerHTML = `
       <div class="stats-manager-header">
         ${manager}
         <span style="color:var(--muted);font-size:12px;font-weight:400">${titus.size}/11 titulaires</span>
+        <span id="total-pts-${manager}" style="font-size:15px;font-weight:700;color:var(--accent);margin-left:auto">${managerTotal} pts</span>
       </div>
       <div class="stats-table-wrap">
         <table class="stats-tbl">
@@ -988,6 +998,20 @@ function updatePtsCell(manager, nom) {
   if (!el) return;
   const pts = _calcPts(manager, nom);
   el.innerHTML = pts !== null ? `<strong>${pts}</strong>` : '—';
+  updateManagerTotal(manager);
+}
+
+function updateManagerTotal(manager) {
+  const el = document.getElementById(`total-pts-${manager}`);
+  if (!el) return;
+  let total = 0;
+  for (const p of POSTE_ORDER) {
+    for (const nom of (ROSTER[manager][p] || [])) {
+      const pts = _calcPts(manager, nom);
+      if (pts !== null) total += pts;
+    }
+  }
+  el.textContent = total + ' pts';
 }
 
 function _setStatVal(m, n, f, val) {
