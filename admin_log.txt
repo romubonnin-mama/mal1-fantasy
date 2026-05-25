@@ -41,3 +41,20 @@ PermissionError: [Errno 13] Permission denied: 'C:\\Users\\boro7\\OneDrive\\Docu
 [img] feuille cible '34': sheetData patche
   127.0.0.1 "POST /api/compute/34 HTTP/1.1" 200 -
   127.0.0.1 "GET /api/data HTTP/1.1" 200 -
+To https://github.com/romubonnin-mama/mal1-fantasy.git
+   6093826..6ed6d9e  main -> main
+  127.0.0.1 "POST /api/push HTTP/1.1" 200 -
+To https://github.com/romubonnin-mama/mal1-fantasy.git
+   6ed6d9e..c7f5663  main -> main
+  127.0.0.1 "POST /api/push HTTP/1.1" 200 -
+  127.0.0.1 "GET /api/lineups/3 HTTP/1.1" 200 -
+  127.0.0.1 "GET /api/corrections/3 HTTP/1.1" 200 -
+  127.0.0.1 "GET /api/manual-stats/3 HTTP/1.1" 200 -
+  127.0.0.1 "POST /api/manual-stats/3 HTTP/1.1" 200 -
+  127.0.0.1 "POST /api/manual-stats/3 HTTP/1.1" 200 -
+  127.0.0.1 "POST /api/compute/3 HTTP/1.1" 500 -
+  127.0.0.1 "POST /api/manual-stats/3 HTTP/1.1" 200 -
+  127.0.0.1 "POST /api/compute/3 HTTP/1.1" 500 -
+  127.0.0.1 "GET /api/lineups/34 HTTP/1.1" 200 -
+  127.0.0.1 "GET /api/corrections/34 HTTP/1.1" 200 -
+  127.0.0.1 "GET /api/manual-stats/34 HTTP/1.1" 200 -
