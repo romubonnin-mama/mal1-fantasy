@@ -227,7 +227,7 @@ def main():
     )
     print(f"Derniere journee detectee : J{derniere_j}")
 
-    joueurs_noms = [j["nom"] for j in classement]
+    joueurs_noms = list(JOUEURS_CONFIG.keys())
     evolution    = {nom: [] for nom in joueurs_noms}
     cumul        = {nom: 0  for nom in joueurs_noms}
     for j in range(1, derniere_j + 1):
