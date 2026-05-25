@@ -118,6 +118,8 @@ def lire_joueur(ws, col, row, ancien=False, poste="M"):
         tj = "M"
     elif tj_entree and tj_sortie and tj_entree != tj_sortie:
         tj = f"{tj_entree}-{tj_sortie}"
+    elif tj_entree and not tj_sortie:
+        tj = f"{tj_entree}-90"
     elif tj_sortie:
         tj = str(tj_sortie)
     else:
