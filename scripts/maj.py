@@ -250,8 +250,15 @@ def main():
         score_max_val = score_min_val = None
         score_max_nom = score_min_nom = "—"
 
+    classement_computed = sorted(
+        [{"rang": 0, "nom": n, "pts": cumul[n]} for n in joueurs_noms],
+        key=lambda x: -x["pts"],
+    )
+    for i, entry in enumerate(classement_computed):
+        entry["rang"] = i + 1
+
     data = {
-        "classement":      classement,
+        "classement":      classement_computed,
         "derniere_journee": derniere_j,
         "scores_journee":  historique[str(derniere_j)],
         "historique":      historique,
