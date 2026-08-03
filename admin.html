@@ -1489,8 +1489,8 @@ function esc(s) {
 
 // ── Clubs ─────────────────────────────────────────────────
 const DEFAULT_CLUBS = ['PSG','OM','Monaco','OL','LOSC','Nice','Lens','Rennes',
-  'Strasbourg','Montpellier','Reims','Auxerre','Le Havre','Toulouse','Nantes',
-  'Saint-Etienne','Angers','Brest'];
+  'Strasbourg','Lorient','Paris FC','Auxerre','Le Havre','Toulouse','Troyes',
+  'Le Mans','Angers','Brest'];
 let encClubs = [];
 
 async function loadClubsList() {
@@ -1632,6 +1632,8 @@ const CLUB_IDS_A = {
   'METZ':112,'FC METZ':112,
   'LORIENT':97,'FCL':97,'FC LORIENT':97,
   'PFC':114,'PARIS FC':114,
+  'TROYES':110,'ESTAC':110,'ESTAC TROYES':110,
+  'LE MANS':1298,'LMFC':1298,'LE MANS FC':1298,
 };
 function attrLogoHtml(club) {
   const id = CLUB_IDS_A[(club||'').toUpperCase().trim()];

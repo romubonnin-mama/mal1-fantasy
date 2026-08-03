@@ -11,7 +11,7 @@ from maj import (
 
 import openpyxl
 
-MANAGERS = ["BASTIEN", "FAB", "ADRIEN", "VINCENT", "ANTHONY"]
+MANAGERS = ["BASTIEN", "FAB", "ADRIEN", "ANTHONY", "MICKA"]
 
 DATA_JSON = os.path.join(os.path.dirname(__file__), "..", "data.json")
 EXCEL_PATH_LOCAL = EXCEL_PATH

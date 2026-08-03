@@ -19,7 +19,7 @@ from openpyxl.utils import get_column_letter
 
 BASE_DIR = Path(__file__).parent.parent
 DATA_DIR = BASE_DIR / "data"
-EXCEL_PATH = Path(r"C:\Users\boro7\OneDrive\Documents\Draft Club\Saison 2025-2026.xlsm")
+EXCEL_PATH = Path(r"C:\Users\boro7\OneDrive\Documents\Draft Club\Saison 2026-2027.xlsm")
 
 # Position de chaque manager dans la grille (groupe, colonne)
 # Groupe 0 = lignes 2-40, groupe 1 = lignes 42-80, groupe 2 = lignes 82-120
@@ -27,7 +27,7 @@ EXCEL_PATH = Path(r"C:\Users\boro7\OneDrive\Documents\Draft Club\Saison 2025-202
 MANAGER_GRID = {
     (0, 0): "ROMU",    (0, 1): "ADRIEN",  (0, 2): "ANTHONY",
     (1, 0): "JEROME",  (1, 1): "FLORIAN", (1, 2): "BASTIEN",
-    (2, 0): "VINCENT", (2, 1): "FAB",     (2, 2): "MICKA",
+    (2, 0): "FAB",     (2, 1): "MICKA",
 }
 MANAGER_TO_GRID = {v: k for k, v in MANAGER_GRID.items()}
 

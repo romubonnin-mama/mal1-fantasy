@@ -8,30 +8,28 @@ except ImportError:
     subprocess.check_call([sys.executable, "-m", "pip", "install", "openpyxl"])
     import openpyxl
 
-EXCEL_PATH = r"C:\Users\boro7\OneDrive\Documents\Draft Club\Saison 2025-2026.xlsm"
+EXCEL_PATH = r"C:\Users\boro7\OneDrive\Documents\Draft Club\Saison 2026-2027.xlsm"
 
 JOUEURS_CONFIG = {
     "ROMU":    {"col": 3,  "ligne": 4},
     "JEROME":  {"col": 3,  "ligne": 44},
-    "VINCENT": {"col": 3,  "ligne": 84},
+    "FAB":     {"col": 3,  "ligne": 84},
     "ADRIEN":  {"col": 22, "ligne": 4},
     "FLORIAN": {"col": 22, "ligne": 44},
-    "FAB":     {"col": 22, "ligne": 84},
+    "MICKA":   {"col": 22, "ligne": 84},
     "ANTHONY": {"col": 41, "ligne": 4},
     "BASTIEN": {"col": 41, "ligne": 44},
-    "MICKA":   {"col": 41, "ligne": 84},
 }
 
 JOUEURS_CONFIG_ANCIEN = {
     "ROMU":    {"col": 3,  "ligne": 4},
     "JEROME":  {"col": 3,  "ligne": 44},
-    "VINCENT": {"col": 3,  "ligne": 84},
+    "FAB":     {"col": 3,  "ligne": 84},
     "ADRIEN":  {"col": 21, "ligne": 4},
     "FLORIAN": {"col": 21, "ligne": 44},
-    "FAB":     {"col": 21, "ligne": 84},
+    "MICKA":   {"col": 21, "ligne": 84},
     "ANTHONY": {"col": 39, "ligne": 4},
     "BASTIEN": {"col": 39, "ligne": 44},
-    "MICKA":   {"col": 39, "ligne": 84},
 }
 
 # Baremes de scoring
