@@ -1,0 +1,29 @@
+{
+  "phase": "poule",
+  "participants": ["ROMU", "ADRIEN", "ANTHONY", "JEROME", "FLORIAN", "BASTIEN", "FAB", "MICKA"],
+  "calendrier_poule": {
+    "4": [],
+    "6": [],
+    "8": [],
+    "10": [],
+    "12": [],
+    "14": [],
+    "15": []
+  },
+  "report_overrides": {},
+  "resultats_poule": {},
+  "classement_poule": [],
+  "bracket": {
+    "quarts": {
+      "A": {"paire": [null, null], "aller": {"j": 23, "pts_a": null, "pts_b": null}, "retour": {"j": 26, "pts_a": null, "pts_b": null}, "vainqueur": null},
+      "B": {"paire": [null, null], "aller": {"j": 23, "pts_a": null, "pts_b": null}, "retour": {"j": 26, "pts_a": null, "pts_b": null}, "vainqueur": null},
+      "C": {"paire": [null, null], "aller": {"j": 23, "pts_a": null, "pts_b": null}, "retour": {"j": 26, "pts_a": null, "pts_b": null}, "vainqueur": null},
+      "D": {"paire": [null, null], "aller": {"j": 23, "pts_a": null, "pts_b": null}, "retour": {"j": 26, "pts_a": null, "pts_b": null}, "vainqueur": null}
+    },
+    "demies": {
+      "1": {"paire": [null, null], "aller": {"j": 29, "pts_a": null, "pts_b": null}, "retour": {"j": 32, "pts_a": null, "pts_b": null}, "vainqueur": null},
+      "2": {"paire": [null, null], "aller": {"j": 29, "pts_a": null, "pts_b": null}, "retour": {"j": 32, "pts_a": null, "pts_b": null}, "vainqueur": null}
+    },
+    "finale": {"paire": [null, null], "j": 34, "pts_a": null, "pts_b": null, "vainqueur": null}
+  }
+}

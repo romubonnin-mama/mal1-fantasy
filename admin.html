@@ -214,6 +214,7 @@ header h1 { font-size: 18px; font-weight: 700; color: var(--accent); }
   <div class="tab"        data-tab="corrections"  onclick="showTab('corrections')">Corrections</div>
   <div class="tab"        data-tab="roster"       onclick="showTab('roster')">Effectifs (Jokers)</div>
   <div class="tab"        data-tab="enchere"      onclick="showTab('enchere')">🏷️ Enchères</div>
+  <div class="tab"        data-tab="cl"           onclick="showTab('cl')">🏆 Champions League</div>
 </div>
 
 <div id="toast"></div>
@@ -270,6 +271,76 @@ header h1 { font-size: 18px; font-weight: 700; color: var(--accent); }
   </div>
 </div>
 
+<!-- ── CHAMPIONS LEAGUE ── -->
+<div id="section-cl" class="section">
+  <div class="container">
+    <p style="color:var(--muted);margin-bottom:16px;font-size:13px">
+      Compétition parallèle au championnat (mêmes compositions, sans bonus capitaine). Phase actuelle :
+      <strong id="cl-phase-lbl" style="color:var(--accent)">—</strong>
+    </p>
+
+    <!-- Calendrier phase de poule -->
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:16px">
+      <div style="padding:10px 16px;background:var(--surface2);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between">
+        <div style="font-weight:700;font-size:13px">Calendrier phase de poule (tirage au sort)</div>
+        <button class="btn btn-primary" style="font-size:12px;padding:5px 12px" onclick="saveCLCalendrier()">💾 Sauvegarder le calendrier</button>
+      </div>
+      <div id="cl-calendrier" style="padding:14px 16px;display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px"></div>
+    </div>
+
+    <!-- Calcul d'une journée CL -->
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:16px">
+      <div style="padding:10px 16px;background:var(--surface2);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+        <div style="font-weight:700;font-size:13px">Calcul d'une journée CL</div>
+        <select id="cl-journee-select" style="background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:6px 10px;border-radius:6px;font-size:12px">
+          <option value="4">J4 (poule 1/7)</option>
+          <option value="6">J6 (poule 2/7)</option>
+          <option value="8">J8 (poule 3/7)</option>
+          <option value="10">J10 (poule 4/7)</option>
+          <option value="12">J12 (poule 5/7)</option>
+          <option value="14">J14 (poule 6/7)</option>
+          <option value="15">J15 (poule 7/7)</option>
+          <option value="23">J23 (quarts aller)</option>
+          <option value="26">J26 (quarts retour)</option>
+          <option value="29">J29 (demies aller)</option>
+          <option value="32">J32 (demies retour)</option>
+          <option value="34">J34 (finale)</option>
+        </select>
+        <button class="btn btn-subtle" style="font-size:12px;padding:5px 12px" onclick="loadCLJournee()">Charger</button>
+        <span style="margin-left:auto;font-size:11px;color:var(--muted)">Coche un joueur si son match L1 a été reporté (substitution par sa moyenne de points)</span>
+      </div>
+      <div style="padding:14px 16px">
+        <div id="cl-matchs"></div>
+        <div style="display:flex;gap:10px;margin-top:6px">
+          <button class="btn btn-subtle" style="font-size:12px;padding:6px 14px" onclick="saveCLReports()">💾 Sauvegarder les reports</button>
+          <button class="btn btn-primary" style="font-size:12px;padding:6px 14px" onclick="computeCL()">⚡ Calculer CL J<span id="cl-calc-lbl">—</span></button>
+        </div>
+        <div id="cl-calc-result" style="margin-top:10px"></div>
+      </div>
+    </div>
+
+    <!-- Classement phase de poule -->
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:16px">
+      <div style="padding:10px 16px;background:var(--surface2);border-bottom:1px solid var(--border);font-weight:700;font-size:13px">Classement phase de poule</div>
+      <div style="padding:14px 16px;overflow-x:auto">
+        <table class="classement-table">
+          <thead><tr>
+            <th>Rang</th><th>Participant</th><th>Pts</th><th>V</th><th>N</th><th>D</th>
+            <th>Diff H2H</th><th>Buts</th><th>Passes</th><th>CS</th><th>CR</th><th>CJ</th>
+          </tr></thead>
+          <tbody id="cl-classement-body"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Phase finale -->
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden">
+      <div style="padding:10px 16px;background:var(--surface2);border-bottom:1px solid var(--border);font-weight:700;font-size:13px">Tableau de la phase finale</div>
+      <div id="cl-bracket" style="padding:14px 16px"></div>
+    </div>
+  </div>
+</div>
+
 
 <!-- ── STATS MANUELLES ── -->
 <div id="section-stats" class="section">
@@ -290,7 +361,7 @@ header h1 { font-size: 18px; font-weight: 700; color: var(--accent); }
 
 <script>
 const API = 'http://localhost:8765/api';
-let ROSTER = {}, LINEUPS = {}, CORRECTIONS = {}, DATA = {}, MANUAL_STATS = {}, CLUBS = {}, PREV_LINEUPS = {};
+let ROSTER = {}, LINEUPS = {}, CORRECTIONS = {}, DATA = {}, MANUAL_STATS = {}, CLUBS = {}, PREV_LINEUPS = {}, CL_DATA = {};
 
 function getLogoUrl(nom) {
   const id = CLUBS[nom.trim().toUpperCase()];
@@ -326,6 +397,7 @@ function showTab(name) {
   if (name === 'corrections') renderCorrections();
   if (name === 'roster') renderRoster();
   if (name === 'stats') renderStats();
+  if (name === 'cl') renderCL();
 }
 
 // ─── Chargement ───────────────────────────────────────────────────────────────
@@ -1159,6 +1231,213 @@ async function pushGithub() {
   } finally {
     btn.disabled = false; btn.textContent = orig;
   }
+}
+
+// ─── Champions League ──────────────────────────────────────────────────────────
+
+const CL_POULE_JOURNEES = [4, 6, 8, 10, 12, 14, 15];
+let clCurrentJournee = null;
+
+async function renderCL() {
+  CL_DATA = await api('GET', '/champions-league');
+  document.getElementById('cl-phase-lbl').textContent = CL_DATA.phase || '—';
+  renderCLCalendrier();
+  renderCLClassement();
+  renderCLBracket();
+}
+
+function renderCLCalendrier() {
+  const box = document.getElementById('cl-calendrier');
+  const managers = Object.keys(ROSTER);
+  box.innerHTML = CL_POULE_JOURNEES.map(j => {
+    const pairs = (CL_DATA.calendrier_poule && CL_DATA.calendrier_poule[j]) || [];
+    const rows = [0, 1, 2, 3].map(i => {
+      const pair = pairs[i] || [null, null];
+      const optsFor = (side) => `<option value="">—</option>` + managers.map(m =>
+        `<option value="${esc(m)}" ${pair[side] === m ? 'selected' : ''}>${esc(m)}</option>`).join('');
+      return `<div style="display:flex;gap:6px;align-items:center;margin-bottom:6px">
+        <select class="cl-pair-select" data-j="${j}" data-i="${i}" data-side="0"
+          style="flex:1;background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:5px 6px;border-radius:6px;font-size:11px">
+          ${optsFor(0)}
+        </select>
+        <span style="color:var(--muted);font-size:10px">vs</span>
+        <select class="cl-pair-select" data-j="${j}" data-i="${i}" data-side="1"
+          style="flex:1;background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:5px 6px;border-radius:6px;font-size:11px">
+          ${optsFor(1)}
+        </select>
+      </div>`;
+    }).join('');
+    return `<div style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:10px 12px">
+      <div style="font-weight:700;font-size:13px;margin-bottom:8px">J${j}</div>
+      ${rows}
+    </div>`;
+  }).join('');
+}
+
+async function saveCLCalendrier() {
+  const calendrier = {};
+  for (const j of CL_POULE_JOURNEES) {
+    const pairs = [0, 1, 2, 3].map(i => {
+      const a = document.querySelector(`.cl-pair-select[data-j="${j}"][data-i="${i}"][data-side="0"]`).value;
+      const b = document.querySelector(`.cl-pair-select[data-j="${j}"][data-i="${i}"][data-side="1"]`).value;
+      return [a || null, b || null];
+    });
+    const filled = pairs.filter(([a, b]) => a && b);
+    if (filled.length > 0 && filled.length < 4) {
+      toast(`J${j} : renseigne les 4 paires ou aucune`, 'err');
+      return;
+    }
+    if (filled.length === 4) {
+      const noms = filled.flat();
+      if (new Set(noms).size !== 8) {
+        toast(`J${j} : chaque participant doit apparaître exactement une fois`, 'err');
+        return;
+      }
+    }
+    calendrier[j] = filled;
+  }
+  CL_DATA.calendrier_poule = calendrier;
+  await api('POST', '/champions-league', CL_DATA);
+  toast('Calendrier de poule sauvegardé', 'ok');
+}
+
+function findCLBracketMatch(j) {
+  const b = CL_DATA.bracket;
+  for (const [k, m] of Object.entries(b.quarts)) {
+    if (m.aller.j === j) return { round: 'quarts', id: k, leg: 'aller', match: m };
+    if (m.retour.j === j) return { round: 'quarts', id: k, leg: 'retour', match: m };
+  }
+  for (const [k, m] of Object.entries(b.demies)) {
+    if (m.aller.j === j) return { round: 'demies', id: k, leg: 'aller', match: m };
+    if (m.retour.j === j) return { round: 'demies', id: k, leg: 'retour', match: m };
+  }
+  if (b.finale.j === j) return { round: 'finale', id: null, leg: null, match: b.finale };
+  return null;
+}
+
+async function loadCLJournee() {
+  const j = parseInt(document.getElementById('cl-journee-select').value);
+  clCurrentJournee = j;
+  let pairs = [];
+
+  if (CL_POULE_JOURNEES.includes(j)) {
+    pairs = ((CL_DATA.calendrier_poule && CL_DATA.calendrier_poule[j]) || []).filter(p => p[0] && p[1]);
+    if (!pairs.length) { toast(`Calendrier de poule non renseigné pour J${j}`, 'err'); return; }
+  } else {
+    const found = findCLBracketMatch(j);
+    if (!found) { toast(`Aucun match de phase finale programmé pour J${j}`, 'err'); return; }
+    const [a, b] = found.match.paire;
+    if (!a || !b) { toast(`Paire pas encore déterminée pour J${j} (tour précédent pas terminé)`, 'err'); return; }
+    pairs = [[a, b]];
+  }
+
+  const lineups = await api('GET', `/lineups/${j}`);
+  const reportSet = new Set((CL_DATA.report_overrides && CL_DATA.report_overrides[j]) || []);
+
+  const box = document.getElementById('cl-matchs');
+  box.innerHTML = pairs.map(([a, b]) => {
+    const titusA = (lineups[a] && lineups[a].titulaires) || [];
+    const titusB = (lineups[b] && lineups[b].titulaires) || [];
+    const rowsFor = (titus) => titus.map(nom => `
+      <label style="display:flex;align-items:center;gap:6px;font-size:12px;padding:2px 0">
+        <input type="checkbox" class="cl-report-chk" value="${esc(nom)}" ${reportSet.has(nom) ? 'checked' : ''}>
+        ${esc(nom)}
+      </label>`).join('') || '<div style="font-size:11px;color:var(--muted)">Aucun titulaire trouvé</div>';
+    return `<div style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:10px 12px;margin-bottom:10px">
+      <div style="font-weight:700;font-size:13px;margin-bottom:8px">${esc(a)} vs ${esc(b)}</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div><div style="font-size:11px;color:var(--muted);margin-bottom:4px">${esc(a)}</div>${rowsFor(titusA)}</div>
+        <div><div style="font-size:11px;color:var(--muted);margin-bottom:4px">${esc(b)}</div>${rowsFor(titusB)}</div>
+      </div>
+    </div>`;
+  }).join('');
+  document.getElementById('cl-calc-lbl').textContent = j;
+  document.getElementById('cl-calc-result').innerHTML = '';
+}
+
+async function saveCLReports() {
+  if (clCurrentJournee == null) { toast('Charge une journée CL d\'abord', 'err'); return; }
+  const checked = [...document.querySelectorAll('.cl-report-chk:checked')].map(c => c.value);
+  if (!CL_DATA.report_overrides) CL_DATA.report_overrides = {};
+  CL_DATA.report_overrides[clCurrentJournee] = checked;
+  await api('POST', '/champions-league', CL_DATA);
+  toast(`Reports sauvegardés pour J${clCurrentJournee}`, 'ok');
+}
+
+async function computeCL() {
+  if (clCurrentJournee == null) { toast('Choisis et charge une journée CL', 'err'); return; }
+  try {
+    const result = await api('POST', `/compute-cl/${clCurrentJournee}`, {});
+    CL_DATA = await api('GET', '/champions-league');
+    document.getElementById('cl-phase-lbl').textContent = CL_DATA.phase || '—';
+    renderCLClassement();
+    renderCLBracket();
+
+    const box = document.getElementById('cl-calc-result');
+    if (result.matches) {
+      box.innerHTML = result.matches.map(m =>
+        `<div style="font-size:12px;padding:3px 0">${esc(m.a)} ${m.pts_a} — ${m.pts_b} ${esc(m.b)}${m.vainqueur ? ` → <strong style="color:var(--accent)">${esc(m.vainqueur)}</strong>` : ' (nul)'}</div>`
+      ).join('');
+    } else {
+      box.innerHTML = `<div style="font-size:12px">${esc(result.round)}${result.leg ? ' (' + esc(result.leg) + ')' : ''} : ${result.pts_a} — ${result.pts_b}${result.vainqueur ? ` → <strong style="color:var(--accent)">${esc(result.vainqueur)}</strong>` : (result.round === 'finale' || result.leg === 'retour' ? ' (égalité totale — à départager manuellement)' : '')}</div>`;
+    }
+    toast('Journée CL calculée', 'ok');
+  } catch (e) {
+    toast('Erreur calcul CL : ' + e.message, 'err');
+  }
+}
+
+function renderCLClassement() {
+  const body = document.getElementById('cl-classement-body');
+  const rows = CL_DATA.classement_poule || [];
+  if (!rows.length) {
+    body.innerHTML = '<tr><td colspan="12" style="color:var(--muted);font-size:12px;padding:8px">Pas encore de journée de poule calculée.</td></tr>';
+    return;
+  }
+  body.innerHTML = rows.map((r, i) => `
+    <tr>
+      <td>${i + 1}</td><td>${esc(r.nom)}</td><td><strong>${r.pts}</strong></td>
+      <td>${r.v}</td><td>${r.n}</td><td>${r.d}</td>
+      <td>${r.diff_h2h > 0 ? '+' : ''}${r.diff_h2h}</td>
+      <td>${r.bm}</td><td>${r.pd}</td><td>${r.cs}</td><td>${r.cr}</td><td>${r.cj}</td>
+    </tr>`).join('');
+}
+
+function clLegLine(m) {
+  if (m.aller) {
+    const a = m.aller.pts_a !== null ? `${m.aller.pts_a}-${m.aller.pts_b}` : '—';
+    const r = m.retour.pts_a !== null ? `${m.retour.pts_a}-${m.retour.pts_b}` : '—';
+    return `Aller (J${m.aller.j}) : ${a} · Retour (J${m.retour.j}) : ${r}`;
+  }
+  const s = m.pts_a !== null ? `${m.pts_a}-${m.pts_b}` : '—';
+  return `Finale (J${m.j}) : ${s}`;
+}
+
+function clMatchCard(label, m) {
+  const [a, b] = m.paire;
+  return `<div style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:8px 10px;margin-bottom:8px;font-size:12px">
+    <div style="font-weight:700">${label} : ${a ? esc(a) : '?'} vs ${b ? esc(b) : '?'}</div>
+    <div style="color:var(--muted)">${clLegLine(m)}</div>
+    ${m.vainqueur ? `<div style="color:var(--accent);font-weight:700">→ ${esc(m.vainqueur)}</div>` : ''}
+  </div>`;
+}
+
+function renderCLBracket() {
+  const box = document.getElementById('cl-bracket');
+  const b = CL_DATA.bracket;
+  if (!b || CL_DATA.phase === 'poule') {
+    box.innerHTML = '<div style="color:var(--muted);font-size:12px">Phase finale pas encore lancée (poule en cours).</div>';
+    return;
+  }
+  box.innerHTML = `
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px">
+      <div><div style="font-weight:700;font-size:12px;margin-bottom:6px;color:var(--muted)">QUARTS</div>
+        ${Object.entries(b.quarts).map(([k, m]) => clMatchCard('QF ' + k, m)).join('')}</div>
+      <div><div style="font-weight:700;font-size:12px;margin-bottom:6px;color:var(--muted)">DEMIES</div>
+        ${Object.entries(b.demies).map(([k, m]) => clMatchCard('SF ' + k, m)).join('')}</div>
+      <div><div style="font-weight:700;font-size:12px;margin-bottom:6px;color:var(--muted)">FINALE</div>
+        ${clMatchCard('Finale', b.finale)}</div>
+    </div>`;
 }
 
 // ─── Init ─────────────────────────────────────────────────────────────────────

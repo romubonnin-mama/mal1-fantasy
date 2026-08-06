@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Champions League — Ma L1</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=Barlow+Condensed:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0c10; --surface: #111318; --surface2: #181c24;
+    --border: rgba(255,255,255,0.06); --accent: #00e5a0; --accent2: #ff6b35;
+    --gold: #f5c842; --silver: #b0b8c8; --bronze: #cd7f3a;
+    --text: #e8eaf0; --muted: #6b7280; --danger: #ff4455;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; min-height: 100vh; }
+  header { position: sticky; top: 0; z-index: 100; background: rgba(10,12,16,0.92); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); padding: 0 16px; display: flex; align-items: center; justify-content: space-between; height: 60px; gap: 12px; flex-wrap: wrap; }
+  .logo { font-family: 'Bebas Neue', sans-serif; font-size: 24px; letter-spacing: 3px; color: var(--text); display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+  .logo span { color: var(--accent); }
+  .logo-badge { background: var(--accent); color: #000; font-size: 9px; font-weight: 600; padding: 2px 6px; border-radius: 3px; }
+  .nav-tabs { display: flex; gap: 4px; flex-shrink: 0; }
+  .nav-tab { color: var(--muted); font-size: 12px; font-weight: 600; padding: 6px 10px; border-radius: 6px; cursor: pointer; transition: all 0.2s; border: none; background: none; text-decoration: none; display: inline-flex; align-items: center; }
+  .nav-tab:hover { color: var(--text); background: var(--surface2); }
+  .nav-tab.active { color: var(--accent); background: var(--surface2); }
+  .nav-dropdown { position: relative; }
+  .nav-dropdown-menu { display: none; position: absolute; top: calc(100% + 8px); right: 0; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 6px; min-width: 150px; z-index: 200; box-shadow: 0 8px 24px rgba(0,0,0,0.5); }
+  .nav-dropdown.open .nav-dropdown-menu { display: block; }
+  .nav-dropdown-menu a { display: block; padding: 8px 12px; color: var(--muted); font-size: 12px; font-weight: 600; border-radius: 6px; text-decoration: none; transition: all 0.15s; }
+  .nav-dropdown-menu a:hover { color: var(--text); background: var(--surface2); }
+  .container { max-width: 1200px; margin: 0 auto; padding: 24px 16px; }
+  .hero { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 24px; margin-bottom: 20px; position: relative; overflow: hidden; }
+  .hero::before { content: ''; position: absolute; top: -60px; right: -60px; width: 200px; height: 200px; background: radial-gradient(circle, rgba(0,229,160,0.08) 0%, transparent 70%); pointer-events: none; }
+  .hero h1 { font-family: 'Bebas Neue', sans-serif; font-size: 36px; letter-spacing: 2px; line-height: 1; margin-bottom: 4px; }
+  .hero h1 em { color: var(--accent); font-style: normal; }
+  .hero p { color: var(--muted); font-size: 12px; }
+  .phase-badge { display: inline-block; margin-top: 12px; background: var(--surface2); border: 1px solid var(--border); padding: 6px 14px; border-radius: 8px; font-size: 12px; font-weight: 600; color: var(--accent); }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; margin-bottom: 16px; }
+  .card-header { padding: 14px 18px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+  .card-title { font-family: 'Barlow Condensed', sans-serif; font-size: 14px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); display: flex; align-items: center; gap: 8px; }
+  .card-title::before { content: ''; display: block; width: 3px; height: 14px; background: var(--accent); border-radius: 2px; }
+  .tag { font-size: 10px; font-weight: 600; padding: 3px 8px; border-radius: 4px; background: rgba(0,229,160,0.1); color: var(--accent); }
+  .empty-state { padding: 30px 18px; text-align: center; color: var(--muted); font-size: 13px; }
+
+  .ranking-row { display: flex; align-items: center; padding: 11px 18px; border-bottom: 1px solid var(--border); gap: 12px; transition: background 0.15s; flex-wrap: wrap; }
+  .ranking-row:last-child { border-bottom: none; }
+  .ranking-row.top1 { background: linear-gradient(90deg, rgba(245,200,66,0.06) 0%, transparent 100%); }
+  .ranking-row.top2 { background: linear-gradient(90deg, rgba(176,184,200,0.04) 0%, transparent 100%); }
+  .ranking-row.top3 { background: linear-gradient(90deg, rgba(205,127,58,0.04) 0%, transparent 100%); }
+  .rank-num { font-family: 'Bebas Neue', sans-serif; font-size: 18px; width: 24px; text-align: center; color: var(--muted); flex-shrink: 0; }
+  .top1 .rank-num { color: var(--gold); }
+  .top2 .rank-num { color: var(--silver); }
+  .top3 .rank-num { color: var(--bronze); }
+  .j-avatar { width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; flex-shrink: 0; }
+  .rank-name { font-weight: 600; font-size: 13px; }
+  .rank-sub { font-size: 10px; color: var(--muted); flex-basis: 100%; padding-left: 66px; margin-top: -4px; }
+  .rank-points { font-family: 'Bebas Neue', sans-serif; font-size: 20px; margin-left: auto; }
+
+  .h2h-journee { padding: 12px 18px; border-bottom: 1px solid var(--border); }
+  .h2h-journee:last-child { border-bottom: none; }
+  .h2h-journee-lbl { font-size: 10px; color: var(--muted); font-weight: 700; letter-spacing: .5px; text-transform: uppercase; margin-bottom: 8px; }
+  .h2h-match { display: flex; align-items: center; gap: 10px; padding: 6px 0; font-size: 13px; }
+  .h2h-side { flex: 1; display: flex; align-items: center; gap: 8px; }
+  .h2h-side.right { justify-content: flex-end; text-align: right; }
+  .h2h-name { font-weight: 600; }
+  .h2h-name.winner { color: var(--accent); }
+  .h2h-score { font-family: 'Bebas Neue', sans-serif; font-size: 20px; min-width: 70px; text-align: center; }
+  .h2h-nul { color: var(--muted); font-size: 10px; }
+
+  .bracket-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; padding: 18px; }
+  @media(max-width:800px) { .bracket-grid { grid-template-columns: 1fr; } }
+  .bracket-col-title { font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
+  .bracket-match { background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; padding: 10px 12px; margin-bottom: 10px; font-size: 12px; }
+  .bracket-match .teams { font-weight: 600; margin-bottom: 4px; }
+  .bracket-match .teams .win { color: var(--accent); }
+  .bracket-match .legs { color: var(--muted); font-size: 11px; }
+  .bracket-match .win-tag { color: var(--gold); font-weight: 700; margin-top: 4px; font-size: 11px; }
+
+  .champion-banner { background: linear-gradient(135deg, rgba(245,200,66,0.1) 0%, transparent 60%); border: 1px solid var(--gold); border-radius: 16px; padding: 24px; margin-bottom: 20px; text-align: center; }
+  .champion-banner .trophy { font-size: 40px; margin-bottom: 8px; }
+  .champion-banner h2 { font-family: 'Bebas Neue', sans-serif; font-size: 32px; letter-spacing: 2px; color: var(--gold); }
+  .champion-banner p { color: var(--muted); font-size: 12px; margin-top: 4px; }
+
+  @media(max-width:700px) {
+    .logo-badge { font-size: 8px; padding: 2px 4px; }
+    .nav-tabs { order: 3; width: 100%; display: grid; grid-template-columns: repeat(3, 1fr); gap: 3px; padding-bottom: 8px; }
+    header { height: auto; padding: 10px 16px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">MA <span>L1</span><span class="logo-badge">2026/27</span></div>
+  <div class="nav-tabs">
+    <a class="nav-tab" href="index.html">Classement</a>
+    <a class="nav-tab" href="enchere.html">Enchères</a>
+    <a class="nav-tab active" href="champions-league.html">Champions League</a>
+    <div class="nav-dropdown">
+      <button class="nav-tab" id="tab-archives">Archives ▾</button>
+      <div class="nav-dropdown-menu">
+        <a href="archive-2025-26.html">Saison 2025/26</a>
+        <a href="archive.html?s=2024-25">Saison 2024/25</a>
+        <a href="archive.html?s=2023-24">Saison 2023/24</a>
+        <a href="archive.html?s=2022-23">Saison 2022/23</a>
+        <a href="archive.html?s=2021-22">Saison 2021/22</a>
+        <a href="archive.html?s=2018-19">Saison 2018/19</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+  <div class="hero">
+    <h1>CHAMPIONS <em>LEAGUE</em></h1>
+    <p>Compétition parallèle au championnat Ma L1 — mêmes compositions, sans bonus capitaine.</p>
+    <div class="phase-badge" id="phase-badge">Chargement…</div>
+  </div>
+
+  <div id="champion-wrap"></div>
+
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">Classement — Phase de poule</div>
+      <div class="tag">3 / 1 / 0 PTS</div>
+    </div>
+    <div id="classement-container"><div class="empty-state">Chargement…</div></div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">Résultats H2H — Phase de poule</div>
+    </div>
+    <div id="h2h-container"><div class="empty-state">Chargement…</div></div>
+  </div>
+
+  <div class="card" id="bracket-card" style="display:none">
+    <div class="card-header">
+      <div class="card-title">Tableau de la phase finale</div>
+    </div>
+    <div class="bracket-grid" id="bracket-container"></div>
+  </div>
+</div>
+
+<script>
+const COULEURS = {
+  "ROMU":    {bg:"rgba(21,128,61,0.12)",   color:"#15803d"},
+  "FLORIAN": {bg:"rgba(245,200,66,0.12)",  color:"#f5c842"},
+  "FAB":     {bg:"rgba(96,165,250,0.1)",   color:"#60a5fa"},
+  "BASTIEN": {bg:"rgba(192,132,252,0.1)",  color:"#c084fc"},
+  "ADRIEN":  {bg:"rgba(255,255,255,0.06)", color:"#ffffff"},
+  "JEROME":  {bg:"rgba(34,211,238,0.1)",   color:"#22d3ee"},
+  "ANTHONY": {bg:"rgba(163,230,53,0.1)",   color:"#a3e635"},
+  "MICKA":   {bg:"rgba(129,140,248,0.1)",  color:"#818cf8"},
+};
+const PHASE_LABELS = { poule: "Phase de poule en cours", quarts: "Quarts de finale",
+  demies: "Demi-finales", finale: "Finale", terminee: "Terminée" };
+const POULE_JOURNEES = [4, 6, 8, 10, 12, 14, 15];
+
+function esc(s) {
+  return String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+function avatar(nom) {
+  const c = COULEURS[nom] || { bg: 'transparent', color: '#e8eaf0' };
+  return `<div class="j-avatar" style="background:${c.bg};color:${c.color}">${esc(nom).substring(0,2)}</div>`;
+}
+
+function nameColor(nom) {
+  return (COULEURS[nom] || { color: '#e8eaf0' }).color;
+}
+
+function renderClassement(cl) {
+  const box = document.getElementById('classement-container');
+  const rows = cl.classement_poule || [];
+  if (!rows.length) {
+    box.innerHTML = '<div class="empty-state">Aucune journée de poule calculée pour le moment.</div>';
+    return;
+  }
+  box.innerHTML = rows.map((r, i) => {
+    const topClass = i === 0 ? 'top1' : i === 1 ? 'top2' : i === 2 ? 'top3' : '';
+    return `<div class="ranking-row ${topClass}">
+      <div class="rank-num">${i + 1}</div>
+      ${avatar(r.nom)}
+      <div class="rank-name" style="color:${nameColor(r.nom)}">${esc(r.nom)}</div>
+      <div class="rank-points">${r.pts}<span style="font-size:11px;color:var(--muted)"> pts</span></div>
+      <div class="rank-sub">${r.v}V ${r.n}N ${r.d}D · diff H2H ${r.diff_h2h > 0 ? '+' : ''}${r.diff_h2h} · ${r.bm} buts · ${r.pd} passes · ${r.cs} CS · ${r.cr} CR · ${r.cj} CJ</div>
+    </div>`;
+  }).join('');
+}
+
+function renderH2H(cl) {
+  const box = document.getElementById('h2h-container');
+  const resultats = cl.resultats_poule || {};
+  const journees = POULE_JOURNEES.filter(j => resultats[j]);
+  if (!journees.length) {
+    box.innerHTML = '<div class="empty-state">Aucun résultat pour le moment.</div>';
+    return;
+  }
+  box.innerHTML = journees.map(j => {
+    const matches = resultats[j].matches.map(m => {
+      const aWin = m.vainqueur === m.a, bWin = m.vainqueur === m.b;
+      return `<div class="h2h-match">
+        <div class="h2h-side"><span class="h2h-name ${aWin ? 'winner' : ''}">${esc(m.a)}</span></div>
+        <div class="h2h-score">${m.pts_a} — ${m.pts_b}</div>
+        <div class="h2h-side right"><span class="h2h-name ${bWin ? 'winner' : ''}">${esc(m.b)}</span></div>
+      </div>${!aWin && !bWin ? '<div class="h2h-nul" style="text-align:center">Match nul</div>' : ''}`;
+    }).join('');
+    return `<div class="h2h-journee">
+      <div class="h2h-journee-lbl">Journée ${j}</div>
+      ${matches}
+    </div>`;
+  }).join('');
+}
+
+function legLine(m) {
+  if (m.aller) {
+    const a = m.aller.pts_a !== null ? `${m.aller.pts_a}-${m.aller.pts_b}` : '—';
+    const r = m.retour.pts_a !== null ? `${m.retour.pts_a}-${m.retour.pts_b}` : '—';
+    return `Aller (J${m.aller.j}) ${a} · Retour (J${m.retour.j}) ${r}`;
+  }
+  const s = m.pts_a !== null ? `${m.pts_a}-${m.pts_b}` : '—';
+  return `Match sec (J${m.j}) ${s}`;
+}
+
+function matchCard(label, m) {
+  const [a, b] = m.paire;
+  const aWin = m.vainqueur && m.vainqueur === a;
+  const bWin = m.vainqueur && m.vainqueur === b;
+  return `<div class="bracket-match">
+    <div style="font-size:10px;color:var(--muted);margin-bottom:4px">${label}</div>
+    <div class="teams">
+      <span class="${aWin ? 'win' : ''}">${a ? esc(a) : '?'}</span> vs
+      <span class="${bWin ? 'win' : ''}">${b ? esc(b) : '?'}</span>
+    </div>
+    <div class="legs">${legLine(m)}</div>
+    ${m.vainqueur ? `<div class="win-tag">🏆 ${esc(m.vainqueur)}</div>` : ''}
+  </div>`;
+}
+
+function renderBracket(cl) {
+  const card = document.getElementById('bracket-card');
+  const b = cl.bracket;
+  if (!b || cl.phase === 'poule') { card.style.display = 'none'; return; }
+  card.style.display = 'block';
+  const box = document.getElementById('bracket-container');
+  box.innerHTML = `
+    <div>
+      <div class="bracket-col-title">Quarts de finale</div>
+      ${Object.entries(b.quarts).map(([k, m]) => matchCard('QF ' + k, m)).join('')}
+    </div>
+    <div>
+      <div class="bracket-col-title">Demi-finales</div>
+      ${Object.entries(b.demies).map(([k, m]) => matchCard('SF ' + k, m)).join('')}
+    </div>
+    <div>
+      <div class="bracket-col-title">Finale</div>
+      ${matchCard('Finale', b.finale)}
+    </div>`;
+}
+
+function renderChampion(cl) {
+  const wrap = document.getElementById('champion-wrap');
+  if (cl.phase !== 'terminee' || !cl.bracket || !cl.bracket.finale.vainqueur) { wrap.innerHTML = ''; return; }
+  const champ = cl.bracket.finale.vainqueur;
+  wrap.innerHTML = `<div class="champion-banner">
+    <div class="trophy">🏆</div>
+    <h2>${esc(champ)}</h2>
+    <p>Vainqueur de la Champions League Ma L1 2026/27</p>
+  </div>`;
+}
+
+fetch('champions_league.json')
+  .then(r => r.json())
+  .then(cl => {
+    document.getElementById('phase-badge').textContent = PHASE_LABELS[cl.phase] || cl.phase || '—';
+    renderChampion(cl);
+    renderClassement(cl);
+    renderH2H(cl);
+    renderBracket(cl);
+  })
+  .catch(() => {
+    document.getElementById('phase-badge').textContent = 'Données indisponibles';
+    document.getElementById('classement-container').innerHTML = '<div class="empty-state">Impossible de charger champions_league.json.</div>';
+    document.getElementById('h2h-container').innerHTML = '';
+  });
+
+document.getElementById('tab-archives').addEventListener('click', function(e) {
+  e.stopPropagation();
+  this.closest('.nav-dropdown').classList.toggle('open');
+});
+document.addEventListener('click', () => {
+  document.querySelectorAll('.nav-dropdown').forEach(d => d.classList.remove('open'));
+});
+</script>
+</body>
+</html>

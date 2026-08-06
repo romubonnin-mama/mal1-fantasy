@@ -26,6 +26,7 @@ FILES = {
     "/api/manual-stats":  DATA_DIR / "manual_stats.json",
     "/api/data":          BASE_DIR  / "data.json",
     "/api/clubs":         BASE_DIR  / "clubs.json",
+    "/api/champions-league": BASE_DIR / "champions_league.json",
 }
 
 JOURNEE_FILES = {
@@ -215,9 +216,9 @@ class AdminHandler(BaseHTTPRequestHandler):
                 self.send_json({"ok": True})
                 return
 
-        # Full-file save (roster, player-ids)
+        # Full-file save (roster, player-ids, champions-league)
         for endpoint, fpath in FILES.items():
-            if path == endpoint and endpoint in ("/api/roster", "/api/player-ids"):
+            if path == endpoint and endpoint in ("/api/roster", "/api/player-ids", "/api/champions-league"):
                 write_json(fpath, payload)
                 self.send_json({"ok": True})
                 return
@@ -265,6 +266,20 @@ class AdminHandler(BaseHTTPRequestHandler):
                     self.send_json({"ok": True, "msg": f"J{journee} publié sur GitHub"})
                 else:
                     self.send_json({"ok": False, "msg": r.stderr.decode()})
+            except Exception as e:
+                self.send_error_json(str(e), 500)
+            return
+
+        # Calcule une journée Champions League (poule ou phase finale)
+        if path.startswith("/api/compute-cl/"):
+            journee = int(path[len("/api/compute-cl/"):])
+            try:
+                sys.path.insert(0, str(SCRIPTS_DIR))
+                import importlib
+                import compute_champions_league
+                importlib.reload(compute_champions_league)
+                result = compute_champions_league.compute(journee)
+                self.send_json(result)
             except Exception as e:
                 self.send_error_json(str(e), 500)
             return
