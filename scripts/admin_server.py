@@ -269,6 +269,21 @@ class AdminHandler(BaseHTTPRequestHandler):
                 self.send_error_json(str(e), 500)
             return
 
+        # Synchro roster.json depuis Firestore (résultats d'enchères validés)
+        if path == "/api/sync-roster":
+            try:
+                r = subprocess.run(
+                    [sys.executable, str(SCRIPTS_DIR / "sync_roster_from_firestore.py")],
+                    cwd=BASE_DIR, capture_output=True, text=True, timeout=30,
+                )
+                if r.returncode == 0:
+                    self.send_json({"ok": True, "log": r.stdout})
+                else:
+                    self.send_json({"ok": False, "log": (r.stdout + r.stderr).strip()})
+            except Exception as e:
+                self.send_error_json(str(e), 500)
+            return
+
         self.send_error_json("Not found", 404)
 
 

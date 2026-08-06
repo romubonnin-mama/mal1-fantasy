@@ -1287,7 +1287,10 @@ init().catch(e => {
   <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden">
     <div style="padding:10px 16px;background:var(--surface2);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between">
       <div style="font-weight:700;font-size:13px">Budgets & effectifs managers</div>
-      <button class="btn btn-subtle" id="enc-recalc-btn" style="font-size:12px;padding:5px 12px" title="Recalcule les budgets depuis les résultats stockés">🔄 Recalculer</button>
+      <div style="display:flex;gap:8px">
+        <button class="btn btn-subtle" id="enc-sync-roster-btn" style="font-size:12px;padding:5px 12px" title="Régénère data/roster.json depuis les effectifs Firestore (managers.joueurs)">📥 Synchro roster.json</button>
+        <button class="btn btn-subtle" id="enc-recalc-btn" style="font-size:12px;padding:5px 12px" title="Recalcule les budgets depuis les résultats stockés">🔄 Recalculer</button>
+      </div>
     </div>
     <div id="enc-budgets-grid" style="padding:14px 16px;display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px"></div>
   </div>
@@ -1936,6 +1939,25 @@ window.removeJoueur = async function(nom, jKeyEncoded) {
   mgrDocs[nom] = { ...existing, joueurs, budget_restant };
   renderEncBudgets();
 };
+
+// ── Synchro roster.json depuis Firestore ───────────────────
+document.getElementById('enc-sync-roster-btn').addEventListener('click', async () => {
+  const btn = document.getElementById('enc-sync-roster-btn');
+  btn.disabled = true; btn.textContent = '⏳…';
+  try {
+    const res = await api('POST', '/sync-roster', {});
+    if (res.ok) {
+      toast('roster.json synchronisé depuis les enchères', 'ok');
+      console.log(res.log);
+    } else {
+      toast('Erreur synchro roster.json (voir console)', 'err');
+      console.error(res.log);
+    }
+  } catch (e) {
+    toast('Erreur synchro roster.json : ' + e.message, 'err');
+  }
+  btn.disabled = false; btn.textContent = '📥 Synchro roster.json';
+});
 
 // ── Recalcul budgets depuis résultats ─────────────────────
 document.getElementById('enc-recalc-btn').addEventListener('click', async () => {
