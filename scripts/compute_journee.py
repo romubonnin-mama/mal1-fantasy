@@ -219,6 +219,24 @@ def _plafond_capitaine(manager: str, classement_avant: dict) -> int:
     return max(0, ref_pts - info["pts"])
 
 
+def _capitaines_utilises(manager: str, journee: int, data: dict) -> dict:
+    """
+    Capitaines déjà posés par `manager` sur les autres journées de la saison (règlement :
+    5 capitaines maximum sur l'ensemble de la saison, jamais 2 fois le même joueur).
+    Retourne {"count": int, "joueurs": set(noms)}.
+    """
+    joueurs = set()
+    for j_str, par_manager in data.get("detail_journees", {}).items():
+        if int(j_str) == journee:
+            continue
+        equipe = par_manager.get(manager, {})
+        for poste, players in equipe.items():
+            for p in players:
+                if p.get("cap"):
+                    joueurs.add(p["nom"])
+    return {"count": len(joueurs), "joueurs": joueurs}
+
+
 def _minutes(s: dict) -> int:
     sort_a  = int(s.get("sort_a",  0) or 0)
     entre_a = int(s.get("entre_a", 0) or 0)
@@ -331,6 +349,20 @@ def compute(journee: int) -> dict:
                             f"{manager} est 1er au classement avant J{journee} : le capitaine "
                             f"est interdit pour le 1er (règlement 2026-2027). Retirez le "
                             f"capitaine de {manager} avant de calculer."
+                        )
+                    usage = _capitaines_utilises(manager, journee, data)
+                    if nom not in usage["joueurs"] and usage["count"] >= 5:
+                        raise ValueError(
+                            f"{manager} a déjà utilisé ses 5 capitaines de la saison "
+                            f"(règlement 2026-2027). Retirez le capitaine de {manager} "
+                            f"avant de calculer."
+                        )
+                    if nom in usage["joueurs"]:
+                        raise ValueError(
+                            f"{nom} a déjà été capitaine de {manager} cette saison : un "
+                            f"joueur ne peut être désigné capitaine qu'une seule fois "
+                            f"(règlement 2026-2027). Retirez le capitaine de {manager} "
+                            f"avant de calculer."
                         )
                     plafond = _plafond_capitaine(manager, classement_avant)
                     pts_cap = appliquer_capitaine(result["pts"], coeff, plafond)

@@ -460,6 +460,22 @@ function plafondCapitaine(manager, classementAvantMap) {
   return Math.max(0, refPts - info.pts);
 }
 
+// Capitaines déjà posés par un manager sur les autres journées de la saison (règlement
+// 2026-2027 : 5 capitaines maximum sur la saison, jamais 2 fois le même joueur).
+function capitainesUtilises(manager, journee) {
+  const joueurs = new Set();
+  for (const [jStr, parManager] of Object.entries(DATA.detail_journees || {})) {
+    if (parseInt(jStr) === journee) continue;
+    const equipe = (parManager || {})[manager] || {};
+    for (const players of Object.values(equipe)) {
+      for (const p of players) {
+        if (p.cap) joueurs.add(p.nom);
+      }
+    }
+  }
+  return { count: joueurs.size, joueurs };
+}
+
 function renderLineups() {
   const grid = document.getElementById('lineups-grid');
   grid.innerHTML = '';
@@ -480,6 +496,8 @@ function renderLineups() {
     const plafond    = plafondCapitaine(manager, capAvant);
     const prevCap    = (PREV_LINEUPS[manager] || {}).capitaine;
     const sameAsPrev = cap && prevCap && cap === prevCap;
+    const capUsage   = capitainesUtilises(manager, currentJournee);
+    const capMaxedOut = capUsage.count >= 5 && !capUsage.joueurs.has(cap);
 
     const card = document.createElement('div');
     card.className = 'manager-card';
@@ -500,6 +518,7 @@ function renderLineups() {
           ? ` — <span style="color:var(--red)">capitaine interdit (1er)</span>`
           : ` — plafond bonus capitaine : <strong>${plafond}</strong> pts`}
         ${sameAsPrev ? ` — <span style="color:var(--red)">⚠ même capitaine qu'à J${currentJournee - 1}</span>` : ''}
+        — capitaines utilisés cette saison : <strong style="color:${capMaxedOut ? 'var(--red)' : 'inherit'}">${capUsage.count}/5</strong>
       </div>
     `;
     card.appendChild(header);
@@ -515,6 +534,12 @@ function renderLineups() {
       for (const nom of joueurs) {
         const isTitu = titus.has(nom);
         const isCap  = nom === cap;
+        const capBlocked = !isCap && (capMaxedOut || capUsage.joueurs.has(nom));
+        const capBtnTitle = isFirst
+          ? 'Capitaine interdit pour le 1er au classement'
+          : capMaxedOut ? 'Plafond de 5 capitaines/saison atteint'
+          : capUsage.joueurs.has(nom) ? `${nom} a déjà été capitaine cette saison`
+          : '';
 
         const row = document.createElement('div');
         row.className = 'player-row' + (isCap ? ' cap' : isTitu ? ' titu' : ' rempl');
@@ -524,7 +549,7 @@ function renderLineups() {
         row.innerHTML = `
           <div class="player-check"></div>
           <span class="player-nom">${nom}</span>
-          <button class="cap-btn" ${isFirst ? 'disabled title="Capitaine interdit pour le 1er au classement"' : ''}
+          <button class="cap-btn" ${(isFirst || capBlocked) ? `disabled title="${capBtnTitle}"` : ''}
                   onclick="setCap(event,'${manager}','${nom}')">C</button>
         `;
         row.addEventListener('click', (e) => {
@@ -580,6 +605,18 @@ function setCap(e, manager, nom) {
   if (lineup.capitaine !== nom && info && info.rang === 1) {
     toast(`${manager} est 1er au classement avant J${currentJournee} : capitaine interdit pour le 1er (règlement 2026-27).`, 'err');
     return;
+  }
+
+  if (lineup.capitaine !== nom) {
+    const usage = capitainesUtilises(manager, currentJournee);
+    if (usage.joueurs.has(nom)) {
+      toast(`${nom} a déjà été capitaine de ${manager} cette saison (pas de répétition, règlement 2026-27).`, 'err');
+      return;
+    }
+    if (usage.count >= 5) {
+      toast(`${manager} a déjà utilisé ses 5 capitaines de la saison (règlement 2026-27).`, 'err');
+      return;
+    }
   }
 
   lineup.capitaine = lineup.capitaine === nom ? null : nom;
@@ -1086,11 +1123,10 @@ function _calcPts(manager, nom) {
   const cj      = red ? 0 : (s.yellow_cards ? 1 : 0);
 
   const BM = {G:5, D:3, M:2, A:2};
-  const isSub = entreA > 0;
   let tjPts;
   if (red)       tjPts = 0;
   else if (full) tjPts = 3;
-  else { const m = Math.min(min, 90); tjPts = m<=0 ? 0 : (isSub ? m<35 : m<=35) ? 1 : m<=70 ? 2 : 3; }
+  else { const m = Math.min(min, 90); tjPts = m<=0 ? 0 : m<=35 ? 1 : m<=70 ? 2 : 3; }
 
   let csPts = 0;
   if (s.cs) {
