@@ -98,13 +98,13 @@ def _apply_corrections_past(journee: int, j_corrections: dict, data: dict) -> di
                             player["tj_pts"] = new_tj_pts
                             player["pts"]   += (new_tj_pts - old_tj_pts) * multiplier
 
-                        # full_match : tj passe à "M" (4 pts)
+                        # full_match : tj passe à "M" (3 pts)
                         if int((nom_corr.get("full_match") or {}).get("val", 0) or 0):
                             tj_entry   = player.get("tj_pts")
                             old_tj_pts = tj_entry if isinstance(tj_entry, int) else (tj_entry.get("pts", 0) if isinstance(tj_entry, dict) else 0)
                             player["tj"]     = "M"
-                            player["tj_pts"] = {"val": "M", "pts": 4}
-                            player["pts"]   += (4 - old_tj_pts) * multiplier
+                            player["tj_pts"] = {"val": "M", "pts": 3}
+                            player["pts"]   += (3 - old_tj_pts) * multiplier
 
                         for stat, corr in nom_corr.items():
                             if stat in ("abs", "full_match", "set_titu", "entre", "fin"):
@@ -188,6 +188,37 @@ def _apply_corrections_past(journee: int, j_corrections: dict, data: dict) -> di
     return {"ok": True, "scores": scores_journee, "classement": data["classement"]}
 
 
+def _classement_avant(journee: int, data: dict) -> dict:
+    """
+    Classement figé avant `journee` (cumul des points de J1 à journee-1).
+    Retourne {manager: {"pts": int, "rang": int}}.
+    """
+    noms  = [j["nom"] for j in data["classement"]]
+    cumul = {n: 0 for n in noms}
+    for jj in range(1, journee):
+        h = data["historique"].get(str(jj), {})
+        for n in noms:
+            cumul[n] += h.get(n, 0)
+    ranked = sorted(noms, key=lambda n: -cumul[n])
+    return {n: {"pts": cumul[n], "rang": i + 1} for i, n in enumerate(ranked)}
+
+
+def _plafond_capitaine(manager: str, classement_avant: dict) -> int:
+    """
+    Plafond en points du bonus capitaine (règlement 2026-2027) : écart de points avec
+    le participant classé 2 places devant (1 place devant pour le 2e). None si 1er
+    (le 1er ne peut pas jouer capitaine — vérifié en amont).
+    """
+    info = classement_avant.get(manager)
+    if not info or info["rang"] == 1:
+        return None
+    ranked = sorted(classement_avant.items(), key=lambda kv: kv[1]["rang"])
+    idx = info["rang"] - 1  # index 0-based dans ranked
+    ref_idx = 0 if info["rang"] == 2 else idx - 2
+    ref_pts = ranked[ref_idx][1]["pts"]
+    return max(0, ref_pts - info["pts"])
+
+
 def _minutes(s: dict) -> int:
     sort_a  = int(s.get("sort_a",  0) or 0)
     entre_a = int(s.get("entre_a", 0) or 0)
@@ -215,6 +246,8 @@ def compute(journee: int) -> dict:
         if not j_corrections:
             raise ValueError(f"Aucune composition définie pour J{journee}. Ajoutez des corrections d'abord.")
         return _apply_corrections_past(journee, j_corrections, data)
+
+    classement_avant = _classement_avant(journee, data)
 
     detail_journee = {}
     scores_journee = {}
@@ -292,7 +325,15 @@ def compute(journee: int) -> dict:
 
                 cap_str = ""
                 if is_titu and not absent and nom == capitaine:
-                    pts_cap = appliquer_capitaine(result["pts"], coeff)
+                    manager_rang = classement_avant.get(manager, {}).get("rang")
+                    if manager_rang == 1:
+                        raise ValueError(
+                            f"{manager} est 1er au classement avant J{journee} : le capitaine "
+                            f"est interdit pour le 1er (règlement 2026-2027). Retirez le "
+                            f"capitaine de {manager} avant de calculer."
+                        )
+                    plafond = _plafond_capitaine(manager, classement_avant)
+                    pts_cap = appliquer_capitaine(result["pts"], coeff, plafond)
                     cap_str = str(coeff)
                     result["pts"] = pts_cap
                 elif not is_titu:

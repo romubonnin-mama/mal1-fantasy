@@ -51,7 +51,7 @@ header h1 { font-size: 18px; font-weight: 700; color: var(--accent); }
   background: var(--surface); border: 1px solid var(--border); border-radius: 10px; overflow: hidden;
 }
 .manager-card-header {
-  padding: 10px 14px; background: var(--surface2); display: flex; align-items: center; gap: 8px;
+  padding: 10px 14px; background: var(--surface2); display: flex; flex-wrap: wrap; align-items: center; gap: 8px;
   border-bottom: 1px solid var(--border);
 }
 .manager-name { font-weight: 700; font-size: 15px; }
@@ -82,6 +82,7 @@ header h1 { font-size: 18px; font-weight: 700; color: var(--accent); }
 }
 .player-row.titu .cap-btn { display: block; }
 .player-row.cap .cap-btn { background: var(--yellow); color: #0d1117; border-color: var(--yellow); display: block; }
+.cap-btn:disabled { opacity: .35; cursor: not-allowed; }
 .titu-count { font-size: 11px; color: var(--muted); margin-left: auto; }
 .titu-count.ok { color: var(--accent); }
 .titu-count.err { color: var(--red); }
@@ -289,7 +290,7 @@ header h1 { font-size: 18px; font-weight: 700; color: var(--accent); }
 
 <script>
 const API = 'http://localhost:8765/api';
-let ROSTER = {}, LINEUPS = {}, CORRECTIONS = {}, DATA = {}, MANUAL_STATS = {}, CLUBS = {};
+let ROSTER = {}, LINEUPS = {}, CORRECTIONS = {}, DATA = {}, MANUAL_STATS = {}, CLUBS = {}, PREV_LINEUPS = {};
 
 function getLogoUrl(nom) {
   const id = CLUBS[nom.trim().toUpperCase()];
@@ -342,10 +343,11 @@ async function init() {
 
 async function loadJournee() {
   currentJournee = parseInt(document.getElementById('journeeInput').value) || 32;
-  [LINEUPS, CORRECTIONS, MANUAL_STATS] = await Promise.all([
+  [LINEUPS, CORRECTIONS, MANUAL_STATS, PREV_LINEUPS] = await Promise.all([
     api('GET', `/lineups/${currentJournee}`),
     api('GET', `/corrections/${currentJournee}`),
     api('GET', `/manual-stats/${currentJournee}`),
+    currentJournee > 1 ? api('GET', `/lineups/${currentJournee - 1}`) : Promise.resolve({}),
   ]);
   renderLineups();
   const lbl = document.getElementById('compute-j-lbl');
@@ -360,9 +362,36 @@ async function loadJournee() {
 
 const POSTE_ORDER = ['G', 'D', 'M', 'A'];
 
+// Classement figé avant `journee` (cumul historique J1..journee-1). Règlement 2026-2027 :
+// sert à interdire le capitaine au 1er et à plafonner le bonus capitaine (écart de points).
+function classementAvant(journee) {
+  const noms = Object.keys(ROSTER);
+  const cumul = {};
+  noms.forEach(n => cumul[n] = 0);
+  for (let jj = 1; jj < journee; jj++) {
+    const h = (DATA.historique || {})[String(jj)] || {};
+    noms.forEach(n => cumul[n] += (h[n] || 0));
+  }
+  const ranked = [...noms].sort((a, b) => cumul[b] - cumul[a]);
+  const result = {};
+  ranked.forEach((n, i) => { result[n] = { pts: cumul[n], rang: i + 1 }; });
+  return result;
+}
+
+function plafondCapitaine(manager, classementAvantMap) {
+  const info = classementAvantMap[manager];
+  if (!info || info.rang === 1) return null;
+  const ranked = Object.entries(classementAvantMap).sort((a, b) => a[1].rang - b[1].rang);
+  const idx = info.rang - 1;
+  const refIdx = info.rang === 2 ? 0 : idx - 2;
+  const refPts = ranked[refIdx][1].pts;
+  return Math.max(0, refPts - info.pts);
+}
+
 function renderLineups() {
   const grid = document.getElementById('lineups-grid');
   grid.innerHTML = '';
+  const capAvant = classementAvant(currentJournee);
 
   for (const manager of Object.keys(ROSTER)) {
     const lineup = LINEUPS[manager] || { titulaires: [], capitaine: null, coeff: 1 };
@@ -374,6 +403,12 @@ function renderLineups() {
     const remplCount = allPlayerNames.length - titus.size;
     const isOk = titus.size === 11;
 
+    const info      = capAvant[manager] || { rang: null, pts: 0 };
+    const isFirst   = info.rang === 1;
+    const plafond    = plafondCapitaine(manager, capAvant);
+    const prevCap    = (PREV_LINEUPS[manager] || {}).capitaine;
+    const sameAsPrev = cap && prevCap && cap === prevCap;
+
     const card = document.createElement('div');
     card.className = 'manager-card';
     card.dataset.manager = manager;
@@ -384,8 +419,16 @@ function renderLineups() {
       <span class="manager-name">${manager}</span>
       <span style="font-size:12px;color:var(--muted)">Coeff cap :</span>
       <input type="number" class="corr-input" style="width:50px" value="${lineup.coeff || 1}" min="1" max="7"
+             ${isFirst ? 'disabled' : ''}
              onchange="setCoeff('${manager}', this.value)">
       <span class="titu-count ${isOk ? 'ok' : 'err'}" id="count-${manager}">${remplCount} rempl.</span>
+      <div style="flex-basis:100%;font-size:11px;color:var(--muted);margin-top:2px">
+        Rang avant J${currentJournee} : <strong>${info.rang ?? '—'}</strong>
+        ${isFirst
+          ? ` — <span style="color:var(--red)">capitaine interdit (1er)</span>`
+          : ` — plafond bonus capitaine : <strong>${plafond}</strong> pts`}
+        ${sameAsPrev ? ` — <span style="color:var(--red)">⚠ même capitaine qu'à J${currentJournee - 1}</span>` : ''}
+      </div>
     `;
     card.appendChild(header);
 
@@ -409,7 +452,8 @@ function renderLineups() {
         row.innerHTML = `
           <div class="player-check"></div>
           <span class="player-nom">${nom}</span>
-          <button class="cap-btn" onclick="setCap(event,'${manager}','${nom}')">C</button>
+          <button class="cap-btn" ${isFirst ? 'disabled title="Capitaine interdit pour le 1er au classement"' : ''}
+                  onclick="setCap(event,'${manager}','${nom}')">C</button>
         `;
         row.addEventListener('click', (e) => {
           if (e.target.classList.contains('cap-btn')) return;
@@ -460,13 +504,18 @@ function setCap(e, manager, nom) {
   const lineup = LINEUPS[manager];
   if (!new Set(lineup.titulaires).has(nom)) return;
 
-  lineup.capitaine = lineup.capitaine === nom ? null : nom;
+  const info = classementAvant(currentJournee)[manager];
+  if (lineup.capitaine !== nom && info && info.rang === 1) {
+    toast(`${manager} est 1er au classement avant J${currentJournee} : capitaine interdit pour le 1er (règlement 2026-27).`, 'err');
+    return;
+  }
 
-  const card = document.querySelector(`.manager-card[data-manager="${manager}"]`);
-  card.querySelectorAll('.player-row').forEach(r => {
-    r.classList.remove('cap');
-    if (r.dataset.nom === lineup.capitaine) r.classList.add('cap');
-  });
+  lineup.capitaine = lineup.capitaine === nom ? null : nom;
+  if (lineup.capitaine && info) {
+    lineup.coeff = Math.min(Math.max(info.rang - 1, 1), 7);
+  }
+
+  renderLineups();
 }
 
 function setCoeff(manager, val) {
@@ -968,8 +1017,8 @@ function _calcPts(manager, nom) {
   const isSub = entreA > 0;
   let tjPts;
   if (red)       tjPts = 0;
-  else if (full) tjPts = 4;
-  else { const m = Math.min(min, 90); tjPts = m<=0 ? 0 : (isSub ? m<30 : m<=30) ? 1 : m<=60 ? 2 : 3; }
+  else if (full) tjPts = 3;
+  else { const m = Math.min(min, 90); tjPts = m<=0 ? 0 : (isSub ? m<35 : m<=35) ? 1 : m<=70 ? 2 : 3; }
 
   let csPts = 0;
   if (s.cs) {
@@ -981,7 +1030,7 @@ function _calcPts(manager, nom) {
     + goals   * (BM[poste]||0)
     + assists * 2
     + pm      * 2
-    + (poste==='G' ? pma*2 : pma*-2)
+    + (poste==='G' ? pma*2 : pma*-1)
     + csPts + bePts
     + bc * -2
     + cj * -1;

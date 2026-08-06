@@ -1,13 +1,12 @@
 """
 Moteur de calcul des points Ma L1.
-Source: règlement 2025-2026.
+Source: règlement 2026-2027.
 
 Barème TJ (hors arrêts de jeu) — identique pour tous les postes :
   0 min           -> 0 pt
-  1–29 min        -> 1 pt
-  30–60 min       -> 2 pts
-  61–89 min       -> 3 pts
-  match entier    -> 4 pts
+  1–35 min        -> 1 pt
+  36–70 min       -> 2 pts
+  71–90 min       -> 3 pts (max, y compris match entier)
   carton rouge    -> 0 pt TJ (bonuses/maluses conservés, CJ annulé)
 """
 
@@ -23,7 +22,7 @@ PD_PTS = 2
 PM_PTS = 2
 
 # Malus pénalty manqué par le joueur (D/M/A) ou bonus arrêté/adversaire manqué (G)
-PMA_PTS = {"G": 2, "D": -2, "M": -2, "A": -2}
+PMA_PTS = {"G": 2, "D": -1, "M": -1, "A": -1}
 
 # Malus but contre son camp (tous postes)
 BCSC_PTS = -2
@@ -50,17 +49,17 @@ def tj_points(minutes: int, is_full_match: bool, red_card: bool, is_sub: bool = 
     if red_card:
         return 0
     if is_full_match:
-        return 4
+        return 3
     m = min(minutes, 90)
     if m <= 0:
         return 0
     if is_sub:
-        if m < 30:   return 1
-        elif m <= 60: return 2
+        if m < 35:   return 1
+        elif m <= 70: return 2
         else:         return 3
     else:
-        if m <= 30:  return 1
-        elif m <= 60: return 2
+        if m <= 35:  return 1
+        elif m <= 70: return 2
         else:         return 3
 
 
@@ -179,14 +178,20 @@ def calcul_joueur(
     }
 
 
-def appliquer_capitaine(pts: int, rang: int) -> int:
+def appliquer_capitaine(pts: int, coeff: int, plafond: int = None) -> int:
     """
-    Points totaux capitaine = pts + pts × coeff.
-    coeff = classement au début de la journée, plafonné à 7.
-    Exemple : 1er → pts × 2, 7e → pts × 8, 8e/9e → pts × 8.
+    Points totaux capitaine = pts + bonus, bonus = pts × coeff (plafonné à `plafond` si fourni).
+
+    Règlement 2026-2027 : coeff = (classement avant la journée - 1), plafonné à 7.
+    Le 1er ne peut pas jouer de capitaine (à vérifier en amont, hors de cette fonction).
+    `plafond` : écart de points avec le manager 1 ou 2 places devant (règle du nouveau
+    règlement) — le bonus ne peut pas le dépasser. None = pas de plafond appliqué.
     """
-    coeff = min(rang, 7)
-    return pts + pts * coeff
+    coeff = min(coeff, 7)
+    bonus = pts * coeff
+    if plafond is not None:
+        bonus = min(bonus, plafond)
+    return pts + bonus
 
 
 # ─── Test rapide ────────────────────────────────────────────────────────────────
@@ -194,15 +199,15 @@ def appliquer_capitaine(pts: int, rang: int) -> int:
 if __name__ == "__main__":
     # GK avec match entier + CS + 1 pénalty arrêté
     r = calcul_joueur("G", 90, True, 0, 0, 0, 0, 0, 1, 0, 0, False)
-    print(f"G match entier + CS + PA : {r['pts']} pts  (attendu: 4+2+2=8)")
+    print(f"G match entier + CS + PA : {r['pts']} pts  (attendu: 3+2+2=7)")
 
     # Défenseur 70 min + 1 but + CJ
     r = calcul_joueur("D", 70, False, 1, 0, 1, 0, 0, 0, 0, 1, False)
-    print(f"D 70min + 1 but + CJ     : {r['pts']} pts  (attendu: 3+3-1=5)")
+    print(f"D 70min + 1 but + CJ     : {r['pts']} pts  (attendu: 2+3-1=4)")
 
     # Attaquant match entier + 2 buts + 1 passe
     r = calcul_joueur("A", 90, True, 2, 1, 0, 0, 0, 0, 0, 0, False)
-    print(f"A match entier + 2B + 1A : {r['pts']} pts  (attendu: 4+4+2=10)")
+    print(f"A match entier + 2B + 1A : {r['pts']} pts  (attendu: 3+4+2=9)")
 
     # Milieu carton rouge après 30 min + 1 but
     r = calcul_joueur("M", 30, False, 1, 0, 0, 0, 0, 0, 0, 0, True)
