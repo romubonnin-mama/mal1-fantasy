@@ -2088,10 +2088,18 @@ async function renderAttributions() {
         }).join('')
       : '<span style="color:var(--muted);font-size:11px">—</span>';
 
+    const posteSel = `<select data-pid="${pid}" data-field="poste"
+      style="background:${bg};border:1px dashed var(--border);color:${fg};padding:3px 4px;border-radius:5px;font-size:11px;font-weight:700;width:44px;cursor:pointer"
+      onchange="attrMarkDirty(this)" title="Cliquer pour corriger le poste">
+      ${POSTE_ORDER_A.map(p => `<option value="${p}"${p===poste?' selected':''}>${p}</option>`).join('')}
+    </select>`;
+
     html += `<tr data-pid="${pid}" style="border-bottom:1px solid rgba(255,255,255,.04)">
-      <td style="padding:5px 8px"><span style="width:20px;height:20px;border-radius:50%;background:${bg};color:${fg};font-size:9px;font-weight:700;display:inline-flex;align-items:center;justify-content:center">${poste}</span></td>
+      <td style="padding:5px 8px">${posteSel}</td>
       <td style="padding:5px 8px">${attrLogoHtml(r.club)}<span style="font-size:11px;color:var(--muted)">${esc(r.club||'')}</span></td>
-      <td style="padding:5px 8px;font-weight:600">${esc(r.nom||'')}</td>
+      <td style="padding:5px 8px"><input type="text" value="${esc(r.nom||'')}" data-pid="${pid}" data-field="nom"
+        style="background:var(--surface2);border:1px dashed var(--border);color:var(--text);font-weight:600;padding:3px 6px;border-radius:5px;font-size:12px;width:100%;cursor:text"
+        onchange="attrMarkDirty(this)" title="Cliquer pour corriger l'orthographe"></td>
       <td style="padding:5px 8px">${bidsHtml}</td>
       <td style="padding:5px 8px">${winnerDisplay}</td>
       <td style="padding:5px 8px">${statutSel}</td>
@@ -2124,7 +2132,17 @@ async function saveAttributions() {
     const newStatut = sel.value;
     if (newStatut === 'won') {
       newResultats[pid].statut = 'won';
-      // vainqueur inchangé (celui de la compilation)
+      // Si le vainqueur a été perdu (ex: passage par Remis en jeu/Raté puis retour à Gagné),
+      // le reconstruire depuis les mises brutes (r.bids), jamais modifiées.
+      if (!newResultats[pid].vainqueur) {
+        const bids = newResultats[pid].bids || {};
+        const vals = Object.values(bids);
+        if (vals.length) {
+          const max = Math.max(...vals);
+          const winners = Object.entries(bids).filter(([, v]) => v === max).map(([m]) => m);
+          if (winners.length === 1) newResultats[pid].vainqueur = winners[0];
+        }
+      }
     } else if (newStatut === 'tied') {
       newResultats[pid].statut = 'tied';
       newResultats[pid].vainqueur = null;
@@ -2132,6 +2150,21 @@ async function saveAttributions() {
       newResultats[pid].statut = 'lost';
       newResultats[pid].vainqueur = null;
     }
+  });
+
+  // Lire les corrections d'orthographe depuis les champs nom
+  document.querySelectorAll('[data-field="nom"]').forEach(inp => {
+    const pid = inp.dataset.pid;
+    if (!newResultats[pid]) return;
+    const newNom = inp.value.trim();
+    if (newNom) newResultats[pid].nom = newNom;
+  });
+
+  // Lire les corrections de poste
+  document.querySelectorAll('[data-field="poste"]').forEach(sel => {
+    const pid = sel.dataset.pid;
+    if (!newResultats[pid]) return;
+    newResultats[pid].poste = sel.value;
   });
 
   // Recalculer les joueurs et budgets de chaque manager

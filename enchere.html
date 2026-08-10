@@ -726,7 +726,7 @@ function renderPrevSummary(round) {
     const entries = Object.values(prevResults).filter(r => r.bids && r.bids[mgr] !== undefined);
     const won  = entries.filter(r => r.statut === 'won' && r.vainqueur === mgr);
     const tied = entries.filter(r => r.statut === 'tied');
-    const lost = entries.filter(r => r.statut === 'won' && r.vainqueur !== mgr);
+    const lost = entries.filter(r => (r.statut === 'won' && r.vainqueur !== mgr) || r.statut === 'lost');
     const isMe = mgr === MGR;
     const summary = `<span style="color:var(--accent)">${won.length}✓</span>${tied.length ? ` <span style="color:#f59e0b">${tied.length}=</span>` : ''}${lost.length ? ` <span style="color:#ef4444">${lost.length}✗</span>` : ''}`;
     let content = '';
@@ -1006,7 +1006,7 @@ async function loadResults() {
     const entries = Object.values(data).filter(r => r.bids && r.bids[mgr] !== undefined);
     const won  = entries.filter(r => r.statut === 'won' && r.vainqueur === mgr);
     const tied = entries.filter(r => r.statut === 'tied');
-    const lost = entries.filter(r => r.statut === 'won' && r.vainqueur !== mgr);
+    const lost = entries.filter(r => (r.statut === 'won' && r.vainqueur !== mgr) || r.statut === 'lost');
 
     const makeRows = (list, color, label) =>
       R_POSTE_ORDER.flatMap(p => list.filter(r => r.poste === p).map(r =>
