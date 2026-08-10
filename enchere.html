@@ -1036,7 +1036,12 @@ async function loadResults() {
   // ── Effectifs acquis ───────────────────────────────────────
   const mgrSnaps = await getDocs(collection(db, 'managers'));
   const mgrSquads = {};
-  mgrSnaps.forEach(d => { mgrSquads[d.id] = d.data().joueurs || []; });
+  const mgrBudgets = {};
+  mgrSnaps.forEach(d => {
+    const data = d.data();
+    mgrSquads[d.id] = data.joueurs || [];
+    mgrBudgets[d.id] = { restant: data.budget_restant ?? 140, max: data.budget_max ?? 140 };
+  });
 
   const hasSquads = Object.values(mgrSquads).some(j => j.length > 0);
   if (hasSquads) {
@@ -1062,10 +1067,11 @@ async function loadResults() {
         )
       ).join('');
 
+      const bud = mgrBudgets[mgr] || { restant: 140, max: 140 };
       html += `<div style="background:var(--surface);border:1px solid ${isMe ? 'var(--accent)' : 'var(--border)'};border-radius:8px;padding:10px 12px">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
           <div style="font-weight:700;font-size:13px">${esc(mgr)}${isMe ? ' 👤' : ''}</div>
-          <div style="font-size:11px;color:var(--text2)">${squad.length}/14</div>
+          <div style="font-size:11px;color:var(--text2)">${squad.length}/14 joueurs · <span style="color:var(--accent);font-weight:700">${bud.restant}p</span> restants</div>
         </div>
         ${squadHtml || '<div style="font-size:11px;color:var(--text2)">Aucun joueur acquis</div>'}
       </div>`;
