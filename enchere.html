@@ -835,7 +835,15 @@ function renderBids() {
     ? `<div style="padding:5px 0 3px;font-size:10px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.5px;border-top:1px solid var(--border);margin-top:4px">Mises Tour ${round} (${myBids.length})</div>`
     : '';
 
-  container.innerHTML = wonRows + bidsSep + (myBids.length === 0 ? '' : '') + myBids.map((b, i) => {
+  // Trier l'affichage par poste (G, D, M, A) sans changer l'ordre réel de myBids
+  // (data-idx/data-rm doivent rester des index valides dans myBids pour l'édition/suppression)
+  const sortedIdx = myBids.map((_, i) => i).sort((ia, ib) => {
+    const pa = R_POSTE_ORDER.indexOf(myBids[ia].poste), pb = R_POSTE_ORDER.indexOf(myBids[ib].poste);
+    return (pa === -1 ? 99 : pa) - (pb === -1 ? 99 : pb) || ia - ib;
+  });
+
+  container.innerHTML = wonRows + bidsSep + (myBids.length === 0 ? '' : '') + sortedIdx.map(i => {
+    const b = myBids[i];
     const cls = { G:'pg', D:'pd', M:'pm', A:'pa' }[b.poste] || '';
     const key = `${b.nom.trim().toLowerCase()}__${b.club.trim().toLowerCase()}__${b.poste}`;
     const pr = prevResults[key];
