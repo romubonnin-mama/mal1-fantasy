@@ -299,10 +299,14 @@ const FORMATIONS = {
 // gabarit générique (svg) -> maillot de secours. L'onerror en cascade sur l'<img>
 // permet de basculer d'une source à l'autre si elle n'existe pas.
 function jerseyCandidates(club, poste) {
-  // Aucune base ne fournit de vrai maillot de gardien par club (vérifié sur
-  // TheSportsDB) -> un maillot générique distinctif est utilisé pour tous.
-  if (poste === 'G') return ['maillots/gardien.svg'];
   const id = CLUB_IDS[(club||'').toUpperCase().trim()];
+  if (poste === 'G') {
+    // Aucune base ne fournit de vrai maillot de gardien par club (vérifié sur
+    // TheSportsDB) -> photo réelle si ajoutée manuellement (id_gk), sinon
+    // maillot générique distinctif.
+    if (!id) return ['maillots/gardien.svg'];
+    return [`maillots/${id}_gk.png`, `maillots/${id}_gk.jpg`, 'maillots/gardien.svg'];
+  }
   if (!id) return ['maillots/default.svg'];
   return [`maillots/${id}.png`, `maillots/${id}.jpg`, `maillots/${id}.svg`, 'maillots/default.svg'];
 }
