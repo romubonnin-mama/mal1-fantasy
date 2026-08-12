@@ -80,7 +80,7 @@ select:focus,input:focus{outline:none;border-color:var(--accent)}
   background:radial-gradient(ellipse at 50% 10%, #26223a 0%, #171526 55%, #0d0b14 100%);}
 .pitch-grass{position:absolute;inset:0;width:100%;height:100%;
   background:repeating-linear-gradient(180deg,#1f7a3d,#1f7a3d 10%,#2a8f4a 10%,#2a8f4a 20%);
-  clip-path:polygon(3% 100%, 97% 100%, 76% 0%, 24% 0%);
+  clip-path:polygon(1% 100%, 99% 100%, 88% 0%, 12% 0%);
   box-shadow:0 0 40px rgba(0,0,0,.4) inset}
 .pitch-lines{position:absolute;inset:0;width:100%;height:100%}
 .player-chip{position:absolute;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;
@@ -247,8 +247,8 @@ const POSTE_LABEL = {G:'Gardien', D:'Défenseurs', M:'Milieux', A:'Attaquants'};
 
 // Terrain en perspective : trapèze qui se rétrécit vers le haut (but adverse, loin)
 // et s'élargit vers le bas (gardien, proche) — mêmes bornes que le clip-path .pitch-grass.
-const FIELD_BOTTOM_L = 3, FIELD_BOTTOM_R = 97;   // largeur en bas (y=100)
-const FIELD_TOP_L = 24,   FIELD_TOP_R = 76;      // largeur en haut (y=0)
+const FIELD_BOTTOM_L = 1, FIELD_BOTTOM_R = 99;   // largeur en bas (y=100)
+const FIELD_TOP_L = 12,   FIELD_TOP_R = 88;      // largeur en haut (y=0)
 function boundsAt(y) {
   const t = 1 - Math.max(0, Math.min(100, y)) / 100;   // 0 en bas, 1 en haut
   return {
@@ -298,14 +298,17 @@ const FORMATIONS = {
 // vraie photo brute (jpg, fond blanc, au cas où le détourage n'a pas encore été fait) ->
 // gabarit générique (svg) -> maillot de secours. L'onerror en cascade sur l'<img>
 // permet de basculer d'une source à l'autre si elle n'existe pas.
-function jerseyCandidates(club) {
+function jerseyCandidates(club, poste) {
+  // Aucune base ne fournit de vrai maillot de gardien par club (vérifié sur
+  // TheSportsDB) -> un maillot générique distinctif est utilisé pour tous.
+  if (poste === 'G') return ['maillots/gardien.svg'];
   const id = CLUB_IDS[(club||'').toUpperCase().trim()];
   if (!id) return ['maillots/default.svg'];
   return [`maillots/${id}.png`, `maillots/${id}.jpg`, `maillots/${id}.svg`, 'maillots/default.svg'];
 }
 
-function setJerseyImg(img, club) {
-  const candidates = jerseyCandidates(club);
+function setJerseyImg(img, club, poste) {
+  const candidates = jerseyCandidates(club, poste);
   const wrap = img.closest('.jersey-wrap');
   // La carte blanche "photo-kit" ne sert que de repli pour les jpg à fond blanc
   // non encore détourés — inutile une fois le png transparent disponible.
@@ -541,7 +544,8 @@ function renderPitch() {
   const defaults = defaultPositions();
 
   Object.keys(defaults).forEach(nom => {
-    const p = SQUAD[findPoste(nom)].find(x => x.nom === nom);
+    const poste = findPoste(nom);
+    const p = SQUAD[poste].find(x => x.nom === nom);
     const {x, y} = POS[nom] || defaults[nom];
     const chip = document.createElement('div');
     chip.className = 'player-chip';
@@ -553,7 +557,7 @@ function renderPitch() {
       <div class="jersey-wrap"><img alt=""></div>
       <div class="chip-name">${nom}</div>
     `;
-    setJerseyImg(chip.querySelector('img'), p.club);
+    setJerseyImg(chip.querySelector('img'), p.club, poste);
     attachDrag(chip);
     container.appendChild(chip);
   });
@@ -575,7 +579,7 @@ function renderBench() {
       const chip = document.createElement('div');
       chip.className = 'bench-chip';
       chip.innerHTML = `<div class="jersey-wrap"><img alt=""></div><div class="chip-name">${p.nom}</div>`;
-      setJerseyImg(chip.querySelector('img'), p.club);
+      setJerseyImg(chip.querySelector('img'), p.club, poste);
       row.appendChild(chip);
     });
   });
