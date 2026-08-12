@@ -80,7 +80,7 @@ select:focus,input:focus{outline:none;border-color:var(--accent)}
   background:radial-gradient(ellipse at 50% 10%, #26223a 0%, #171526 55%, #0d0b14 100%);}
 .pitch-grass{position:absolute;inset:0;width:100%;height:100%;
   background:repeating-linear-gradient(180deg,#1f7a3d,#1f7a3d 10%,#2a8f4a 10%,#2a8f4a 20%);
-  clip-path:polygon(1% 100%, 99% 100%, 88% 0%, 12% 0%);
+  clip-path:polygon(1% 100%, 99% 100%, 99% 50%, 90% 0%, 10% 0%, 1% 50%);
   box-shadow:0 0 40px rgba(0,0,0,.4) inset}
 .pitch-lines{position:absolute;inset:0;width:100%;height:100%}
 .player-chip{position:absolute;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;
@@ -245,12 +245,16 @@ const CLUB_IDS = {
 const POSTE_ORDER = ['G','D','M','A'];
 const POSTE_LABEL = {G:'Gardien', D:'Défenseurs', M:'Milieux', A:'Attaquants'};
 
-// Terrain en perspective : trapèze qui se rétrécit vers le haut (but adverse, loin)
-// et s'élargit vers le bas (gardien, proche) — mêmes bornes que le clip-path .pitch-grass.
-const FIELD_BOTTOM_L = 1, FIELD_BOTTOM_R = 99;   // largeur en bas (y=100)
-const FIELD_TOP_L = 12,   FIELD_TOP_R = 88;      // largeur en haut (y=0)
+// Terrain en perspective : largeur quasi pleine du bas (gardien, proche) jusqu'à
+// la moitié de l'image, puis rétrécissement en trapèze uniquement dans la moitié
+// haute (but adverse, loin) — mêmes bornes que le clip-path .pitch-grass.
+const FIELD_BOTTOM_L = 1, FIELD_BOTTOM_R = 99;   // largeur en bas (y=100) et jusqu'à TAPER_START_Y
+const FIELD_TOP_L = 10,   FIELD_TOP_R = 90;      // largeur en haut (y=0)
+const TAPER_START_Y = 50;                        // le rétrécissement commence ici (0=haut, 100=bas)
 function boundsAt(y) {
-  const t = 1 - Math.max(0, Math.min(100, y)) / 100;   // 0 en bas, 1 en haut
+  const cy = Math.max(0, Math.min(100, y));
+  if (cy >= TAPER_START_Y) return { L: FIELD_BOTTOM_L, R: FIELD_BOTTOM_R };
+  const t = 1 - cy / TAPER_START_Y;   // 0 au niveau du coude, 1 tout en haut
   return {
     L: FIELD_BOTTOM_L + (FIELD_TOP_L - FIELD_BOTTOM_L) * t,
     R: FIELD_BOTTOM_R + (FIELD_TOP_R - FIELD_BOTTOM_R) * t,
@@ -262,11 +266,12 @@ function renderPitchLines() {
   const top = 4, bottom = 96, half = 50;
   const boxTopY = 4, boxTopEnd = 23, boxBotY = 96, boxBotStart = 77;
   const tb = boundsAt(top), bb = boundsAt(bottom), hb = boundsAt(half);
+  const kink = boundsAt(TAPER_START_Y);
   const pTopA = boundsAt(boxTopY), pTopB = boundsAt(boxTopEnd);
   const pBotA = boundsAt(boxBotStart), pBotB = boundsAt(boxBotY);
   const rx = (hb.R - hb.L) * 0.22, ry = rx * 0.42;
   svg.innerHTML = `
-    <polygon points="${tb.L},${top} ${tb.R},${top} ${bb.R},${bottom} ${bb.L},${bottom}"
+    <polygon points="${tb.L},${top} ${tb.R},${top} ${kink.R},${TAPER_START_Y} ${bb.R},${bottom} ${bb.L},${bottom} ${kink.L},${TAPER_START_Y}"
       fill="none" stroke="rgba(255,255,255,.45)" stroke-width="0.6"/>
     <line x1="${hb.L}" y1="${half}" x2="${hb.R}" y2="${half}" stroke="rgba(255,255,255,.45)" stroke-width="0.6"/>
     <ellipse cx="50" cy="${half}" rx="${rx}" ry="${ry}" fill="none" stroke="rgba(255,255,255,.45)" stroke-width="0.6"/>
