@@ -48,7 +48,13 @@
       "Bash(cp __TRACKED_VAR__/auxerre.jpg maillots/108.jpg)",
       "Bash(cp __TRACKED_VAR__/brest.jpg maillots/106.jpg)",
       "Bash(cp '__TRACKED_VAR__/le havre.jpg' maillots/111.jpg)",
-      "Bash(cp __TRACKED_VAR__/lens.jpg maillots/116.jpg)"
+      "Bash(cp __TRACKED_VAR__/lens.jpg maillots/116.jpg)",
+      "WebFetch(domain:www.thesportsdb.com)",
+      "WebFetch(domain:www.footballkitarchive.com)",
+      "WebFetch(domain:www.losc.fr)",
+      "WebFetch(domain:www.footyheadlines.com)",
+      "WebFetch(domain:shop.lemansfc.fr)",
+      "Bash(sort -k9)"
     ]
   }
 }
