@@ -40,7 +40,10 @@
       "PowerShell(winget install *)",
       "PowerShell(gh auth *)",
       "PowerShell(gh run *)",
-      "Bash(node --check \"E:/Sauvegarde/draft club/mal1-fantasy/admin.html\")"
+      "Bash(node --check \"E:/Sauvegarde/draft club/mal1-fantasy/admin.html\")",
+      "Bash(node --check /tmp_check.mjs)",
+      "Bash(node --check __TRACKED_VAR__/compo_check.mjs)",
+      "Bash(echo \"exit: $?\")"
     ]
   }
 }

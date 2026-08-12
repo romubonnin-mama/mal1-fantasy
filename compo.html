@@ -80,17 +80,23 @@ select:focus,input:focus{outline:none;border-color:var(--accent)}
   background:repeating-linear-gradient(180deg,#1f7a3d,#1f7a3d 10%,#2a8f4a 10%,#2a8f4a 20%);}
 .pitch-lines{position:absolute;inset:0;width:100%;height:100%}
 .player-chip{position:absolute;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;
-  width:56px;cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none}
+  width:60px;cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none}
 .player-chip:active{cursor:grabbing}
-.player-chip img{width:38px;height:38px;object-fit:contain;filter:drop-shadow(0 2px 3px rgba(0,0,0,.5))}
-.player-chip .chip-name{margin-top:2px;font-size:9px;font-weight:700;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.9);
-  background:rgba(0,0,0,.35);border-radius:4px;padding:1px 4px;max-width:70px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.player-chip .chip-cap{position:absolute;top:-4px;right:6px;background:var(--yellow);color:#0d0f14;font-size:9px;
-  font-weight:800;border-radius:50%;width:14px;height:14px;display:flex;align-items:center;justify-content:center}
+.jersey-wrap{width:50px;height:50px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  background:radial-gradient(circle at 35% 28%, rgba(255,255,255,.4), rgba(255,255,255,0) 55%), rgba(10,14,22,.55);
+  box-shadow:0 5px 10px rgba(0,0,0,.55), 0 1px 0 rgba(255,255,255,.15), inset 0 1px 2px rgba(255,255,255,.3), inset 0 -3px 5px rgba(0,0,0,.4);
+  border:1px solid rgba(255,255,255,.12)}
+.player-chip .jersey-wrap img{width:36px;height:36px;object-fit:contain;filter:drop-shadow(0 2px 2px rgba(0,0,0,.6))}
+.player-chip .chip-name{margin-top:3px;font-size:9px;font-weight:700;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.9);
+  background:rgba(0,0,0,.35);border-radius:4px;padding:1px 4px;max-width:74px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.player-chip .chip-cap{position:absolute;top:-4px;right:2px;background:var(--yellow);color:#0d0f14;font-size:10px;
+  font-weight:800;border-radius:50%;width:16px;height:16px;display:flex;align-items:center;justify-content:center;
+  box-shadow:0 2px 4px rgba(0,0,0,.5);z-index:2}
 .bench-row{display:flex;gap:10px;overflow-x:auto;padding:12px 4px 4px;margin-top:8px;border-top:1px solid var(--border)}
-.bench-chip{flex-shrink:0;display:flex;flex-direction:column;align-items:center;width:46px}
-.bench-chip img{width:30px;height:30px;object-fit:contain;opacity:.9}
-.bench-chip .chip-name{margin-top:2px;font-size:8px;font-weight:600;color:var(--text2);text-align:center;
+.bench-chip{flex-shrink:0;display:flex;flex-direction:column;align-items:center;width:50px}
+.bench-chip .jersey-wrap{width:38px;height:38px}
+.bench-chip .jersey-wrap img{width:26px;height:26px;object-fit:contain;filter:drop-shadow(0 1px 2px rgba(0,0,0,.5))}
+.bench-chip .chip-name{margin-top:3px;font-size:8px;font-weight:600;color:var(--text2);text-align:center;
   max-width:50px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .bench-title{font-size:10px;color:var(--text2);text-transform:uppercase;font-weight:700;letter-spacing:.5px;margin-top:8px}
 
@@ -107,8 +113,8 @@ select:focus,input:focus{outline:none;border-color:var(--accent)}
   </div>
   <div class="nav-tabs">
     <a class="nav-tab" href="index.html">Classement</a>
-    <a class="nav-tab" href="enchere.html">Enchères</a>
     <a class="nav-tab active" href="compo.html">Ma Compo</a>
+    <a class="nav-tab" href="enchere.html">Enchères</a>
     <a class="nav-tab" href="champions-league.html">Champions League</a>
   </div>
   <div style="display:flex;align-items:center;gap:10px;flex-shrink:0">
@@ -148,7 +154,7 @@ select:focus,input:focus{outline:none;border-color:var(--accent)}
 <div class="page" id="page-main">
 
   <div class="alert alert-ok" style="margin-bottom:14px">
-    Compose ton onze, exporte-le en image ou copie-le en texte, puis transmets-le à l'admin
+    Compose ton onze, exporte ou copie l'image du terrain, puis transmets-la à l'admin
     pour qu'il l'enregistre — rien n'est envoyé automatiquement.
   </div>
 
@@ -162,12 +168,16 @@ select:focus,input:focus{outline:none;border-color:var(--accent)}
   </div>
 
   <div class="card" style="padding:14px">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;flex-wrap:wrap;gap:8px">
       <div class="card-title">Terrain</div>
-      <div style="display:flex;gap:6px">
+      <div style="display:flex;gap:6px;flex-wrap:wrap">
         <button class="btn btn-subtle btn-sm" id="btn-toggle-layout">Disposition en quinconce</button>
         <button class="btn btn-subtle btn-sm" id="btn-reset-layout">Réinitialiser</button>
       </div>
+    </div>
+    <div style="margin-bottom:12px">
+      <label>Disposition tactique</label>
+      <select id="formation-select"></select>
     </div>
 
     <div id="export-zone">
@@ -189,9 +199,9 @@ select:focus,input:focus{outline:none;border-color:var(--accent)}
 
   <div style="display:flex;gap:8px;margin-bottom:20px">
     <button class="btn btn-primary" style="flex:1" id="btn-export-img">📷 Exporter en image</button>
-    <button class="btn btn-subtle" style="flex:1" id="btn-copy-text">📋 Copier la compo</button>
+    <button class="btn btn-subtle" style="flex:1" id="btn-copy-img">📋 Copier l'image</button>
   </div>
-  <div id="copy-status" style="font-size:11px;color:var(--accent);text-align:center;margin-top:-12px;margin-bottom:16px;display:none">Compo copiée !</div>
+  <div id="copy-status" style="font-size:11px;color:var(--accent);text-align:center;margin-top:-12px;margin-bottom:16px;display:none">Image copiée !</div>
 
 </div>
 
@@ -235,6 +245,21 @@ const CLUB_IDS = {
 const POSTE_ORDER = ['G','D','M','A'];
 const POSTE_LABEL = {G:'Gardien', D:'Défenseurs', M:'Milieux', A:'Attaquants'};
 
+// Dispositions tactiques : lignes par poste, dans l'ordre défense -> attaque.
+// y = position verticale sur le terrain (90 = proche du gardien, 10 = proche du but adverse).
+const FORMATIONS = {
+  'auto':    {label:'Automatique (par poste)', lines:null},
+  '4-4-2':   {label:'4-4-2',     lines:[{poste:'D',n:4,y:68},{poste:'M',n:4,y:42},{poste:'A',n:2,y:16}]},
+  '4-3-3':   {label:'4-3-3',     lines:[{poste:'D',n:4,y:68},{poste:'M',n:3,y:44},{poste:'A',n:3,y:16}]},
+  '4-2-3-1': {label:'4-2-3-1',   lines:[{poste:'D',n:4,y:70},{poste:'M',n:2,y:52},{poste:'M',n:3,y:30},{poste:'A',n:1,y:12}]},
+  '4-1-4-1': {label:'4-1-4-1',   lines:[{poste:'D',n:4,y:70},{poste:'M',n:1,y:54},{poste:'M',n:4,y:32},{poste:'A',n:1,y:12}]},
+  '3-4-3':   {label:'3-4-3',     lines:[{poste:'D',n:3,y:70},{poste:'M',n:4,y:44},{poste:'A',n:3,y:16}]},
+  '3-5-2':   {label:'3-5-2',     lines:[{poste:'D',n:3,y:70},{poste:'M',n:5,y:42},{poste:'A',n:2,y:16}]},
+  '5-3-2':   {label:'5-3-2',     lines:[{poste:'D',n:5,y:72},{poste:'M',n:3,y:42},{poste:'A',n:2,y:16}]},
+  '5-4-1':   {label:'5-4-1',     lines:[{poste:'D',n:5,y:72},{poste:'M',n:4,y:42},{poste:'A',n:1,y:14}]},
+  '4-5-1':   {label:'4-5-1',     lines:[{poste:'D',n:4,y:68},{poste:'M',n:5,y:42},{poste:'A',n:1,y:14}]},
+};
+
 function jerseyUrl(club) {
   const id = CLUB_IDS[(club||'').toUpperCase().trim()];
   return id ? `maillots/${id}.svg` : 'maillots/default.svg';
@@ -245,6 +270,7 @@ let SQUAD = {G:[], D:[], M:[], A:[]};   // par poste
 let TITU = new Set();                    // noms titulaires
 let CAP  = null;                         // nom capitaine
 let QUINCONCE = false;
+let FORMATION = 'auto';
 let POS = {};                            // positions custom sauvegardées {nom:{x,y}}
 
 // ── Login ──────────────────────────────────────────────────
@@ -301,9 +327,10 @@ document.getElementById('login-btn').addEventListener('click', async () => {
 });
 
 // ── Persistance locale (par manager, cosmétique uniquement) ──
-function stateKey()   { return `compo_sel_${MGR}`; }
-function posKey()     { return `compo_pos_${MGR}`; }
-function layoutKey()  { return `compo_layout_${MGR}`; }
+function stateKey()     { return `compo_sel_${MGR}`; }
+function posKey()       { return `compo_pos_${MGR}`; }
+function layoutKey()    { return `compo_layout_${MGR}`; }
+function formationKey() { return `compo_formation_${MGR}`; }
 
 function loadState() {
   try {
@@ -319,6 +346,9 @@ function loadState() {
   } catch(e) { POS = {}; }
   QUINCONCE = localStorage.getItem(layoutKey()) === '1';
   document.getElementById('btn-toggle-layout').classList.toggle('active', QUINCONCE);
+  FORMATION = localStorage.getItem(formationKey()) || 'auto';
+  if (!FORMATIONS[FORMATION]) FORMATION = 'auto';
+  document.getElementById('formation-select').value = FORMATION;
 }
 
 function saveSelection() {
@@ -395,18 +425,56 @@ function isInPoste(nom, poste) {
 }
 
 // ── Terrain ────────────────────────────────────────────────
+function placeRow(pos, names, y, offsetY) {
+  const n = names.length;
+  names.forEach((nom, i) => {
+    let x = (i + 1) / (n + 1) * 100;
+    let py = y;
+    if (offsetY && n > 1 && i % 2 === 1) py += offsetY;
+    pos[nom] = {x, y: py};
+  });
+}
+
+// Répartit `count` joueurs entre les lignes d'un même poste au prorata des
+// effectifs prévus par la formation (ex: 5 milieux en 4-2-3-1 -> 2 puis 3).
+function splitByWeights(count, weights) {
+  const total = weights.reduce((a, b) => a + b, 0);
+  if (!total) return weights.map(() => 0);
+  const raw = weights.map(w => count * w / total);
+  const out = raw.map(Math.floor);
+  let remainder = count - out.reduce((a, b) => a + b, 0);
+  const order = raw.map((v, i) => ({i, frac: v - Math.floor(v)})).sort((a, b) => b.frac - a.frac);
+  for (let k = 0; k < remainder; k++) out[order[k % order.length].i]++;
+  return out;
+}
+
 function defaultPositions() {
-  const rows = { G: 90, D: 68, M: 42, A: 16 };
   const pos = {};
-  POSTE_ORDER.forEach((poste, li) => {
-    const names = SQUAD[poste].filter(p => TITU.has(p.nom)).map(p => p.nom);
-    const n = names.length;
-    names.forEach((nom, i) => {
-      let x = (i + 1) / (n + 1) * 100;
-      let y = rows[poste];
-      if (QUINCONCE && n > 1 && i % 2 === 1) y += 6;
-      pos[nom] = {x, y};
+  const formation = FORMATIONS[FORMATION];
+
+  if (formation && formation.lines) {
+    POSTE_ORDER.forEach(poste => {
+      const names = SQUAD[poste].filter(p => TITU.has(p.nom)).map(p => p.nom);
+      const lines = formation.lines.filter(l => l.poste === poste);
+      if (poste === 'G' || !lines.length) {
+        placeRow(pos, names, poste === 'G' ? 90 : 50, QUINCONCE ? 6 : 0);
+        return;
+      }
+      const counts = splitByWeights(names.length, lines.map(l => l.n));
+      let idx = 0;
+      lines.forEach((line, li) => {
+        const slice = names.slice(idx, idx + counts[li]);
+        idx += counts[li];
+        placeRow(pos, slice, line.y, QUINCONCE ? 6 : 0);
+      });
     });
+    return pos;
+  }
+
+  const rows = { G: 90, D: 68, M: 42, A: 16 };
+  POSTE_ORDER.forEach(poste => {
+    const names = SQUAD[poste].filter(p => TITU.has(p.nom)).map(p => p.nom);
+    placeRow(pos, names, rows[poste], QUINCONCE ? 6 : 0);
   });
   return pos;
 }
@@ -426,7 +494,7 @@ function renderPitch() {
     chip.dataset.nom = nom;
     chip.innerHTML = `
       ${CAP === nom ? '<div class="chip-cap">★</div>' : ''}
-      <img src="${jerseyUrl(p.club)}" alt="">
+      <div class="jersey-wrap"><img src="${jerseyUrl(p.club)}" alt=""></div>
       <div class="chip-name">${nom}</div>
     `;
     attachDrag(chip);
@@ -449,7 +517,7 @@ function renderBench() {
       any = true;
       const chip = document.createElement('div');
       chip.className = 'bench-chip';
-      chip.innerHTML = `<img src="${jerseyUrl(p.club)}" alt=""><div class="chip-name">${p.nom}</div>`;
+      chip.innerHTML = `<div class="jersey-wrap"><img src="${jerseyUrl(p.club)}" alt=""></div><div class="chip-name">${p.nom}</div>`;
       row.appendChild(chip);
     });
   });
@@ -496,6 +564,23 @@ document.getElementById('btn-toggle-layout').addEventListener('click', () => {
   renderPitch();
 });
 
+// ── Disposition tactique ───────────────────────────────────
+(() => {
+  const sel = document.getElementById('formation-select');
+  Object.keys(FORMATIONS).forEach(key => {
+    const opt = document.createElement('option');
+    opt.value = key; opt.textContent = FORMATIONS[key].label;
+    sel.appendChild(opt);
+  });
+})();
+document.getElementById('formation-select').addEventListener('change', (e) => {
+  FORMATION = e.target.value;
+  localStorage.setItem(formationKey(), FORMATION);
+  POS = {};
+  savePos();
+  renderPitch();
+});
+
 // ── Export image ───────────────────────────────────────────
 document.getElementById('btn-export-img').addEventListener('click', () => {
   html2canvas(document.getElementById('export-zone'), {backgroundColor: '#161b27', scale: 2}).then(canvas => {
@@ -506,25 +591,26 @@ document.getElementById('btn-export-img').addEventListener('click', () => {
   });
 });
 
-// ── Copie texte ────────────────────────────────────────────
-document.getElementById('btn-copy-text').addEventListener('click', async () => {
-  let txt = `Ma compo (${MGR})\n\n`;
-  POSTE_ORDER.forEach(poste => {
-    const names = SQUAD[poste].filter(p => TITU.has(p.nom)).map(p => p.nom);
-    if (names.length) txt += `${POSTE_LABEL[poste]} : ${names.join(', ')}\n`;
-  });
-  txt += `\nCapitaine : ${CAP || '—'}\n`;
-  const remp = POSTE_ORDER.flatMap(poste => SQUAD[poste].filter(p => !TITU.has(p.nom)).map(p => p.nom));
-  txt += `Remplaçants : ${remp.length ? remp.join(', ') : '—'}\n`;
-
-  try {
-    await navigator.clipboard.writeText(txt);
-    const s = document.getElementById('copy-status');
-    s.style.display = 'block';
-    setTimeout(() => s.style.display = 'none', 2000);
-  } catch (e) {
-    alert(txt);
-  }
+// ── Copie de l'image du terrain ─────────────────────────────
+document.getElementById('btn-copy-img').addEventListener('click', async () => {
+  const canvas = await html2canvas(document.getElementById('export-zone'), {backgroundColor: '#161b27', scale: 2});
+  canvas.toBlob(async (blob) => {
+    if (!blob) return;
+    try {
+      if (!navigator.clipboard || !window.ClipboardItem) throw new Error('clipboard-image non supportée');
+      await navigator.clipboard.write([new ClipboardItem({'image/png': blob})]);
+      const s = document.getElementById('copy-status');
+      s.style.display = 'block';
+      setTimeout(() => s.style.display = 'none', 2000);
+    } catch (e) {
+      // Repli : le navigateur ne permet pas de copier une image dans le presse-papiers -> téléchargement.
+      const link = document.createElement('a');
+      link.download = `compo-${MGR}.png`;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+      alert("Ton navigateur ne permet pas de copier une image dans le presse-papiers : l'image a été téléchargée à la place.");
+    }
+  }, 'image/png');
 });
 </script>
 </body>
