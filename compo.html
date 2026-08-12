@@ -77,7 +77,11 @@ select:focus,input:focus{outline:none;border-color:var(--accent)}
 /* Terrain */
 #export-zone{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px}
 .pitch-wrap{position:relative;width:100%;aspect-ratio:680/1000;border-radius:10px;overflow:hidden;
-  background:repeating-linear-gradient(180deg,#1f7a3d,#1f7a3d 10%,#2a8f4a 10%,#2a8f4a 20%);}
+  background:radial-gradient(ellipse at 50% 10%, #26223a 0%, #171526 55%, #0d0b14 100%);}
+.pitch-grass{position:absolute;inset:0;width:100%;height:100%;
+  background:repeating-linear-gradient(180deg,#1f7a3d,#1f7a3d 10%,#2a8f4a 10%,#2a8f4a 20%);
+  clip-path:polygon(3% 100%, 97% 100%, 76% 0%, 24% 0%);
+  box-shadow:0 0 40px rgba(0,0,0,.4) inset}
 .pitch-lines{position:absolute;inset:0;width:100%;height:100%}
 .player-chip{position:absolute;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;
   width:70px;cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none}
@@ -184,14 +188,8 @@ select:focus,input:focus{outline:none;border-color:var(--accent)}
 
     <div id="export-zone">
       <div class="pitch-wrap" id="pitch">
-        <svg class="pitch-lines" viewBox="0 0 680 1000" preserveAspectRatio="none">
-          <rect x="20" y="20" width="640" height="960" fill="none" stroke="rgba(255,255,255,.45)" stroke-width="3"/>
-          <line x1="20" y1="500" x2="660" y2="500" stroke="rgba(255,255,255,.45)" stroke-width="3"/>
-          <circle cx="340" cy="500" r="70" fill="none" stroke="rgba(255,255,255,.45)" stroke-width="3"/>
-          <circle cx="340" cy="500" r="4" fill="rgba(255,255,255,.45)"/>
-          <rect x="170" y="20" width="340" height="130" fill="none" stroke="rgba(255,255,255,.45)" stroke-width="3"/>
-          <rect x="170" y="850" width="340" height="130" fill="none" stroke="rgba(255,255,255,.45)" stroke-width="3"/>
-        </svg>
+        <div class="pitch-grass"></div>
+        <svg class="pitch-lines" id="pitch-lines" viewBox="0 0 100 100" preserveAspectRatio="none"></svg>
         <div id="pitch-chips"></div>
       </div>
       <div class="bench-title">Banc</div>
@@ -246,6 +244,40 @@ const CLUB_IDS = {
 };
 const POSTE_ORDER = ['G','D','M','A'];
 const POSTE_LABEL = {G:'Gardien', D:'Défenseurs', M:'Milieux', A:'Attaquants'};
+
+// Terrain en perspective : trapèze qui se rétrécit vers le haut (but adverse, loin)
+// et s'élargit vers le bas (gardien, proche) — mêmes bornes que le clip-path .pitch-grass.
+const FIELD_BOTTOM_L = 3, FIELD_BOTTOM_R = 97;   // largeur en bas (y=100)
+const FIELD_TOP_L = 24,   FIELD_TOP_R = 76;      // largeur en haut (y=0)
+function boundsAt(y) {
+  const t = 1 - Math.max(0, Math.min(100, y)) / 100;   // 0 en bas, 1 en haut
+  return {
+    L: FIELD_BOTTOM_L + (FIELD_TOP_L - FIELD_BOTTOM_L) * t,
+    R: FIELD_BOTTOM_R + (FIELD_TOP_R - FIELD_BOTTOM_R) * t,
+  };
+}
+
+function renderPitchLines() {
+  const svg = document.getElementById('pitch-lines');
+  const top = 4, bottom = 96, half = 50;
+  const boxTopY = 4, boxTopEnd = 23, boxBotY = 96, boxBotStart = 77;
+  const tb = boundsAt(top), bb = boundsAt(bottom), hb = boundsAt(half);
+  const pTopA = boundsAt(boxTopY), pTopB = boundsAt(boxTopEnd);
+  const pBotA = boundsAt(boxBotStart), pBotB = boundsAt(boxBotY);
+  const rx = (hb.R - hb.L) * 0.22, ry = rx * 0.42;
+  svg.innerHTML = `
+    <polygon points="${tb.L},${top} ${tb.R},${top} ${bb.R},${bottom} ${bb.L},${bottom}"
+      fill="none" stroke="rgba(255,255,255,.45)" stroke-width="0.6"/>
+    <line x1="${hb.L}" y1="${half}" x2="${hb.R}" y2="${half}" stroke="rgba(255,255,255,.45)" stroke-width="0.6"/>
+    <ellipse cx="50" cy="${half}" rx="${rx}" ry="${ry}" fill="none" stroke="rgba(255,255,255,.45)" stroke-width="0.6"/>
+    <circle cx="50" cy="${half}" r="0.5" fill="rgba(255,255,255,.45)"/>
+    <polygon points="${pTopA.L},${boxTopY} ${pTopA.R},${boxTopY} ${pTopB.R},${boxTopEnd} ${pTopB.L},${boxTopEnd}"
+      fill="none" stroke="rgba(255,255,255,.45)" stroke-width="0.6"/>
+    <polygon points="${pBotA.L},${boxBotStart} ${pBotA.R},${boxBotStart} ${pBotB.R},${boxBotY} ${pBotB.L},${boxBotY}"
+      fill="none" stroke="rgba(255,255,255,.45)" stroke-width="0.6"/>
+  `;
+}
+renderPitchLines();
 
 // Dispositions tactiques : lignes par poste, dans l'ordre défense -> attaque.
 // y = position verticale sur le terrain (90 = proche du gardien, 10 = proche du but adverse).
@@ -448,10 +480,11 @@ function isInPoste(nom, poste) {
 function placeRow(pos, names, y, offsetY) {
   const n = names.length;
   names.forEach((nom, i) => {
-    let x = (i + 1) / (n + 1) * 100;
     let py = y;
     if (offsetY && n > 1 && i % 2 === 1) py += offsetY;
-    pos[nom] = {x, y: py};
+    const {L, R} = boundsAt(py);
+    const frac = (i + 1) / (n + 1);
+    pos[nom] = {x: L + frac * (R - L), y: py};
   });
 }
 
