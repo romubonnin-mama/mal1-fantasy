@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ma L1 — Ma Compo</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#0d0f14; --surface:#161b27; --surface2:#1e2535; --border:#2a3348;
+  --accent:#00e5a0; --red:#ef4444; --yellow:#f59e0b;
+  --text:#e8eaf0; --text2:#8892a4;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-height:100vh}
+
+header{background:var(--surface);border-bottom:1px solid var(--border);padding:0 16px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;height:60px;gap:12px}
+.header-sub{font-size:11px;color:var(--text2)}
+.nav-tabs{display:flex;gap:4px;flex-shrink:0}
+.nav-tab{color:var(--text2);font-size:12px;font-weight:600;padding:6px 10px;border-radius:6px;cursor:pointer;transition:all .2s;border:none;background:none;text-decoration:none;display:inline-flex;align-items:center;font-family:'Inter',sans-serif}
+.nav-tab:hover{color:var(--text);background:var(--surface2)}
+.nav-tab.active{color:var(--accent);background:var(--surface2)}
+.nav-dropdown{position:relative}
+.nav-dropdown-menu{display:none;position:absolute;top:calc(100% + 8px);right:0;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:6px;min-width:150px;z-index:200;box-shadow:0 8px 24px rgba(0,0,0,.5)}
+.nav-dropdown.open .nav-dropdown-menu{display:block}
+.nav-dropdown-menu a{display:block;padding:8px 12px;color:var(--text2);font-size:12px;font-weight:600;border-radius:6px;text-decoration:none;transition:all .15s}
+.nav-dropdown-menu a:hover{color:var(--text);background:var(--surface2)}
+@media(max-width:599px){
+  header{height:auto;min-height:50px;padding:8px 12px;flex-wrap:wrap;gap:6px}
+  .nav-tabs{order:3;width:100%;display:grid;grid-template-columns:repeat(4,1fr);gap:3px;padding-bottom:2px}
+  .nav-tab{text-align:center;padding:7px 4px;font-size:10px;background:var(--surface2);border-radius:6px}
+}
+
+.page{display:none;padding:16px;max-width:560px;margin:0 auto}
+.page.active{display:block}
+
+.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;margin-bottom:14px;overflow:hidden}
+.card-hd{padding:12px 16px;background:var(--surface2);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.card-title{font-weight:700;font-size:13px}
+
+label{display:block;font-size:11px;color:var(--text2);margin-bottom:5px;font-weight:600;text-transform:uppercase;letter-spacing:.5px}
+select,input[type=text],input[type=password]{width:100%;background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:10px 12px;border-radius:8px;font-size:14px;font-family:'Inter',sans-serif}
+select:focus,input:focus{outline:none;border-color:var(--accent)}
+
+.btn{padding:10px 18px;border-radius:8px;border:none;font-family:'Inter',sans-serif;font-weight:600;font-size:13px;cursor:pointer;transition:opacity .15s}
+.btn:hover{opacity:.85}
+.btn:disabled{opacity:.35;cursor:not-allowed}
+.btn-primary{background:var(--accent);color:#0d0f14}
+.btn-subtle{background:var(--surface2);border:1px solid var(--border);color:var(--text)}
+.btn-full{width:100%}
+.btn-sm{padding:5px 10px;font-size:12px}
+
+.alert{padding:9px 13px;border-radius:8px;font-size:12px;margin-bottom:10px}
+.alert-warn{background:rgba(245,158,11,.12);border:1px solid var(--yellow);color:var(--yellow)}
+.alert-danger{background:rgba(239,68,68,.12);border:1px solid var(--red);color:var(--red)}
+.alert-ok{background:rgba(0,229,160,.12);border:1px solid var(--accent);color:var(--accent)}
+
+.empty{text-align:center;color:var(--text2);font-size:13px;padding:28px 0}
+.big-check{font-size:60px;line-height:1;margin-bottom:8px}
+
+.poste-badge{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;flex-shrink:0}
+.pg{background:#854d0e;color:#fde68a}.pd{background:#1e3a5f;color:#93c5fd}
+.pm{background:#14532d;color:#86efac}.pa{background:#7f1d1d;color:#fca5a5}
+
+/* Sélection effectif */
+.poste-group{margin-bottom:10px}
+.poste-group-title{font-size:11px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.5px;margin:10px 0 6px;padding-left:2px}
+.player-row{display:flex;align-items:center;gap:8px;padding:8px 4px;border-bottom:1px solid var(--border);font-size:13px}
+.player-row:last-child{border-bottom:none}
+.player-row input[type=checkbox]{width:18px;height:18px;accent-color:var(--accent);flex-shrink:0;cursor:pointer}
+.player-row .p-nom{flex:1;font-weight:600}
+.player-row .p-club{font-size:10px;color:var(--text2)}
+.cap-star{background:var(--surface2);border:1px solid var(--border);color:var(--text2);border-radius:6px;padding:4px 8px;font-size:13px;cursor:pointer;flex-shrink:0}
+.cap-star.active{background:var(--yellow);color:#0d0f14;border-color:var(--yellow)}
+.cap-star:disabled{opacity:.25;cursor:not-allowed}
+
+/* Terrain */
+#export-zone{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px}
+.pitch-wrap{position:relative;width:100%;aspect-ratio:680/1000;border-radius:10px;overflow:hidden;
+  background:repeating-linear-gradient(180deg,#1f7a3d,#1f7a3d 10%,#2a8f4a 10%,#2a8f4a 20%);}
+.pitch-lines{position:absolute;inset:0;width:100%;height:100%}
+.player-chip{position:absolute;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;
+  width:56px;cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none}
+.player-chip:active{cursor:grabbing}
+.player-chip img{width:38px;height:38px;object-fit:contain;filter:drop-shadow(0 2px 3px rgba(0,0,0,.5))}
+.player-chip .chip-name{margin-top:2px;font-size:9px;font-weight:700;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.9);
+  background:rgba(0,0,0,.35);border-radius:4px;padding:1px 4px;max-width:70px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.player-chip .chip-cap{position:absolute;top:-4px;right:6px;background:var(--yellow);color:#0d0f14;font-size:9px;
+  font-weight:800;border-radius:50%;width:14px;height:14px;display:flex;align-items:center;justify-content:center}
+.bench-row{display:flex;gap:10px;overflow-x:auto;padding:12px 4px 4px;margin-top:8px;border-top:1px solid var(--border)}
+.bench-chip{flex-shrink:0;display:flex;flex-direction:column;align-items:center;width:46px}
+.bench-chip img{width:30px;height:30px;object-fit:contain;opacity:.9}
+.bench-chip .chip-name{margin-top:2px;font-size:8px;font-weight:600;color:var(--text2);text-align:center;
+  max-width:50px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bench-title{font-size:10px;color:var(--text2);text-transform:uppercase;font-weight:700;letter-spacing:.5px;margin-top:8px}
+
+.counter-row{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;font-size:12px;color:var(--text2)}
+.counter-row .n{font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--accent)}
+.counter-row .n.warn{color:var(--yellow)}
+</style>
+</head>
+<body>
+
+<header>
+  <div style="display:flex;align-items:center;gap:8px;flex-shrink:0">
+    <a href="index.html" style="font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--text);letter-spacing:2px;text-decoration:none">MA <span style="color:var(--accent)">L1</span></a>
+  </div>
+  <div class="nav-tabs">
+    <a class="nav-tab" href="index.html">Classement</a>
+    <a class="nav-tab" href="enchere.html">Enchères</a>
+    <a class="nav-tab active" href="compo.html">Ma Compo</a>
+    <a class="nav-tab" href="champions-league.html">Champions League</a>
+  </div>
+  <div style="display:flex;align-items:center;gap:10px;flex-shrink:0">
+    <div style="text-align:right">
+      <div style="font-size:13px;font-weight:700;color:var(--accent)" id="header-nom"></div>
+    </div>
+  </div>
+</header>
+
+<!-- LOGIN -->
+<div class="page active" id="page-login">
+  <div style="max-width:360px;margin:40px auto">
+    <div class="card">
+      <div class="card-hd"><div class="card-title">Connexion</div></div>
+      <div style="padding:16px">
+        <div style="margin-bottom:14px">
+          <label>Ton nom</label>
+          <select id="login-nom">
+            <option value="">— Choisir —</option>
+          </select>
+        </div>
+        <div style="margin-bottom:14px">
+          <label>Code PIN</label>
+          <input type="password" id="login-pin" maxlength="6" inputmode="numeric" placeholder="••••">
+        </div>
+        <div id="login-err" class="alert alert-danger" style="display:none">Code incorrect</div>
+        <button class="btn btn-primary btn-full" id="login-btn">Se connecter</button>
+        <div style="font-size:11px;color:var(--text2);text-align:center;margin-top:10px">
+          C'est le même code PIN que pour les enchères.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="page" id="page-main">
+
+  <div class="alert alert-ok" style="margin-bottom:14px">
+    Compose ton onze, exporte-le en image ou copie-le en texte, puis transmets-le à l'admin
+    pour qu'il l'enregistre — rien n'est envoyé automatiquement.
+  </div>
+
+  <div class="card">
+    <div class="card-hd"><div class="card-title">Choisis ton onze</div></div>
+    <div style="padding:8px 16px" id="selection-zone"></div>
+    <div class="counter-row">
+      <span>Titulaires sélectionnés</span>
+      <span><span class="n" id="titu-count">0</span>/11</span>
+    </div>
+  </div>
+
+  <div class="card" style="padding:14px">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+      <div class="card-title">Terrain</div>
+      <div style="display:flex;gap:6px">
+        <button class="btn btn-subtle btn-sm" id="btn-toggle-layout">Disposition en quinconce</button>
+        <button class="btn btn-subtle btn-sm" id="btn-reset-layout">Réinitialiser</button>
+      </div>
+    </div>
+
+    <div id="export-zone">
+      <div class="pitch-wrap" id="pitch">
+        <svg class="pitch-lines" viewBox="0 0 680 1000" preserveAspectRatio="none">
+          <rect x="20" y="20" width="640" height="960" fill="none" stroke="rgba(255,255,255,.45)" stroke-width="3"/>
+          <line x1="20" y1="500" x2="660" y2="500" stroke="rgba(255,255,255,.45)" stroke-width="3"/>
+          <circle cx="340" cy="500" r="70" fill="none" stroke="rgba(255,255,255,.45)" stroke-width="3"/>
+          <circle cx="340" cy="500" r="4" fill="rgba(255,255,255,.45)"/>
+          <rect x="170" y="20" width="340" height="130" fill="none" stroke="rgba(255,255,255,.45)" stroke-width="3"/>
+          <rect x="170" y="850" width="340" height="130" fill="none" stroke="rgba(255,255,255,.45)" stroke-width="3"/>
+        </svg>
+        <div id="pitch-chips"></div>
+      </div>
+      <div class="bench-title">Banc</div>
+      <div class="bench-row" id="bench-row"></div>
+    </div>
+  </div>
+
+  <div style="display:flex;gap:8px;margin-bottom:20px">
+    <button class="btn btn-primary" style="flex:1" id="btn-export-img">📷 Exporter en image</button>
+    <button class="btn btn-subtle" style="flex:1" id="btn-copy-text">📋 Copier la compo</button>
+  </div>
+  <div id="copy-status" style="font-size:11px;color:var(--accent);text-align:center;margin-top:-12px;margin-bottom:16px;display:none">Compo copiée !</div>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-app.js";
+import { getFirestore, doc, getDoc, getDocs, collection }
+  from "https://www.gstatic.com/firebasejs/12.12.1/firebase-firestore.js";
+
+const FC = {
+  apiKey:"AIzaSyDaRa0yS8HohfrTr4o_InliSZ82PA4-t1I",
+  authDomain:"coach-ligue1.firebaseapp.com",
+  projectId:"coach-ligue1",
+  storageBucket:"coach-ligue1.firebasestorage.app",
+  messagingSenderId:"249358091855",
+  appId:"1:249358091855:web:be9aaa90b47a2269750c3a"
+};
+const app = initializeApp(FC);
+const db  = getFirestore(app);
+
+const CLUB_IDS = {
+  'PSG':85,'PARIS':85,'PARIS SG':85,'PARIS SAINT-GERMAIN':85,
+  'OM':81,'MARSEILLE':81,'OLYMPIQUE DE MARSEILLE':81,
+  'MONACO':91,'ASM':91,'AS MONACO':91,
+  'OL':80,'LYON':80,'OLYMPIQUE LYONNAIS':80,
+  'LOSC':79,'LILLE':79,'LILLE OSC':79,
+  'NICE':84,'OGC NICE':84,'OGCN':84,
+  'LENS':116,'RCL':116,'RC LENS':116,
+  'RENNES':94,'SRFC':94,'STADE RENNAIS':94,
+  'STRASBOURG':95,'RCSA':95,'RC STRASBOURG':95,
+  'AUXERRE':108,'AJA':108,'AJ AUXERRE':108,
+  'LE HAVRE':111,'HAC':111,'HAVRE':111,
+  'TOULOUSE':96,'TFC':96,'FC TOULOUSE':96,
+  'ANGERS':77,'SCO':77,'ANGERS SCO':77,
+  'BREST':106,'SB29':106,'STADE BRESTOIS':106,
+  'LORIENT':97,'FCL':97,'FC LORIENT':97,
+  'PFC':114,'PARIS FC':114,
+  'TROYES':110,'ESTAC':110,'ESTAC TROYES':110,
+  'LE MANS':1298,'LMFC':1298,'LE MANS FC':1298,
+};
+const POSTE_ORDER = ['G','D','M','A'];
+const POSTE_LABEL = {G:'Gardien', D:'Défenseurs', M:'Milieux', A:'Attaquants'};
+
+function jerseyUrl(club) {
+  const id = CLUB_IDS[(club||'').toUpperCase().trim()];
+  return id ? `maillots/${id}.svg` : 'maillots/default.svg';
+}
+
+let MGR = null;
+let SQUAD = {G:[], D:[], M:[], A:[]};   // par poste
+let TITU = new Set();                    // noms titulaires
+let CAP  = null;                         // nom capitaine
+let QUINCONCE = false;
+let POS = {};                            // positions custom sauvegardées {nom:{x,y}}
+
+// ── Login ──────────────────────────────────────────────────
+(async () => {
+  const snap = await getDocs(collection(db, 'managers'));
+  const sel = document.getElementById('login-nom');
+  const noms = [];
+  snap.forEach(d => noms.push(d.id));
+  noms.sort().forEach(nom => {
+    const opt = document.createElement('option');
+    opt.value = nom; opt.textContent = nom;
+    sel.appendChild(opt);
+  });
+})();
+
+document.getElementById('login-btn').addEventListener('click', async () => {
+  const nom = document.getElementById('login-nom').value;
+  const pin = document.getElementById('login-pin').value.trim();
+  if (!nom) { alert('Choisis ton nom'); return; }
+
+  const snap = await getDoc(doc(db, 'managers', nom));
+  const data = snap.exists() ? snap.data() : null;
+  if (!data || !data.pin || String(data.pin) !== pin) {
+    const e = document.getElementById('login-err');
+    e.textContent = data && !data.pin
+      ? "Tu n'as pas encore créé ton PIN — utilise le lien d'invitation des enchères."
+      : 'Code incorrect.';
+    e.style.display = 'block';
+    return;
+  }
+
+  MGR = nom;
+  document.getElementById('login-err').style.display = 'none';
+  document.getElementById('page-login').classList.remove('active');
+  document.getElementById('page-main').classList.add('active');
+  document.getElementById('header-nom').textContent = nom;
+
+  const joueurs = data.joueurs || [];
+  SQUAD = {G:[], D:[], M:[], A:[]};
+  const seen = new Set();
+  joueurs.forEach(j => {
+    const poste = j.poste;
+    const nom2 = (j.nom || '').trim();
+    if (!POSTE_ORDER.includes(poste) || !nom2) return;
+    const key = nom2.toLowerCase() + '__' + (j.club||'').toLowerCase();
+    if (seen.has(key)) return;
+    seen.add(key);
+    SQUAD[poste].push({nom: nom2, club: j.club || ''});
+  });
+
+  loadState();
+  renderSelection();
+  renderPitch();
+});
+
+// ── Persistance locale (par manager, cosmétique uniquement) ──
+function stateKey()   { return `compo_sel_${MGR}`; }
+function posKey()     { return `compo_pos_${MGR}`; }
+function layoutKey()  { return `compo_layout_${MGR}`; }
+
+function loadState() {
+  try {
+    const raw = localStorage.getItem(stateKey());
+    if (raw) {
+      const s = JSON.parse(raw);
+      TITU = new Set(s.titulaires || []);
+      CAP  = s.capitaine || null;
+    }
+  } catch(e) {}
+  try {
+    POS = JSON.parse(localStorage.getItem(posKey())) || {};
+  } catch(e) { POS = {}; }
+  QUINCONCE = localStorage.getItem(layoutKey()) === '1';
+  document.getElementById('btn-toggle-layout').classList.toggle('active', QUINCONCE);
+}
+
+function saveSelection() {
+  localStorage.setItem(stateKey(), JSON.stringify({titulaires:[...TITU], capitaine:CAP}));
+}
+function savePos() {
+  localStorage.setItem(posKey(), JSON.stringify(POS));
+}
+
+// ── Sélection de l'effectif ───────────────────────────────
+function renderSelection() {
+  const zone = document.getElementById('selection-zone');
+  zone.innerHTML = '';
+  const totalPlayers = POSTE_ORDER.reduce((s, poste) => s + SQUAD[poste].length, 0);
+  if (!totalPlayers) {
+    zone.innerHTML = '<div class="empty">Aucun joueur dans ton effectif pour l\'instant — reviens une fois ton mercato terminé.</div>';
+    return;
+  }
+  POSTE_ORDER.forEach(poste => {
+    const players = SQUAD[poste];
+    if (!players.length) return;
+    const group = document.createElement('div');
+    group.className = 'poste-group';
+    group.innerHTML = `<div class="poste-group-title">${POSTE_LABEL[poste]}</div>`;
+    players.forEach(p => {
+      const isTitu = TITU.has(p.nom);
+      const isCap  = CAP === p.nom;
+      const row = document.createElement('div');
+      row.className = 'player-row';
+      row.innerHTML = `
+        <input type="checkbox" data-nom="${p.nom}" data-poste="${poste}" ${isTitu ? 'checked' : ''}>
+        <div class="poste-badge p${poste.toLowerCase()}">${poste}</div>
+        <div class="p-nom">${p.nom} <span class="p-club">${p.club||''}</span></div>
+        <button class="cap-star ${isCap ? 'active' : ''}" data-nom="${p.nom}" ${isTitu ? '' : 'disabled'}>★</button>
+      `;
+      group.appendChild(row);
+    });
+    zone.appendChild(group);
+  });
+
+  zone.querySelectorAll('input[type=checkbox]').forEach(cb => {
+    cb.addEventListener('change', () => {
+      const nom = cb.dataset.nom, poste = cb.dataset.poste;
+      if (cb.checked) {
+        if (poste === 'G') { TITU.forEach(n => { if (isInPoste(n,'G')) TITU.delete(n); }); }
+        TITU.add(nom);
+      } else {
+        TITU.delete(nom);
+        if (CAP === nom) CAP = null;
+      }
+      saveSelection();
+      renderSelection();
+      renderPitch();
+    });
+  });
+  zone.querySelectorAll('.cap-star').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const nom = btn.dataset.nom;
+      CAP = (CAP === nom) ? null : nom;
+      saveSelection();
+      renderSelection();
+      renderPitch();
+    });
+  });
+
+  const n = TITU.size;
+  const cEl = document.getElementById('titu-count');
+  cEl.textContent = n;
+  cEl.classList.toggle('warn', n !== 11);
+}
+
+function isInPoste(nom, poste) {
+  return SQUAD[poste].some(p => p.nom === nom);
+}
+
+// ── Terrain ────────────────────────────────────────────────
+function defaultPositions() {
+  const rows = { G: 90, D: 68, M: 42, A: 16 };
+  const pos = {};
+  POSTE_ORDER.forEach((poste, li) => {
+    const names = SQUAD[poste].filter(p => TITU.has(p.nom)).map(p => p.nom);
+    const n = names.length;
+    names.forEach((nom, i) => {
+      let x = (i + 1) / (n + 1) * 100;
+      let y = rows[poste];
+      if (QUINCONCE && n > 1 && i % 2 === 1) y += 6;
+      pos[nom] = {x, y};
+    });
+  });
+  return pos;
+}
+
+function renderPitch() {
+  const container = document.getElementById('pitch-chips');
+  container.innerHTML = '';
+  const defaults = defaultPositions();
+
+  Object.keys(defaults).forEach(nom => {
+    const p = SQUAD[findPoste(nom)].find(x => x.nom === nom);
+    const {x, y} = POS[nom] || defaults[nom];
+    const chip = document.createElement('div');
+    chip.className = 'player-chip';
+    chip.style.left = x + '%';
+    chip.style.top  = y + '%';
+    chip.dataset.nom = nom;
+    chip.innerHTML = `
+      ${CAP === nom ? '<div class="chip-cap">★</div>' : ''}
+      <img src="${jerseyUrl(p.club)}" alt="">
+      <div class="chip-name">${nom}</div>
+    `;
+    attachDrag(chip);
+    container.appendChild(chip);
+  });
+
+  renderBench();
+}
+
+function findPoste(nom) {
+  return POSTE_ORDER.find(poste => SQUAD[poste].some(p => p.nom === nom));
+}
+
+function renderBench() {
+  const row = document.getElementById('bench-row');
+  row.innerHTML = '';
+  let any = false;
+  POSTE_ORDER.forEach(poste => {
+    SQUAD[poste].filter(p => !TITU.has(p.nom)).forEach(p => {
+      any = true;
+      const chip = document.createElement('div');
+      chip.className = 'bench-chip';
+      chip.innerHTML = `<img src="${jerseyUrl(p.club)}" alt=""><div class="chip-name">${p.nom}</div>`;
+      row.appendChild(chip);
+    });
+  });
+  if (!any) row.innerHTML = '<div class="empty" style="padding:8px">Aucun remplaçant</div>';
+}
+
+// ── Glisser-déposer libre ─────────────────────────────────
+function attachDrag(chip) {
+  const pitch = document.getElementById('pitch');
+  chip.addEventListener('pointerdown', (ev) => {
+    chip.setPointerCapture(ev.pointerId);
+    const move = (e) => {
+      const rect = pitch.getBoundingClientRect();
+      let x = (e.clientX - rect.left) / rect.width * 100;
+      let y = (e.clientY - rect.top)  / rect.height * 100;
+      x = Math.max(4, Math.min(96, x));
+      y = Math.max(4, Math.min(96, y));
+      chip.style.left = x + '%';
+      chip.style.top  = y + '%';
+      POS[chip.dataset.nom] = {x, y};
+    };
+    const up = (e) => {
+      chip.releasePointerCapture(ev.pointerId);
+      chip.removeEventListener('pointermove', move);
+      chip.removeEventListener('pointerup', up);
+      savePos();
+    };
+    chip.addEventListener('pointermove', move);
+    chip.addEventListener('pointerup', up);
+  });
+}
+
+document.getElementById('btn-reset-layout').addEventListener('click', () => {
+  POS = {};
+  savePos();
+  renderPitch();
+});
+document.getElementById('btn-toggle-layout').addEventListener('click', () => {
+  QUINCONCE = !QUINCONCE;
+  localStorage.setItem(layoutKey(), QUINCONCE ? '1' : '0');
+  document.getElementById('btn-toggle-layout').classList.toggle('active', QUINCONCE);
+  POS = {};
+  savePos();
+  renderPitch();
+});
+
+// ── Export image ───────────────────────────────────────────
+document.getElementById('btn-export-img').addEventListener('click', () => {
+  html2canvas(document.getElementById('export-zone'), {backgroundColor: '#161b27', scale: 2}).then(canvas => {
+    const link = document.createElement('a');
+    link.download = `compo-${MGR}.png`;
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+  });
+});
+
+// ── Copie texte ────────────────────────────────────────────
+document.getElementById('btn-copy-text').addEventListener('click', async () => {
+  let txt = `Ma compo (${MGR})\n\n`;
+  POSTE_ORDER.forEach(poste => {
+    const names = SQUAD[poste].filter(p => TITU.has(p.nom)).map(p => p.nom);
+    if (names.length) txt += `${POSTE_LABEL[poste]} : ${names.join(', ')}\n`;
+  });
+  txt += `\nCapitaine : ${CAP || '—'}\n`;
+  const remp = POSTE_ORDER.flatMap(poste => SQUAD[poste].filter(p => !TITU.has(p.nom)).map(p => p.nom));
+  txt += `Remplaçants : ${remp.length ? remp.join(', ') : '—'}\n`;
+
+  try {
+    await navigator.clipboard.writeText(txt);
+    const s = document.getElementById('copy-status');
+    s.style.display = 'block';
+    setTimeout(() => s.style.display = 'none', 2000);
+  } catch (e) {
+    alert(txt);
+  }
+});
+</script>
+</body>
+</html>

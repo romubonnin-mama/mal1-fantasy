@@ -552,6 +552,20 @@
       "fileType": "code",
       "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\scoring.py",
       "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\scoring.py:181"
+    },
+    {
+      "id": "file::download_maillots",
+      "label": "download_maillots.py",
+      "fileType": "code",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\download_maillots.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\download_maillots.py:1"
+    },
+    {
+      "id": "download_maillots::main",
+      "label": "main",
+      "fileType": "code",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\download_maillots.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\download_maillots.py:63"
     }
   ],
   "edges": [
@@ -1139,12 +1153,21 @@
       "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\compute_journee.py",
       "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\compute_journee.py:222",
       "weight": 1
+    },
+    {
+      "source": "file::download_maillots",
+      "target": "download_maillots::main",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\download_maillots.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\download_maillots.py:63",
+      "weight": 1
     }
   ],
   "metadata": {
-    "files": 15,
-    "nodes": 79,
-    "edges": 65,
-    "builtAt": "2026-08-03T20:29:47.647Z"
+    "files": 16,
+    "nodes": 81,
+    "edges": 66,
+    "builtAt": "2026-08-12T21:00:52.760Z"
   }
 }

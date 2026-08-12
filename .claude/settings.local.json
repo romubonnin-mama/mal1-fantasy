@@ -27,7 +27,20 @@
       "PowerShell(python \"E:\\\\Sauvegarde\\\\draft club\\\\Saisons\\\\extract_archives.py\")",
       "Bash(pip install *)",
       "Bash(node -e \"const d=require\\('./data.json'\\); console.log\\(JSON.stringify\\(d.classement||d.managers||Object.keys\\(d\\), null, 2\\)\\).slice\\(0,2000\\)\")",
-      "Bash(curl *)"
+      "Bash(curl *)",
+      "Bash(node -e ' *)",
+      "Bash(netstat -ano)",
+      "Bash(gh run *)",
+      "Bash(gh api *)",
+      "PowerShell(gh *)",
+      "WebFetch(domain:api.github.com)",
+      "WebFetch(domain:romubonnin-mama.github.io)",
+      "WebFetch(domain:www.githubstatus.com)",
+      "PowerShell(Get-Command *)",
+      "PowerShell(winget install *)",
+      "PowerShell(gh auth *)",
+      "PowerShell(gh run *)",
+      "Bash(node --check \"E:/Sauvegarde/draft club/mal1-fantasy/admin.html\")"
     ]
   }
 }
