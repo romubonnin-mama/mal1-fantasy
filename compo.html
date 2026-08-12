@@ -80,7 +80,7 @@ select:focus,input:focus{outline:none;border-color:var(--accent)}
   background:radial-gradient(ellipse at 50% 10%, #26223a 0%, #171526 55%, #0d0b14 100%);}
 .pitch-grass{position:absolute;inset:0;width:100%;height:100%;
   background:repeating-linear-gradient(180deg,#1f7a3d,#1f7a3d 10%,#2a8f4a 10%,#2a8f4a 20%);
-  clip-path:polygon(1% 100%, 99% 100%, 99% 50%, 90% 0%, 10% 0%, 1% 50%);
+  clip-path:polygon(0% 100%, 100% 100%, 100% 38%, 88% 0%, 12% 0%, 0% 38%);
   box-shadow:0 0 40px rgba(0,0,0,.4) inset}
 .pitch-lines{position:absolute;inset:0;width:100%;height:100%}
 .player-chip{position:absolute;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;
@@ -248,9 +248,9 @@ const POSTE_LABEL = {G:'Gardien', D:'Défenseurs', M:'Milieux', A:'Attaquants'};
 // Terrain en perspective : largeur quasi pleine du bas (gardien, proche) jusqu'à
 // la moitié de l'image, puis rétrécissement en trapèze uniquement dans la moitié
 // haute (but adverse, loin) — mêmes bornes que le clip-path .pitch-grass.
-const FIELD_BOTTOM_L = 1, FIELD_BOTTOM_R = 99;   // largeur en bas (y=100) et jusqu'à TAPER_START_Y
-const FIELD_TOP_L = 10,   FIELD_TOP_R = 90;      // largeur en haut (y=0)
-const TAPER_START_Y = 50;                        // le rétrécissement commence ici (0=haut, 100=bas)
+const FIELD_BOTTOM_L = 0, FIELD_BOTTOM_R = 100;  // largeur en bas (y=100) et jusqu'à TAPER_START_Y
+const FIELD_TOP_L = 12,   FIELD_TOP_R = 88;      // largeur en haut (y=0)
+const TAPER_START_Y = 38;                        // le rétrécissement commence ici (0=haut, 100=bas) — mesuré sur la capture de référence
 function boundsAt(y) {
   const cy = Math.max(0, Math.min(100, y));
   if (cy >= TAPER_START_Y) return { L: FIELD_BOTTOM_L, R: FIELD_BOTTOM_R };
