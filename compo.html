@@ -84,6 +84,9 @@ select:focus,input:focus{outline:none;border-color:var(--accent)}
 .player-chip:active{cursor:grabbing}
 .jersey-wrap{position:relative;display:flex;align-items:center;justify-content:center}
 .player-chip .jersey-wrap img{width:52px;height:auto;object-fit:contain;filter:drop-shadow(0 4px 5px rgba(0,0,0,.65))}
+.player-chip .jersey-wrap.photo-kit{width:58px;height:58px;background:#fff;border-radius:12px;padding:5px;
+  box-shadow:0 5px 12px rgba(0,0,0,.55), inset 0 0 0 1px rgba(0,0,0,.08)}
+.player-chip .jersey-wrap.photo-kit img{width:100%;height:100%;object-fit:contain;filter:none}
 .player-chip .chip-name{margin-top:2px;font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:.5px;
   text-transform:uppercase;color:#fff;text-shadow:0 2px 4px rgba(0,0,0,.9);max-width:76px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .player-chip .chip-cap{position:absolute;top:-6px;right:-8px;background:var(--yellow);color:#0d0f14;font-size:10px;
@@ -92,6 +95,9 @@ select:focus,input:focus{outline:none;border-color:var(--accent)}
 .bench-row{display:flex;gap:10px;overflow-x:auto;padding:12px 4px 4px;margin-top:8px;border-top:1px solid var(--border)}
 .bench-chip{flex-shrink:0;display:flex;flex-direction:column;align-items:center;width:52px}
 .bench-chip .jersey-wrap img{width:34px;height:auto;object-fit:contain;filter:drop-shadow(0 2px 3px rgba(0,0,0,.55))}
+.bench-chip .jersey-wrap.photo-kit{width:38px;height:38px;background:#fff;border-radius:8px;padding:3px;
+  box-shadow:0 3px 7px rgba(0,0,0,.5), inset 0 0 0 1px rgba(0,0,0,.08)}
+.bench-chip .jersey-wrap.photo-kit img{width:100%;height:100%;object-fit:contain;filter:none}
 .bench-chip .chip-name{margin-top:2px;font-family:'Bebas Neue',sans-serif;font-size:10px;letter-spacing:.3px;
   text-transform:uppercase;color:var(--text2);text-align:center;max-width:56px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .bench-title{font-size:10px;color:var(--text2);text-transform:uppercase;font-weight:700;letter-spacing:.5px;margin-top:8px}
@@ -256,9 +262,27 @@ const FORMATIONS = {
   '4-5-1':   {label:'4-5-1',     lines:[{poste:'D',n:4,y:68},{poste:'M',n:5,y:42},{poste:'A',n:1,y:14}]},
 };
 
-function jerseyUrl(club) {
+// Ordre de préférence : vraie photo de maillot (jpg, ajoutée club par club) ->
+// gabarit générique (svg) -> maillot de secours. L'onerror en cascade sur
+// l'<img> permet de basculer d'une source à l'autre si elle n'existe pas.
+function jerseyCandidates(club) {
   const id = CLUB_IDS[(club||'').toUpperCase().trim()];
-  return id ? `maillots/${id}.svg` : 'maillots/default.svg';
+  if (!id) return ['maillots/default.svg'];
+  return [`maillots/${id}.jpg`, `maillots/${id}.svg`, 'maillots/default.svg'];
+}
+
+function setJerseyImg(img, club) {
+  const candidates = jerseyCandidates(club);
+  const wrap = img.closest('.jersey-wrap');
+  const applyKind = () => { if (wrap) wrap.classList.toggle('photo-kit', img.src.endsWith('.jpg')); };
+  let idx = 0;
+  img.src = candidates[idx];
+  applyKind();
+  img.onerror = () => {
+    idx++;
+    if (idx < candidates.length) { img.src = candidates[idx]; applyKind(); }
+    else img.onerror = null;
+  };
 }
 
 let MGR = null;
@@ -490,9 +514,10 @@ function renderPitch() {
     chip.dataset.nom = nom;
     chip.innerHTML = `
       ${CAP === nom ? '<div class="chip-cap">★</div>' : ''}
-      <div class="jersey-wrap"><img src="${jerseyUrl(p.club)}" alt=""></div>
+      <div class="jersey-wrap"><img alt=""></div>
       <div class="chip-name">${nom}</div>
     `;
+    setJerseyImg(chip.querySelector('img'), p.club);
     attachDrag(chip);
     container.appendChild(chip);
   });
@@ -513,7 +538,8 @@ function renderBench() {
       any = true;
       const chip = document.createElement('div');
       chip.className = 'bench-chip';
-      chip.innerHTML = `<div class="jersey-wrap"><img src="${jerseyUrl(p.club)}" alt=""></div><div class="chip-name">${p.nom}</div>`;
+      chip.innerHTML = `<div class="jersey-wrap"><img alt=""></div><div class="chip-name">${p.nom}</div>`;
+      setJerseyImg(chip.querySelector('img'), p.club);
       row.appendChild(chip);
     });
   });
