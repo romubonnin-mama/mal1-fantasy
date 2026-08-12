@@ -84,15 +84,15 @@ select:focus,input:focus{outline:none;border-color:var(--accent)}
   box-shadow:0 0 40px rgba(0,0,0,.4) inset}
 .pitch-lines{position:absolute;inset:0;width:100%;height:100%}
 .player-chip{position:absolute;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;
-  width:70px;cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none}
+  width:84px;cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none}
 .player-chip:active{cursor:grabbing}
 .jersey-wrap{position:relative;display:flex;align-items:center;justify-content:center}
-.player-chip .jersey-wrap img{width:52px;height:auto;object-fit:contain;filter:drop-shadow(0 4px 5px rgba(0,0,0,.65))}
-.player-chip .jersey-wrap.photo-kit{width:58px;height:58px;background:#fff;border-radius:12px;padding:5px;
+.player-chip .jersey-wrap img{width:68px;height:auto;object-fit:contain;filter:drop-shadow(0 4px 5px rgba(0,0,0,.65))}
+.player-chip .jersey-wrap.photo-kit{width:74px;height:74px;background:#fff;border-radius:12px;padding:5px;
   box-shadow:0 5px 12px rgba(0,0,0,.55), inset 0 0 0 1px rgba(0,0,0,.08)}
 .player-chip .jersey-wrap.photo-kit img{width:100%;height:100%;object-fit:contain;filter:none}
-.player-chip .chip-name{margin-top:2px;font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:.5px;
-  text-transform:uppercase;color:#fff;text-shadow:0 2px 4px rgba(0,0,0,.9);max-width:76px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.player-chip .chip-name{margin-top:2px;font-family:'Bebas Neue',sans-serif;font-size:10px;letter-spacing:.3px;
+  text-transform:uppercase;color:#fff;text-shadow:0 2px 4px rgba(0,0,0,.9);max-width:88px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .player-chip .chip-cap{position:absolute;top:-6px;right:-8px;background:var(--yellow);color:#0d0f14;font-size:10px;
   font-weight:800;border-radius:50%;width:18px;height:18px;display:flex;align-items:center;justify-content:center;
   box-shadow:0 2px 4px rgba(0,0,0,.6);border:1px solid rgba(255,255,255,.5);z-index:2}
@@ -261,6 +261,26 @@ function boundsAt(y) {
   };
 }
 
+// html2canvas (utilisé pour l'export/copie en image) ne sait pas restituer le
+// clip-path CSS du gazon (.pitch-grass) : sans filet de secours, l'image
+// exportée affiche le fond sombre de la carte à la place du vert. On dessine
+// donc le gazon en rayures via de vrais polygones SVG (mêmes bornes que
+// boundsAt()), rendus derrière les lignes du terrain.
+function renderPitchGrassStripes() {
+  const stops = [0, 10, 20, 30, TAPER_START_Y, 40, 50, 60, 70, 80, 90, 100]
+    .filter((v, i, arr) => arr.indexOf(v) === i)
+    .sort((a, b) => a - b);
+  let html = '';
+  for (let i = 0; i < stops.length - 1; i++) {
+    const y0 = stops[i], y1 = stops[i + 1];
+    const decade = Math.floor((y0 + 0.001) / 10);
+    const color = decade % 2 === 0 ? '#1f7a3d' : '#2a8f4a';
+    const b0 = boundsAt(y0), b1 = boundsAt(y1);
+    html += `<polygon points="${b0.L},${y0} ${b0.R},${y0} ${b1.R},${y1} ${b1.L},${y1}" fill="${color}"/>`;
+  }
+  return html;
+}
+
 function renderPitchLines() {
   const svg = document.getElementById('pitch-lines');
   const top = 4, bottom = 96, half = 50;
@@ -271,6 +291,7 @@ function renderPitchLines() {
   const pBotA = boundsAt(boxBotStart), pBotB = boundsAt(boxBotY);
   const rx = (hb.R - hb.L) * 0.22, ry = rx * 0.42;
   svg.innerHTML = `
+    ${renderPitchGrassStripes()}
     <polygon points="${tb.L},${top} ${tb.R},${top} ${kink.R},${TAPER_START_Y} ${bb.R},${bottom} ${bb.L},${bottom} ${kink.L},${TAPER_START_Y}"
       fill="none" stroke="rgba(255,255,255,.45)" stroke-width="0.6"/>
     <line x1="${hb.L}" y1="${half}" x2="${hb.R}" y2="${half}" stroke="rgba(255,255,255,.45)" stroke-width="0.6"/>
