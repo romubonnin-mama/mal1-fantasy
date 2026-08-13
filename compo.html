@@ -107,6 +107,9 @@ select:focus,input:focus{outline:none;border-color:var(--accent)}
   text-transform:uppercase;color:var(--text2);text-align:center;max-width:56px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .bench-title{font-size:10px;color:var(--text2);text-transform:uppercase;font-weight:700;letter-spacing:.5px;margin-top:8px}
 
+.team-name-display{text-align:center;font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:1px;
+  color:var(--text);text-transform:uppercase;padding:2px 0 12px}
+
 .counter-row{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;font-size:12px;color:var(--text2)}
 .counter-row .n{font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--accent)}
 .counter-row .n.warn{color:var(--yellow)}
@@ -174,11 +177,16 @@ select:focus,input:focus{outline:none;border-color:var(--accent)}
       </div>
     </div>
     <div style="margin-bottom:12px">
+      <label>Nom de ton équipe</label>
+      <input type="text" id="team-name-input" maxlength="30" placeholder="Ex : Les Galactiques">
+    </div>
+    <div style="margin-bottom:12px">
       <label>Disposition tactique</label>
       <select id="formation-select"></select>
     </div>
 
     <div id="export-zone">
+      <div class="team-name-display" id="team-name-display" style="display:none"></div>
       <div class="pitch-wrap" id="pitch">
         <div class="pitch-grass"></div>
         <svg class="pitch-lines" id="pitch-lines" viewBox="0 0 100 100" preserveAspectRatio="none"></svg>
@@ -288,9 +296,17 @@ function renderPitchLines() {
   const boxTopY = 4, boxTopEnd = 23, boxBotY = 96, boxBotStart = 77;
   const tb = boundsAt(top), bb = boundsAt(bottom), hb = boundsAt(half);
   const kink = boundsAt(TAPER_START_Y);
-  const pTopA = boundsAt(boxTopY), pTopB = boundsAt(boxTopEnd);
-  const pBotA = boundsAt(boxBotStart), pBotB = boundsAt(boxBotY);
   const rx = (hb.R - hb.L) * 0.22, ry = rx * 0.42;
+
+  // Surfaces de réparation : rectangles resserrés vers le centre, largeur =
+  // fraction de la largeur du terrain sur la ligne de but concernée. En
+  // reprenant boundsAt() comme les lignes de touche (comme avant ce fix), les
+  // bords de la surface se superposaient exactement sur les bords du terrain
+  // et devenaient invisibles.
+  const BOX_FRAC = 0.6;
+  const topHalfW = (tb.R - tb.L) * BOX_FRAC / 2;
+  const botHalfW = (bb.R - bb.L) * BOX_FRAC / 2;
+
   svg.innerHTML = `
     ${renderPitchGrassStripes()}
     <polygon points="${tb.L},${top} ${tb.R},${top} ${kink.R},${TAPER_START_Y} ${bb.R},${bottom} ${bb.L},${bottom} ${kink.L},${TAPER_START_Y}"
@@ -298,9 +314,9 @@ function renderPitchLines() {
     <line x1="${hb.L}" y1="${half}" x2="${hb.R}" y2="${half}" stroke="rgba(255,255,255,.45)" stroke-width="0.6"/>
     <ellipse cx="50" cy="${half}" rx="${rx}" ry="${ry}" fill="none" stroke="rgba(255,255,255,.45)" stroke-width="0.6"/>
     <circle cx="50" cy="${half}" r="0.5" fill="rgba(255,255,255,.45)"/>
-    <polygon points="${pTopA.L},${boxTopY} ${pTopA.R},${boxTopY} ${pTopB.R},${boxTopEnd} ${pTopB.L},${boxTopEnd}"
+    <rect x="${50 - topHalfW}" y="${top}" width="${topHalfW * 2}" height="${boxTopEnd - top}"
       fill="none" stroke="rgba(255,255,255,.45)" stroke-width="0.6"/>
-    <polygon points="${pBotA.L},${boxBotStart} ${pBotA.R},${boxBotStart} ${pBotB.R},${boxBotY} ${pBotB.L},${boxBotY}"
+    <rect x="${50 - botHalfW}" y="${boxBotStart}" width="${botHalfW * 2}" height="${boxBotY - boxBotStart}"
       fill="none" stroke="rgba(255,255,255,.45)" stroke-width="0.6"/>
   `;
 }
@@ -361,6 +377,7 @@ let CAP  = null;                         // nom capitaine
 let QUINCONCE = false;
 let FORMATION = 'auto';
 let POS = {};                            // positions custom sauvegardées {nom:{x,y}}
+let TEAM_NAME = '';
 
 // ── Login ──────────────────────────────────────────────────
 (async () => {
@@ -420,6 +437,7 @@ function stateKey()     { return `compo_sel_${MGR}`; }
 function posKey()       { return `compo_pos_${MGR}`; }
 function layoutKey()    { return `compo_layout_${MGR}`; }
 function formationKey() { return `compo_formation_${MGR}`; }
+function teamNameKey()  { return `compo_teamname_${MGR}`; }
 
 function loadState() {
   try {
@@ -438,6 +456,16 @@ function loadState() {
   FORMATION = localStorage.getItem(formationKey()) || 'auto';
   if (!FORMATIONS[FORMATION]) FORMATION = 'auto';
   document.getElementById('formation-select').value = FORMATION;
+
+  TEAM_NAME = localStorage.getItem(teamNameKey()) || '';
+  document.getElementById('team-name-input').value = TEAM_NAME;
+  renderTeamName();
+}
+
+function renderTeamName() {
+  const el = document.getElementById('team-name-display');
+  el.textContent = TEAM_NAME;
+  el.style.display = TEAM_NAME ? 'block' : 'none';
 }
 
 function saveSelection() {
@@ -674,11 +702,23 @@ document.getElementById('formation-select').addEventListener('change', (e) => {
   renderPitch();
 });
 
+// ── Nom d'équipe ───────────────────────────────────────────
+document.getElementById('team-name-input').addEventListener('input', (e) => {
+  TEAM_NAME = e.target.value.trim();
+  localStorage.setItem(teamNameKey(), TEAM_NAME);
+  renderTeamName();
+});
+
 // ── Export image ───────────────────────────────────────────
+function exportFileName() {
+  const base = TEAM_NAME ? `${TEAM_NAME}-${MGR}` : MGR;
+  return `compo-${base}`.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+}
+
 document.getElementById('btn-export-img').addEventListener('click', () => {
   html2canvas(document.getElementById('export-zone'), {backgroundColor: '#161b27', scale: 2}).then(canvas => {
     const link = document.createElement('a');
-    link.download = `compo-${MGR}.png`;
+    link.download = `${exportFileName()}.png`;
     link.href = canvas.toDataURL('image/png');
     link.click();
   });
@@ -698,7 +738,7 @@ document.getElementById('btn-copy-img').addEventListener('click', async () => {
     } catch (e) {
       // Repli : le navigateur ne permet pas de copier une image dans le presse-papiers -> téléchargement.
       const link = document.createElement('a');
-      link.download = `compo-${MGR}.png`;
+      link.download = `${exportFileName()}.png`;
       link.href = canvas.toDataURL('image/png');
       link.click();
       alert("Ton navigateur ne permet pas de copier une image dans le presse-papiers : l'image a été téléchargée à la place.");
