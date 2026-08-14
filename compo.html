@@ -79,10 +79,18 @@ select:focus,input:focus{outline:none;border-color:var(--accent)}
   container-type:inline-size}
 .pitch-wrap{position:relative;width:100%;aspect-ratio:1080/917;border-radius:10px;overflow:hidden;
   background:url('terrain.png') center/cover no-repeat}
+@media(max-width:599px){
+  /* Sur mobile la carte prend toute la largeur d'ecran, ce qui rend le terrain
+     visuellement compresse en hauteur avec le ratio PC -> on l'agrandit un peu
+     (le fond en cover rogne alors legerement les bords gauche/droite, sans
+     toucher aux lignes de surface qui restent bien a l'interieur). */
+  .pitch-wrap{aspect-ratio:1080/1100}
+}
 .player-chip{position:absolute;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;
-  width:clamp(60px, 19cqw, 112px);cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none}
+  width:clamp(60px, 19cqw, 112px);cursor:grab;touch-action:pan-y;user-select:none;-webkit-user-select:none}
 .player-chip:active{cursor:grabbing}
 .jersey-wrap{position:relative;display:flex;align-items:center;justify-content:center}
+.jersey-wrap img{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none;pointer-events:none}
 .player-chip .jersey-wrap img{width:clamp(48px, 15.5cqw, 92px);height:auto;object-fit:contain;filter:drop-shadow(0 4px 5px rgba(0,0,0,.65))}
 .player-chip .jersey-wrap.photo-kit{width:clamp(52px, 16.5cqw, 98px);height:clamp(52px, 16.5cqw, 98px);background:#fff;border-radius:12px;padding:5px;
   box-shadow:0 5px 12px rgba(0,0,0,.55), inset 0 0 0 1px rgba(0,0,0,.08)}
@@ -125,6 +133,7 @@ select:focus,input:focus{outline:none;border-color:var(--accent)}
   <div style="display:flex;align-items:center;gap:10px;flex-shrink:0">
     <div style="text-align:right">
       <div style="font-size:13px;font-weight:700;color:var(--accent)" id="header-nom"></div>
+      <div style="font-size:10px;color:var(--text2);cursor:pointer;text-decoration:underline;display:none" id="logout-btn">changer de manager</div>
     </div>
   </div>
 </header>
@@ -323,23 +332,10 @@ let POS = {};                            // positions custom sauvegardées {nom:
 let TEAM_NAME = '';
 
 // ── Login ──────────────────────────────────────────────────
-(async () => {
-  const snap = await getDocs(collection(db, 'managers'));
-  const sel = document.getElementById('login-nom');
-  const noms = [];
-  snap.forEach(d => noms.push(d.id));
-  noms.sort().forEach(nom => {
-    const opt = document.createElement('option');
-    opt.value = nom; opt.textContent = nom;
-    sel.appendChild(opt);
-  });
-})();
+const LOGIN_KEY = 'compo_login';
 
-document.getElementById('login-btn').addEventListener('click', async () => {
-  const nom = document.getElementById('login-nom').value;
-  const pin = document.getElementById('login-pin').value.trim();
-  if (!nom) { alert('Choisis ton nom'); return; }
-
+async function attemptLogin(nom, pin) {
+  if (!nom) return false;
   const snap = await getDoc(doc(db, 'managers', nom));
   const data = snap.exists() ? snap.data() : null;
   if (!data || !data.pin || String(data.pin) !== pin) {
@@ -348,7 +344,7 @@ document.getElementById('login-btn').addEventListener('click', async () => {
       ? "Tu n'as pas encore créé ton PIN — utilise le lien d'invitation des enchères."
       : 'Code incorrect.';
     e.style.display = 'block';
-    return;
+    return false;
   }
 
   MGR = nom;
@@ -356,6 +352,8 @@ document.getElementById('login-btn').addEventListener('click', async () => {
   document.getElementById('page-login').classList.remove('active');
   document.getElementById('page-main').classList.add('active');
   document.getElementById('header-nom').textContent = nom;
+  document.getElementById('logout-btn').style.display = 'block';
+  localStorage.setItem(LOGIN_KEY, JSON.stringify({nom, pin}));
 
   const joueurs = data.joueurs || [];
   SQUAD = {G:[], D:[], M:[], A:[]};
@@ -373,6 +371,41 @@ document.getElementById('login-btn').addEventListener('click', async () => {
   loadState();
   renderSelection();
   renderPitch();
+  return true;
+}
+
+(async () => {
+  const snap = await getDocs(collection(db, 'managers'));
+  const sel = document.getElementById('login-nom');
+  const noms = [];
+  snap.forEach(d => noms.push(d.id));
+  noms.sort().forEach(nom => {
+    const opt = document.createElement('option');
+    opt.value = nom; opt.textContent = nom;
+    sel.appendChild(opt);
+  });
+
+  // Connexion memorisee -> reconnexion automatique, sans resaisir nom + PIN.
+  try {
+    const saved = JSON.parse(localStorage.getItem(LOGIN_KEY));
+    if (saved && saved.nom && saved.pin) {
+      sel.value = saved.nom;
+      document.getElementById('login-pin').value = saved.pin;
+      await attemptLogin(saved.nom, saved.pin);
+    }
+  } catch(e) {}
+})();
+
+document.getElementById('login-btn').addEventListener('click', async () => {
+  const nom = document.getElementById('login-nom').value;
+  const pin = document.getElementById('login-pin').value.trim();
+  if (!nom) { alert('Choisis ton nom'); return; }
+  await attemptLogin(nom, pin);
+});
+
+document.getElementById('logout-btn').addEventListener('click', () => {
+  localStorage.removeItem(LOGIN_KEY);
+  location.reload();
 });
 
 // ── Persistance locale (par manager, cosmétique uniquement) ──
@@ -556,7 +589,7 @@ function renderPitch() {
     chip.dataset.nom = nom;
     chip.innerHTML = `
       ${CAP === nom ? '<div class="chip-cap">★</div>' : ''}
-      <div class="jersey-wrap"><img alt=""></div>
+      <div class="jersey-wrap" oncontextmenu="return false"><img alt="" draggable="false"></div>
       <div class="chip-name">${nom}</div>
     `;
     setJerseyImg(chip.querySelector('img'), p.club, poste);
@@ -580,7 +613,7 @@ function renderBench() {
       any = true;
       const chip = document.createElement('div');
       chip.className = 'bench-chip';
-      chip.innerHTML = `<div class="jersey-wrap"><img alt=""></div><div class="chip-name">${p.nom}</div>`;
+      chip.innerHTML = `<div class="jersey-wrap" oncontextmenu="return false"><img alt="" draggable="false"></div><div class="chip-name">${p.nom}</div>`;
       setJerseyImg(chip.querySelector('img'), p.club, poste);
       row.appendChild(chip);
     });
@@ -589,11 +622,38 @@ function renderBench() {
 }
 
 // ── Glisser-déposer libre ─────────────────────────────────
+// Au doigt (tactile), le drag ne s'active qu'apres un court appui soutenu
+// (~350ms sans bouger) pour laisser le scroll natif de la page fonctionner
+// normalement sur un simple toucher/balayage. A la souris, le drag demarre
+// immediatement comme avant (pas de conflit de scroll).
+const DRAG_HOLD_MS = 350;
+const DRAG_CANCEL_PX = 8;
+
 function attachDrag(chip) {
   const pitch = document.getElementById('pitch');
   chip.addEventListener('pointerdown', (ev) => {
-    chip.setPointerCapture(ev.pointerId);
+    const isTouch = ev.pointerType === 'touch';
+    const startX = ev.clientX, startY = ev.clientY;
+    let dragging = !isTouch;
+    let holdTimer = null;
+
+    const activate = () => {
+      dragging = true;
+      chip.style.touchAction = 'none';
+      try { chip.setPointerCapture(ev.pointerId); } catch(e) {}
+    };
+
+    if (isTouch) holdTimer = setTimeout(activate, DRAG_HOLD_MS);
+    else activate();
+
     const move = (e) => {
+      if (!dragging) {
+        if (holdTimer && (Math.abs(e.clientX - startX) > DRAG_CANCEL_PX || Math.abs(e.clientY - startY) > DRAG_CANCEL_PX)) {
+          clearTimeout(holdTimer);
+          holdTimer = null;
+        }
+        return;
+      }
       const rect = pitch.getBoundingClientRect();
       let x = (e.clientX - rect.left) / rect.width * 100;
       let y = (e.clientY - rect.top)  / rect.height * 100;
@@ -603,14 +663,20 @@ function attachDrag(chip) {
       chip.style.top  = y + '%';
       POS[chip.dataset.nom] = {x, y};
     };
-    const up = (e) => {
-      chip.releasePointerCapture(ev.pointerId);
+    const up = () => {
+      if (holdTimer) clearTimeout(holdTimer);
+      if (dragging) {
+        try { chip.releasePointerCapture(ev.pointerId); } catch(e) {}
+        chip.style.touchAction = '';
+        savePos();
+      }
       chip.removeEventListener('pointermove', move);
       chip.removeEventListener('pointerup', up);
-      savePos();
+      chip.removeEventListener('pointercancel', up);
     };
     chip.addEventListener('pointermove', move);
     chip.addEventListener('pointerup', up);
+    chip.addEventListener('pointercancel', up);
   });
 }
 
