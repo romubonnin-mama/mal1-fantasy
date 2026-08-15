@@ -87,7 +87,7 @@ select:focus,input:focus{outline:none;border-color:var(--accent)}
   .pitch-wrap{aspect-ratio:1080/1100}
 }
 .player-chip{position:absolute;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;
-  width:clamp(60px, 19cqw, 112px);cursor:grab;touch-action:pan-y;user-select:none;-webkit-user-select:none}
+  width:clamp(60px, 19cqw, 112px);cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none}
 .player-chip:active{cursor:grabbing}
 .jersey-wrap{position:relative;display:flex;align-items:center;justify-content:center}
 .jersey-wrap img{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none;pointer-events:none}
@@ -622,12 +622,12 @@ function renderBench() {
 }
 
 // ── Glisser-déposer libre ─────────────────────────────────
-// Au doigt (tactile), le drag ne s'active qu'apres un court appui soutenu
-// (~350ms sans bouger) pour laisser le scroll natif de la page fonctionner
-// normalement sur un simple toucher/balayage. A la souris, le drag demarre
-// immediatement comme avant (pas de conflit de scroll).
-const DRAG_HOLD_MS = 350;
-const DRAG_CANCEL_PX = 8;
+// Le maillot lui-meme bloque le scroll tactile natif (touch-action:none) pour
+// que bouger un joueur ne fasse jamais defiler la page. Au doigt, le drag
+// s'active apres un court appui (~180ms) ; en dessous de ce delai un simple
+// toucher/tap ne declenche rien. A la souris, le drag demarre immediatement.
+const DRAG_HOLD_MS = 180;
+const DRAG_CANCEL_PX = 14;
 
 function attachDrag(chip) {
   const pitch = document.getElementById('pitch');
