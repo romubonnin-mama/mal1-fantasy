@@ -628,6 +628,7 @@ function renderBench() {
 // toucher/tap ne declenche rien. A la souris, le drag demarre immediatement.
 const DRAG_HOLD_MS = 180;
 const DRAG_CANCEL_PX = 14;
+const TOUCH_DRAG_OFFSET_PX = 60;
 
 function attachDrag(chip) {
   const pitch = document.getElementById('pitch');
@@ -655,8 +656,9 @@ function attachDrag(chip) {
         return;
       }
       const rect = pitch.getBoundingClientRect();
+      const offsetPx = isTouch ? TOUCH_DRAG_OFFSET_PX : 0;
       let x = (e.clientX - rect.left) / rect.width * 100;
-      let y = (e.clientY - rect.top)  / rect.height * 100;
+      let y = (e.clientY - offsetPx - rect.top) / rect.height * 100;
       x = Math.max(4, Math.min(96, x));
       y = Math.max(4, Math.min(96, y));
       chip.style.left = x + '%';
