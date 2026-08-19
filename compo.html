@@ -209,8 +209,7 @@ select:focus,input:focus{outline:none;border-color:var(--accent)}
   </div>
 
   <div style="display:flex;gap:8px;margin-bottom:20px">
-    <button class="btn btn-primary" style="flex:1" id="btn-export-img">📷 Exporter en image</button>
-    <button class="btn btn-subtle" style="flex:1" id="btn-copy-img">📋 Copier l'image</button>
+    <button class="btn btn-primary" style="flex:1" id="btn-copy-img">📋 Copier l'image</button>
   </div>
   <div id="copy-status" style="font-size:11px;color:var(--accent);text-align:center;margin-top:-12px;margin-bottom:16px;display:none">Image copiée !</div>
 
@@ -734,15 +733,6 @@ function exportFileName() {
   const base = TEAM_NAME ? `${TEAM_NAME}-${MGR}` : MGR;
   return `compo-${base}`.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
 }
-
-document.getElementById('btn-export-img').addEventListener('click', () => {
-  html2canvas(document.getElementById('export-zone'), {backgroundColor: '#161b27', scale: 2}).then(canvas => {
-    const link = document.createElement('a');
-    link.download = `${exportFileName()}.png`;
-    link.href = canvas.toDataURL('image/png');
-    link.click();
-  });
-});
 
 // ── Copie de l'image du terrain ─────────────────────────────
 document.getElementById('btn-copy-img').addEventListener('click', async () => {
