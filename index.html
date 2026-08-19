@@ -219,6 +219,17 @@
   .card-title.red::before { background: var(--danger); }
   .stats-sub-tab { background: var(--surface2); border: 1px solid var(--border); color: var(--muted); font-size: 12px; font-weight: 600; padding: 8px 18px; border-radius: 8px; cursor: pointer; transition: all 0.2s; }
   .stats-sub-tab.active { background: var(--accent); color: #000; border-color: var(--accent); }
+  .subtabs { display: flex; gap: 4px; margin-bottom: 16px; }
+  .subtab { padding: 5px 14px; border-radius: 6px; cursor: pointer; color: var(--muted); font-size: 12px; font-weight: 700; background: var(--surface2); border: 1px solid var(--border); transition: all .15s; }
+  .subtab.active { background: var(--accent); color: #000; border-color: var(--accent); }
+  .subtab:hover:not(.active) { color: var(--text); }
+  .subsection { display: none; }
+  .subsection.active { display: block; }
+  .classement-table { width: 100%; border-collapse: collapse; }
+  .classement-table th, .classement-table td { padding: 8px 10px; border-bottom: 1px solid var(--border); font-size: 12px; }
+  .classement-table th { color: var(--muted); font-size: 11px; font-weight: 700; letter-spacing: .06em; text-align: left; }
+  .joker-history-item { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; padding: 6px 0; border-bottom: 1px solid var(--border); font-size: 12px; }
+  .joker-badge { font-size: 10px; padding: 2px 6px; border-radius: 4px; background: var(--surface2); border: 1px solid var(--border); flex-shrink: 0; color: var(--muted); }
   .mgr-card-row { display: grid; grid-template-columns: 1fr 60px 60px 70px; align-items: center; padding: 9px 18px; border-bottom: 1px solid var(--border); font-size: 12px; gap: 8px; }
   .mgr-card-row:last-child { border-bottom: none; }
   .mgr-card-row .val-cell { font-family: 'Bebas Neue', sans-serif; font-size: 16px; text-align: center; }
@@ -258,6 +269,12 @@
 <div class="container">
 
   <div class="page active" id="page-classement">
+    <div class="subtabs">
+      <div class="subtab active" data-subtab="classement-main" onclick="showClassementSubtab('classement-main')">Classement</div>
+      <div class="subtab" data-subtab="classement-jokers" onclick="showClassementSubtab('classement-jokers')">🔁 Jokers</div>
+    </div>
+
+    <div id="subsection-classement-main" class="subsection active">
     <div class="hero">
       <h1>SAISON <em>2025</em>/26</h1>
       <p>9 participants · Données synchronisées depuis Excel</p>
@@ -300,6 +317,24 @@
           <div class="tag">SCORES</div>
         </div>
         <div class="j-grid" id="scores-container"></div>
+      </div>
+    </div>
+    </div>
+
+    <div id="subsection-classement-jokers" class="subsection">
+      <div class="card" style="margin-bottom:16px">
+        <div class="card-header">
+          <div class="card-title">Compteurs jokers par manager</div>
+          <div class="tag">SAISON</div>
+        </div>
+        <div id="classement-jokers-counters"></div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Historique des jokers</div>
+          <div class="tag">TOUS</div>
+        </div>
+        <div id="classement-jokers-history"></div>
       </div>
     </div>
   </div>
@@ -514,6 +549,78 @@ const POS_CLASS = {"G":"pos-G","D":"pos-D","M":"pos-M","A":"pos-A"};
 const ORDRE_JOUEURS = ["ROMU","ADRIEN","ANTHONY","JEROME","FLORIAN","BASTIEN","FAB","MICKA"];
 let DATA = null;
 let CLUBS = {};
+let JOKERS = [];
+
+const JOKER_TYPES = [
+  { id: 'saison',      label: 'Joker saison',              max: 3 },
+  { id: 'mercato_ete',  label: "Joker mercato d'été",        max: 2 },
+  { id: 'gardien',      label: 'Joker gardien',              max: 2 },
+  { id: 'bonus',        label: 'Joker bonus enchères (T1)',  max: null },
+  { id: 'capitaine',    label: 'Joker capitaine transformé', max: 1 },
+];
+
+function jokerTypeLabel(id) {
+  return (JOKER_TYPES.find(t => t.id === id) || {}).label || id;
+}
+
+function jokerUsedCount(manager, typeId) {
+  return JOKERS.filter(j => j.manager === manager && j.type === typeId).length;
+}
+
+function renderJokerCountersTable(containerId) {
+  const box = document.getElementById(containerId);
+  if (!box || !DATA) return;
+  const managers = DATA.classement.map(c => c.nom);
+  if (!managers.length) { box.innerHTML = '<div style="color:var(--muted);font-size:12px">Aucun manager.</div>'; return; }
+  const rows = managers.map(m => {
+    const cells = JOKER_TYPES.map(t => {
+      const used = jokerUsedCount(m, t.id);
+      const maxTxt = t.max === null ? '?' : t.max;
+      const over = t.max !== null && used >= t.max;
+      return `<td style="text-align:center;${over ? 'color:var(--danger);font-weight:700' : ''}">${used}/${maxTxt}</td>`;
+    }).join('');
+    return `<tr><td style="font-weight:700">${m}</td>${cells}</tr>`;
+  }).join('');
+  box.innerHTML = `
+    <table class="classement-table">
+      <thead><tr><th>Manager</th>${JOKER_TYPES.map(t => `<th style="text-align:center">${t.label}</th>`).join('')}</tr></thead>
+      <tbody>${rows}</tbody>
+    </table>`;
+}
+
+function renderJokerHistory(containerId) {
+  const box = document.getElementById(containerId);
+  if (!box) return;
+  if (!JOKERS.length) {
+    box.innerHTML = '<div style="color:var(--muted);font-size:12px">Aucun joker utilisé pour l\'instant.</div>';
+    return;
+  }
+  const rows = [...JOKERS].sort((a, b) => b.id - a.id).map(j => {
+    const d = new Date(j.date);
+    const dateTxt = d.toLocaleDateString('fr-FR') + ' ' + d.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+    return `
+      <div class="joker-history-item">
+        <span class="joker-badge">${dateTxt}</span>
+        <strong>${j.manager}</strong>
+        <span style="color:var(--muted)">${jokerTypeLabel(j.type)}</span>
+        <span>${j.out.nom} (${j.out.poste}) → ${j.in.nom} (${j.in.poste}, ${j.in.club})</span>
+      </div>`;
+  }).join('');
+  box.innerHTML = rows;
+}
+
+function renderClassementJokers() {
+  renderJokerCountersTable('classement-jokers-counters');
+  renderJokerHistory('classement-jokers-history');
+}
+
+function showClassementSubtab(name) {
+  document.querySelectorAll('#page-classement .subtab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('#page-classement .subsection').forEach(s => s.classList.remove('active'));
+  document.querySelector(`#page-classement .subtab[data-subtab="${name}"]`).classList.add('active');
+  document.getElementById('subsection-' + name).classList.add('active');
+  if (name === 'classement-jokers') renderClassementJokers();
+}
 let evolutionChart = null;
 let joueursActifs = new Set();
 let RANK_EVOLUTION = {};
@@ -1106,10 +1213,12 @@ function renderDefenseStats(csMap, beMap, defenseByMgr) {
 
 Promise.all([
   fetch("data.json?t=" + Date.now()).then(r => r.json()),
-  fetch("clubs.json?t=" + Date.now()).then(r => r.json())
-]).then(([data, clubs]) => {
+  fetch("clubs.json?t=" + Date.now()).then(r => r.json()),
+  fetch("data/jokers.json?t=" + Date.now()).then(r => r.json()).catch(() => [])
+]).then(([data, clubs, jokers]) => {
     DATA = data;
     CLUBS = clubs;
+    JOKERS = jokers || [];
     const j = data.derniere_journee;
     const classement = data.classement;
 
