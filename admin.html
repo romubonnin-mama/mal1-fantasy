@@ -178,13 +178,15 @@ header h1 { font-size: 18px; font-weight: 700; color: var(--accent); }
   margin-bottom: 6px; display: flex; align-items: center; gap: 10px; font-weight: 700;
 }
 .stats-table-wrap { overflow-x: auto; }
-.stats-tbl { border-collapse: collapse; white-space: nowrap; min-width: 100%; }
+.stats-tbl { border-collapse: collapse; white-space: nowrap; min-width: 100%; table-layout: fixed; }
 .stats-tbl th, .stats-tbl td {
   padding: 4px 7px; text-align: center; border-bottom: 1px solid var(--border);
   vertical-align: middle;
 }
 .stats-tbl th { color: var(--muted); font-size: 11px; font-weight: 700; letter-spacing: .05em; }
-.stats-tbl .col-nom { text-align: left; min-width: 110px; }
+.stats-tbl .col-nom {
+  text-align: left; width: 150px; overflow: hidden; text-overflow: ellipsis;
+}
 .stats-tbl tr.is-titu { background: rgba(0,229,160,.05); }
 .stats-tbl tr.is-titu .col-nom { font-weight: 700; color: var(--accent); }
 .stats-tbl tr.is-rempl td { opacity: .4; }
@@ -817,7 +819,7 @@ function renderCorrections() {
       tr.className = effTitu ? 'is-titu' : 'is-rempl';
       if (isAbs) tr.classList.add('is-abs');
       tr.innerHTML = `
-        <td class="col-nom">${logoHtml} ${nom}</td>
+        <td class="col-nom" title="${nom}">${logoHtml} ${nom}</td>
         <td><span class="roster-poste p-${p}">${p}</span></td>
         <td>
           <button class="corr-tr-btn ${effTitu ? 'eff-titu' : 'eff-rempl'} ${trOverridden ? 'overridden' : ''}"
@@ -1323,7 +1325,7 @@ function renderStats() {
       tr.className = titu ? 'is-titu' : 'is-rempl';
       if (abs) tr.classList.add('is-abs');
       tr.innerHTML = `
-        <td class="col-nom">${(() => { const u = getLogoUrl(nom); return u ? `<img src="${u}" class="club-logo-adm" onerror="this.style.display='none'" alt=""> ` : ''; })()}${nom}</td>
+        <td class="col-nom" title="${nom}">${(() => { const u = getLogoUrl(nom); return u ? `<img src="${u}" class="club-logo-adm" onerror="this.style.display='none'" alt=""> ` : ''; })()}${nom}</td>
         <td><span class="roster-poste p-${p}">${p}</span></td>
         <td>
           <input type="checkbox" class="schk schk-abs" data-m="${manager}" data-n="${nom}" data-f="absent"
