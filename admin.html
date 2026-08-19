@@ -627,6 +627,9 @@ function renderLineups() {
           : capUsage.joueurs.has(nom) ? `${nom} a déjà été capitaine cette saison`
           : '';
 
+        const logoUrl = getLogoUrl(nom);
+        const logoHtml = logoUrl ? `<img src="${logoUrl}" class="club-logo-adm" onerror="this.style.display='none'" alt="">` : '';
+
         const row = document.createElement('div');
         row.className = 'player-row' + (isCap ? ' cap' : isTitu ? ' titu' : ' rempl');
         row.dataset.nom = nom;
@@ -634,7 +637,7 @@ function renderLineups() {
         row.dataset.poste = poste;
         row.innerHTML = `
           <div class="player-check"></div>
-          <span class="player-nom">${nom}</span>
+          <span class="player-nom">${logoHtml}${nom}</span>
           <button class="cap-btn" ${(isFirst || capBlocked) ? `disabled title="${capBtnTitle}"` : ''}
                   onclick="setCap(event,'${manager}','${nom}')">C</button>
         `;
@@ -1016,10 +1019,13 @@ function renderRoster() {
 
     for (const poste of POSTE_ORDER) {
       for (const nom of (ROSTER[manager][poste] || [])) {
+        const logoUrl = getLogoUrl(nom);
+        const logoHtml = logoUrl ? `<img src="${logoUrl}" class="club-logo-adm" onerror="this.style.display='none'" alt="">` : '';
         const row = document.createElement('div');
         row.className = 'roster-player';
         row.innerHTML = `
           <span class="roster-poste p-${poste}">${poste}</span>
+          ${logoHtml}
           <input class="roster-nom-input" data-manager="${manager}" data-poste="${poste}" data-orig="${nom}"
                  value="${nom}" title="Double-cliquez pour modifier">
         `;
