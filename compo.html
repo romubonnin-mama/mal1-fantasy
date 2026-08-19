@@ -424,6 +424,15 @@ function loadState() {
       CAP  = s.capitaine || null;
     }
   } catch(e) {}
+
+  // Purge les noms qui ne sont plus dans l'effectif actuel (joker/correction
+  // admin depuis la dernière visite) : sinon ils restent coincés dans TITU,
+  // invisibles (pas de case à décocher) mais toujours comptés dans le total.
+  const validNames = new Set(POSTE_ORDER.flatMap(p => SQUAD[p].map(pl => pl.nom)));
+  const before = TITU.size;
+  TITU.forEach(n => { if (!validNames.has(n)) TITU.delete(n); });
+  if (CAP && !validNames.has(CAP)) CAP = null;
+  if (TITU.size !== before) saveSelection();
   try {
     POS = JSON.parse(localStorage.getItem(posKey())) || {};
   } catch(e) { POS = {}; }
