@@ -228,6 +228,8 @@
   .classement-table { width: 100%; border-collapse: collapse; }
   .classement-table th, .classement-table td { padding: 8px 10px; border-bottom: 1px solid var(--border); font-size: 12px; }
   .classement-table th { color: var(--muted); font-size: 11px; font-weight: 700; letter-spacing: .06em; text-align: left; }
+  .joker-counters-tbl { white-space: nowrap; }
+  .joker-counters-tbl th, .joker-counters-tbl td { padding: 8px 12px; }
   .joker-history-item { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; padding: 6px 0; border-bottom: 1px solid var(--border); font-size: 12px; }
   .joker-badge { font-size: 10px; padding: 2px 6px; border-radius: 4px; background: var(--surface2); border: 1px solid var(--border); flex-shrink: 0; color: var(--muted); }
   .mgr-card-row { display: grid; grid-template-columns: 1fr 60px 60px 70px; align-items: center; padding: 9px 18px; border-bottom: 1px solid var(--border); font-size: 12px; gap: 8px; }
@@ -589,10 +591,12 @@ function renderJokerCountersTable(containerId) {
     return `<tr><td style="font-weight:700">${m}</td>${cells}</tr>`;
   }).join('');
   box.innerHTML = `
-    <table class="classement-table">
-      <thead><tr><th>Manager</th>${JOKER_TYPES.map(t => `<th style="text-align:center">${t.label}</th>`).join('')}</tr></thead>
-      <tbody>${rows}</tbody>
-    </table>`;
+    <div style="overflow-x:auto;-webkit-overflow-scrolling:touch">
+      <table class="classement-table joker-counters-tbl">
+        <thead><tr><th>Manager</th>${JOKER_TYPES.map(t => `<th style="text-align:center">${t.label}</th>`).join('')}</tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>`;
 }
 
 function renderJokerHistory(containerId) {
