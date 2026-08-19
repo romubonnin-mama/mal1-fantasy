@@ -1,10 +1,194 @@
 {
-  "ROMU":    {"G": [], "D": [], "M": [], "A": []},
-  "ADRIEN":  {"G": [], "D": [], "M": [], "A": []},
-  "ANTHONY": {"G": [], "D": [], "M": [], "A": []},
-  "JEROME":  {"G": [], "D": [], "M": [], "A": []},
-  "FLORIAN": {"G": [], "D": [], "M": [], "A": []},
-  "BASTIEN": {"G": [], "D": [], "M": [], "A": []},
-  "FAB":     {"G": [], "D": [], "M": [], "A": []},
-  "MICKA":   {"G": [], "D": [], "M": [], "A": []}
+  "ADRIEN": {
+    "G": [
+      "K.TRAPP"
+    ],
+    "D": [
+      "L.HOGSBERG",
+      "B.CHARDONNET",
+      "F.NAZINHO",
+      "A.HAKIMI",
+      "R.PERRAUD"
+    ],
+    "M": [
+      "M.SKORAS",
+      "V.VITINHA",
+      "R.FAIVRE",
+      "P.LEES-MELOU",
+      "T.LEBRIS"
+    ],
+    "A": [
+      "S.FAYE",
+      "F.THAUVIN",
+      "K.KVARATSKHELIA"
+    ]
+  },
+  "ANTHONY": {
+    "G": [
+      "D.GREIF"
+    ],
+    "D": [
+      "N.TAGLIAFICO",
+      "N.AGUERD",
+      "W.PACHO",
+      "S.ABDULHAMID"
+    ],
+    "M": [
+      "I.KEBBAL",
+      "P.SULC",
+      "V.RONGIER",
+      "A.AVOMEBONG",
+      "C.CASSERRES",
+      "J.NEVES"
+    ],
+    "A": [
+      "M.ABLINE",
+      "Y.TITRAOUI",
+      "M.GODO"
+    ]
+  },
+  "BASTIEN": {
+    "G": [
+      "R.RISSER"
+    ],
+    "D": [
+      "M.UDOL",
+      "T.WEAH",
+      "C.MATA",
+      "V.ALEXSANDRO",
+      "M.MBOW",
+      "A.WITSEL"
+    ],
+    "M": [
+      "J.CHOTARD",
+      "A.THOMASSON",
+      "D.ZAKARIA",
+      "A.HARIT"
+    ],
+    "A": [
+      "E.LEPAUL",
+      "M.FOFANA",
+      "D.DOUE"
+    ]
+  },
+  "FAB": {
+    "G": [
+      "Y.DIOUF"
+    ],
+    "D": [
+      "J.LEFORT",
+      "Z.ATHEKAME",
+      "M.DEL-BLANCO",
+      "A.SEKO",
+      "R.NICOLAISEN"
+    ],
+    "M": [
+      "R.MATONDO",
+      "G.HEIN",
+      "K.DANOIS",
+      "W.ZAIRE-EMERY",
+      "G.BERNARDEAU"
+    ],
+    "A": [
+      "M.FERNANDEZ-PARDO",
+      "L.SINAYOKO",
+      "L.AJORQUE"
+    ]
+  },
+  "FLORIAN": {
+    "G": [
+      "B.SAMBA"
+    ],
+    "D": [
+      "D.COPPOLA",
+      "J.CLAUSS",
+      "M.NIAKHATE",
+      "O.CAMARA"
+    ],
+    "M": [
+      "Q.TIMBER",
+      "A.GOLOVINE",
+      "S.SZYMANSKI",
+      "C.TOLISSO",
+      "B.VANDENBOOMEN",
+      "T.JORGENSEN"
+    ],
+    "A": [
+      "P.PAGIS",
+      "I.PAIXAO",
+      "F.IVANOVIC"
+    ]
+  },
+  "JEROME": {
+    "G": [
+      "F.JORGENSEN"
+    ],
+    "D": [
+      "A.AIT-BOUDLAL",
+      "I.GANIOU",
+      "A.MAITLAND-NILES",
+      "D.METHALIE",
+      "N.NGOY"
+    ],
+    "M": [
+      "G.REYNA",
+      "A.GOMES",
+      "L.BLAS",
+      "A.BULATOVIC",
+      "B.BRAHIMI"
+    ],
+    "A": [
+      "L.OPENDA",
+      "Y.GBOHO",
+      "O.DEMBELE"
+    ]
+  },
+  "MICKA": {
+    "G": [
+      "B.OZER"
+    ],
+    "D": [
+      "G.DOUE",
+      "C.CRESSWELL",
+      "A.KOUASSI",
+      "V.VANDERSON",
+      "L.RAOLISOA"
+    ],
+    "M": [
+      "R.NDIAYE",
+      "K.DOUMBIA",
+      "A.DONNUM",
+      "A.MILLE",
+      "H.ABDELLI"
+    ],
+    "A": [
+      "O.EDOUARD",
+      "A.GOUIRI",
+      "D.GUEYE"
+    ]
+  },
+  "ROMU": {
+    "G": [
+      "M.SAFONOV"
+    ],
+    "D": [
+      "A.VINICIUS",
+      "Q.MERLIN",
+      "T.SANTOS",
+      "M.BARD"
+    ],
+    "M": [
+      "D.MOREIRA",
+      "H.HARALDSSON",
+      "T.MORTON",
+      "S.DIOP",
+      "M.IFNAOUI"
+    ],
+    "A": [
+      "E.NUAMAH",
+      "J.ORTEGA",
+      "M.BIERETH",
+      "M.SIMBAKOLI"
+    ]
+  }
 }
