@@ -39,13 +39,6 @@ header h1 { font-size: 18px; font-weight: 700; color: var(--accent); }
 .tab.active { background: var(--accent); color: #0d1117; font-weight: 700; }
 .tab:hover:not(.active) { background: var(--surface2); color: var(--text); }
 
-.subtabs { display: flex; gap: 4px; margin-bottom: 16px; }
-.subtab { padding: 5px 14px; border-radius: 6px; cursor: pointer; color: var(--muted); font-size: 12px; font-weight: 700; background: var(--surface2); border: 1px solid var(--border); transition: all .15s; }
-.subtab.active { background: var(--accent); color: #0d1117; border-color: var(--accent); }
-.subtab:hover:not(.active) { color: var(--text); }
-.subsection { display: none; }
-.subsection.active { display: block; }
-
 .container { padding: 24px; max-width: 1400px; margin: 0 auto; }
 
 /* ── Sections ── */
@@ -256,23 +249,10 @@ header h1 { font-size: 18px; font-weight: 700; color: var(--accent); }
 <!-- ── CLASSEMENT ── -->
 <div id="section-classement" class="section">
   <div class="container">
-    <div class="subtabs">
-      <div class="subtab active" data-subtab="classement-general" onclick="showClassementSubtab('classement-general')">Classement</div>
-      <div class="subtab" data-subtab="classement-jokers" onclick="showClassementSubtab('classement-jokers')">🔁 Jokers</div>
-    </div>
-
-    <div id="subsection-classement-general" class="subsection active">
-      <table class="classement-table">
-        <thead><tr><th>Rang</th><th>Participant</th><th>Points</th><th>J courante</th></tr></thead>
-        <tbody id="classement-body"></tbody>
-      </table>
-    </div>
-
-    <div id="subsection-classement-jokers" class="subsection">
-      <div style="font-weight:700;font-size:13px;margin-bottom:10px">Compteurs jokers par manager</div>
-      <div id="classement-jokers-counters" style="margin-bottom:24px"></div>
-      <div id="classement-jokers-history"></div>
-    </div>
+    <table class="classement-table">
+      <thead><tr><th>Rang</th><th>Participant</th><th>Points</th><th>J courante</th></tr></thead>
+      <tbody id="classement-body"></tbody>
+    </table>
   </div>
 </div>
 
@@ -478,7 +458,7 @@ function showTab(name) {
   document.querySelectorAll('.tab').forEach(t => {
     if (t.dataset.tab === name) t.classList.add('active');
   });
-  if (name === 'classement') { renderClassement(); renderClassementJokers(); }
+  if (name === 'classement') renderClassement();
   if (name === 'corrections') renderCorrections();
   if (name === 'roster') { renderRoster(); populateJokerForm(); }
   if (name === 'stats') renderStats();
@@ -1200,7 +1180,6 @@ async function applyJoker() {
   renderRoster();
   renderLineups();
   populateJokerForm();
-  renderClassementJokers();
 }
 
 function renderJokerCountersTable(containerId) {
@@ -1244,19 +1223,6 @@ function renderJokerHistory(containerId) {
       </div>`;
   }).join('');
   box.innerHTML = `<div style="font-weight:700;font-size:12px;margin-bottom:6px;color:var(--muted)">Historique</div>${rows}`;
-}
-
-function renderClassementJokers() {
-  renderJokerCountersTable('classement-jokers-counters');
-  renderJokerHistory('classement-jokers-history');
-}
-
-function showClassementSubtab(name) {
-  document.querySelectorAll('#section-classement .subtab').forEach(t => t.classList.remove('active'));
-  document.querySelectorAll('#section-classement .subsection').forEach(s => s.classList.remove('active'));
-  document.querySelector(`#section-classement .subtab[data-subtab="${name}"]`).classList.add('active');
-  document.getElementById('subsection-' + name).classList.add('active');
-  if (name === 'classement-jokers') renderClassementJokers();
 }
 
 
