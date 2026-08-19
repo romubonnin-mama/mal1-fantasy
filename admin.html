@@ -39,6 +39,13 @@ header h1 { font-size: 18px; font-weight: 700; color: var(--accent); }
 .tab.active { background: var(--accent); color: #0d1117; font-weight: 700; }
 .tab:hover:not(.active) { background: var(--surface2); color: var(--text); }
 
+.subtabs { display: flex; gap: 4px; margin-bottom: 16px; }
+.subtab { padding: 5px 14px; border-radius: 6px; cursor: pointer; color: var(--muted); font-size: 12px; font-weight: 700; background: var(--surface2); border: 1px solid var(--border); transition: all .15s; }
+.subtab.active { background: var(--accent); color: #0d1117; border-color: var(--accent); }
+.subtab:hover:not(.active) { color: var(--text); }
+.subsection { display: none; }
+.subsection.active { display: block; }
+
 .container { padding: 24px; max-width: 1400px; margin: 0 auto; }
 
 /* ── Sections ── */
@@ -126,6 +133,19 @@ header h1 { font-size: 18px; font-weight: 700; color: var(--accent); }
   background: var(--surface2); border: 1px solid var(--border); color: var(--text);
   padding: 3px 8px; border-radius: 4px; font-size: 13px; width: 100%;
 }
+
+/* ── Panneau joker OUT/IN ── */
+.joker-panel { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 16px; margin-bottom: 20px; }
+.joker-row { display: grid; gap: 10px; margin-bottom: 10px; }
+.joker-row-out { grid-template-columns: 1fr 1fr 1fr; }
+.joker-row-in { grid-template-columns: 1fr .6fr 1fr 1fr; }
+.joker-lbl { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; display: block; margin-bottom: 4px; }
+.joker-select, .joker-input {
+  background: var(--surface2); border: 1px solid var(--border); color: var(--text);
+  padding: 6px 8px; border-radius: 6px; font-size: 13px; width: 100%;
+}
+.joker-history-item { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; padding: 6px 0; border-bottom: 1px solid var(--border); font-size: 12px; }
+.joker-badge { font-size: 10px; padding: 2px 6px; border-radius: 4px; background: var(--surface2); border: 1px solid var(--border); flex-shrink: 0; color: var(--muted); }
 
 
 /* ── Classement ── */
@@ -234,10 +254,23 @@ header h1 { font-size: 18px; font-weight: 700; color: var(--accent); }
 <!-- ── CLASSEMENT ── -->
 <div id="section-classement" class="section">
   <div class="container">
-    <table class="classement-table">
-      <thead><tr><th>Rang</th><th>Participant</th><th>Points</th><th>J courante</th></tr></thead>
-      <tbody id="classement-body"></tbody>
-    </table>
+    <div class="subtabs">
+      <div class="subtab active" data-subtab="classement-general" onclick="showClassementSubtab('classement-general')">Classement</div>
+      <div class="subtab" data-subtab="classement-jokers" onclick="showClassementSubtab('classement-jokers')">🔁 Jokers</div>
+    </div>
+
+    <div id="subsection-classement-general" class="subsection active">
+      <table class="classement-table">
+        <thead><tr><th>Rang</th><th>Participant</th><th>Points</th><th>J courante</th></tr></thead>
+        <tbody id="classement-body"></tbody>
+      </table>
+    </div>
+
+    <div id="subsection-classement-jokers" class="subsection">
+      <div style="font-weight:700;font-size:13px;margin-bottom:10px">Compteurs jokers par manager</div>
+      <div id="classement-jokers-counters" style="margin-bottom:24px"></div>
+      <div id="classement-jokers-history"></div>
+    </div>
   </div>
 </div>
 
@@ -261,8 +294,58 @@ header h1 { font-size: 18px; font-weight: 700; color: var(--accent); }
 <!-- ── EFFECTIFS ── -->
 <div id="section-roster" class="section">
   <div class="container">
+
+    <div class="joker-panel">
+      <div style="font-weight:700;font-size:14px;margin-bottom:12px">🔁 Utiliser un joker</div>
+
+      <div class="joker-row joker-row-out">
+        <div>
+          <label class="joker-lbl">Joueur OUT — Manager</label>
+          <select id="joker-out-manager" class="joker-select" onchange="onJokerOutManagerChange()"></select>
+        </div>
+        <div>
+          <label class="joker-lbl">Joueur OUT — Joueur</label>
+          <select id="joker-out-joueur" class="joker-select"></select>
+        </div>
+        <div>
+          <label class="joker-lbl">Type de joker</label>
+          <select id="joker-type" class="joker-select" onchange="updateJokerQuotaSummary()"></select>
+        </div>
+      </div>
+
+      <div class="joker-row joker-row-in">
+        <div>
+          <label class="joker-lbl">Joueur IN — Manager</label>
+          <select id="joker-in-manager" class="joker-select"></select>
+        </div>
+        <div>
+          <label class="joker-lbl">Poste</label>
+          <select id="joker-in-poste" class="joker-select">
+            <option value="G">G</option><option value="D">D</option><option value="M">M</option><option value="A">A</option>
+          </select>
+        </div>
+        <div>
+          <label class="joker-lbl">Nom du joueur</label>
+          <input type="text" id="joker-in-nom" class="joker-input" placeholder="ex : SISSOKO">
+        </div>
+        <div>
+          <label class="joker-lbl">Club</label>
+          <select id="joker-in-club" class="joker-select"></select>
+        </div>
+      </div>
+
+      <div id="joker-quota-summary" style="font-size:12px;margin-bottom:12px"></div>
+
+      <button class="btn btn-primary" onclick="applyJoker()">🔁 Appliquer le joker</button>
+
+      <div style="font-weight:700;font-size:13px;margin:20px 0 10px">Compteurs jokers — tous les managers</div>
+      <div id="joker-counters" style="margin-bottom:16px"></div>
+
+      <div id="joker-history"></div>
+    </div>
+
     <p style="color:var(--muted);margin-bottom:16px;font-size:13px">
-      Modifier l'effectif en cas de joker. Double-cliquez sur un nom pour l'éditer.
+      Édition libre de l'effectif (hors joker). Double-cliquez sur un nom pour l'éditer directement.
     </p>
     <div id="roster-grid" class="roster-grid"></div>
     <div style="margin-top:16px">
@@ -361,7 +444,7 @@ header h1 { font-size: 18px; font-weight: 700; color: var(--accent); }
 
 <script>
 const API = 'http://localhost:8765/api';
-let ROSTER = {}, LINEUPS = {}, CORRECTIONS = {}, DATA = {}, MANUAL_STATS = {}, CLUBS = {}, PREV_LINEUPS = {}, CL_DATA = {};
+let ROSTER = {}, LINEUPS = {}, CORRECTIONS = {}, DATA = {}, MANUAL_STATS = {}, CLUBS = {}, PREV_LINEUPS = {}, CL_DATA = {}, JOKERS = [];
 
 function getLogoUrl(nom) {
   const id = CLUBS[nom.trim().toUpperCase()];
@@ -393,9 +476,9 @@ function showTab(name) {
   document.querySelectorAll('.tab').forEach(t => {
     if (t.dataset.tab === name) t.classList.add('active');
   });
-  if (name === 'classement') renderClassement();
+  if (name === 'classement') { renderClassement(); renderClassementJokers(); }
   if (name === 'corrections') renderCorrections();
-  if (name === 'roster') renderRoster();
+  if (name === 'roster') { renderRoster(); populateJokerForm(); }
   if (name === 'stats') renderStats();
   if (name === 'cl') renderCL();
 }
@@ -403,10 +486,11 @@ function showTab(name) {
 // ─── Chargement ───────────────────────────────────────────────────────────────
 
 async function init() {
-  [ROSTER, DATA, CLUBS] = await Promise.all([
+  [ROSTER, DATA, CLUBS, JOKERS] = await Promise.all([
     api('GET', '/roster'),
     api('GET', '/data'),
     api('GET', '/clubs'),
+    api('GET', '/jokers'),
   ]);
   currentJournee = DATA.derniere_journee || 1;
   document.getElementById('journeeInput').value = currentJournee;
@@ -955,6 +1039,216 @@ async function saveRoster() {
   ROSTER = newRoster;
   toast('✅ Effectifs sauvegardés');
   renderLineups();
+  populateJokerForm();
+}
+
+
+// ─── JOKERS (OUT/IN) ─────────────────────────────────────────────────────────
+// Règlement 2026-27 (§2.3) : 5 types de jokers par manager sur la saison —
+// 3 "saison" (hors mercato), 2 "mercato d'été" (hors période d'enchères),
+// 2 "gardien", jusqu'à 3 "bonus" (points économisés au tour 1 des enchères,
+// quota = managers/{nom}.jokers_bonus sur Firestore), et 1 "capitaine transformé".
+
+const JOKER_TYPES = [
+  { id: 'saison',      label: 'Joker saison',              max: 3 },
+  { id: 'mercato_ete',  label: "Joker mercato d'été",        max: 2 },
+  { id: 'gardien',      label: 'Joker gardien',              max: 2 },
+  { id: 'bonus',        label: 'Joker bonus enchères (T1)',  max: null },
+  { id: 'capitaine',    label: 'Joker capitaine transformé', max: 1 },
+];
+
+// Filet de sécurité si Firestore (config/clubs) n'a pas encore répondu
+const JOKER_CLUBS_FALLBACK = ['PSG','OM','Monaco','OL','LOSC','Nice','Lens','Rennes',
+  'Strasbourg','Auxerre','Le Havre','Toulouse','Nantes','Saint-Étienne','Angers','Brest','Metz','Paris FC'];
+
+function jokerTypeLabel(id) {
+  return (JOKER_TYPES.find(t => t.id === id) || {}).label || id;
+}
+
+function jokerMaxFor(manager, typeId) {
+  if (typeId === 'bonus') {
+    const mgr = (window.ENC_MGR_DOCS || {})[manager];
+    return mgr && typeof mgr.jokers_bonus === 'number' ? mgr.jokers_bonus : null;
+  }
+  return (JOKER_TYPES.find(t => t.id === typeId) || {}).max ?? null;
+}
+
+function jokerUsedCount(manager, typeId) {
+  return JOKERS.filter(j => j.manager === manager && j.type === typeId).length;
+}
+
+function populateJokerForm() {
+  const managers = Object.keys(ROSTER);
+  const mgrOptions = managers.map(m => `<option value="${m}">${m}</option>`).join('');
+
+  const outMgrSel = document.getElementById('joker-out-manager');
+  const inMgrSel  = document.getElementById('joker-in-manager');
+  const typeSel   = document.getElementById('joker-type');
+  const clubSel   = document.getElementById('joker-in-club');
+  if (!outMgrSel) return;
+
+  const prevOut = outMgrSel.value, prevIn = inMgrSel.value, prevType = typeSel.value;
+  outMgrSel.innerHTML = mgrOptions;
+  inMgrSel.innerHTML  = mgrOptions;
+  typeSel.innerHTML   = JOKER_TYPES.map(t => `<option value="${t.id}">${t.label}</option>`).join('');
+  if (managers.includes(prevOut)) outMgrSel.value = prevOut;
+  if (managers.includes(prevIn))  inMgrSel.value  = prevIn;
+  if (prevType) typeSel.value = prevType;
+
+  const clubs = (window.SEASON_CLUBS && window.SEASON_CLUBS.length) ? window.SEASON_CLUBS : JOKER_CLUBS_FALLBACK;
+  clubSel.innerHTML = clubs.map(c => `<option value="${c}">${c}</option>`).join('');
+
+  updateJokerOutJoueurs();
+  updateJokerQuotaSummary();
+  renderJokerCountersTable('joker-counters');
+  renderJokerHistory('joker-history');
+}
+
+function updateJokerOutJoueurs() {
+  const manager = document.getElementById('joker-out-manager').value;
+  const joueurSel = document.getElementById('joker-out-joueur');
+  const opts = [];
+  for (const poste of POSTE_ORDER) {
+    for (const nom of ((ROSTER[manager] || {})[poste] || [])) {
+      opts.push(`<option value="${poste}::${nom}">${nom} (${poste})</option>`);
+    }
+  }
+  joueurSel.innerHTML = opts.join('');
+
+  const inMgrSel = document.getElementById('joker-in-manager');
+  if (manager) inMgrSel.value = manager;
+}
+
+function onJokerOutManagerChange() {
+  updateJokerOutJoueurs();
+  updateJokerQuotaSummary();
+}
+
+function updateJokerQuotaSummary() {
+  const manager = document.getElementById('joker-out-manager').value;
+  const summary = document.getElementById('joker-quota-summary');
+  if (!manager) { summary.innerHTML = ''; return; }
+  summary.innerHTML = JOKER_TYPES.map(t => {
+    const used = jokerUsedCount(manager, t.id);
+    const max = jokerMaxFor(manager, t.id);
+    const maxTxt = max === null ? '?' : max;
+    const over = max !== null && used >= max;
+    return `<span style="margin-right:14px;color:${over ? 'var(--red)' : 'var(--muted)'};${over ? 'font-weight:700' : ''}">${t.label} : ${used}/${maxTxt}</span>`;
+  }).join('');
+}
+
+async function applyJoker() {
+  const outManager = document.getElementById('joker-out-manager').value;
+  const outVal      = document.getElementById('joker-out-joueur').value;
+  const type        = document.getElementById('joker-type').value;
+  const inManager   = document.getElementById('joker-in-manager').value;
+  const inPoste     = document.getElementById('joker-in-poste').value;
+  const inNom       = document.getElementById('joker-in-nom').value.trim().toUpperCase();
+  const inClub      = document.getElementById('joker-in-club').value;
+
+  if (!outManager || !outVal)          { toast('Sélectionne le joueur à sortir', 'err'); return; }
+  if (!inManager || !inPoste || !inClub) { toast('Complète les champs du joueur IN', 'err'); return; }
+  if (!inNom)                           { toast('Indique le nom du joueur IN', 'err'); return; }
+
+  const [outPoste, outNom] = outVal.split('::');
+
+  const used = jokerUsedCount(outManager, type);
+  const max = jokerMaxFor(outManager, type);
+  if (max !== null && used >= max) {
+    if (!confirm(`${outManager} a déjà utilisé ${used}/${max} ${jokerTypeLabel(type)}(s). Continuer quand même ?`)) return;
+  }
+
+  // Règlement §1.1 : pas 2 joueurs du même club au même poste dans une même équipe
+  const dupClub = (ROSTER[inManager]?.[inPoste] || []).length > 0 &&
+    JOKERS.some(j => j.manager === inManager && j.in.poste === inPoste && j.in.club === inClub);
+  if (dupClub) {
+    if (!confirm(`${inManager} a peut-être déjà un ${inPoste} de ${inClub} dans son effectif (interdit par le règlement). Continuer quand même ?`)) return;
+  }
+
+  const outList = (ROSTER[outManager] || {})[outPoste] || [];
+  const idx = outList.indexOf(outNom);
+  if (idx !== -1) outList.splice(idx, 1);
+
+  if (!ROSTER[inManager]) ROSTER[inManager] = { G: [], D: [], M: [], A: [] };
+  if (!ROSTER[inManager][inPoste]) ROSTER[inManager][inPoste] = [];
+  ROSTER[inManager][inPoste].push(inNom);
+
+  JOKERS.push({
+    id: Date.now(),
+    date: new Date().toISOString(),
+    manager: outManager,
+    type,
+    out: { nom: outNom, poste: outPoste },
+    in:  { nom: inNom, poste: inPoste, club: inClub },
+  });
+
+  await Promise.all([
+    api('POST', '/roster', ROSTER),
+    api('POST', '/jokers', JOKERS),
+  ]);
+
+  toast(`✅ Joker appliqué — ${outNom} OUT / ${inNom} IN`);
+  document.getElementById('joker-in-nom').value = '';
+  renderRoster();
+  renderLineups();
+  populateJokerForm();
+  renderClassementJokers();
+}
+
+function renderJokerCountersTable(containerId) {
+  const box = document.getElementById(containerId);
+  if (!box) return;
+  const managers = Object.keys(ROSTER);
+  if (!managers.length) { box.innerHTML = '<div style="color:var(--muted);font-size:12px">Aucun manager.</div>'; return; }
+  const rows = managers.map(m => {
+    const cells = JOKER_TYPES.map(t => {
+      const used = jokerUsedCount(m, t.id);
+      const max = jokerMaxFor(m, t.id);
+      const maxTxt = max === null ? '?' : max;
+      const over = max !== null && used >= max;
+      return `<td style="text-align:center;${over ? 'color:var(--red);font-weight:700' : ''}">${used}/${maxTxt}</td>`;
+    }).join('');
+    return `<tr><td style="font-weight:700">${m}</td>${cells}</tr>`;
+  }).join('');
+  box.innerHTML = `
+    <table class="classement-table">
+      <thead><tr><th>Manager</th>${JOKER_TYPES.map(t => `<th style="text-align:center">${t.label}</th>`).join('')}</tr></thead>
+      <tbody>${rows}</tbody>
+    </table>`;
+}
+
+function renderJokerHistory(containerId) {
+  const box = document.getElementById(containerId);
+  if (!box) return;
+  if (!JOKERS.length) {
+    box.innerHTML = '<div style="color:var(--muted);font-size:12px">Aucun joker utilisé pour l\'instant.</div>';
+    return;
+  }
+  const rows = [...JOKERS].sort((a, b) => b.id - a.id).map(j => {
+    const d = new Date(j.date);
+    const dateTxt = d.toLocaleDateString('fr-FR') + ' ' + d.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+    return `
+      <div class="joker-history-item">
+        <span class="joker-badge">${dateTxt}</span>
+        <strong>${j.manager}</strong>
+        <span style="color:var(--muted)">${jokerTypeLabel(j.type)}</span>
+        <span>${j.out.nom} (${j.out.poste}) → ${j.in.nom} (${j.in.poste}, ${j.in.club})</span>
+      </div>`;
+  }).join('');
+  box.innerHTML = `<div style="font-weight:700;font-size:12px;margin-bottom:6px;color:var(--muted)">Historique</div>${rows}`;
+}
+
+function renderClassementJokers() {
+  renderJokerCountersTable('classement-jokers-counters');
+  renderJokerHistory('classement-jokers-history');
+}
+
+function showClassementSubtab(name) {
+  document.querySelectorAll('#section-classement .subtab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('#section-classement .subsection').forEach(s => s.classList.remove('active'));
+  document.querySelector(`#section-classement .subtab[data-subtab="${name}"]`).classList.add('active');
+  document.getElementById('subsection-' + name).classList.add('active');
+  if (name === 'classement-jokers') renderClassementJokers();
 }
 
 
@@ -1587,7 +1881,10 @@ init().catch(e => {
         <div style="font-weight:700;font-size:13px">Corrections post-compilation — Tour <span id="enc-attr-round">?</span></div>
         <div style="font-size:11px;color:var(--muted);margin-top:2px">Réattribuer un joueur sans voir les mises — avec l'accord de tous</div>
       </div>
-      <button class="btn btn-subtle" id="enc-attr-refresh" style="font-size:12px;padding:5px 12px">🔄 Actualiser</button>
+      <div style="display:flex;gap:8px">
+        <button class="btn btn-subtle" id="enc-attr-add-row" style="font-size:12px;padding:5px 12px">➕ Ajouter un joueur</button>
+        <button class="btn btn-subtle" id="enc-attr-refresh" style="font-size:12px;padding:5px 12px">🔄 Actualiser</button>
+      </div>
     </div>
     <div id="enc-attr-body" style="padding:14px 16px">
       <div style="font-size:12px;color:var(--muted)">Aucune compilation effectuée pour ce tour.</div>
@@ -1666,6 +1963,25 @@ const db = getFirestore(fbApp);
 
 let MANAGERS = [];
 let encConfig = {};
+
+// Exposition anticipée (indépendante du clic sur l'onglet Enchères) pour le
+// panneau joker de l'onglet Effectifs : liste des clubs de la saison et
+// quotas de jokers bonus (managers/{nom}.jokers_bonus) par manager.
+window.SEASON_CLUBS = [];
+window.ENC_MGR_DOCS = {};
+(async () => {
+  try {
+    const clubsSnap = await getDoc(doc(db, 'config', 'clubs'));
+    window.SEASON_CLUBS = clubsSnap.exists() ? (clubsSnap.data().list || []) : [];
+  } catch (e) { /* pas encore configuré / hors ligne */ }
+  try {
+    const mgrSnap = await getDocs(collection(db, 'managers'));
+    const map = {};
+    mgrSnap.forEach(d => { map[d.id] = d.data(); });
+    window.ENC_MGR_DOCS = map;
+  } catch (e) { /* pas encore configuré / hors ligne */ }
+  if (typeof populateJokerForm === 'function') populateJokerForm();
+})();
 
 // ── Init section ──────────────────────────────────────────
 document.querySelector('[data-tab="enchere"]').addEventListener('click', initEnchere);
@@ -1978,6 +2294,7 @@ const POSTE_FG_A = { G:'#fde68a', D:'#93c5fd', M:'#86efac', A:'#fca5a5' };
 
 let attrResultats = {}; // résultats originaux chargés
 let attrRound = null;
+let attrManualCounter = 0;
 
 const CLUB_IDS_A = {
   'PSG':85,'PARIS':85,'PARIS SG':85,'PARIS SAINT-GERMAIN':85,
@@ -2118,6 +2435,67 @@ window.attrMarkDirty = function(el) {
   status.style.color = 'var(--yellow)';
 };
 
+// ── Ajout manuel d'un joueur (ligne libre dans le tableau) ──
+window.attrAddManualRow = function() {
+  const tbody = document.querySelector('#enc-attr-body table tbody');
+  if (!tbody) { alert("Compilez d'abord un tour (ou actualisez la section) avant d'ajouter un joueur."); return; }
+
+  const pid = 'manual_' + Date.now() + '_' + (attrManualCounter++);
+  const mgrOptions = MANAGERS.map(m => `<option value="${esc(m)}">${esc(m)}</option>`).join('');
+
+  const tr = document.createElement('tr');
+  tr.dataset.pid = pid;
+  tr.dataset.manual = '1';
+  tr.style.borderBottom = '1px solid rgba(255,255,255,.04)';
+  tr.style.background = 'rgba(250,204,21,.08)';
+  tr.innerHTML = `
+    <td style="padding:5px 8px">
+      <select data-pid="${pid}" data-field="poste"
+        style="background:#333;border:1px dashed var(--border);color:#fff;padding:3px 4px;border-radius:5px;font-size:11px;font-weight:700;width:44px;cursor:pointer"
+        onchange="attrMarkDirty(this)">
+        ${POSTE_ORDER_A.map(p => `<option value="${p}">${p}</option>`).join('')}
+      </select>
+    </td>
+    <td style="padding:5px 8px">
+      <input type="text" placeholder="Club" data-pid="${pid}" data-field="club"
+        style="background:var(--surface2);border:1px dashed var(--border);color:var(--text);padding:3px 6px;border-radius:5px;font-size:12px;width:100%"
+        onchange="attrMarkDirty(this)">
+    </td>
+    <td style="padding:5px 8px">
+      <input type="text" placeholder="Nom du joueur" data-pid="${pid}" data-field="nom"
+        style="background:var(--surface2);border:1px dashed var(--border);color:var(--text);font-weight:600;padding:3px 6px;border-radius:5px;font-size:12px;width:100%"
+        onchange="attrMarkDirty(this)">
+    </td>
+    <td style="padding:5px 8px">
+      <div style="display:flex;align-items:center;gap:6px">
+        <input type="number" min="0" step="1" placeholder="Mise" data-pid="${pid}" data-field="mise"
+          style="background:var(--surface2);border:1px dashed var(--border);color:var(--text);padding:3px 6px;border-radius:5px;font-size:12px;width:56px"
+          onchange="attrMarkDirty(this)">
+        <span style="font-size:11px;color:var(--muted)">pts</span>
+        <button onclick="this.closest('tr').remove()" style="background:none;border:none;color:var(--red);cursor:pointer;font-size:11px;white-space:nowrap" title="Retirer cette ligne">✕</button>
+      </div>
+    </td>
+    <td style="padding:5px 8px">
+      <select data-pid="${pid}" data-field="manager"
+        style="background:var(--surface2);border:1px dashed var(--border);color:var(--text);padding:3px 6px;border-radius:5px;font-size:12px"
+        onchange="attrMarkDirty(this)">
+        ${mgrOptions}
+      </select>
+    </td>
+    <td style="padding:5px 8px">
+      <select data-pid="${pid}" data-field="statut"
+        style="background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:3px 6px;border-radius:5px;font-size:12px"
+        onchange="attrMarkDirty(this)">
+        <option value="won" selected>✓ Gagné</option>
+        <option value="lost">✗ Raté</option>
+        <option value="tied">↩ Remis en jeu</option>
+      </select>
+    </td>`;
+  tbody.appendChild(tr);
+  attrMarkDirty(tr.querySelector('[data-field="nom"]'));
+  document.getElementById('enc-attr-footer').style.display = 'flex';
+};
+
 async function saveAttributions() {
   const btn = document.getElementById('enc-attr-save');
   btn.disabled = true; btn.textContent = '⏳ Sauvegarde…';
@@ -2167,6 +2545,24 @@ async function saveAttributions() {
     newResultats[pid].poste = sel.value;
   });
 
+  // Ajouter les nouveaux joueurs (lignes libres ajoutées manuellement)
+  document.querySelectorAll('#enc-attr-body tr[data-manual="1"]').forEach(tr => {
+    const pid = tr.dataset.pid;
+    const poste = tr.querySelector('[data-field="poste"]').value;
+    const club = tr.querySelector('[data-field="club"]').value.trim();
+    const nom = tr.querySelector('[data-field="nom"]').value.trim();
+    const manager = tr.querySelector('[data-field="manager"]').value;
+    const statut = tr.querySelector('[data-field="statut"]').value;
+    const mise = parseInt(tr.querySelector('[data-field="mise"]').value, 10) || 0;
+    if (!nom) return; // ligne vide, ignorée
+    newResultats[pid] = {
+      poste, club, nom, statut,
+      vainqueur: statut === 'won' ? manager : null,
+      bids: manager ? { [manager]: mise } : {},
+      max_bid: mise
+    };
+  });
+
   // Recalculer les joueurs et budgets de chaque manager
   await loadEncBudgets();
 
@@ -2206,19 +2602,18 @@ async function saveAttributions() {
   attrResultats = newResultats;
   await loadEncBudgets();
   renderEncBudgets();
+  await renderAttributions();
 
   btn.disabled = false; btn.textContent = '✓ Appliquer les corrections';
   const status = document.getElementById('enc-attr-status');
   status.textContent = '✓ Corrections appliquées';
   status.style.color = 'var(--accent)';
-
-  // Réinitialiser la couleur des selects modifiés
-  document.querySelectorAll('[data-field="vainqueur"]').forEach(s => s.style.borderColor = 'var(--border)');
   setTimeout(() => { status.textContent = ''; }, 4000);
 }
 
 document.getElementById('enc-attr-refresh').addEventListener('click', renderAttributions);
 document.getElementById('enc-attr-save').addEventListener('click', saveAttributions);
+document.getElementById('enc-attr-add-row').addEventListener('click', attrAddManualRow);
 
 // ── Budgets ───────────────────────────────────────────────
 async function loadEncBudgets() {

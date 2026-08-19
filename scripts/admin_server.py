@@ -27,6 +27,7 @@ FILES = {
     "/api/data":          BASE_DIR  / "data.json",
     "/api/clubs":         BASE_DIR  / "clubs.json",
     "/api/champions-league": BASE_DIR / "champions_league.json",
+    "/api/jokers":        DATA_DIR / "jokers.json",
 }
 
 JOURNEE_FILES = {
@@ -218,7 +219,7 @@ class AdminHandler(BaseHTTPRequestHandler):
 
         # Full-file save (roster, player-ids, champions-league)
         for endpoint, fpath in FILES.items():
-            if path == endpoint and endpoint in ("/api/roster", "/api/player-ids", "/api/champions-league"):
+            if path == endpoint and endpoint in ("/api/roster", "/api/player-ids", "/api/champions-league", "/api/jokers"):
                 write_json(fpath, payload)
                 self.send_json({"ok": True})
                 return
