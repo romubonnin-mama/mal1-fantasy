@@ -231,6 +231,8 @@
   .joker-counters-tbl { white-space: nowrap; }
   .joker-counters-tbl th, .joker-counters-tbl td { padding: 8px 12px; }
   .joker-history-item { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; padding: 6px 0; border-bottom: 1px solid var(--border); font-size: 12px; }
+  .joker-move { display: inline-flex; align-items: center; gap: 4px; }
+  .joker-club-logo { width: 14px; height: 14px; object-fit: contain; flex-shrink: 0; }
   .joker-badge { font-size: 10px; padding: 2px 6px; border-radius: 4px; background: var(--surface2); border: 1px solid var(--border); flex-shrink: 0; color: var(--muted); }
   .mgr-card-row { display: grid; grid-template-columns: 1fr 60px 60px 70px; align-items: center; padding: 9px 18px; border-bottom: 1px solid var(--border); font-size: 12px; gap: 8px; }
   .mgr-card-row:last-child { border-bottom: none; }
@@ -612,16 +614,16 @@ function renderJokerHistory(containerId) {
     const dateTxt = d.toLocaleDateString('fr-FR') + ' ' + d.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
     const outLogoUrl = getLogoUrl(j.out.nom);
     const inLogoUrl  = getLogoUrl(j.in.nom);
-    const outLogo = outLogoUrl ? `<img src="${outLogoUrl}" class="club-logo" onerror="this.style.display='none'" alt="">` : '';
-    const inLogo  = inLogoUrl  ? `<img src="${inLogoUrl}" class="club-logo" onerror="this.style.display='none'" alt="">` : '';
+    const outLogo = outLogoUrl ? `<img src="${outLogoUrl}" class="joker-club-logo" onerror="this.style.display='none'" alt="">` : '';
+    const inLogo  = inLogoUrl  ? `<img src="${inLogoUrl}" class="joker-club-logo" onerror="this.style.display='none'" alt="">` : '';
     return `
       <div class="joker-history-item">
         <span class="joker-badge">${dateTxt}</span>
         <strong>${j.manager}</strong>
         <span style="color:var(--muted)">${jokerTypeLabel(j.type)}</span>
-        <span style="color:var(--danger)">${outLogo}${j.out.nom} (${j.out.poste})</span>
+        <span class="joker-move" style="color:var(--danger)">${outLogo}${j.out.nom} (${j.out.poste})</span>
         <span style="color:var(--muted)">→</span>
-        <span style="color:var(--accent)">${inLogo}${j.in.nom} (${j.in.poste}, ${j.in.club})</span>
+        <span class="joker-move" style="color:var(--accent)">${inLogo}${j.in.nom} (${j.in.poste}, ${j.in.club})</span>
       </div>`;
   }).join('');
   box.innerHTML = rows;
