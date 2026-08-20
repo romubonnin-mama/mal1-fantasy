@@ -328,6 +328,20 @@ function setJerseyImg(img, club, poste) {
   };
 }
 
+const COULEURS = {
+  "ROMU":    "#15803d",
+  "FLORIAN": "#f5c842",
+  "FAB":     "#60a5fa",
+  "BASTIEN": "#c084fc",
+  "ADRIEN":  "#ffffff",
+  "JEROME":  "#22d3ee",
+  "ANTHONY": "#a3e635",
+  "MICKA":   "#818cf8",
+  "VINCENT": "#e879f9",
+  "MAXIME":  "#fb923c",
+};
+function mgrColor(nom) { return COULEURS[nom] || 'var(--accent)'; }
+
 let MGR = null;
 let SQUAD = {G:[], D:[], M:[], A:[]};   // par poste
 let TITU = new Set();                    // noms titulaires
@@ -357,7 +371,9 @@ async function attemptLogin(nom, pin) {
   document.getElementById('login-err').style.display = 'none';
   document.getElementById('page-login').classList.remove('active');
   document.getElementById('page-main').classList.add('active');
-  document.getElementById('header-nom').textContent = nom;
+  const headerNomEl = document.getElementById('header-nom');
+  headerNomEl.textContent = nom;
+  headerNomEl.style.color = mgrColor(nom);
   document.getElementById('logout-btn').style.display = 'block';
   localStorage.setItem(LOGIN_KEY, JSON.stringify({nom, pin}));
 
@@ -456,6 +472,7 @@ function loadState() {
 function renderTeamName() {
   const el = document.getElementById('team-name-display');
   el.textContent = TEAM_NAME;
+  el.style.color = mgrColor(MGR);
   el.style.display = TEAM_NAME ? 'block' : 'none';
 }
 

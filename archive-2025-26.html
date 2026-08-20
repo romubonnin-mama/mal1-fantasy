@@ -235,6 +235,20 @@
 </div>
 
 <script>
+const COULEURS = {
+  "ROMU":    "#15803d",
+  "FLORIAN": "#f5c842",
+  "FAB":     "#60a5fa",
+  "BASTIEN": "#c084fc",
+  "ADRIEN":  "#ffffff",
+  "JEROME":  "#22d3ee",
+  "ANTHONY": "#a3e635",
+  "MICKA":   "#818cf8",
+  "VINCENT": "#e879f9",
+  "MAXIME":  "#fb923c",
+};
+function mgrColor(nom) { return COULEURS[nom] || 'var(--text)'; }
+
 fetch('data-archive-2025-26.json')
   .then(r => r.json())
   .then(render)
@@ -251,7 +265,9 @@ function render(data) {
   const rowCls = ['top1','top2','top3'];
 
   document.getElementById('nb-journees').textContent = nbJ;
-  document.getElementById('stat-champion').textContent = cl[0].nom;
+  const statChampionEl = document.getElementById('stat-champion');
+  statChampionEl.textContent = cl[0].nom;
+  statChampionEl.style.color = mgrColor(cl[0].nom);
   document.getElementById('stat-total').textContent = cl[0].pts;
   document.getElementById('stat-ecart').textContent = cl[0].pts - cl[1].pts;
 
@@ -280,7 +296,7 @@ function render(data) {
     <div class="podium-item ${cls}">
       <div class="podium-block">
         <div class="podium-medal">${medal}</div>
-        <div class="podium-name">${m.nom}</div>
+        <div class="podium-name" style="color:${mgrColor(m.nom)}">${m.nom}</div>
         <div class="podium-pts">${m.pts}</div>
         <div class="podium-lbl">points</div>
       </div>
@@ -298,7 +314,7 @@ function render(data) {
     const cls = rowCls[i] || '';
     tbody += `<tr class="${cls}">
       <td><span class="rank-num">${m.rang}</span></td>
-      <td>${i < 3 ? medals[i] + ' ' : ''}${m.nom}</td>
+      <td style="color:${mgrColor(m.nom)}">${i < 3 ? medals[i] + ' ' : ''}${m.nom}</td>
       <td><span class="pts-total">${s.total}</span></td>
       <td class="hide-mob pts-avg">${s.avg}</td>
       <td class="pts-max">${s.max}<span class="j-hint">J${s.maxJ}</span></td>
@@ -328,22 +344,22 @@ function render(data) {
     <div class="record-item">
       <div class="record-val gold">${bestScore.val}</div>
       <div class="record-label">Meilleur score</div>
-      <div class="record-sub">${bestScore.manager} · J${bestScore.j}</div>
+      <div class="record-sub"><span style="color:${mgrColor(bestScore.manager)}">${bestScore.manager}</span> · J${bestScore.j}</div>
     </div>
     <div class="record-item">
       <div class="record-val red">${worstScore.val === Infinity ? '—' : worstScore.val}</div>
       <div class="record-label">Pire score</div>
-      <div class="record-sub">${worstScore.manager} · J${worstScore.j}</div>
+      <div class="record-sub"><span style="color:${mgrColor(worstScore.manager)}">${worstScore.manager}</span> · J${worstScore.j}</div>
     </div>
     <div class="record-item">
       <div class="record-val green">${bestAvg.avg}</div>
       <div class="record-label">Meilleure moyenne</div>
-      <div class="record-sub">${bestAvg.nom}</div>
+      <div class="record-sub"><span style="color:${mgrColor(bestAvg.nom)}">${bestAvg.nom}</span></div>
     </div>
     <div class="record-item">
       <div class="record-val orange">${ecart12}</div>
       <div class="record-label">Écart 1<sup>er</sup>/2<sup>e</sup></div>
-      <div class="record-sub">${cl[0].nom} / ${cl[1].nom}</div>
+      <div class="record-sub"><span style="color:${mgrColor(cl[0].nom)}">${cl[0].nom}</span> / <span style="color:${mgrColor(cl[1].nom)}">${cl[1].nom}</span></div>
     </div>`;
 
   // Stats par manager (same order as classement)
@@ -351,9 +367,8 @@ function render(data) {
   for (const m of cl) {
     const s = stats[m.nom];
     const i = m.rang - 1;
-    const nameColor = i === 0 ? 'var(--gold)' : i === 1 ? 'var(--silver)' : i === 2 ? 'var(--bronze)' : 'var(--text)';
     mgr += `<div class="mgr-stat-card">
-      <div class="mgr-stat-name" style="color:${nameColor}">${i < 3 ? medals[i] + ' ' : ''}${m.nom}</div>
+      <div class="mgr-stat-name" style="color:${mgrColor(m.nom)}">${i < 3 ? medals[i] + ' ' : ''}${m.nom}</div>
       <div class="mgr-stat-row"><span class="label">Total</span><span class="value">${s.total}</span></div>
       <div class="mgr-stat-row"><span class="label">Moyenne</span><span class="value">${s.avg}</span></div>
       <div class="mgr-stat-row"><span class="label">Meilleur</span><span class="value green">${s.max} <small style="color:var(--muted);font-size:10px">J${s.maxJ}</small></span></div>

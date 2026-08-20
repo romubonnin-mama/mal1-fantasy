@@ -202,9 +202,9 @@ function renderH2H(cl) {
     const matches = resultats[j].matches.map(m => {
       const aWin = m.vainqueur === m.a, bWin = m.vainqueur === m.b;
       return `<div class="h2h-match">
-        <div class="h2h-side"><span class="h2h-name ${aWin ? 'winner' : ''}">${esc(m.a)}</span></div>
+        <div class="h2h-side"><span class="h2h-name" style="color:${nameColor(m.a)}">${aWin ? '✓ ' : ''}${esc(m.a)}</span></div>
         <div class="h2h-score">${m.pts_a} — ${m.pts_b}</div>
-        <div class="h2h-side right"><span class="h2h-name ${bWin ? 'winner' : ''}">${esc(m.b)}</span></div>
+        <div class="h2h-side right"><span class="h2h-name" style="color:${nameColor(m.b)}">${bWin ? '✓ ' : ''}${esc(m.b)}</span></div>
       </div>${!aWin && !bWin ? '<div class="h2h-nul" style="text-align:center">Match nul</div>' : ''}`;
     }).join('');
     return `<div class="h2h-journee">
@@ -231,11 +231,11 @@ function matchCard(label, m) {
   return `<div class="bracket-match">
     <div style="font-size:10px;color:var(--muted);margin-bottom:4px">${label}</div>
     <div class="teams">
-      <span class="${aWin ? 'win' : ''}">${a ? esc(a) : '?'}</span> vs
-      <span class="${bWin ? 'win' : ''}">${b ? esc(b) : '?'}</span>
+      <span style="color:${a ? nameColor(a) : 'inherit'}">${aWin ? '✓ ' : ''}${a ? esc(a) : '?'}</span> vs
+      <span style="color:${b ? nameColor(b) : 'inherit'}">${bWin ? '✓ ' : ''}${b ? esc(b) : '?'}</span>
     </div>
     <div class="legs">${legLine(m)}</div>
-    ${m.vainqueur ? `<div class="win-tag">🏆 ${esc(m.vainqueur)}</div>` : ''}
+    ${m.vainqueur ? `<div class="win-tag">🏆 <span style="color:${nameColor(m.vainqueur)}">${esc(m.vainqueur)}</span></div>` : ''}
   </div>`;
 }
 
@@ -266,7 +266,7 @@ function renderChampion(cl) {
   const champ = cl.bracket.finale.vainqueur;
   wrap.innerHTML = `<div class="champion-banner">
     <div class="trophy">🏆</div>
-    <h2>${esc(champ)}</h2>
+    <h2 style="color:${nameColor(champ)}">${esc(champ)}</h2>
     <p>Vainqueur de la Champions League Ma L1 2026/27</p>
   </div>`;
 }

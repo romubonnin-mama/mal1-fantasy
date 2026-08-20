@@ -503,6 +503,22 @@ async function loadJournee() {
   if (statsSection && statsSection.classList.contains('active')) renderStats();
 }
 
+// ─── COULEURS MANAGERS (identiques au site public) ───────────────────────────
+
+const COULEURS = {
+  "ROMU":    "#15803d",
+  "FLORIAN": "#f5c842",
+  "FAB":     "#60a5fa",
+  "BASTIEN": "#c084fc",
+  "ADRIEN":  "#ffffff",
+  "JEROME":  "#22d3ee",
+  "ANTHONY": "#a3e635",
+  "MICKA":   "#818cf8",
+  "VINCENT": "#e879f9",
+  "MAXIME":  "#fb923c",
+};
+function mgrColor(nom) { return COULEURS[nom] || 'inherit'; }
+
 // ─── COMPOSITIONS ────────────────────────────────────────────────────────────
 
 const POSTE_ORDER = ['G', 'D', 'M', 'A'];
@@ -579,7 +595,7 @@ function renderLineups() {
     const header = document.createElement('div');
     header.className = 'manager-card-header';
     header.innerHTML = `
-      <span class="manager-name">${manager}</span>
+      <span class="manager-name" style="color:${mgrColor(manager)}">${manager}</span>
       <span style="font-size:12px;color:var(--muted)">Coeff cap :</span>
       <input type="number" class="corr-input" style="width:50px" value="${lineup.coeff || 1}" min="1" max="7"
              ${isFirst ? 'disabled' : ''}
@@ -764,7 +780,7 @@ function renderCorrections() {
     const wrap = document.createElement('div');
     wrap.className = 'stats-manager';
     wrap.innerHTML = `
-      <div class="stats-manager-header">${manager}</div>
+      <div class="stats-manager-header" style="color:${mgrColor(manager)}">${manager}</div>
       <div class="stats-table-wrap">
         <table class="stats-tbl">
           <thead><tr>
@@ -1002,7 +1018,7 @@ function renderRoster() {
   for (const manager of Object.keys(ROSTER)) {
     const card = document.createElement('div');
     card.className = 'roster-card';
-    card.innerHTML = `<h3>${manager}</h3>`;
+    card.innerHTML = `<h3 style="color:${mgrColor(manager)}">${manager}</h3>`;
 
     for (const poste of POSTE_ORDER) {
       for (const nom of (ROSTER[manager][poste] || [])) {
@@ -1312,7 +1328,7 @@ function renderJokerHistory(containerId) {
     return `
       <div class="joker-history-item">
         <span class="joker-badge">${dateTxt}</span>
-        <strong>${j.manager}</strong>
+        <strong style="color:${mgrColor(j.manager)}">${j.manager}</strong>
         <span style="color:var(--muted)">${jokerTypeLabel(j.type)}</span>
         <span style="color:var(--red)">${outLogo}${j.out.nom} (${j.out.poste})</span>
         <span style="color:var(--muted)">→</span>
@@ -1355,7 +1371,7 @@ function renderStats() {
     wrap.className = 'stats-manager';
     wrap.innerHTML = `
       <div class="stats-manager-header">
-        ${manager}
+        <span style="color:${mgrColor(manager)}">${manager}</span>
         <span style="color:var(--muted);font-size:12px;font-weight:400">${titus.size}/11 titulaires</span>
         <span id="total-pts-${manager}" style="font-size:15px;font-weight:700;color:var(--accent);margin-left:auto">${managerTotal} pts</span>
       </div>
@@ -2183,7 +2199,7 @@ function renderManagersList() {
         ? `<button class="btn btn-primary btn-sm" data-copy="${nom}">📋 Copier le lien</button>`
         : `<button class="btn btn-primary btn-sm" data-gen="${nom}">🔗 Générer le lien</button>`;
     return `<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap">
-      <div style="width:90px;font-weight:600;font-size:13px">${nom}</div>
+      <div style="width:90px;font-weight:600;font-size:13px;color:${mgrColor(nom)}">${nom}</div>
       ${statusHtml}
       <div style="flex:1"></div>
       ${actionBtn}
@@ -2326,7 +2342,7 @@ async function refreshSubmissions() {
     const color = ok ? 'var(--accent)' : 'var(--muted)';
     return `
       <div style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:10px 14px;display:flex;align-items:center;justify-content:space-between">
-        <div style="font-weight:700;font-size:13px">${nom}</div>
+        <div style="font-weight:700;font-size:13px;color:${mgrColor(nom)}">${nom}</div>
         <div style="font-size:12px;font-weight:700;color:${color}">${ok ? '✓ Envoyé' : '⏳ En attente'}</div>
       </div>`;
   }).join('');
@@ -2455,7 +2471,7 @@ async function renderAttributions() {
 
     // Attribué à : lecture seule
     const winnerDisplay = currentWinner
-      ? `<span style="font-size:12px;color:var(--text);font-weight:500">${esc(currentWinner)}</span>`
+      ? `<span style="font-size:12px;color:${mgrColor(currentWinner)};font-weight:500">${esc(currentWinner)}</span>`
       : `<span style="font-size:11px;color:var(--muted)">—</span>`;
 
     // Dropdown résultat
@@ -2726,7 +2742,7 @@ function renderEncBudgets() {
 
     return `
       <div style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:10px 12px">
-        <div style="font-weight:700;font-size:13px;margin-bottom:6px">${nom}</div>
+        <div style="font-weight:700;font-size:13px;margin-bottom:6px;color:${mgrColor(nom)}">${nom}</div>
         <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:4px">
           <span>${joueurs.length}/14 joueurs</span>
           <span style="color:var(--accent);font-weight:700">${restant}/${max} pts</span>
@@ -3131,7 +3147,7 @@ async function renderCompileSection() {
 
     html += `<div style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:10px 12px">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
-        <div style="font-weight:700;font-size:13px">${nom}</div>
+        <div style="font-weight:700;font-size:13px;color:${mgrColor(nom)}">${nom}</div>
         <div style="font-size:11px;font-weight:700;color:${statusColor}">${statusLabel}${ok && deadlinePassed ? ' · ' + total + ' pts' : ''}</div>
       </div>
       ${bidsHtml}
