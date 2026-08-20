@@ -69,7 +69,8 @@ select:focus,input:focus{outline:none;border-color:var(--accent)}
 .player-row:last-child{border-bottom:none}
 .player-row input[type=checkbox]{width:18px;height:18px;accent-color:var(--accent);flex-shrink:0;cursor:pointer}
 .player-row .p-nom{flex:1;font-weight:600}
-.player-row .p-club{font-size:10px;color:var(--text2)}
+.player-row .p-club{font-size:10px;color:var(--text2);display:inline-flex;align-items:center;gap:4px}
+.player-row .club-logo-sel{width:14px;height:14px;object-fit:contain;flex-shrink:0}
 .cap-star{background:var(--surface2);border:1px solid var(--border);color:var(--text2);border-radius:6px;padding:4px 8px;font-size:13px;cursor:pointer;flex-shrink:0}
 .cap-star.active{background:var(--yellow);color:#0d0f14;border-color:var(--yellow)}
 .cap-star:disabled{opacity:.25;cursor:not-allowed}
@@ -255,6 +256,11 @@ const CLUB_IDS = {
 };
 const POSTE_ORDER = ['G','D','M','A'];
 const POSTE_LABEL = {G:'Gardien', D:'Défenseurs', M:'Milieux', A:'Attaquants'};
+
+function clubLogoUrl(club) {
+  const id = CLUB_IDS[(club||'').toUpperCase().trim()];
+  return id ? `https://media.api-sports.io/football/teams/${id}.png` : '';
+}
 
 // Terrain en perspective : les lignes, surfaces et buts viennent maintenant de
 // la vraie image terrain.png (fond de .pitch-wrap), donc plus besoin de les
@@ -478,12 +484,14 @@ function renderSelection() {
     players.forEach(p => {
       const isTitu = TITU.has(p.nom);
       const isCap  = CAP === p.nom;
+      const logoUrl = clubLogoUrl(p.club);
+      const logoHtml = logoUrl ? `<img src="${logoUrl}" class="club-logo-sel" onerror="this.style.display='none'" alt="">` : '';
       const row = document.createElement('div');
       row.className = 'player-row';
       row.innerHTML = `
         <input type="checkbox" data-nom="${p.nom}" data-poste="${poste}" ${isTitu ? 'checked' : ''}>
         <div class="poste-badge p${poste.toLowerCase()}">${poste}</div>
-        <div class="p-nom">${p.nom} <span class="p-club">${p.club||''}</span></div>
+        <div class="p-nom">${p.nom} <span class="p-club">${logoHtml}${p.club||''}</span></div>
         <button class="cap-star ${isCap ? 'active' : ''}" data-nom="${p.nom}" ${isTitu ? '' : 'disabled'}>★</button>
       `;
       group.appendChild(row);

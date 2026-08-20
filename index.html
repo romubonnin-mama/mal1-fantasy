@@ -610,12 +610,18 @@ function renderJokerHistory(containerId) {
   const rows = [...JOKERS].sort((a, b) => b.id - a.id).map(j => {
     const d = new Date(j.date);
     const dateTxt = d.toLocaleDateString('fr-FR') + ' ' + d.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+    const outLogoUrl = getLogoUrl(j.out.nom);
+    const inLogoUrl  = getLogoUrl(j.in.nom);
+    const outLogo = outLogoUrl ? `<img src="${outLogoUrl}" class="club-logo" onerror="this.style.display='none'" alt="">` : '';
+    const inLogo  = inLogoUrl  ? `<img src="${inLogoUrl}" class="club-logo" onerror="this.style.display='none'" alt="">` : '';
     return `
       <div class="joker-history-item">
         <span class="joker-badge">${dateTxt}</span>
         <strong>${j.manager}</strong>
         <span style="color:var(--muted)">${jokerTypeLabel(j.type)}</span>
-        <span>${j.out.nom} (${j.out.poste}) → ${j.in.nom} (${j.in.poste}, ${j.in.club})</span>
+        <span style="color:var(--danger)">${outLogo}${j.out.nom} (${j.out.poste})</span>
+        <span style="color:var(--muted)">→</span>
+        <span style="color:var(--accent)">${inLogo}${j.in.nom} (${j.in.poste}, ${j.in.club})</span>
       </div>`;
   }).join('');
   box.innerHTML = rows;

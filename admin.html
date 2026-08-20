@@ -1307,12 +1307,16 @@ function renderJokerHistory(containerId) {
   const rows = [...JOKERS].sort((a, b) => b.id - a.id).map(j => {
     const d = new Date(j.date);
     const dateTxt = d.toLocaleDateString('fr-FR') + ' ' + d.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+    const outLogo = (() => { const u = getLogoUrl(j.out.nom); return u ? `<img src="${u}" class="club-logo-adm" onerror="this.style.display='none'" alt="">` : ''; })();
+    const inLogo  = (() => { const u = getLogoUrl(j.in.nom);  return u ? `<img src="${u}" class="club-logo-adm" onerror="this.style.display='none'" alt="">` : ''; })();
     return `
       <div class="joker-history-item">
         <span class="joker-badge">${dateTxt}</span>
         <strong>${j.manager}</strong>
         <span style="color:var(--muted)">${jokerTypeLabel(j.type)}</span>
-        <span>${j.out.nom} (${j.out.poste}) → ${j.in.nom} (${j.in.poste}, ${j.in.club})</span>
+        <span style="color:var(--red)">${outLogo}${j.out.nom} (${j.out.poste})</span>
+        <span style="color:var(--muted)">→</span>
+        <span style="color:var(--accent)">${inLogo}${j.in.nom} (${j.in.poste}, ${j.in.club})</span>
         <button class="btn btn-subtle" style="margin-left:auto;font-size:11px;padding:3px 8px" onclick="editJoker(${j.id})" title="Annule ce joker et pré-remplit le formulaire pour corriger une erreur de saisie">✏️ Corriger</button>
       </div>`;
   }).join('');
