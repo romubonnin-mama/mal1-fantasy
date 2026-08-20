@@ -1,1 +1,20 @@
-[]
+[
+  {
+    "id": 1787252716051,
+    "date": "2026-08-20T19:05:16.051Z",
+    "manager": "ROMU",
+    "type": "mercato_ete",
+    "out": {
+      "nom": "D.MOREIRA",
+      "poste": "M",
+      "club": "Strasbourg",
+      "mise": 4,
+      "id": "d.moreira__strasbourg__M"
+    },
+    "in": {
+      "nom": "L.KOLEOSHO",
+      "poste": "M",
+      "club": "Paris FC"
+    }
+  }
+]

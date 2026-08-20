@@ -54,7 +54,21 @@
       "WebFetch(domain:www.losc.fr)",
       "WebFetch(domain:www.footyheadlines.com)",
       "WebFetch(domain:shop.lemansfc.fr)",
-      "Bash(sort -k9)"
+      "Bash(sort -k9)",
+      "Bash(identify maillots/94.jpg maillots/95.jpg)",
+      "Bash(sort -k6,7)",
+      "Bash(git show *)",
+      "Bash(node --check \"C:\\\\Users\\\\boro7\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\E--Sauvegarde-draft-club-mal1-fantasy\\\\761b38b2-c431-4e24-8fdc-e3d8e527f118\\\\scratchpad\\\\compo_script.mjs\")",
+      "Bash(pkill -f \"http.server 8123\")",
+      "Bash(\"/c/Program Files \\(x86\\)/Google/Chrome/Application/chrome.exe\" --headless --disable-gpu --screenshot=\"C:\\\\Users\\\\boro7\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\E--Sauvegarde-draft-club-mal1-fantasy\\\\761b38b2-c431-4e24-8fdc-e3d8e527f118\\\\scratchpad\\\\pitch_test2.png\" --window-size=500,900 \"file:///C:/Users/boro7/AppData/Local/Temp/claude/E--Sauvegarde-draft-club-mal1-fantasy/761b38b2-c431-4e24-8fdc-e3d8e527f118/scratchpad/pitch_test2.html\")",
+      "Bash(\"/c/Program Files \\(x86\\)/Google/Chrome/Application/chrome.exe\" --headless --disable-gpu --screenshot=\"C:\\\\Users\\\\boro7\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\E--Sauvegarde-draft-club-mal1-fantasy\\\\761b38b2-c431-4e24-8fdc-e3d8e527f118\\\\scratchpad\\\\pitch_test3.png\" --window-size=500,900 \"file:///C:/Users/boro7/AppData/Local/Temp/claude/E--Sauvegarde-draft-club-mal1-fantasy/761b38b2-c431-4e24-8fdc-e3d8e527f118/scratchpad/pitch_test3.html\")",
+      "Bash(\"/c/Program Files \\(x86\\)/Google/Chrome/Application/chrome.exe\" --headless --disable-gpu --screenshot=\"C:\\\\Users\\\\boro7\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\E--Sauvegarde-draft-club-mal1-fantasy\\\\761b38b2-c431-4e24-8fdc-e3d8e527f118\\\\scratchpad\\\\pitch_final.png\" --window-size=460,700 --hide-scrollbars \"file:///C:/Users/boro7/AppData/Local/Temp/claude/E--Sauvegarde-draft-club-mal1-fantasy/761b38b2-c431-4e24-8fdc-e3d8e527f118/scratchpad/pitch_final_test.html\")",
+      "Bash(\"/c/Program Files \\(x86\\)/Google/Chrome/Application/chrome.exe\" --headless --disable-gpu --screenshot=\"C:\\\\Users\\\\boro7\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\E--Sauvegarde-draft-club-mal1-fantasy\\\\761b38b2-c431-4e24-8fdc-e3d8e527f118\\\\scratchpad\\\\pitch_final2.png\" --window-size=460,900 --hide-scrollbars \"file:///C:/Users/boro7/AppData/Local/Temp/claude/E--Sauvegarde-draft-club-mal1-fantasy/761b38b2-c431-4e24-8fdc-e3d8e527f118/scratchpad/pitch_final_test.html\")",
+      "Bash(\"/c/Program Files \\(x86\\)/Google/Chrome/Application/chrome.exe\" --headless --disable-gpu --dump-dom \"file:///C:/Users/boro7/AppData/Local/Temp/claude/E--Sauvegarde-draft-club-mal1-fantasy/761b38b2-c431-4e24-8fdc-e3d8e527f118/scratchpad/pitch_final_test.html\")",
+      "Bash(\"/c/Program Files \\(x86\\)/Google/Chrome/Application/chrome.exe\" --headless --disable-gpu --screenshot=\"C:\\\\Users\\\\boro7\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\E--Sauvegarde-draft-club-mal1-fantasy\\\\761b38b2-c431-4e24-8fdc-e3d8e527f118\\\\scratchpad\\\\pitch_final3.png\" --window-size=460,900 --hide-scrollbars \"file:///C:/Users/boro7/AppData/Local/Temp/claude/E--Sauvegarde-draft-club-mal1-fantasy/761b38b2-c431-4e24-8fdc-e3d8e527f118/scratchpad/pitch_final_test.html\")",
+      "Bash(\"/c/Program Files \\(x86\\)/Google/Chrome/Application/chrome.exe\" --headless --disable-gpu --enable-logging=stderr --v=1 --screenshot=\"C:\\\\Users\\\\boro7\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\E--Sauvegarde-draft-club-mal1-fantasy\\\\761b38b2-c431-4e24-8fdc-e3d8e527f118\\\\scratchpad\\\\pitch_final4.png\" --window-size=460,900 --hide-scrollbars \"file:///C:/Users/boro7/AppData/Local/Temp/claude/E--Sauvegarde-draft-club-mal1-fantasy/761b38b2-c431-4e24-8fdc-e3d8e527f118/scratchpad/pitch_final_test.html\")",
+      "Bash(\"/c/Program Files \\(x86\\)/Google/Chrome/Application/chrome.exe\" --headless --disable-gpu --screenshot=\"C:\\\\Users\\\\boro7\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\E--Sauvegarde-draft-club-mal1-fantasy\\\\761b38b2-c431-4e24-8fdc-e3d8e527f118\\\\scratchpad\\\\pitch_final5.png\" --window-size=460,900 --hide-scrollbars \"file:///C:/Users/boro7/AppData/Local/Temp/claude/E--Sauvegarde-draft-club-mal1-fantasy/761b38b2-c431-4e24-8fdc-e3d8e527f118/scratchpad/pitch_final_test.html\")",
+      "Bash(grep '\\\\.png$')"
     ]
   }
 }

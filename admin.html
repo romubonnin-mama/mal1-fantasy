@@ -319,6 +319,13 @@ header h1 { font-size: 18px; font-weight: 700; color: var(--accent); }
       <div id="joker-quota-summary" style="font-size:12px;margin-bottom:12px"></div>
 
       <button class="btn btn-primary" onclick="applyJoker()">🔁 Appliquer le joker</button>
+      <button class="btn btn-subtle" onclick="pushJokersGithub()" id="btn-joker-push" style="margin-left:8px">🚀 Publier sur le site</button>
+      <p style="color:var(--muted);font-size:11px;margin-top:8px">
+        Le changement d'effectif (Firestore) est déjà visible dans "Ma Compo" dès l'application du joker.
+        "Publier sur le site" pousse en plus <code>roster.json</code>/<code>jokers.json</code>/<code>clubs.json</code>
+        sur GitHub Pages : nécessaire pour que le compteur et l'historique des jokers apparaissent dans
+        Classement &gt; 🔁 Jokers.
+      </p>
 
       <div style="font-weight:700;font-size:13px;margin:20px 0 10px">Compteurs jokers — tous les managers</div>
       <div id="joker-counters" style="margin-bottom:16px"></div>
@@ -1137,6 +1144,7 @@ async function applyJoker() {
   if (!outManager || !outVal)          { toast('Sélectionne le joueur à sortir', 'err'); return; }
   if (!inManager || !inPoste || !inClub) { toast('Complète les champs du joueur IN', 'err'); return; }
   if (!inNom)                           { toast('Indique le nom du joueur IN', 'err'); return; }
+  if (inManager !== outManager) { toast('Un joker reste dans la même équipe : "Joueur IN — Manager" doit être identique à "Joueur OUT — Manager"', 'err'); return; }
 
   const [outPoste, outNom] = outVal.split('::');
 
@@ -1153,6 +1161,17 @@ async function applyJoker() {
     if (!confirm(`${inManager} a peut-être déjà un ${inPoste} de ${inClub} dans son effectif (interdit par le règlement). Continuer quand même ?`)) return;
   }
 
+  // Firestore d'abord (source lue par "Ma Compo" sur le site) : si le joueur OUT
+  // n'y est pas trouvé, on s'arrête avant de toucher roster.json pour éviter
+  // que les deux sources divergent à nouveau.
+  let outPlayerCaptured;
+  try {
+    outPlayerCaptured = await window.jokerApplyFirestore(outManager, outNom, outPoste, inNom, inPoste, inClub);
+  } catch (e) {
+    toast('❌ ' + e.message, 'err');
+    return;
+  }
+
   const outList = (ROSTER[outManager] || {})[outPoste] || [];
   const idx = outList.indexOf(outNom);
   if (idx !== -1) outList.splice(idx, 1);
@@ -1166,7 +1185,7 @@ async function applyJoker() {
     date: new Date().toISOString(),
     manager: outManager,
     type,
-    out: { nom: outNom, poste: outPoste },
+    out: { nom: outNom, poste: outPoste, club: outPlayerCaptured.club, mise: outPlayerCaptured.mise, id: outPlayerCaptured.id },
     in:  { nom: inNom, poste: inPoste, club: inClub },
   });
 
@@ -1175,11 +1194,85 @@ async function applyJoker() {
     api('POST', '/jokers', JOKERS),
   ]);
 
-  toast(`✅ Joker appliqué — ${outNom} OUT / ${inNom} IN`);
+  // Logo (admin uniquement) : ajoute le nouveau joueur à clubs.json si le club est reconnu
+  const clubId = (window.CLUB_IDS_A || {})[(inClub || '').toUpperCase().trim()];
+  if (clubId) {
+    CLUBS[inNom] = clubId;
+    api('POST', '/clubs', CLUBS).catch(e => console.warn('clubs.json non synchronisé :', e));
+  }
+
+  toast(`✅ Joker appliqué (roster.json + Firestore) — ${outNom} OUT / ${inNom} IN`);
   document.getElementById('joker-in-nom').value = '';
   renderRoster();
   renderLineups();
   populateJokerForm();
+}
+
+// Publie roster.json/jokers.json/clubs.json (et tout autre fichier local modifié) sur
+// GitHub Pages. Le "Ma Compo" de chacun est déjà à jour dès applyJoker() (Firestore, en
+// direct) — ce bouton sert uniquement à faire remonter le compteur/historique des jokers
+// affiché dans Classement > 🔁 Jokers sur le site public, qui lit data/jokers.json publié.
+async function pushJokersGithub() {
+  if (!confirm("Publier les effectifs et jokers sur le site (GitHub Pages) ?")) return;
+  const btn = document.getElementById('btn-joker-push');
+  const orig = btn.textContent;
+  btn.disabled = true; btn.textContent = '⏳ Publication…';
+  try {
+    const r = await api('POST', '/push', { msg: 'Jokers : mise à jour des effectifs' });
+    toast(r.ok ? `✅ ${r.msg}` : `❌ ${r.msg}`, r.ok ? 'ok' : 'err');
+  } catch (e) {
+    toast('Erreur publication : ' + e.message, 'err');
+  } finally {
+    btn.disabled = false; btn.textContent = orig;
+  }
+}
+
+async function editJoker(id) {
+  const idx = JOKERS.findIndex(j => j.id === id);
+  if (idx === -1) return;
+  const j = JOKERS[idx];
+  if (!confirm(`Corriger ce joker de ${j.manager} ?\n${j.out.nom} (${j.out.poste}) → ${j.in.nom} (${j.in.poste}, ${j.in.club})\n\n${j.in.nom} sera retiré de l'effectif et ${j.out.nom} restauré. Le formulaire sera pré-rempli pour ressaisir la correction.`)) return;
+
+  try {
+    await window.jokerRevertFirestore(j.manager, j.out, j.in.nom, j.in.poste);
+  } catch (e) {
+    toast('❌ ' + e.message, 'err');
+    return;
+  }
+
+  // Annule le mouvement de joker (retire le joueur IN, restaure le joueur OUT)
+  const inList = (ROSTER[j.manager] || {})[j.in.poste] || [];
+  const inIdx = inList.indexOf(j.in.nom);
+  if (inIdx !== -1) inList.splice(inIdx, 1);
+
+  if (!ROSTER[j.manager]) ROSTER[j.manager] = { G: [], D: [], M: [], A: [] };
+  if (!ROSTER[j.manager][j.out.poste]) ROSTER[j.manager][j.out.poste] = [];
+  ROSTER[j.manager][j.out.poste].push(j.out.nom);
+
+  JOKERS.splice(idx, 1);
+
+  await Promise.all([
+    api('POST', '/roster', ROSTER),
+    api('POST', '/jokers', JOKERS),
+  ]);
+
+  toast('↩️ Joker annulé — corrige les champs puis reclique sur Appliquer');
+  renderRoster();
+  renderLineups();
+  populateJokerForm();
+
+  // Pré-remplit le formulaire avec les valeurs d'origine, prêtes à corriger
+  document.getElementById('joker-out-manager').value = j.manager;
+  updateJokerOutJoueurs();
+  document.getElementById('joker-out-joueur').value = `${j.out.poste}::${j.out.nom}`;
+  document.getElementById('joker-type').value = j.type;
+  document.getElementById('joker-in-manager').value = j.manager;
+  document.getElementById('joker-in-poste').value = j.in.poste;
+  document.getElementById('joker-in-nom').value = j.in.nom;
+  document.getElementById('joker-in-club').value = j.in.club;
+  updateJokerQuotaSummary();
+  document.getElementById('joker-in-nom').scrollIntoView({ behavior: 'smooth', block: 'center' });
+  document.getElementById('joker-in-nom').focus();
 }
 
 function renderJokerCountersTable(containerId) {
@@ -1220,6 +1313,7 @@ function renderJokerHistory(containerId) {
         <strong>${j.manager}</strong>
         <span style="color:var(--muted)">${jokerTypeLabel(j.type)}</span>
         <span>${j.out.nom} (${j.out.poste}) → ${j.in.nom} (${j.in.poste}, ${j.in.club})</span>
+        <button class="btn btn-subtle" style="margin-left:auto;font-size:11px;padding:3px 8px" onclick="editJoker(${j.id})" title="Annule ce joker et pré-remplit le formulaire pour corriger une erreur de saisie">✏️ Corriger</button>
       </div>`;
   }).join('');
   box.innerHTML = `<div style="font-weight:700;font-size:12px;margin-bottom:6px;color:var(--muted)">Historique</div>${rows}`;
@@ -2293,6 +2387,7 @@ const CLUB_IDS_A = {
   'TROYES':110,'ESTAC':110,'ESTAC TROYES':110,
   'LE MANS':1298,'LMFC':1298,'LE MANS FC':1298,
 };
+window.CLUB_IDS_A = CLUB_IDS_A; // exposé pour le panneau joker (script principal, hors module)
 function attrLogoHtml(club) {
   const id = CLUB_IDS_A[(club||'').toUpperCase().trim()];
   if (!id) return '';
@@ -2655,6 +2750,57 @@ window.removeJoueur = async function(nom, jKeyEncoded) {
   await setDoc(doc(db, 'managers', nom), { ...existing, joueurs, budget_restant });
   mgrDocs[nom] = { ...existing, joueurs, budget_restant };
   renderEncBudgets();
+};
+
+// ── Jokers (onglet Effectifs) : synchro Firestore ──────────
+// Le panneau joker de admin.html modifiait uniquement data/roster.json (local),
+// jamais managers/{nom}.joueurs sur Firestore — qui est la source lue par
+// compo.html sur le site public. Résultat : un joker appliqué n'apparaissait
+// jamais dans "Ma Compo". Ces deux fonctions tiennent Firestore synchronisé en
+// même temps que roster.json, appelées depuis applyJoker()/editJoker() (script
+// principal) via window.*.
+window.jokerApplyFirestore = async function(manager, outNom, outPoste, inNom, inPoste, inClub) {
+  let mgrDoc = mgrDocs[manager];
+  if (!mgrDoc) {
+    const snap = await getDoc(doc(db, 'managers', manager));
+    mgrDoc = snap.exists() ? snap.data() : { joueurs: [] };
+  }
+  const joueurs = mgrDoc.joueurs || [];
+  const outIdx = joueurs.findIndex(x => (x.nom || '').toUpperCase() === outNom.toUpperCase() && x.poste === outPoste);
+  if (outIdx === -1) {
+    throw new Error(`${outNom} (${outPoste}) introuvable dans l'effectif Firestore de ${manager}. Vérifie l'orthographe, ou utilise "📥 Synchro roster.json" pour repartir d'un état cohérent.`);
+  }
+  const outPlayer = joueurs[outIdx];
+  const newJoueurs = joueurs.slice();
+  newJoueurs.splice(outIdx, 1, {
+    id: `${inNom.toLowerCase()}__${inClub.toLowerCase()}__${inPoste}`,
+    nom: inNom, club: inClub, poste: inPoste, mise: outPlayer.mise || 0,
+  });
+  await setDoc(doc(db, 'managers', manager), { ...mgrDoc, joueurs: newJoueurs });
+  mgrDocs[manager] = { ...mgrDoc, joueurs: newJoueurs };
+  return outPlayer; // objet complet {id,nom,club,poste,mise} — conservé pour permettre l'annulation
+};
+
+window.jokerRevertFirestore = async function(manager, outObj, inNom, inPoste) {
+  let mgrDoc = mgrDocs[manager];
+  if (!mgrDoc) {
+    const snap = await getDoc(doc(db, 'managers', manager));
+    mgrDoc = snap.exists() ? snap.data() : { joueurs: [] };
+  }
+  const joueurs = mgrDoc.joueurs || [];
+  const inNomUp = inNom.toUpperCase();
+  const withoutIn = joueurs.filter(x => !((x.nom || '').toUpperCase() === inNomUp && x.poste === inPoste));
+  const outNomUp = (outObj.nom || '').toUpperCase();
+  // Si le joueur OUT est déjà présent (cas d'un joker appliqué avant ce correctif,
+  // jamais écrit sur Firestore côté OUT), on ne le rajoute pas en double.
+  const alreadyThere = withoutIn.some(x => (x.nom || '').toUpperCase() === outNomUp && x.poste === outObj.poste);
+  const restoredEntry = {
+    id: outObj.id || `${outNomUp.toLowerCase()}__${(outObj.club || 'inconnu').toLowerCase()}__${outObj.poste}`,
+    nom: outObj.nom, club: outObj.club || '', poste: outObj.poste, mise: outObj.mise || 0,
+  };
+  const finalJoueurs = alreadyThere ? withoutIn : [...withoutIn, restoredEntry];
+  await setDoc(doc(db, 'managers', manager), { ...mgrDoc, joueurs: finalJoueurs });
+  mgrDocs[manager] = { ...mgrDoc, joueurs: finalJoueurs };
 };
 
 // ── Synchro roster.json depuis Firestore ───────────────────

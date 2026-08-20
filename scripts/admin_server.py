@@ -219,7 +219,7 @@ class AdminHandler(BaseHTTPRequestHandler):
 
         # Full-file save (roster, player-ids, champions-league)
         for endpoint, fpath in FILES.items():
-            if path == endpoint and endpoint in ("/api/roster", "/api/player-ids", "/api/champions-league", "/api/jokers"):
+            if path == endpoint and endpoint in ("/api/roster", "/api/player-ids", "/api/champions-league", "/api/jokers", "/api/clubs"):
                 write_json(fpath, payload)
                 self.send_json({"ok": True})
                 return
@@ -255,16 +255,19 @@ class AdminHandler(BaseHTTPRequestHandler):
 
         # Git push
         if path == "/api/push":
+            custom_msg = payload.get("msg")
             journee = payload.get("journee", "?")
+            commit_msg = custom_msg or f"Mise a jour J{journee}"
+            ok_msg = f"{custom_msg} — publié sur GitHub" if custom_msg else f"J{journee} publié sur GitHub"
             try:
                 subprocess.run(["git", "add", "."],     cwd=BASE_DIR, check=True)
                 r = subprocess.run(
-                    ["git", "commit", "-m", f"Mise a jour J{journee}"],
+                    ["git", "commit", "-m", commit_msg],
                     cwd=BASE_DIR, capture_output=True
                 )
                 if r.returncode == 0 or b"nothing to commit" in r.stdout:
                     subprocess.run(["git", "push"], cwd=BASE_DIR, check=True)
-                    self.send_json({"ok": True, "msg": f"J{journee} publié sur GitHub"})
+                    self.send_json({"ok": True, "msg": ok_msg})
                 else:
                     self.send_json({"ok": False, "msg": r.stderr.decode()})
             except Exception as e:
