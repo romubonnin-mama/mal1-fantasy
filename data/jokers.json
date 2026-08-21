@@ -16,5 +16,41 @@
       "poste": "M",
       "club": "Paris FC"
     }
+  },
+  {
+    "id": 1787338919712,
+    "date": "2026-08-21T19:01:59.712Z",
+    "manager": "JEROME",
+    "type": "mercato_ete",
+    "out": {
+      "nom": "D.METHALIE",
+      "poste": "D",
+      "club": "Toulouse",
+      "mise": 9,
+      "id": "d.methalie__toulouse__D"
+    },
+    "in": {
+      "nom": "K.COULIBALY",
+      "poste": "D",
+      "club": "Strasbourg"
+    }
+  },
+  {
+    "id": 1787338972544,
+    "date": "2026-08-21T19:02:52.544Z",
+    "manager": "ANTHONY",
+    "type": "mercato_ete",
+    "out": {
+      "nom": "C.CASSERRES",
+      "poste": "M",
+      "club": "Toulouse",
+      "mise": 1,
+      "id": "c.casserres__toulouse__M"
+    },
+    "in": {
+      "nom": "K.LALA",
+      "poste": "D",
+      "club": "Brest"
+    }
   }
 ]
