@@ -1623,11 +1623,7 @@ async function computeJournee() {
     await saveStats(true);
     const r = await api('POST', `/compute/${currentJournee}`, {});
     DATA = await api('GET', '/data');
-    if (r.excel_warn) {
-      toast(`✅ J${currentJournee} calculée ! ⚠️ Excel : ${r.excel_warn}`, 'err');
-    } else {
-      toast(`✅ J${currentJournee} calculée + Excel mis à jour !`);
-    }
+    toast(`✅ J${currentJournee} calculée !`);
     if (document.getElementById('section-classement').classList.contains('active')) renderClassement();
   } catch (e) {
     toast('Erreur calcul : ' + e.message, 'err');

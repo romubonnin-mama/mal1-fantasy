@@ -2,9 +2,8 @@
 Synchronise data/roster.json depuis les résultats d'enchères validés dans Firestore
 (collection 'managers', champ 'joueurs' rempli par "Compiler le tour" dans admin.html).
 
-L'Excel n'a rien à faire manuellement : export_excel.py lit roster.json et remplit
-la grille automatiquement dès qu'une journée est calculée. Ce script est donc le seul
-maillon manquant entre "un tour est compilé" et "l'effectif est à jour partout".
+Ce script est le seul maillon manquant entre "un tour est compilé" et "l'effectif
+est à jour partout" (roster.json).
 
 Usage : python scripts/sync_roster_from_firestore.py
 """

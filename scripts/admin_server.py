@@ -235,19 +235,6 @@ class AdminHandler(BaseHTTPRequestHandler):
                 importlib.reload(scoring)
                 importlib.reload(compute_journee)
                 result = compute_journee.compute(journee)
-
-                # Sync Excel après le calcul
-                try:
-                    import export_excel
-                    importlib.reload(export_excel)
-                    export_excel.export_journee(journee, verbose=False)
-                    result["excel"] = "ok"
-                except Exception as exc_xl:
-                    import traceback
-                    print(f"[excel] ERREUR: {exc_xl}")
-                    traceback.print_exc()
-                    result["excel_warn"] = str(exc_xl)
-
                 self.send_json(result)
             except Exception as e:
                 self.send_error_json(str(e), 500)
