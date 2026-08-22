@@ -3,7 +3,6 @@
     "ROMU": {
       "titulaires": [
         "M.SAFONOV",
-        "A.VINICIUS",
         "T.SANTOS",
         "M.BARD",
         "H.HARALDSSON",
@@ -11,8 +10,9 @@
         "S.DIOP",
         "M.IFNAOUI",
         "L.KOLEOSHO",
-        "E.NUAMAH",
-        "M.BIERETH"
+        "M.BIERETH",
+        "Q.MERLIN",
+        "M.SIMBAKOLI"
       ],
       "capitaine": null,
       "coeff": 1
@@ -21,15 +21,15 @@
       "titulaires": [
         "F.JORGENSEN",
         "I.GANIOU",
-        "A.MAITLAND-NILES",
         "N.NGOY",
         "A.GOMES",
         "L.BLAS",
         "A.BULATOVIC",
-        "L.OPENDA",
         "Y.GBOHO",
         "O.DEMBELE",
-        "G.REYNA"
+        "G.REYNA",
+        "B.BRAHIMI",
+        "A.AIT-BOUDLAL"
       ],
       "capitaine": null,
       "coeff": 1
@@ -42,11 +42,11 @@
         "O.CAMARA",
         "A.GOLOVINE",
         "S.SZYMANSKI",
-        "C.TOLISSO",
         "B.VANDENBOOMEN",
         "P.PAGIS",
         "I.PAIXAO",
-        "F.IVANOVIC"
+        "F.IVANOVIC",
+        "T.JORGENSEN"
       ],
       "capitaine": null,
       "coeff": 1
@@ -112,10 +112,10 @@
         "V.RONGIER",
         "A.AVOMEBONG",
         "C.CASSERRES",
-        "J.NEVES",
         "M.ABLINE",
         "Y.TITRAOUI",
-        "K.LALA"
+        "K.LALA",
+        "P.SULC"
       ],
       "capitaine": null,
       "coeff": 1
@@ -129,10 +129,10 @@
         "L.RAOLISOA",
         "R.NDIAYE",
         "K.DOUMBIA",
-        "A.DONNUM",
         "H.ABDELLI",
         "O.EDOUARD",
-        "A.GOUIRI"
+        "A.GOUIRI",
+        "V.VANDERSON"
       ],
       "capitaine": null,
       "coeff": 1

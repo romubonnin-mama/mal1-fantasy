@@ -566,6 +566,48 @@
       "fileType": "code",
       "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py",
       "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py:200"
+    },
+    {
+      "id": "file::sync_roster_from_firestore",
+      "label": "sync_roster_from_firestore.py",
+      "fileType": "code",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\sync_roster_from_firestore.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\sync_roster_from_firestore.py:1"
+    },
+    {
+      "id": "sync_roster_from_firestore::_fs_value",
+      "label": "_fs_value",
+      "fileType": "code",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\sync_roster_from_firestore.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\sync_roster_from_firestore.py:30"
+    },
+    {
+      "id": "sync_roster_from_firestore::_fs_fields",
+      "label": "_fs_fields",
+      "fileType": "code",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\sync_roster_from_firestore.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\sync_roster_from_firestore.py:49"
+    },
+    {
+      "id": "sync_roster_from_firestore::fetch_managers",
+      "label": "fetch_managers",
+      "fileType": "code",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\sync_roster_from_firestore.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\sync_roster_from_firestore.py:53"
+    },
+    {
+      "id": "sync_roster_from_firestore::build_roster",
+      "label": "build_roster",
+      "fileType": "code",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\sync_roster_from_firestore.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\sync_roster_from_firestore.py:71"
+    },
+    {
+      "id": "sync_roster_from_firestore::main",
+      "label": "main",
+      "fileType": "code",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\sync_roster_from_firestore.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\sync_roster_from_firestore.py:92"
     }
   ],
   "edges": [
@@ -1162,12 +1204,57 @@
       "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py",
       "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py:89",
       "weight": 1
+    },
+    {
+      "source": "file::sync_roster_from_firestore",
+      "target": "sync_roster_from_firestore::_fs_value",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\sync_roster_from_firestore.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\sync_roster_from_firestore.py:30",
+      "weight": 1
+    },
+    {
+      "source": "file::sync_roster_from_firestore",
+      "target": "sync_roster_from_firestore::_fs_fields",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\sync_roster_from_firestore.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\sync_roster_from_firestore.py:49",
+      "weight": 1
+    },
+    {
+      "source": "file::sync_roster_from_firestore",
+      "target": "sync_roster_from_firestore::fetch_managers",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\sync_roster_from_firestore.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\sync_roster_from_firestore.py:53",
+      "weight": 1
+    },
+    {
+      "source": "file::sync_roster_from_firestore",
+      "target": "sync_roster_from_firestore::build_roster",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\sync_roster_from_firestore.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\sync_roster_from_firestore.py:71",
+      "weight": 1
+    },
+    {
+      "source": "file::sync_roster_from_firestore",
+      "target": "sync_roster_from_firestore::main",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\sync_roster_from_firestore.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\sync_roster_from_firestore.py:92",
+      "weight": 1
     }
   ],
   "metadata": {
-    "files": 16,
-    "nodes": 81,
-    "edges": 66,
-    "builtAt": "2026-08-20T19:25:18.508Z"
+    "files": 17,
+    "nodes": 87,
+    "edges": 71,
+    "builtAt": "2026-08-21T20:57:04.266Z"
   }
 }
