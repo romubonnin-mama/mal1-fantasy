@@ -8,21 +8,7 @@ Interface admin : http://localhost:8765
   127.0.0.1 "GET /api/jokers HTTP/1.1" 200 -
   127.0.0.1 "GET /favicon.ico HTTP/1.1" 404 -
   127.0.0.1 "GET /api/lineups/1 HTTP/1.1" 200 -
-  127.0.0.1 "GET /api/manual-stats/1 HTTP/1.1" 200 -
   127.0.0.1 "GET /api/corrections/1 HTTP/1.1" 200 -
+  127.0.0.1 "GET /api/manual-stats/1 HTTP/1.1" 200 -
   127.0.0.1 "POST /api/lineups/1 HTTP/1.1" 200 -
   127.0.0.1 "POST /api/manual-stats/1 HTTP/1.1" 200 -
-  127.0.0.1 "POST /api/manual-stats/1 HTTP/1.1" 200 -
-  127.0.0.1 "POST /api/lineups/1 HTTP/1.1" 200 -
-  127.0.0.1 "POST /api/manual-stats/1 HTTP/1.1" 200 -
-  127.0.0.1 "POST /api/manual-stats/1 HTTP/1.1" 200 -
-  127.0.0.1 "POST /api/compute/1 HTTP/1.1" 200 -
-  127.0.0.1 "GET /api/data HTTP/1.1" 200 -
-warning: in the working copy of 'graphify-out/graph.json', LF will be replaced by CRLF the next time Git touches it
-To https://github.com/romubonnin-mama/mal1-fantasy.git
-   96c11c5..e61c8e9  main -> main
-  127.0.0.1 "POST /api/push HTTP/1.1" 200 -
-  127.0.0.1 "POST /api/manual-stats/1 HTTP/1.1" 200 -
-  127.0.0.1 "POST /api/manual-stats/1 HTTP/1.1" 200 -
-  127.0.0.1 "POST /api/compute/1 HTTP/1.1" 200 -
-  127.0.0.1 "GET /api/data HTTP/1.1" 200 -

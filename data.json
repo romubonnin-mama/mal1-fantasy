@@ -5077,10 +5077,10 @@
     }
   },
   "evolution": {
-    "JEROME": [
+    "FAB": [
       {
         "j": 1,
-        "pts": 18
+        "pts": 27
       }
     ],
     "MICKA": [
@@ -5089,22 +5089,10 @@
         "pts": 24
       }
     ],
-    "BASTIEN": [
-      {
-        "j": 1,
-        "pts": 20
-      }
-    ],
     "ADRIEN": [
       {
         "j": 1,
         "pts": 24
-      }
-    ],
-    "ANTHONY": [
-      {
-        "j": 1,
-        "pts": 20
       }
     ],
     "FLORIAN": [
@@ -5113,10 +5101,22 @@
         "pts": 21
       }
     ],
-    "FAB": [
+    "BASTIEN": [
       {
         "j": 1,
-        "pts": 27
+        "pts": 20
+      }
+    ],
+    "ANTHONY": [
+      {
+        "j": 1,
+        "pts": 20
+      }
+    ],
+    "JEROME": [
+      {
+        "j": 1,
+        "pts": 18
       }
     ],
     "ROMU": [
