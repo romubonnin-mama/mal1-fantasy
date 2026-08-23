@@ -3,7 +3,7 @@
     {
       "rang": 1,
       "nom": "MICKA",
-      "pts": 42
+      "pts": 41
     },
     {
       "rang": 2,
@@ -49,7 +49,7 @@
     "FAB": 33,
     "FLORIAN": 37,
     "JEROME": 28,
-    "MICKA": 42,
+    "MICKA": 41,
     "ROMU": 27
   },
   "historique": {
@@ -60,7 +60,7 @@
       "FAB": 33,
       "FLORIAN": 37,
       "JEROME": 28,
-      "MICKA": 42,
+      "MICKA": 41,
       "ROMU": 27
     }
   },
@@ -4065,8 +4065,8 @@
               "pts": 0
             },
             "cs": {
-              "val": 1,
-              "pts": 1
+              "val": 0,
+              "pts": 0
             },
             "pm": {
               "val": 0,
@@ -4088,7 +4088,7 @@
               "val": 0,
               "pts": 0
             },
-            "pts": 4
+            "pts": 3
           }
         ],
         "M": [
@@ -5080,7 +5080,7 @@
     "MICKA": [
       {
         "j": 1,
-        "pts": 42
+        "pts": 41
       }
     ],
     "BASTIEN": [
@@ -5095,16 +5095,16 @@
         "pts": 38
       }
     ],
-    "FAB": [
-      {
-        "j": 1,
-        "pts": 33
-      }
-    ],
     "FLORIAN": [
       {
         "j": 1,
         "pts": 37
+      }
+    ],
+    "FAB": [
+      {
+        "j": 1,
+        "pts": 33
       }
     ],
     "ANTHONY": [

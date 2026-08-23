@@ -20,3 +20,8 @@ Everything up-to-date
   127.0.0.1 "POST /api/push HTTP/1.1" 200 -
   127.0.0.1 "POST /api/manual-stats/1 HTTP/1.1" 200 -
 warning: in the working copy of 'admin_log.txt', LF will be replaced by CRLF the next time Git touches it
+To https://github.com/romubonnin-mama/mal1-fantasy.git
+   49b23c4..64de4c5  main -> main
+  127.0.0.1 "POST /api/push HTTP/1.1" 200 -
+  127.0.0.1 "POST /api/manual-stats/1 HTTP/1.1" 200 -
+warning: in the working copy of 'admin_log.txt', LF will be replaced by CRLF the next time Git touches it
