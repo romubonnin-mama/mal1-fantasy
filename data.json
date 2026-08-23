@@ -17,13 +17,13 @@
     },
     {
       "rang": 4,
-      "nom": "FAB",
-      "pts": 33
+      "nom": "FLORIAN",
+      "pts": 37
     },
     {
       "rang": 5,
-      "nom": "FLORIAN",
-      "pts": 31
+      "nom": "FAB",
+      "pts": 33
     },
     {
       "rang": 6,
@@ -47,7 +47,7 @@
     "ANTHONY": 28,
     "BASTIEN": 39,
     "FAB": 33,
-    "FLORIAN": 31,
+    "FLORIAN": 37,
     "JEROME": 28,
     "MICKA": 42,
     "ROMU": 27
@@ -58,7 +58,7 @@
       "ANTHONY": 28,
       "BASTIEN": 39,
       "FAB": 33,
-      "FLORIAN": 31,
+      "FLORIAN": 37,
       "JEROME": 28,
       "MICKA": 42,
       "ROMU": 27
@@ -2754,8 +2754,8 @@
             "nom": "O.CAMARA",
             "statut": "",
             "cap": "",
-            "tj": "0",
-            "tj_pts": 0,
+            "tj": "M",
+            "tj_pts": 3,
             "bm": {
               "val": 0,
               "pts": 0
@@ -2792,7 +2792,7 @@
               "val": 0,
               "pts": 0
             },
-            "pts": 0
+            "pts": 3
           }
         ],
         "M": [
@@ -2976,8 +2976,8 @@
             "nom": "B.VANDENBOOMEN",
             "statut": "",
             "cap": "",
-            "tj": "0",
-            "tj_pts": 0,
+            "tj": "M",
+            "tj_pts": 3,
             "bm": {
               "val": 0,
               "pts": 0
@@ -3014,7 +3014,7 @@
               "val": 0,
               "pts": 0
             },
-            "pts": 0
+            "pts": 3
           },
           {
             "nom": "T.JORGENSEN",
@@ -5077,16 +5077,16 @@
     }
   },
   "evolution": {
-    "FAB": [
-      {
-        "j": 1,
-        "pts": 33
-      }
-    ],
     "MICKA": [
       {
         "j": 1,
         "pts": 42
+      }
+    ],
+    "BASTIEN": [
+      {
+        "j": 1,
+        "pts": 39
       }
     ],
     "ADRIEN": [
@@ -5095,16 +5095,16 @@
         "pts": 38
       }
     ],
+    "FAB": [
+      {
+        "j": 1,
+        "pts": 33
+      }
+    ],
     "FLORIAN": [
       {
         "j": 1,
-        "pts": 31
-      }
-    ],
-    "BASTIEN": [
-      {
-        "j": 1,
-        "pts": 39
+        "pts": 37
       }
     ],
     "ANTHONY": [
