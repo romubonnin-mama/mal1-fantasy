@@ -70,5 +70,23 @@
       "poste": "M",
       "club": "LOSC"
     }
+  },
+  {
+    "id": 1787599169731,
+    "date": "2026-08-24T19:19:29.731Z",
+    "manager": "FAB",
+    "type": "mercato_ete",
+    "out": {
+      "nom": "M.FERNANDEZ-PARDO",
+      "poste": "A",
+      "club": "LOSC",
+      "mise": 2,
+      "id": "m.fernandez-pardo__losc__A"
+    },
+    "in": {
+      "nom": "E.WAHI",
+      "poste": "A",
+      "club": "Nice"
+    }
   }
 ]
