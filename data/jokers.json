@@ -52,5 +52,23 @@
       "poste": "D",
       "club": "Brest"
     }
+  },
+  {
+    "id": 1787595143104,
+    "date": "2026-08-24T18:12:23.104Z",
+    "manager": "JEROME",
+    "type": "mercato_ete",
+    "out": {
+      "nom": "A.BULATOVIC",
+      "poste": "M",
+      "club": "Lens",
+      "mise": 6,
+      "id": "a.bulatovic__lens__M"
+    },
+    "in": {
+      "nom": "G.ZECHIEL",
+      "poste": "M",
+      "club": "LOSC"
+    }
   }
 ]
