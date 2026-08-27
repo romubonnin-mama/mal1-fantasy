@@ -88,5 +88,23 @@
       "poste": "A",
       "club": "Nice"
     }
+  },
+  {
+    "id": 1787851072366,
+    "date": "2026-08-27T17:17:52.366Z",
+    "manager": "FLORIAN",
+    "type": "mercato_ete",
+    "out": {
+      "nom": "Q.TIMBER",
+      "poste": "M",
+      "club": "OM",
+      "mise": 4,
+      "id": "q.timber__om__M"
+    },
+    "in": {
+      "nom": "F.TORRES",
+      "poste": "A",
+      "club": "PSG"
+    }
   }
 ]
