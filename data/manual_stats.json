@@ -329,5 +329,73 @@
       },
       "M.ABLINE": {}
     }
+  },
+  "2": {
+    "ROMU": {
+      "H.HARALDSSON": {
+        "goals": 1,
+        "sort_a": 79
+      },
+      "T.SANTOS": {
+        "full_match": true
+      },
+      "M.SAFONOV": {
+        "full_match": true
+      }
+    },
+    "ADRIEN": {
+      "A.HAKIMI": {
+        "full_match": true
+      },
+      "R.PERRAUD": {
+        "full_match": true,
+        "yellow_cards": true
+      },
+      "V.VITINHA": {
+        "full_match": true,
+        "goals": 1,
+        "assists": 1
+      },
+      "K.KVARATSKHELIA": {
+        "entre_a": 46
+      }
+    },
+    "ANTHONY": {
+      "W.PACHO": {
+        "full_match": true
+      },
+      "D.BAKWA": {
+        "entre_a": 68,
+        "goals": 1
+      }
+    },
+    "BASTIEN": {
+      "V.ALEXSANDRO": {
+        "full_match": true
+      },
+      "D.DOUE": {
+        "sort_a": 46
+      }
+    },
+    "FAB": {
+      "W.ZAIRE-EMERY": {
+        "full_match": true
+      }
+    },
+    "FLORIAN": {
+      "F.TORRES": {
+        "sort_a": 72
+      }
+    },
+    "JEROME": {
+      "N.NGOY": {
+        "full_match": true
+      }
+    },
+    "MICKA": {
+      "B.OZER": {
+        "full_match": true
+      }
+    }
   }
 }

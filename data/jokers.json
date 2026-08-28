@@ -106,5 +106,59 @@
       "poste": "A",
       "club": "PSG"
     }
+  },
+  {
+    "id": 1787939953057,
+    "date": "2026-08-28T17:59:13.057Z",
+    "manager": "ADRIEN",
+    "type": "mercato_ete",
+    "out": {
+      "nom": "S.FAYE",
+      "poste": "A",
+      "club": "Lorient",
+      "mise": 4,
+      "id": "s.faye__lorient__A"
+    },
+    "in": {
+      "nom": "J.OSO",
+      "poste": "A",
+      "club": "Strasbourg"
+    }
+  },
+  {
+    "id": 1787940165207,
+    "date": "2026-08-28T18:02:45.207Z",
+    "manager": "ADRIEN",
+    "type": "mercato_ete",
+    "out": {
+      "nom": "B.CHARDONNET",
+      "poste": "D",
+      "club": "Brest",
+      "mise": 2,
+      "id": "b.chardonnet__brest__D"
+    },
+    "in": {
+      "nom": "M.NAWROCKI",
+      "poste": "D",
+      "club": "Lens"
+    }
+  },
+  {
+    "id": 1787940191645,
+    "date": "2026-08-28T18:03:11.645Z",
+    "manager": "ANTHONY",
+    "type": "mercato_ete",
+    "out": {
+      "nom": "J.NEVES",
+      "poste": "M",
+      "club": "PSG",
+      "mise": 3,
+      "id": "j.neves__psg__M"
+    },
+    "in": {
+      "nom": "D.BAKWA",
+      "poste": "A",
+      "club": "LOSC"
+    }
   }
 ]
