@@ -178,5 +178,23 @@
       "poste": "D",
       "club": "PSG"
     }
+  },
+  {
+    "id": 1788124074421,
+    "date": "2026-08-30T21:07:54.421Z",
+    "manager": "ROMU",
+    "type": "mercato_ete",
+    "out": {
+      "nom": "M.BIERETH",
+      "poste": "A",
+      "club": "Monaco",
+      "mise": 1,
+      "id": "m.biereth__monaco__A"
+    },
+    "in": {
+      "nom": "P.BRUNNER",
+      "poste": "A",
+      "club": "Monaco"
+    }
   }
 ]
