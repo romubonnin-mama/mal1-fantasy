@@ -333,18 +333,33 @@
   "2": {
     "FAB": {
       "Y.DIOUF": {},
-      "J.LEFORT": {},
-      "Z.ATHEKAME": {},
-      "R.NICOLAISEN": {},
       "R.MATONDO": {},
       "G.HEIN": {},
-      "K.DANOIS": {},
       "W.ZAIRE-EMERY": {
         "full_match": true
       },
-      "G.BERNARDEAU": {},
+      "G.BERNARDEAU": {
+        "sort_a": 66
+      },
       "L.SINAYOKO": {},
-      "L.AJORQUE": {}
+      "J.LEFORT": {
+        "full_match": true
+      },
+      "K.DANOIS": {
+        "full_match": true
+      },
+      "L.AJORQUE": {
+        "full_match": true,
+        "goals": 1
+      },
+      "R.NICOLAISEN": {
+        "full_match": true,
+        "yellow_cards": true
+      },
+      "Z.ATHEKAME": {
+        "full_match": true,
+        "assists": 1
+      }
     },
     "ADRIEN": {
       "K.TRAPP": {},
@@ -362,9 +377,13 @@
         "goals": 1,
         "assists": 1
       },
-      "R.FAIVRE": {},
+      "R.FAIVRE": {
+        "assists": 1
+      },
       "P.LEES-MELOU": {},
-      "T.LEBRIS": {},
+      "T.LEBRIS": {
+        "sort_a": 73
+      },
       "K.KVARATSKHELIA": {
         "entre_a": 46
       },
@@ -379,15 +398,26 @@
       "J.CLAUSS": {},
       "O.CAMARA": {},
       "A.GOLOVINE": {},
-      "C.TOLISSO": {},
-      "B.VANDENBOOMEN": {},
-      "T.JORGENSEN": {},
+      "B.VANDENBOOMEN": {
+        "goals": 1,
+        "yellow_cards": true,
+        "full_match": true
+      },
+      "T.JORGENSEN": {
+        "sort_a": 78
+      },
       "P.PAGIS": {},
       "F.IVANOVIC": {
         "sort_a": 73
       },
       "F.TORRES": {
         "sort_a": 72
+      },
+      "C.TOLISSO": {
+        "full_match": true
+      },
+      "M.NIAKHATE": {
+        "full_match": true
       }
     },
     "BASTIEN": {
@@ -396,7 +426,6 @@
         "full_match": true
       },
       "M.MBOW": {},
-      "J.CHOTARD": {},
       "A.THOMASSON": {},
       "D.ZAKARIA": {},
       "A.HARIT": {},
@@ -409,13 +438,18 @@
       },
       "R.RISSER": {
         "full_match": true
+      },
+      "J.CHOTARD": {
+        "full_match": true
       }
     },
     "ROMU": {
       "M.SAFONOV": {
         "full_match": true
       },
-      "A.VINICIUS": {},
+      "A.VINICIUS": {
+        "entre_a": 80
+      },
       "T.SANTOS": {
         "full_match": true
       },
@@ -426,25 +460,30 @@
       },
       "T.MORTON": {},
       "S.DIOP": {},
-      "M.IFNAOUI": {},
       "L.KOLEOSHO": {},
-      "E.NUAMAH": {},
+      "E.NUAMAH": {
+        "sort_a": 80
+      },
       "M.BIERETH": {},
       "J.ORTEGA": {
         "sort_a": 83
+      },
+      "M.IFNAOUI": {
+        "full_match": true
       }
     },
     "ANTHONY": {
-      "D.GREIF": {},
-      "N.TAGLIAFICO": {},
+      "N.TAGLIAFICO": {
+        "sort_a": 80
+      },
       "W.PACHO": {
         "full_match": true
       },
-      "K.LALA": {},
       "I.KEBBAL": {},
-      "P.SULC": {},
+      "P.SULC": {
+        "entre_a": 80
+      },
       "V.RONGIER": {},
-      "A.AVOMEBONG": {},
       "D.BAKWA": {
         "entre_a": 68,
         "goals": 1
@@ -454,12 +493,19 @@
       },
       "S.ABDULHAMID": {
         "absent": true
+      },
+      "K.LALA": {
+        "full_match": true
+      },
+      "A.AVOMEBONG": {
+        "full_match": true
+      },
+      "D.GREIF": {
+        "full_match": true
       }
     },
     "JEROME": {
-      "F.JORGENSEN": {},
       "A.AIT-BOUDLAL": {},
-      "A.MAITLAND-NILES": {},
       "N.NGOY": {
         "full_match": true
       },
@@ -469,10 +515,22 @@
       "A.GOMES": {},
       "L.BLAS": {},
       "B.BRAHIMI": {},
-      "L.OPENDA": {},
-      "Y.GBOHO": {},
       "I.GANIOU": {
         "full_match": true
+      },
+      "Y.GBOHO": {
+        "full_match": true,
+        "assists": 1
+      },
+      "F.JORGENSEN": {
+        "full_match": true
+      },
+      "L.OPENDA": {
+        "full_match": true,
+        "goals": 1
+      },
+      "A.MAITLAND-NILES": {
+        "absent": true
       }
     },
     "MICKA": {
@@ -480,15 +538,26 @@
         "full_match": true
       },
       "C.CRESSWELL": {},
-      "A.KOUASSI": {},
       "V.VANDERSON": {},
-      "L.RAOLISOA": {},
-      "R.NDIAYE": {},
-      "K.DOUMBIA": {},
-      "A.MILLE": {},
+      "K.DOUMBIA": {
+        "sort_a": 75,
+        "goals": 1
+      },
+      "A.MILLE": {
+        "sort_a": 78
+      },
       "H.ABDELLI": {},
       "A.GOUIRI": {},
-      "D.GUEYE": {}
+      "D.GUEYE": {},
+      "L.RAOLISOA": {
+        "absent": true
+      },
+      "A.KOUASSI": {
+        "full_match": true
+      },
+      "R.NDIAYE": {
+        "full_match": true
+      }
     }
   }
 }

@@ -160,5 +160,23 @@
       "poste": "A",
       "club": "LOSC"
     }
+  },
+  {
+    "id": 1788074096768,
+    "date": "2026-08-30T07:14:56.768Z",
+    "manager": "MICKA",
+    "type": "mercato_ete",
+    "out": {
+      "nom": "G.DOUE",
+      "poste": "D",
+      "club": "Strasbourg",
+      "mise": 7,
+      "id": "g.doue__strasbourg__D"
+    },
+    "in": {
+      "nom": "N.MENDES",
+      "poste": "D",
+      "club": "PSG"
+    }
   }
 ]
