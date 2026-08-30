@@ -332,16 +332,19 @@
   },
   "2": {
     "FAB": {
-      "Y.DIOUF": {},
-      "R.MATONDO": {},
-      "G.HEIN": {},
+      "R.MATONDO": {
+        "entre_a": 63
+      },
       "W.ZAIRE-EMERY": {
         "full_match": true
       },
       "G.BERNARDEAU": {
         "sort_a": 66
       },
-      "L.SINAYOKO": {},
+      "L.SINAYOKO": {
+        "pen_scored": 1,
+        "full_match": true
+      },
       "J.LEFORT": {
         "full_match": true
       },
@@ -359,10 +362,16 @@
       "Z.ATHEKAME": {
         "full_match": true,
         "assists": 1
+      },
+      "Y.DIOUF": {
+        "full_match": true,
+        "be_malus": true
+      },
+      "G.HEIN": {
+        "full_match": true
       }
     },
     "ADRIEN": {
-      "K.TRAPP": {},
       "F.NAZINHO": {},
       "A.HAKIMI": {
         "full_match": true
@@ -383,7 +392,6 @@
         "assists": 1,
         "sort_a": 71
       },
-      "P.LEES-MELOU": {},
       "T.LEBRIS": {
         "sort_a": 73
       },
@@ -393,12 +401,19 @@
       "F.THAUVIN": {
         "full_match": true,
         "pen_scored": 1
+      },
+      "P.LEES-MELOU": {
+        "full_match": true
+      },
+      "K.TRAPP": {
+        "full_match": true,
+        "cs": true
       }
     },
     "FLORIAN": {
-      "B.SAMBA": {},
-      "D.COPPOLA": {},
-      "J.CLAUSS": {},
+      "J.CLAUSS": {
+        "sort_a": 82
+      },
       "O.CAMARA": {},
       "A.GOLOVINE": {},
       "B.VANDENBOOMEN": {
@@ -409,7 +424,9 @@
       "T.JORGENSEN": {
         "sort_a": 78
       },
-      "P.PAGIS": {},
+      "P.PAGIS": {
+        "sort_a": 72
+      },
       "F.IVANOVIC": {
         "sort_a": 73,
         "yellow_cards": true
@@ -422,6 +439,12 @@
       },
       "M.NIAKHATE": {
         "full_match": true
+      },
+      "D.COPPOLA": {
+        "full_match": true
+      },
+      "B.SAMBA": {
+        "absent": true
       }
     },
     "BASTIEN": {
@@ -429,11 +452,18 @@
       "V.ALEXSANDRO": {
         "full_match": true
       },
-      "M.MBOW": {},
-      "A.THOMASSON": {},
+      "A.THOMASSON": {
+        "assists": 1,
+        "full_match": true
+      },
       "D.ZAKARIA": {},
       "A.HARIT": {},
-      "E.LEPAUL": {},
+      "E.LEPAUL": {
+        "goals": 1,
+        "full_match": true,
+        "assists": 1,
+        "yellow_cards": true
+      },
       "D.DOUE": {
         "sort_a": 46
       },
@@ -445,6 +475,9 @@
       },
       "J.CHOTARD": {
         "full_match": true
+      },
+      "M.MBOW": {
+        "absent": true
       }
     },
     "ROMU": {
@@ -457,13 +490,14 @@
       "T.SANTOS": {
         "full_match": true
       },
-      "M.BARD": {},
+      "M.BARD": {
+        "sort_a": 82
+      },
       "H.HARALDSSON": {
         "goals": 1,
         "sort_a": 79
       },
       "T.MORTON": {},
-      "S.DIOP": {},
       "L.KOLEOSHO": {},
       "E.NUAMAH": {
         "sort_a": 80
@@ -474,6 +508,12 @@
       },
       "M.IFNAOUI": {
         "full_match": true
+      },
+      "S.DIOP": {
+        "full_match": true
+      },
+      "Q.MERLIN": {
+        "sort_a": 79
       }
     },
     "ANTHONY": {
@@ -483,11 +523,17 @@
       "W.PACHO": {
         "full_match": true
       },
-      "I.KEBBAL": {},
+      "I.KEBBAL": {
+        "assists": 1,
+        "sort_a": 84
+      },
       "P.SULC": {
         "entre_a": 80
       },
-      "V.RONGIER": {},
+      "V.RONGIER": {
+        "sort_a": 74,
+        "goals": 1
+      },
       "D.BAKWA": {
         "entre_a": 68,
         "goals": 1
@@ -509,7 +555,6 @@
       }
     },
     "JEROME": {
-      "A.AIT-BOUDLAL": {},
       "N.NGOY": {
         "full_match": true
       },
@@ -517,8 +562,9 @@
         "sort_a": 76
       },
       "A.GOMES": {},
-      "L.BLAS": {},
-      "B.BRAHIMI": {},
+      "L.BLAS": {
+        "entre_a": 74
+      },
       "I.GANIOU": {
         "full_match": true
       },
@@ -535,13 +581,19 @@
       },
       "A.MAITLAND-NILES": {
         "absent": true
+      },
+      "A.AIT-BOUDLAL": {
+        "full_match": true,
+        "yellow_cards": true
+      },
+      "B.BRAHIMI": {
+        "absent": true
       }
     },
     "MICKA": {
       "B.OZER": {
         "full_match": true
       },
-      "C.CRESSWELL": {},
       "V.VANDERSON": {},
       "K.DOUMBIA": {
         "sort_a": 75,
@@ -553,7 +605,9 @@
       },
       "H.ABDELLI": {},
       "A.GOUIRI": {},
-      "D.GUEYE": {},
+      "D.GUEYE": {
+        "sort_a": 62
+      },
       "L.RAOLISOA": {
         "absent": true
       },
@@ -561,6 +615,9 @@
         "full_match": true
       },
       "R.NDIAYE": {
+        "full_match": true
+      },
+      "C.CRESSWELL": {
         "full_match": true
       }
     }
