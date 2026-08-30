@@ -281,8 +281,8 @@
 
     <div id="subsection-classement-main" class="subsection active">
     <div class="hero">
-      <h1>SAISON <em>2025</em>/26</h1>
-      <p>9 participants</p>
+      <h1>SAISON <em>2026</em>/27</h1>
+      <p id="hero-participants">...</p>
       <div class="hero-stats">
         <div class="hero-stat"><div class="val" id="hero-journee">...</div><div class="lbl">Journée</div></div>
         <div class="divider-v"></div>
@@ -1244,6 +1244,7 @@ Promise.all([
     const j = data.derniere_journee;
     const classement = data.classement;
 
+    document.getElementById('hero-participants').textContent = classement.length + ' participants';
     document.getElementById('journee-badge').textContent = 'J' + j;
     document.getElementById('hero-journee').textContent = 'J' + j;
     document.getElementById('hero-restantes').textContent = 34 - j;
