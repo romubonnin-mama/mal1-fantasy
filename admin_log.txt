@@ -65,3 +65,8 @@ To https://github.com/romubonnin-mama/mal1-fantasy.git
   127.0.0.1 "POST /api/jokers HTTP/1.1" 200 -
   127.0.0.1 "POST /api/clubs HTTP/1.1" 200 -
 warning: in the working copy of 'admin_log.txt', LF will be replaced by CRLF the next time Git touches it
+To https://github.com/romubonnin-mama/mal1-fantasy.git
+   5f6de9f..4a38229  main -> main
+  127.0.0.1 "POST /api/push HTTP/1.1" 200 -
+  127.0.0.1 "POST /api/manual-stats/2 HTTP/1.1" 200 -
+warning: in the working copy of 'admin_log.txt', LF will be replaced by CRLF the next time Git touches it
