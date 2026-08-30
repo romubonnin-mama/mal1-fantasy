@@ -371,14 +371,17 @@
         "full_match": true,
         "yellow_cards": true
       },
-      "M.NAWROCKI": {},
+      "M.NAWROCKI": {
+        "sort_a": 62
+      },
       "V.VITINHA": {
         "full_match": true,
         "goals": 1,
         "assists": 1
       },
       "R.FAIVRE": {
-        "assists": 1
+        "assists": 1,
+        "sort_a": 71
       },
       "P.LEES-MELOU": {},
       "T.LEBRIS": {
@@ -408,7 +411,8 @@
       },
       "P.PAGIS": {},
       "F.IVANOVIC": {
-        "sort_a": 73
+        "sort_a": 73,
+        "yellow_cards": true
       },
       "F.TORRES": {
         "sort_a": 72
@@ -544,7 +548,8 @@
         "goals": 1
       },
       "A.MILLE": {
-        "sort_a": 78
+        "sort_a": 78,
+        "goals": 1
       },
       "H.ABDELLI": {},
       "A.GOUIRI": {},
