@@ -35,3 +35,25 @@ To https://github.com/romubonnin-mama/mal1-fantasy.git
   127.0.0.1 "POST /api/compute/2 HTTP/1.1" 200 -
   127.0.0.1 "GET /api/data HTTP/1.1" 200 -
 warning: in the working copy of 'admin_log.txt', LF will be replaced by CRLF the next time Git touches it
+To https://github.com/romubonnin-mama/mal1-fantasy.git
+   9ecce60..d540dcc  main -> main
+  127.0.0.1 "POST /api/push HTTP/1.1" 200 -
+  127.0.0.1 "POST /api/manual-stats/2 HTTP/1.1" 200 -
+  127.0.0.1 "POST /api/compute/2 HTTP/1.1" 200 -
+  127.0.0.1 "GET /api/data HTTP/1.1" 200 -
+  127.0.0.1 "POST /api/manual-stats/2 HTTP/1.1" 200 -
+  127.0.0.1 "POST /api/compute/2 HTTP/1.1" 200 -
+  127.0.0.1 "GET /api/data HTTP/1.1" 200 -
+  127.0.0.1 "POST /api/manual-stats/2 HTTP/1.1" 200 -
+  127.0.0.1 "POST /api/compute/2 HTTP/1.1" 200 -
+  127.0.0.1 "GET /api/data HTTP/1.1" 200 -
+warning: in the working copy of 'admin_log.txt', LF will be replaced by CRLF the next time Git touches it
+To https://github.com/romubonnin-mama/mal1-fantasy.git
+   d540dcc..e0c21fd  main -> main
+  127.0.0.1 "POST /api/push HTTP/1.1" 200 -
+  127.0.0.1 "POST /api/manual-stats/2 HTTP/1.1" 200 -
+  127.0.0.1 "POST /api/compute/2 HTTP/1.1" 200 -
+  127.0.0.1 "GET /api/data HTTP/1.1" 200 -
+  127.0.0.1 "POST /api/manual-stats/2 HTTP/1.1" 200 -
+  127.0.0.1 "POST /api/compute/2 HTTP/1.1" 200 -
+  127.0.0.1 "GET /api/data HTTP/1.1" 200 -

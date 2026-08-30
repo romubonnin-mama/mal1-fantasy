@@ -372,7 +372,11 @@
       }
     },
     "ADRIEN": {
-      "F.NAZINHO": {},
+      "F.NAZINHO": {
+        "yellow_cards": true,
+        "full_match": true,
+        "cs": true
+      },
       "A.HAKIMI": {
         "full_match": true
       },
@@ -415,7 +419,10 @@
         "sort_a": 82
       },
       "O.CAMARA": {},
-      "A.GOLOVINE": {},
+      "A.GOLOVINE": {
+        "assists": 1,
+        "sort_a": 81
+      },
       "B.VANDENBOOMEN": {
         "goals": 1,
         "yellow_cards": true,
@@ -441,14 +448,14 @@
         "full_match": true
       },
       "D.COPPOLA": {
-        "full_match": true
+        "full_match": true,
+        "cs": true
       },
       "B.SAMBA": {
         "absent": true
       }
     },
     "BASTIEN": {
-      "T.WEAH": {},
       "V.ALEXSANDRO": {
         "full_match": true
       },
@@ -456,8 +463,6 @@
         "assists": 1,
         "full_match": true
       },
-      "D.ZAKARIA": {},
-      "A.HARIT": {},
       "E.LEPAUL": {
         "goals": 1,
         "full_match": true,
@@ -478,6 +483,16 @@
       },
       "M.MBOW": {
         "absent": true
+      },
+      "T.WEAH": {
+        "full_match": true
+      },
+      "D.ZAKARIA": {
+        "full_match": true,
+        "yellow_cards": true
+      },
+      "A.HARIT": {
+        "full_match": true
       }
     },
     "ROMU": {
@@ -502,7 +517,9 @@
       "E.NUAMAH": {
         "sort_a": 80
       },
-      "M.BIERETH": {},
+      "M.BIERETH": {
+        "entre_a": 82
+      },
       "J.ORTEGA": {
         "sort_a": 83
       },
@@ -561,7 +578,9 @@
       "G.REYNA": {
         "sort_a": 76
       },
-      "A.GOMES": {},
+      "A.GOMES": {
+        "sort_a": 85
+      },
       "L.BLAS": {
         "entre_a": 74
       },
@@ -594,7 +613,6 @@
       "B.OZER": {
         "full_match": true
       },
-      "V.VANDERSON": {},
       "K.DOUMBIA": {
         "sort_a": 75,
         "goals": 1
@@ -603,8 +621,9 @@
         "sort_a": 78,
         "goals": 1
       },
-      "H.ABDELLI": {},
-      "A.GOUIRI": {},
+      "H.ABDELLI": {
+        "sort_a": 46
+      },
       "D.GUEYE": {
         "sort_a": 62
       },
@@ -618,6 +637,13 @@
         "full_match": true
       },
       "C.CRESSWELL": {
+        "full_match": true
+      },
+      "V.VANDERSON": {
+        "full_match": true,
+        "cs": true
+      },
+      "A.GOUIRI": {
         "full_match": true
       }
     }
