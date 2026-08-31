@@ -255,6 +255,16 @@ def compute(journee: int) -> dict:
     with open(DATA_DIR / "manual_stats.json", encoding="utf-8") as f: manual      = json.load(f)
     with open(DATA_DIR / "corrections.json",  encoding="utf-8") as f: corrections = json.load(f)
     with open(BASE_DIR / "data.json",         encoding="utf-8") as f: data        = json.load(f)
+    jokers_path = DATA_DIR / "jokers.json"
+    jokers_history = json.loads(jokers_path.read_text(encoding="utf-8")) if jokers_path.exists() else []
+
+    # Journée à partir de laquelle chaque joueur entré par joker compte ses points
+    # (choisie manuellement dans l'admin au moment d'appliquer le joker — ne dépend pas
+    # de la date d'application, qui peut être postérieure au délai réellement respecté).
+    joker_active_from = {
+        (j["manager"], j["in"]["nom"]): j["active_from"]
+        for j in jokers_history if j.get("active_from")
+    }
 
     j_lineups    = lineups.get(str(journee), {})
     j_manual     = manual.get(str(journee), {})
@@ -276,11 +286,32 @@ def compute(journee: int) -> dict:
         capitaine  = lineup.get("capitaine")
         coeff      = int(lineup.get("coeff", 1))
 
+        # Un joker appliqué après coup peut avoir retiré du roster actuel un joueur qui
+        # était titulaire ce jour-là (cas : joker joué en retard, actif seulement à partir
+        # de la journée suivante). Sans ça, un recalcul ultérieur de cette journée passée
+        # ferait disparaître ce joueur — et les points qu'il avait déjà acquis.
+        postes_effectifs = {p: list(postes.get(p, [])) for p in POSTES}
+        noms_connus = {nom for lst in postes_effectifs.values() for nom in lst}
+        for nom in (titulaires - noms_connus):
+            poste_trouve = None
+            prev_equipe = data.get("detail_journees", {}).get(str(journee), {}).get(manager, {})
+            for p, joueurs in prev_equipe.items():
+                if any(j.get("nom") == nom for j in joueurs):
+                    poste_trouve = p
+                    break
+            if poste_trouve is None:
+                for j in jokers_history:
+                    if j.get("manager") == manager and j.get("out", {}).get("nom") == nom:
+                        poste_trouve = j["out"].get("poste")
+                        break
+            if poste_trouve:
+                postes_effectifs[poste_trouve].append(nom)
+
         equipe_result = {p: [] for p in POSTES}
         total = 0
 
         for poste in POSTES:
-            for nom in postes.get(poste, []):
+            for nom in postes_effectifs.get(poste, []):
                 is_titu = nom in titulaires
                 s = j_manual.get(manager, {}).get(nom, {})
 
@@ -332,6 +363,12 @@ def compute(journee: int) -> dict:
 
                 # Absent : 0 point, aucun bonus
                 if absent:
+                    result["pts"] = 0
+
+                # Joueur entré par joker mais pas encore actif sur cette journée
+                # (règlement : actif seulement à partir de la journée choisie à l'application) :
+                # 0 point même s'il a été inclus par erreur dans la compo de cette journée.
+                if journee < joker_active_from.get((manager, nom), 0):
                     result["pts"] = 0
 
                 # CS : uniquement si la case est cochée dans l'admin

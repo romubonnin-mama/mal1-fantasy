@@ -314,7 +314,17 @@ header h1 { font-size: 18px; font-weight: 700; color: var(--accent); }
           <label class="joker-lbl">Club</label>
           <select id="joker-in-club" class="joker-select"></select>
         </div>
+        <div>
+          <label class="joker-lbl">Actif à partir de</label>
+          <select id="joker-active-from" class="joker-select"></select>
+        </div>
       </div>
+      <p style="color:var(--muted);font-size:11px;margin:-4px 0 12px">
+        Journée à partir de laquelle le joueur IN compte ses points (le joueur OUT continue de
+        compter jusqu'à cette journée exclue). À choisir manuellement si le joker a été appliqué
+        hors délai — ne te fie pas à la date d'application dans l'outil, qui peut être postérieure
+        au vrai délai respecté par le manager.
+      </p>
 
       <div id="joker-quota-summary" style="font-size:12px;margin-bottom:12px"></div>
 
@@ -1096,9 +1106,11 @@ function populateJokerForm() {
   const inMgrSel  = document.getElementById('joker-in-manager');
   const typeSel   = document.getElementById('joker-type');
   const clubSel   = document.getElementById('joker-in-club');
+  const activeFromSel = document.getElementById('joker-active-from');
   if (!outMgrSel) return;
 
   const prevOut = outMgrSel.value, prevIn = inMgrSel.value, prevType = typeSel.value;
+  const prevActiveFrom = activeFromSel.value;
   outMgrSel.innerHTML = mgrOptions;
   inMgrSel.innerHTML  = mgrOptions;
   typeSel.innerHTML   = JOKER_TYPES.map(t => `<option value="${t.id}">${t.label}</option>`).join('');
@@ -1108,6 +1120,11 @@ function populateJokerForm() {
 
   const clubs = (window.SEASON_CLUBS && window.SEASON_CLUBS.length) ? window.SEASON_CLUBS : JOKER_CLUBS_FALLBACK;
   clubSel.innerHTML = clubs.map(c => `<option value="${c}">${c}</option>`).join('');
+
+  const defaultActiveFrom = (DATA.derniere_journee || currentJournee || 0) + 1;
+  activeFromSel.innerHTML = Array.from({ length: 34 }, (_, i) => i + 1)
+    .map(j => `<option value="${j}">J${j}</option>`).join('');
+  activeFromSel.value = prevActiveFrom || String(defaultActiveFrom);
 
   updateJokerOutJoueurs();
   updateJokerQuotaSummary();
@@ -1156,6 +1173,7 @@ async function applyJoker() {
   const inPoste     = document.getElementById('joker-in-poste').value;
   const inNom       = document.getElementById('joker-in-nom').value.trim().toUpperCase();
   const inClub      = document.getElementById('joker-in-club').value;
+  const activeFrom  = parseInt(document.getElementById('joker-active-from').value) || null;
 
   if (!outManager || !outVal)          { toast('Sélectionne le joueur à sortir', 'err'); return; }
   if (!inManager || !inPoste || !inClub) { toast('Complète les champs du joueur IN', 'err'); return; }
@@ -1203,6 +1221,7 @@ async function applyJoker() {
     type,
     out: { nom: outNom, poste: outPoste, club: outPlayerCaptured.club, mise: outPlayerCaptured.mise, id: outPlayerCaptured.id },
     in:  { nom: inNom, poste: inPoste, club: inClub },
+    active_from: activeFrom,
   });
 
   await Promise.all([
@@ -1286,6 +1305,7 @@ async function editJoker(id) {
   document.getElementById('joker-in-poste').value = j.in.poste;
   document.getElementById('joker-in-nom').value = j.in.nom;
   document.getElementById('joker-in-club').value = j.in.club;
+  if (j.active_from) document.getElementById('joker-active-from').value = String(j.active_from);
   updateJokerQuotaSummary();
   document.getElementById('joker-in-nom').scrollIntoView({ behavior: 'smooth', block: 'center' });
   document.getElementById('joker-in-nom').focus();
@@ -1333,6 +1353,7 @@ function renderJokerHistory(containerId) {
         <span style="color:var(--red)">${outLogo}${j.out.nom} (${j.out.poste})</span>
         <span style="color:var(--muted)">→</span>
         <span style="color:var(--accent)">${inLogo}${j.in.nom} (${j.in.poste}, ${j.in.club})</span>
+        ${j.active_from ? `<span style="color:var(--muted);font-size:11px">actif dès J${j.active_from}</span>` : ''}
         <button class="btn btn-subtle" style="margin-left:auto;font-size:11px;padding:3px 8px" onclick="editJoker(${j.id})" title="Annule ce joker et pré-remplit le formulaire pour corriger une erreur de saisie">✏️ Corriger</button>
       </div>`;
   }).join('');

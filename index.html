@@ -624,6 +624,7 @@ function renderJokerHistory(containerId) {
         <span class="joker-move" style="color:var(--danger)">${outLogo}${j.out.nom} (${j.out.poste})</span>
         <span style="color:var(--muted)">→</span>
         <span class="joker-move" style="color:var(--accent)">${inLogo}${j.in.nom} (${j.in.poste}, ${j.in.club})</span>
+        ${j.active_from ? `<span style="color:var(--muted);font-size:11px">actif dès J${j.active_from}</span>` : ''}
       </div>`;
   }).join('');
   box.innerHTML = rows;

@@ -379,55 +379,6 @@
       "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\init_nouvelle_saison.py:111"
     },
     {
-      "id": "file::compute_journee",
-      "label": "compute_journee.py",
-      "fileType": "code",
-      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\compute_journee.py",
-      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\compute_journee.py:1"
-    },
-    {
-      "id": "compute_journee::_stat_pts",
-      "label": "_stat_pts",
-      "fileType": "code",
-      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\compute_journee.py",
-      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\compute_journee.py:21"
-    },
-    {
-      "id": "compute_journee::_apply_corrections_past",
-      "label": "_apply_corrections_past",
-      "fileType": "code",
-      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\compute_journee.py",
-      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\compute_journee.py:44"
-    },
-    {
-      "id": "compute_journee::_classement_avant",
-      "label": "_classement_avant",
-      "fileType": "code",
-      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\compute_journee.py",
-      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\compute_journee.py:191"
-    },
-    {
-      "id": "compute_journee::_plafond_capitaine",
-      "label": "_plafond_capitaine",
-      "fileType": "code",
-      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\compute_journee.py",
-      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\compute_journee.py:206"
-    },
-    {
-      "id": "compute_journee::_minutes",
-      "label": "_minutes",
-      "fileType": "code",
-      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\compute_journee.py",
-      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\compute_journee.py:222"
-    },
-    {
-      "id": "compute_journee::compute",
-      "label": "compute",
-      "fileType": "code",
-      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\compute_journee.py",
-      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\compute_journee.py:234"
-    },
-    {
       "id": "file::scoring",
       "label": "scoring.py",
       "fileType": "code",
@@ -608,6 +559,62 @@
       "fileType": "code",
       "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\sync_roster_from_firestore.py",
       "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\sync_roster_from_firestore.py:92"
+    },
+    {
+      "id": "file::compute_journee",
+      "label": "compute_journee.py",
+      "fileType": "code",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\compute_journee.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\compute_journee.py:1"
+    },
+    {
+      "id": "compute_journee::_stat_pts",
+      "label": "_stat_pts",
+      "fileType": "code",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\compute_journee.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\compute_journee.py:21"
+    },
+    {
+      "id": "compute_journee::_apply_corrections_past",
+      "label": "_apply_corrections_past",
+      "fileType": "code",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\compute_journee.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\compute_journee.py:44"
+    },
+    {
+      "id": "compute_journee::_classement_avant",
+      "label": "_classement_avant",
+      "fileType": "code",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\compute_journee.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\compute_journee.py:191"
+    },
+    {
+      "id": "compute_journee::_plafond_capitaine",
+      "label": "_plafond_capitaine",
+      "fileType": "code",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\compute_journee.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\compute_journee.py:206"
+    },
+    {
+      "id": "compute_journee::_capitaines_utilises",
+      "label": "_capitaines_utilises",
+      "fileType": "code",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\compute_journee.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\compute_journee.py:222"
+    },
+    {
+      "id": "compute_journee::_minutes",
+      "label": "_minutes",
+      "fileType": "code",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\compute_journee.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\compute_journee.py:240"
+    },
+    {
+      "id": "compute_journee::compute",
+      "label": "compute",
+      "fileType": "code",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\compute_journee.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\compute_journee.py:252"
     }
   ],
   "edges": [
@@ -1134,51 +1141,6 @@
       "weight": 1
     },
     {
-      "source": "file::compute_journee",
-      "target": "compute_journee::_stat_pts",
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\compute_journee.py",
-      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\compute_journee.py:21",
-      "weight": 1
-    },
-    {
-      "source": "file::compute_journee",
-      "target": "compute_journee::_apply_corrections_past",
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\compute_journee.py",
-      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\compute_journee.py:44",
-      "weight": 1
-    },
-    {
-      "source": "file::compute_journee",
-      "target": "compute_journee::_classement_avant",
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\compute_journee.py",
-      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\compute_journee.py:191",
-      "weight": 1
-    },
-    {
-      "source": "file::compute_journee",
-      "target": "compute_journee::_plafond_capitaine",
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\compute_journee.py",
-      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\compute_journee.py:206",
-      "weight": 1
-    },
-    {
-      "source": "file::compute_journee",
-      "target": "compute_journee::_minutes",
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\compute_journee.py",
-      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\compute_journee.py:222",
-      "weight": 1
-    },
-    {
       "source": "file::download_maillots",
       "target": "download_maillots::main",
       "relation": "contains",
@@ -1249,12 +1211,66 @@
       "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\sync_roster_from_firestore.py",
       "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\sync_roster_from_firestore.py:92",
       "weight": 1
+    },
+    {
+      "source": "file::compute_journee",
+      "target": "compute_journee::_stat_pts",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\compute_journee.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\compute_journee.py:21",
+      "weight": 1
+    },
+    {
+      "source": "file::compute_journee",
+      "target": "compute_journee::_apply_corrections_past",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\compute_journee.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\compute_journee.py:44",
+      "weight": 1
+    },
+    {
+      "source": "file::compute_journee",
+      "target": "compute_journee::_classement_avant",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\compute_journee.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\compute_journee.py:191",
+      "weight": 1
+    },
+    {
+      "source": "file::compute_journee",
+      "target": "compute_journee::_plafond_capitaine",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\compute_journee.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\compute_journee.py:206",
+      "weight": 1
+    },
+    {
+      "source": "file::compute_journee",
+      "target": "compute_journee::_capitaines_utilises",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\compute_journee.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\compute_journee.py:222",
+      "weight": 1
+    },
+    {
+      "source": "file::compute_journee",
+      "target": "compute_journee::_minutes",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\compute_journee.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\compute_journee.py:240",
+      "weight": 1
     }
   ],
   "metadata": {
     "files": 17,
-    "nodes": 87,
-    "edges": 71,
-    "builtAt": "2026-08-21T20:57:04.266Z"
+    "nodes": 88,
+    "edges": 72,
+    "builtAt": "2026-08-31T07:42:47.568Z"
   }
 }
