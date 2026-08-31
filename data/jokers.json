@@ -197,5 +197,24 @@
       "club": "Monaco"
     },
     "active_from": 3
+  },
+  {
+    "id": 1788183517596,
+    "date": "2026-08-31T13:38:37.596Z",
+    "manager": "BASTIEN",
+    "type": "mercato_ete",
+    "out": {
+      "nom": "C.MATA",
+      "poste": "D",
+      "club": "OL",
+      "mise": 1,
+      "id": "c.mata__ol__D"
+    },
+    "in": {
+      "nom": "M.KJAERGAARD",
+      "poste": "M",
+      "club": "LOSC"
+    },
+    "active_from": 3
   }
 ]
