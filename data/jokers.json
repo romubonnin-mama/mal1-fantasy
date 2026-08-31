@@ -218,8 +218,8 @@
     "active_from": 3
   },
   {
-    "id": 1788206632579,
-    "date": "2026-08-31T20:03:52.579Z",
+    "id": 1788206931980,
+    "date": "2026-08-31T20:08:51.980Z",
     "manager": "FLORIAN",
     "type": "mercato_ete",
     "out": {
@@ -231,7 +231,7 @@
     },
     "in": {
       "nom": "L.MAFOUTA",
-      "poste": "G",
+      "poste": "A",
       "club": "Le Mans"
     },
     "active_from": 3
