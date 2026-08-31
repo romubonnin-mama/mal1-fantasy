@@ -216,5 +216,24 @@
       "club": "LOSC"
     },
     "active_from": 3
+  },
+  {
+    "id": 1788206632579,
+    "date": "2026-08-31T20:03:52.579Z",
+    "manager": "FLORIAN",
+    "type": "mercato_ete",
+    "out": {
+      "nom": "P.PAGIS",
+      "poste": "A",
+      "club": "Paris FC",
+      "mise": 27,
+      "id": "p.pagis__paris fc__A"
+    },
+    "in": {
+      "nom": "L.MAFOUTA",
+      "poste": "G",
+      "club": "Le Mans"
+    },
+    "active_from": 3
   }
 ]
