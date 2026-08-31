@@ -1,9 +1,11 @@
 """
-Serveur local pour l'interface admin Ma L1.
-Lance avec : python scripts/admin_server.py
-Puis ouvre : http://localhost:8765
+Serveur admin Ma L1 — local (PC) ou hébergé (Render).
+Local : python scripts/admin_server.py, puis ouvre http://localhost:8765
+Hébergé : voir scripts/render_start.sh (variables d'env GITHUB_TOKEN / ADMIN_PASSWORD)
 """
 
+import base64
+import hmac
 import json
 import os
 import subprocess
@@ -16,7 +18,12 @@ BASE_DIR   = Path(__file__).parent.parent
 DATA_DIR   = BASE_DIR / "data"
 SCRIPTS_DIR = BASE_DIR / "scripts"
 ADMIN_HTML = BASE_DIR / "admin.html"
-PORT       = 8765
+PORT       = int(os.environ.get("PORT", 8765))
+
+# Défini uniquement en hébergement distant (Render) : active l'authentification Basic
+# sur toutes les requêtes. En local (PC), cette variable n'est jamais définie — aucun
+# changement de comportement.
+ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD")
 
 FILES = {
     "/api/roster":        DATA_DIR / "roster.json",
@@ -154,6 +161,30 @@ class AdminHandler(BaseHTTPRequestHandler):
     def send_error_json(self, msg, status=400):
         self.send_json({"error": msg}, status)
 
+    def _require_auth(self) -> bool:
+        """Retourne True si la requête peut continuer. Répond 401 et retourne False sinon.
+        Sans ADMIN_PASSWORD configuré (usage local PC), toujours True."""
+        if not ADMIN_PASSWORD:
+            return True
+        header = self.headers.get("Authorization", "")
+        password = None
+        if header.startswith("Basic "):
+            try:
+                decoded = base64.b64decode(header[6:]).decode("utf-8")
+                _, _, password = decoded.partition(":")
+            except Exception:
+                password = None
+        if password is not None and hmac.compare_digest(password, ADMIN_PASSWORD):
+            return True
+        body = json.dumps({"error": "Unauthorized"}).encode("utf-8")
+        self.send_response(401)
+        self.send_header("WWW-Authenticate", 'Basic realm="Ma L1 Admin"')
+        self.send_header("Content-Type", "application/json; charset=utf-8")
+        self.send_header("Content-Length", str(len(body)))
+        self.end_headers()
+        self.wfile.write(body)
+        return False
+
     def do_OPTIONS(self):
         self.send_response(200)
         self.send_header("Access-Control-Allow-Origin", "*")
@@ -162,6 +193,8 @@ class AdminHandler(BaseHTTPRequestHandler):
         self.end_headers()
 
     def do_GET(self):
+        if not self._require_auth():
+            return
         path = urlparse(self.path).path.rstrip("/")
 
         # Serve admin.html
@@ -198,6 +231,8 @@ class AdminHandler(BaseHTTPRequestHandler):
         self.send_error_json("Not found", 404)
 
     def do_POST(self):
+        if not self._require_auth():
+            return
         path = urlparse(self.path).path.rstrip("/")
         length = int(self.headers.get("Content-Length", 0))
         body = self.rfile.read(length) if length else b"{}"
@@ -253,6 +288,13 @@ class AdminHandler(BaseHTTPRequestHandler):
                     cwd=BASE_DIR, capture_output=True
                 )
                 if r.returncode == 0 or b"nothing to commit" in r.stdout:
+                    # Récupère d'abord les changements distants (ex : publiés depuis un
+                    # autre point d'accès, PC ou mobile) pour éviter un push rejeté ou
+                    # qui écraserait des données plus récentes.
+                    pull = subprocess.run(["git", "pull", "--no-edit"], cwd=BASE_DIR, capture_output=True)
+                    if pull.returncode != 0:
+                        self.send_json({"ok": False, "msg": "Conflit en récupérant les dernières données avant de publier : " + pull.stderr.decode()})
+                        return
                     subprocess.run(["git", "push"], cwd=BASE_DIR, check=True)
                     self.send_json({"ok": True, "msg": ok_msg})
                 else:
@@ -294,9 +336,16 @@ class AdminHandler(BaseHTTPRequestHandler):
 
 
 if __name__ == "__main__":
+    try:
+        subprocess.run(["git", "pull", "--no-edit"], cwd=BASE_DIR, capture_output=True, timeout=30)
+    except Exception as e:
+        print(f"  (git pull au démarrage ignoré : {e})")
+
     print(f"Interface admin : http://localhost:{PORT}")
+    if ADMIN_PASSWORD:
+        print("   Authentification activée (ADMIN_PASSWORD défini).")
     print("   Ctrl+C pour arrêter.\n")
-    server = HTTPServer(("localhost", PORT), AdminHandler)
+    server = HTTPServer(("0.0.0.0", PORT), AdminHandler)
     try:
         server.serve_forever()
     except KeyboardInterrupt:

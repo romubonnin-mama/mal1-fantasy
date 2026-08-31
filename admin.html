@@ -442,7 +442,7 @@ header h1 { font-size: 18px; font-weight: 700; color: var(--accent); }
 </div>
 
 <script>
-const API = 'http://localhost:8765/api';
+const API = window.location.origin + '/api';
 let ROSTER = {}, LINEUPS = {}, CORRECTIONS = {}, DATA = {}, MANUAL_STATS = {}, CLUBS = {}, PREV_LINEUPS = {}, CL_DATA = {}, JOKERS = [];
 
 function getLogoUrl(nom) {
