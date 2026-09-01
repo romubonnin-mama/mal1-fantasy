@@ -349,5 +349,24 @@
       "club": "Monaco"
     },
     "active_from": 3
+  },
+  {
+    "id": 1788298186263,
+    "date": "2026-09-01T21:29:46.263Z",
+    "manager": "ANTHONY",
+    "type": "saison",
+    "out": {
+      "nom": "Y.TITRAOUI",
+      "poste": "A",
+      "club": "Lens",
+      "mise": 1,
+      "id": "y.titraoui__lens__A"
+    },
+    "in": {
+      "nom": "P.PAGIS",
+      "poste": "A",
+      "club": "Paris FC"
+    },
+    "active_from": 3
   }
 ]

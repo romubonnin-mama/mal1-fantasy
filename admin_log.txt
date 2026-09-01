@@ -1,0 +1,29 @@
+Interface admin : http://localhost:8765
+   Ctrl+C pour arrêter.
+
+  127.0.0.1 "GET / HTTP/1.1" 200 -
+  127.0.0.1 "GET / HTTP/1.1" 200 -
+  127.0.0.1 "GET /api/roster HTTP/1.1" 200 -
+  127.0.0.1 "GET /api/clubs HTTP/1.1" 200 -
+  127.0.0.1 "GET /api/jokers HTTP/1.1" 200 -
+  127.0.0.1 "GET /api/data HTTP/1.1" 200 -
+  127.0.0.1 "GET /api/roster HTTP/1.1" 200 -
+  127.0.0.1 "GET /api/clubs HTTP/1.1" 200 -
+  127.0.0.1 "GET /api/jokers HTTP/1.1" 200 -
+  127.0.0.1 "GET /api/data HTTP/1.1" 200 -
+  127.0.0.1 "GET /api/lineups/2 HTTP/1.1" 200 -
+  127.0.0.1 "GET /api/corrections/2 HTTP/1.1" 200 -
+  127.0.0.1 "GET /api/manual-stats/2 HTTP/1.1" 200 -
+  127.0.0.1 "GET /api/lineups/1 HTTP/1.1" 200 -
+  127.0.0.1 "GET /api/lineups/2 HTTP/1.1" 200 -
+  127.0.0.1 "GET /api/corrections/2 HTTP/1.1" 200 -
+  127.0.0.1 "GET /api/manual-stats/2 HTTP/1.1" 200 -
+  127.0.0.1 "GET /api/lineups/1 HTTP/1.1" 200 -
+To https://github.com/romubonnin-mama/mal1-fantasy.git
+   8d32679..2ad9396  main -> main
+  127.0.0.1 "POST /api/push HTTP/1.1" 200 -
+  127.0.0.1 "GET /api/lineups/3 HTTP/1.1" 200 -
+  127.0.0.1 "GET /api/corrections/3 HTTP/1.1" 200 -
+  127.0.0.1 "GET /api/manual-stats/3 HTTP/1.1" 200 -
+  127.0.0.1 "GET /api/lineups/2 HTTP/1.1" 200 -
+  127.0.0.1 "POST /api/lineups/3 HTTP/1.1" 200 -
