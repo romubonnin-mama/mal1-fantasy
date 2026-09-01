@@ -5,10 +5,10 @@
     ],
     "D": [
       "L.HOGSBERG",
+      "M.NAWROCKI",
       "F.NAZINHO",
       "A.HAKIMI",
-      "R.PERRAUD",
-      "M.NAWROCKI"
+      "R.PERRAUD"
     ],
     "M": [
       "M.SKORAS",
@@ -18,9 +18,9 @@
       "T.LEBRIS"
     ],
     "A": [
+      "J.OSO",
       "F.THAUVIN",
-      "K.KVARATSKHELIA",
-      "J.OSO"
+      "K.KVARATSKHELIA"
     ]
   },
   "ANTHONY": {
@@ -30,9 +30,9 @@
     "D": [
       "N.TAGLIAFICO",
       "N.AGUERD",
+      "K.LALA",
       "W.PACHO",
-      "S.ABDULHAMID",
-      "K.LALA"
+      "S.ABDULHAMID"
     ],
     "M": [
       "I.KEBBAL",
@@ -42,9 +42,9 @@
     ],
     "A": [
       "M.ABLINE",
-      "M.GODO",
+      "P.PAGIS",
       "D.BAKWA",
-      "P.PAGIS"
+      "M.GODO"
     ]
   },
   "BASTIEN": {
@@ -61,14 +61,14 @@
     "M": [
       "J.CHOTARD",
       "A.THOMASSON",
+      "M.KJAERGAARD",
       "D.ZAKARIA",
-      "A.HARIT",
-      "M.KJAERGAARD"
+      "A.HARIT"
     ],
     "A": [
       "E.LEPAUL",
-      "D.DOUE",
-      "S.NANASI"
+      "S.NANASI",
+      "D.DOUE"
     ]
   },
   "FAB": {
@@ -78,7 +78,7 @@
     "D": [
       "J.LEFORT",
       "Z.ATHEKAME",
-      "M.DEL-BLANCO",
+      "A.PIEDFORT",
       "A.SEKO",
       "R.NICOLAISEN"
     ],
@@ -90,9 +90,9 @@
       "G.BERNARDEAU"
     ],
     "A": [
+      "E.WAHI",
       "L.SINAYOKO",
-      "L.AJORQUE",
-      "E.WAHI"
+      "L.AJORQUE"
     ]
   },
   "FLORIAN": {
@@ -113,9 +113,9 @@
       "T.JORGENSEN"
     ],
     "A": [
+      "F.TORRES",
       "I.PAIXAO",
       "F.IVANOVIC",
-      "F.TORRES",
       "L.MAFOUTA"
     ]
   },
@@ -126,9 +126,9 @@
     "D": [
       "A.AIT-BOUDLAL",
       "I.GANIOU",
-      "N.NGOY",
+      "E.DIER",
       "K.COULIBALY",
-      "E.DIER"
+      "N.NGOY"
     ],
     "M": [
       "G.REYNA",
@@ -148,11 +148,11 @@
       "B.OZER"
     ],
     "D": [
+      "N.MENDES",
       "C.CRESSWELL",
       "A.KOUASSI",
       "V.VANDERSON",
-      "L.RAOLISOA",
-      "N.MENDES"
+      "L.RAOLISOA"
     ],
     "M": [
       "R.NDIAYE",
@@ -179,11 +179,11 @@
       "B.LOCKO"
     ],
     "M": [
+      "L.KOLEOSHO",
       "H.HARALDSSON",
       "T.MORTON",
       "S.DIOP",
-      "M.IFNAOUI",
-      "L.KOLEOSHO"
+      "M.IFNAOUI"
     ],
     "A": [
       "E.NUAMAH",
