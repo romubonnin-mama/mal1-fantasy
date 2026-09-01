@@ -237,8 +237,8 @@
     "active_from": 3
   },
   {
-    "id": 1788281482637,
-    "date": "2026-09-01T16:51:22.637Z",
+    "id": 1788281530110,
+    "date": "2026-09-01T16:52:10.110Z",
     "manager": "MICKA",
     "type": "mercato_ete",
     "out": {
@@ -253,6 +253,6 @@
       "poste": "A",
       "club": "LOSC"
     },
-    "active_from": 33
+    "active_from": 3
   }
 ]
