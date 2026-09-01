@@ -273,5 +273,81 @@
       "club": "Strasbourg"
     },
     "active_from": 3
+  },
+  {
+    "id": 1788296504976,
+    "date": "2026-09-01T21:01:44.976Z",
+    "manager": "ROMU",
+    "type": "saison",
+    "out": {
+      "nom": "M.SIMBAKOLI",
+      "poste": "A",
+      "club": "Angers",
+      "mise": 2,
+      "id": "m.simbakoli__angers__A"
+    },
+    "in": {
+      "nom": "B.LOCKO",
+      "poste": "D",
+      "club": "Brest"
+    },
+    "active_from": 3
+  },
+  {
+    "id": 1788296548188,
+    "date": "2026-09-01T21:02:28.188Z",
+    "manager": "JEROME",
+    "type": "bonus",
+    "out": {
+      "nom": "G.ZECHIEL",
+      "poste": "M",
+      "club": "LOSC",
+      "mise": 6,
+      "id": "g.zechiel__losc__M"
+    },
+    "in": {
+      "nom": "J.MAKENGO",
+      "poste": "M",
+      "club": "Lorient"
+    },
+    "active_from": 3
+  },
+  {
+    "id": 1788296673069,
+    "date": "2026-09-01T21:04:33.069Z",
+    "manager": "JEROME",
+    "type": "bonus",
+    "out": {
+      "nom": "B.BRAHIMI",
+      "poste": "M",
+      "club": "Le Mans",
+      "mise": 2,
+      "id": "b.brahimi__le mans__M"
+    },
+    "in": {
+      "nom": "Y.FOFANA",
+      "poste": "M",
+      "club": "OL"
+    },
+    "active_from": 3
+  },
+  {
+    "id": 1788296708002,
+    "date": "2026-09-01T21:05:08.002Z",
+    "manager": "JEROME",
+    "type": "saison",
+    "out": {
+      "nom": "A.MAITLAND-NILES",
+      "poste": "D",
+      "club": "OL",
+      "mise": 6,
+      "id": "a.maitland-niles__ol__D"
+    },
+    "in": {
+      "nom": "E.DIER",
+      "poste": "D",
+      "club": "Monaco"
+    },
+    "active_from": 3
   }
 ]
