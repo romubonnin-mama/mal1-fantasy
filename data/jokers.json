@@ -235,5 +235,24 @@
       "club": "Le Mans"
     },
     "active_from": 3
+  },
+  {
+    "id": 1788281482637,
+    "date": "2026-09-01T16:51:22.637Z",
+    "manager": "MICKA",
+    "type": "mercato_ete",
+    "out": {
+      "nom": "D.GUEYE",
+      "poste": "A",
+      "club": "Le Mans",
+      "mise": 21,
+      "id": "d.gueye__le mans__A"
+    },
+    "in": {
+      "nom": "O.GIROUD",
+      "poste": "A",
+      "club": "LOSC"
+    },
+    "active_from": 33
   }
 ]
