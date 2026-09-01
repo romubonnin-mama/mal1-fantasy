@@ -368,5 +368,24 @@
       "club": "Paris FC"
     },
     "active_from": 3
+  },
+  {
+    "id": 1788298300828,
+    "date": "2026-09-01T21:31:40.828Z",
+    "manager": "FAB",
+    "type": "mercato_ete",
+    "out": {
+      "nom": "M.DEL-BLANCO",
+      "poste": "D",
+      "club": "Strasbourg",
+      "mise": 1,
+      "id": "m.del-blanco__strasbourg__D"
+    },
+    "in": {
+      "nom": "A.PIEDFORT",
+      "poste": "D",
+      "club": "Auxerre"
+    },
+    "active_from": 3
   }
 ]
