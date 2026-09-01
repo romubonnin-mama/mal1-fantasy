@@ -1,0 +1,530 @@
+{
+  "ADRIEN": {
+    "G": [
+      {
+        "nom": "K.TRAPP",
+        "club": "Paris FC"
+      }
+    ],
+    "D": [
+      {
+        "nom": "L.HOGSBERG",
+        "club": "RC Strasbourg"
+      },
+      {
+        "nom": "F.NAZINHO",
+        "club": "AS Monaco"
+      },
+      {
+        "nom": "A.HAKIMI",
+        "club": "Paris Saint-Germain"
+      },
+      {
+        "nom": "R.PERRAUD",
+        "club": "LOSC Lille"
+      },
+      {
+        "nom": "M.NAWROCKI",
+        "club": "RC Lens"
+      }
+    ],
+    "M": [
+      {
+        "nom": "M.SKORAS",
+        "club": "RC Lens"
+      },
+      {
+        "nom": "V.VITINHA",
+        "club": "Paris Saint-Germain"
+      },
+      {
+        "nom": "R.FAIVRE",
+        "club": "AJ Auxerre"
+      },
+      {
+        "nom": "P.LEES-MELOU",
+        "club": "Paris FC"
+      },
+      {
+        "nom": "T.LEBRIS",
+        "club": "FC Lorient"
+      }
+    ],
+    "A": [
+      {
+        "nom": "F.THAUVIN",
+        "club": "RC Lens"
+      },
+      {
+        "nom": "K.KVARATSKHELIA",
+        "club": "Paris Saint-Germain"
+      },
+      {
+        "nom": "J.OSO",
+        "club": "RC Strasbourg"
+      }
+    ]
+  },
+  "ANTHONY": {
+    "G": [
+      {
+        "nom": "D.GREIF",
+        "club": "Olympique Lyonnais"
+      }
+    ],
+    "D": [
+      {
+        "nom": "N.TAGLIAFICO",
+        "club": "Olympique Lyonnais"
+      },
+      {
+        "nom": "N.AGUERD",
+        "club": "Olympique de Marseille"
+      },
+      {
+        "nom": "W.PACHO",
+        "club": "Paris Saint-Germain"
+      },
+      {
+        "nom": "S.ABDULHAMID",
+        "club": "RC Lens"
+      },
+      {
+        "nom": "K.LALA",
+        "club": "Stade Brestois"
+      }
+    ],
+    "M": [
+      {
+        "nom": "I.KEBBAL",
+        "club": "Paris FC"
+      },
+      {
+        "nom": "P.SULC",
+        "club": "Olympique Lyonnais"
+      },
+      {
+        "nom": "V.RONGIER",
+        "club": "Stade Rennais"
+      },
+      {
+        "nom": "A.AVOMEBONG",
+        "club": "FC Lorient"
+      }
+    ],
+    "A": [
+      {
+        "nom": "M.ABLINE",
+        "club": "AS Monaco"
+      },
+      {
+        "nom": "Y.TITRAOUI",
+        "club": "RC Lens"
+      },
+      {
+        "nom": "M.GODO",
+        "club": "RC Strasbourg"
+      },
+      {
+        "nom": "D.BAKWA",
+        "club": "LOSC Lille"
+      }
+    ]
+  },
+  "BASTIEN": {
+    "G": [
+      {
+        "nom": "R.RISSER",
+        "club": "RC Lens"
+      }
+    ],
+    "D": [
+      {
+        "nom": "M.UDOL",
+        "club": "RC Lens"
+      },
+      {
+        "nom": "T.WEAH",
+        "club": "Olympique de Marseille"
+      },
+      {
+        "nom": "V.ALEXSANDRO",
+        "club": "LOSC Lille"
+      },
+      {
+        "nom": "M.MBOW",
+        "club": "Paris FC"
+      },
+      {
+        "nom": "A.WITSEL",
+        "club": "OGC Nice"
+      }
+    ],
+    "M": [
+      {
+        "nom": "J.CHOTARD",
+        "club": "Stade Brestois"
+      },
+      {
+        "nom": "A.THOMASSON",
+        "club": "Stade Rennais"
+      },
+      {
+        "nom": "D.ZAKARIA",
+        "club": "AS Monaco"
+      },
+      {
+        "nom": "A.HARIT",
+        "club": "Olympique de Marseille"
+      },
+      {
+        "nom": "M.KJAERGAARD",
+        "club": "LOSC Lille"
+      }
+    ],
+    "A": [
+      {
+        "nom": "E.LEPAUL",
+        "club": "Stade Rennais"
+      },
+      {
+        "nom": "M.FOFANA",
+        "club": "Olympique Lyonnais"
+      },
+      {
+        "nom": "D.DOUE",
+        "club": "Paris Saint-Germain"
+      }
+    ]
+  },
+  "FAB": {
+    "G": [
+      {
+        "nom": "Y.DIOUF",
+        "club": "OGC Nice"
+      }
+    ],
+    "D": [
+      {
+        "nom": "J.LEFORT",
+        "club": "Angers SCO"
+      },
+      {
+        "nom": "Z.ATHEKAME",
+        "club": "Olympique Lyonnais"
+      },
+      {
+        "nom": "M.DEL-BLANCO",
+        "club": "RC Strasbourg"
+      },
+      {
+        "nom": "A.SEKO",
+        "club": "Le Havre AC"
+      },
+      {
+        "nom": "R.NICOLAISEN",
+        "club": "Toulouse FC"
+      }
+    ],
+    "M": [
+      {
+        "nom": "R.MATONDO",
+        "club": "Paris FC"
+      },
+      {
+        "nom": "G.HEIN",
+        "club": "OGC Nice"
+      },
+      {
+        "nom": "K.DANOIS",
+        "club": "AJ Auxerre"
+      },
+      {
+        "nom": "W.ZAIRE-EMERY",
+        "club": "Paris Saint-Germain"
+      },
+      {
+        "nom": "G.BERNARDEAU",
+        "club": "FC Lorient"
+      }
+    ],
+    "A": [
+      {
+        "nom": "L.SINAYOKO",
+        "club": "Paris FC"
+      },
+      {
+        "nom": "L.AJORQUE",
+        "club": "Stade Brestois"
+      },
+      {
+        "nom": "E.WAHI",
+        "club": "OGC Nice"
+      }
+    ]
+  },
+  "FLORIAN": {
+    "G": [
+      {
+        "nom": "B.SAMBA",
+        "club": "Stade Rennais"
+      }
+    ],
+    "D": [
+      {
+        "nom": "D.COPPOLA",
+        "club": "Paris FC"
+      },
+      {
+        "nom": "J.CLAUSS",
+        "club": "OGC Nice"
+      },
+      {
+        "nom": "M.NIAKHATE",
+        "club": "Olympique Lyonnais"
+      },
+      {
+        "nom": "O.CAMARA",
+        "club": "Angers SCO"
+      }
+    ],
+    "M": [
+      {
+        "nom": "A.GOLOVINE",
+        "club": "AS Monaco"
+      },
+      {
+        "nom": "S.SZYMANSKI",
+        "club": "Stade Rennais"
+      },
+      {
+        "nom": "C.TOLISSO",
+        "club": "Olympique Lyonnais"
+      },
+      {
+        "nom": "B.VANDENBOOMEN",
+        "club": "Angers SCO"
+      },
+      {
+        "nom": "T.JORGENSEN",
+        "club": "Toulouse FC"
+      }
+    ],
+    "A": [
+      {
+        "nom": "I.PAIXAO",
+        "club": "Olympique de Marseille"
+      },
+      {
+        "nom": "F.IVANOVIC",
+        "club": "RC Lens"
+      },
+      {
+        "nom": "F.TORRES",
+        "club": "Paris Saint-Germain"
+      },
+      {
+        "nom": "L.MAFOUTA",
+        "club": "Le Mans FC"
+      }
+    ]
+  },
+  "JEROME": {
+    "G": [
+      {
+        "nom": "F.JORGENSEN",
+        "club": "RC Strasbourg"
+      }
+    ],
+    "D": [
+      {
+        "nom": "A.AIT-BOUDLAL",
+        "club": "Stade Rennais"
+      },
+      {
+        "nom": "I.GANIOU",
+        "club": "RC Lens"
+      },
+      {
+        "nom": "A.MAITLAND-NILES",
+        "club": "Olympique Lyonnais"
+      },
+      {
+        "nom": "N.NGOY",
+        "club": "LOSC Lille"
+      },
+      {
+        "nom": "K.COULIBALY",
+        "club": "RC Strasbourg"
+      }
+    ],
+    "M": [
+      {
+        "nom": "G.REYNA",
+        "club": "RC Strasbourg"
+      },
+      {
+        "nom": "A.GOMES",
+        "club": "Olympique de Marseille"
+      },
+      {
+        "nom": "L.BLAS",
+        "club": "Stade Rennais"
+      },
+      {
+        "nom": "B.BRAHIMI",
+        "club": "Le Mans FC"
+      },
+      {
+        "nom": "G.ZECHIEL",
+        "club": "LOSC Lille"
+      }
+    ],
+    "A": [
+      {
+        "nom": "L.OPENDA",
+        "club": "Olympique Lyonnais"
+      },
+      {
+        "nom": "Y.GBOHO",
+        "club": "Toulouse FC"
+      },
+      {
+        "nom": "O.DEMBELE",
+        "club": "Paris Saint-Germain"
+      }
+    ]
+  },
+  "MICKA": {
+    "G": [
+      {
+        "nom": "B.OZER",
+        "club": "LOSC Lille"
+      }
+    ],
+    "D": [
+      {
+        "nom": "C.CRESSWELL",
+        "club": "Stade Rennais"
+      },
+      {
+        "nom": "A.KOUASSI",
+        "club": "FC Lorient"
+      },
+      {
+        "nom": "V.VANDERSON",
+        "club": "AS Monaco"
+      },
+      {
+        "nom": "L.RAOLISOA",
+        "club": "Angers SCO"
+      },
+      {
+        "nom": "N.MENDES",
+        "club": "Paris Saint-Germain"
+      }
+    ],
+    "M": [
+      {
+        "nom": "R.NDIAYE",
+        "club": "Le Havre AC"
+      },
+      {
+        "nom": "K.DOUMBIA",
+        "club": "Stade Brestois"
+      },
+      {
+        "nom": "A.DONNUM",
+        "club": "Toulouse FC"
+      },
+      {
+        "nom": "A.MILLE",
+        "club": "ESTAC Troyes"
+      },
+      {
+        "nom": "H.ABDELLI",
+        "club": "Olympique de Marseille"
+      }
+    ],
+    "A": [
+      {
+        "nom": "O.EDOUARD",
+        "club": "RC Lens"
+      },
+      {
+        "nom": "A.GOUIRI",
+        "club": "Olympique de Marseille"
+      },
+      {
+        "nom": "O.GIROUD",
+        "club": "LOSC Lille"
+      }
+    ]
+  },
+  "ROMU": {
+    "G": [
+      {
+        "nom": "M.SAFONOV",
+        "club": "Paris Saint-Germain"
+      }
+    ],
+    "D": [
+      {
+        "nom": "A.VINICIUS",
+        "club": "Olympique Lyonnais"
+      },
+      {
+        "nom": "Q.MERLIN",
+        "club": "Stade Rennais"
+      },
+      {
+        "nom": "T.SANTOS",
+        "club": "LOSC Lille"
+      },
+      {
+        "nom": "M.BARD",
+        "club": "OGC Nice"
+      }
+    ],
+    "M": [
+      {
+        "nom": "H.HARALDSSON",
+        "club": "LOSC Lille"
+      },
+      {
+        "nom": "T.MORTON",
+        "club": "Olympique Lyonnais"
+      },
+      {
+        "nom": "S.DIOP",
+        "club": "OGC Nice"
+      },
+      {
+        "nom": "M.IFNAOUI",
+        "club": "ESTAC Troyes"
+      },
+      {
+        "nom": "L.KOLEOSHO",
+        "club": "Paris FC"
+      }
+    ],
+    "A": [
+      {
+        "nom": "E.NUAMAH",
+        "club": "Olympique Lyonnais"
+      },
+      {
+        "nom": "J.ORTEGA",
+        "club": "RC Strasbourg"
+      },
+      {
+        "nom": "M.SIMBAKOLI",
+        "club": "Angers SCO"
+      },
+      {
+        "nom": "P.BRUNNER",
+        "club": "AS Monaco"
+      }
+    ]
+  }
+}

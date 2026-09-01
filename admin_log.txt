@@ -14,3 +14,14 @@ Interface admin : http://localhost:8765
   127.0.0.1 "POST /api/roster HTTP/1.1" 200 -
   127.0.0.1 "POST /api/jokers HTTP/1.1" 200 -
   127.0.0.1 "POST /api/clubs HTTP/1.1" 200 -
+To https://github.com/romubonnin-mama/mal1-fantasy.git
+   12f3af5..bc7bdc7  main -> main
+  127.0.0.1 "POST /api/push HTTP/1.1" 200 -
+  127.0.0.1 "POST /api/roster HTTP/1.1" 200 -
+  127.0.0.1 "POST /api/jokers HTTP/1.1" 200 -
+  127.0.0.1 "POST /api/roster HTTP/1.1" 200 -
+  127.0.0.1 "POST /api/jokers HTTP/1.1" 200 -
+  127.0.0.1 "POST /api/clubs HTTP/1.1" 200 -
+To https://github.com/romubonnin-mama/mal1-fantasy.git
+   bc7bdc7..b82f5b5  main -> main
+  127.0.0.1 "POST /api/push HTTP/1.1" 200 -

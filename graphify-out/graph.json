@@ -615,6 +615,20 @@
       "fileType": "code",
       "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\compute_journee.py",
       "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\compute_journee.py:252"
+    },
+    {
+      "id": "file::export_rosters",
+      "label": "export_rosters.py",
+      "fileType": "code",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\export_rosters.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\export_rosters.py:1"
+    },
+    {
+      "id": "export_rosters::main",
+      "label": "main",
+      "fileType": "code",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\export_rosters.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\export_rosters.py:50"
     }
   ],
   "edges": [
@@ -1265,12 +1279,21 @@
       "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\compute_journee.py",
       "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\compute_journee.py:240",
       "weight": 1
+    },
+    {
+      "source": "file::export_rosters",
+      "target": "export_rosters::main",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\export_rosters.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\export_rosters.py:50",
+      "weight": 1
     }
   ],
   "metadata": {
-    "files": 17,
-    "nodes": 88,
-    "edges": 72,
-    "builtAt": "2026-08-31T07:42:47.568Z"
+    "files": 18,
+    "nodes": 90,
+    "edges": 73,
+    "builtAt": "2026-09-01T17:42:09.983Z"
   }
 }
