@@ -387,5 +387,43 @@
       "club": "Auxerre"
     },
     "active_from": 3
+  },
+  {
+    "id": 1788330449810,
+    "date": "2026-09-02T06:27:29.810Z",
+    "manager": "JEROME",
+    "type": "saison",
+    "out": {
+      "nom": "Y.FOFANA",
+      "poste": "M",
+      "club": "OL",
+      "mise": 2,
+      "id": "y.fofana__ol__M"
+    },
+    "in": {
+      "nom": "L.CAMARA",
+      "poste": "M",
+      "club": "Monaco"
+    },
+    "active_from": 3
+  },
+  {
+    "id": 1788332967064,
+    "date": "2026-09-02T07:09:27.064Z",
+    "manager": "ROMU",
+    "type": "saison",
+    "out": {
+      "nom": "M.BARD",
+      "poste": "D",
+      "club": "Nice",
+      "mise": 2,
+      "id": "m.bard__nice__D"
+    },
+    "in": {
+      "nom": "S.SANE",
+      "poste": "D",
+      "club": "Monaco"
+    },
+    "active_from": 3
   }
 ]
