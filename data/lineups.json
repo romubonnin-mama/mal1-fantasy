@@ -375,7 +375,8 @@
         "E.WAHI",
         "L.SINAYOKO",
         "L.AJORQUE",
-        "PE.GOJBJERG"
+        "PE.GOJBJERG",
+        "PE.HOJBJERG"
       ],
       "capitaine": null,
       "coeff": 1
@@ -393,6 +394,24 @@
         "M.ABLINE",
         "P.PAGIS",
         "D.BAKWA"
+      ],
+      "capitaine": null,
+      "coeff": 1
+    },
+    "BASTIEN": {
+      "titulaires": [
+        "R.RISSER",
+        "M.UDOL",
+        "T.WEAH",
+        "V.ALEXSANDRO",
+        "M.MBOW",
+        "A.WITSEL",
+        "J.CHOTARD",
+        "A.THOMASSON",
+        "D.ZAKARIA",
+        "A.HARIT",
+        "E.LEPAUL",
+        "D.DOUE"
       ],
       "capitaine": null,
       "coeff": 1

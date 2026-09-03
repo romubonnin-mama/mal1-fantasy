@@ -648,5 +648,58 @@
         "full_match": true
       }
     }
+  },
+  "3": {
+    "ADRIEN": {
+      "R.PERRAUD": {
+        "entre_a": 46,
+        "cs": true
+      }
+    },
+    "ANTHONY": {
+      "D.BAKWA": {
+        "entre_a": 46
+      }
+    },
+    "MICKA": {
+      "O.GIROUD": {
+        "sort_a": 57
+      },
+      "B.OZER": {
+        "full_match": true,
+        "cs": true
+      }
+    },
+    "BASTIEN": {
+      "V.ALEXSANDRO": {
+        "full_match": true,
+        "cs": true
+      }
+    },
+    "FAB": {
+      "R.NICOLAISEN": {
+        "full_match": true
+      }
+    },
+    "FLORIAN": {
+      "T.JORGENSEN": {
+        "full_match": true
+      }
+    },
+    "JEROME": {
+      "N.NGOY": {
+        "full_match": true,
+        "cs": true
+      }
+    },
+    "ROMU": {
+      "T.SANTOS": {
+        "full_match": true,
+        "cs": true
+      },
+      "H.HARALDSSON": {
+        "full_match": true
+      }
+    }
   }
 }
