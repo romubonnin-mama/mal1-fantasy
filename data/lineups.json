@@ -352,12 +352,12 @@
         "J.CLAUSS",
         "M.NIAKHATE",
         "O.CAMARA",
-        "A.GOLOVINE",
         "C.TOLISSO",
         "T.JORGENSEN",
-        "F.TORRES",
         "F.IVANOVIC",
-        "L.MAFOUTA"
+        "L.MAFOUTA",
+        "B.VANDENBOOMEN",
+        "I.PAIXAO"
       ],
       "capitaine": null,
       "coeff": 1
@@ -374,7 +374,25 @@
         "G.BERNARDEAU",
         "E.WAHI",
         "L.SINAYOKO",
-        "L.AJORQUE"
+        "L.AJORQUE",
+        "PE.GOJBJERG"
+      ],
+      "capitaine": null,
+      "coeff": 1
+    },
+    "ANTHONY": {
+      "titulaires": [
+        "D.GREIF",
+        "N.AGUERD",
+        "K.LALA",
+        "W.PACHO",
+        "I.KEBBAL",
+        "P.SULC",
+        "V.RONGIER",
+        "A.AVOMEBONG",
+        "M.ABLINE",
+        "P.PAGIS",
+        "D.BAKWA"
       ],
       "capitaine": null,
       "coeff": 1

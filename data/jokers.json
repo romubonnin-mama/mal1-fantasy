@@ -427,8 +427,8 @@
     "active_from": 3
   },
   {
-    "id": 1788452944385,
-    "date": "2026-09-03T16:29:04.385Z",
+    "id": 1788454191243,
+    "date": "2026-09-03T16:49:51.243Z",
     "manager": "FAB",
     "type": "bonus",
     "out": {
@@ -439,7 +439,7 @@
       "id": "g.bernardeau__lorient__M"
     },
     "in": {
-      "nom": "PE.GOJBJERG",
+      "nom": "PE.HOJBJERG",
       "poste": "M",
       "club": "OM"
     },
