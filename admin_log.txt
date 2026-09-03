@@ -27,3 +27,6 @@ Interface admin : http://localhost:8765
   127.0.0.1 "POST /api/manual-stats/3 HTTP/1.1" 200 -
   127.0.0.1 "POST /api/lineups/3 HTTP/1.1" 200 -
   127.0.0.1 "POST /api/manual-stats/3 HTTP/1.1" 200 -
+To https://github.com/romubonnin-mama/mal1-fantasy.git
+   32db0ca..bc68b40  main -> main
+  127.0.0.1 "POST /api/push HTTP/1.1" 200 -
