@@ -276,5 +276,108 @@
       "coeff": 1
     }
   },
-  "3": {}
+  "3": {
+    "MICKA": {
+      "titulaires": [
+        "B.OZER",
+        "C.CRESSWELL",
+        "A.KOUASSI",
+        "V.VANDERSON",
+        "R.NDIAYE",
+        "K.DOUMBIA",
+        "A.MILLE",
+        "H.ABDELLI",
+        "O.EDOUARD",
+        "A.GOUIRI",
+        "O.GIROUD"
+      ],
+      "capitaine": null,
+      "coeff": 1
+    },
+    "JEROME": {
+      "titulaires": [
+        "F.JORGENSEN",
+        "A.AIT-BOUDLAL",
+        "I.GANIOU",
+        "E.DIER",
+        "N.NGOY",
+        "G.REYNA",
+        "A.GOMES",
+        "J.MAKENGO",
+        "L.CAMARA",
+        "L.OPENDA",
+        "O.DEMBELE"
+      ],
+      "capitaine": null,
+      "coeff": 1
+    },
+    "ADRIEN": {
+      "titulaires": [
+        "K.TRAPP",
+        "L.HOGSBERG",
+        "F.NAZINHO",
+        "A.HAKIMI",
+        "R.PERRAUD",
+        "V.VITINHA",
+        "R.FAIVRE",
+        "P.LEES-MELOU",
+        "T.LEBRIS",
+        "F.THAUVIN",
+        "K.KVARATSKHELIA"
+      ],
+      "capitaine": null,
+      "coeff": 1
+    },
+    "ROMU": {
+      "titulaires": [
+        "M.SAFONOV",
+        "T.SANTOS",
+        "B.LOCKO",
+        "S.SANE",
+        "H.HARALDSSON",
+        "T.MORTON",
+        "S.DIOP",
+        "M.IFNAOUI",
+        "E.NUAMAH",
+        "J.ORTEGA",
+        "P.BRUNNER"
+      ],
+      "capitaine": null,
+      "coeff": 1
+    },
+    "FLORIAN": {
+      "titulaires": [
+        "B.SAMBA",
+        "D.COPPOLA",
+        "J.CLAUSS",
+        "M.NIAKHATE",
+        "O.CAMARA",
+        "A.GOLOVINE",
+        "C.TOLISSO",
+        "T.JORGENSEN",
+        "F.TORRES",
+        "F.IVANOVIC",
+        "L.MAFOUTA"
+      ],
+      "capitaine": null,
+      "coeff": 1
+    },
+    "FAB": {
+      "titulaires": [
+        "Y.DIOUF",
+        "Z.ATHEKAME",
+        "A.SEKO",
+        "R.NICOLAISEN",
+        "G.HEIN",
+        "K.DANOIS",
+        "W.ZAIRE-EMERY",
+        "G.BERNARDEAU",
+        "E.WAHI",
+        "L.SINAYOKO",
+        "L.AJORQUE"
+      ],
+      "capitaine": null,
+      "coeff": 1
+    }
+  }
 }

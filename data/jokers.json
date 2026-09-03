@@ -425,5 +425,24 @@
       "club": "Monaco"
     },
     "active_from": 3
+  },
+  {
+    "id": 1788452944385,
+    "date": "2026-09-03T16:29:04.385Z",
+    "manager": "FAB",
+    "type": "bonus",
+    "out": {
+      "nom": "G.BERNARDEAU",
+      "poste": "M",
+      "club": "Lorient",
+      "mise": 1,
+      "id": "g.bernardeau__lorient__M"
+    },
+    "in": {
+      "nom": "PE.GOJBJERG",
+      "poste": "M",
+      "club": "OM"
+    },
+    "active_from": 3
   }
 ]
