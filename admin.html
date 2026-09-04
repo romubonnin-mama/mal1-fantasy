@@ -758,7 +758,9 @@ async function saveLineup() {
     document.getElementById('lineup-status').textContent = 'Sauvegardé ✓';
     document.getElementById('lineup-status').className = 'save-status ok';
   } catch (e) {
-    toast('Erreur sauvegarde', 'err');
+    let msg = e.message;
+    try { msg = JSON.parse(e.message).error || msg; } catch (_) {}
+    toast('❌ ' + msg, 'err');
   }
 }
 
@@ -1253,7 +1255,29 @@ async function applyJoker() {
     api('POST', '/clubs', CLUBS).catch(e => console.warn('clubs.json non synchronisé :', e));
   }
 
-  toast(`✅ Joker appliqué (roster.json + Firestore) — ${outNom} OUT / ${inNom} IN`);
+  // Si le joueur OUT est titulaire dans la compo J{currentJournee} déjà chargée
+  // (ex : joker joué après que l'admin a préparé la compo), le remplacer tout de
+  // suite par le joueur IN et sauvegarder — sinon il reste bloqué dans
+  // lineups.json (invisible ici, mais rejeté par le serveur à la prochaine
+  // sauvegarde de cette journée, cf. _validate_lineups côté admin_server.py).
+  let lineupPatched = false;
+  const lineup = LINEUPS[outManager];
+  if (lineup && lineup.titulaires && lineup.titulaires.includes(outNom)) {
+    const titus = new Set(lineup.titulaires);
+    titus.delete(outNom);
+    titus.add(inNom);
+    lineup.titulaires = [...titus];
+    if (lineup.capitaine === outNom) lineup.capitaine = null;
+    lineupPatched = true;
+    try {
+      await api('POST', `/lineups/${currentJournee}`, LINEUPS);
+    } catch (e) {
+      toast(`⚠️ Joker appliqué mais échec de la mise à jour de la compo J${currentJournee} — corrige-la manuellement dans Compositions : ${e.message}`, 'err');
+      lineupPatched = false;
+    }
+  }
+
+  toast(`✅ Joker appliqué (roster.json + Firestore) — ${outNom} OUT / ${inNom} IN` + (lineupPatched ? ` (compo J${currentJournee} mise à jour)` : ''));
   document.getElementById('joker-in-nom').value = '';
   renderRoster();
   renderLineups();

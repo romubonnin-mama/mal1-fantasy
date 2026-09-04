@@ -144,6 +144,38 @@ def write_json(path: Path, data):
         json.dump(data, f, ensure_ascii=False, indent=2)
 
 
+def _validate_lineups(payload: dict):
+    """Vérifie qu'une compo à sauvegarder ne contient que des joueurs présents dans
+    l'effectif actuel de chaque manager, et sans doublon. Empêche notamment qu'une
+    compo enregistrée avant un joker garde le joueur OUT (resté dans le navigateur
+    d'un onglet admin resté ouvert) lors d'une sauvegarde ultérieure. Retourne un
+    message d'erreur (str) si invalide, sinon None."""
+    try:
+        roster = read_json(DATA_DIR / "roster.json")
+    except (FileNotFoundError, json.JSONDecodeError):
+        return None
+
+    for manager, lineup in (payload or {}).items():
+        titulaires = (lineup or {}).get("titulaires") or []
+
+        dupes = sorted({n for n in titulaires if titulaires.count(n) > 1})
+        if dupes:
+            return f"{manager} : doublon(s) dans la compo ({', '.join(dupes)})"
+
+        known = set()
+        for names in (roster.get(manager) or {}).values():
+            known.update(names)
+        inconnus = [n for n in titulaires if n not in known]
+        if inconnus:
+            return (
+                f"{manager} : joueur(s) absent(s) de l'effectif actuel "
+                f"({', '.join(inconnus)}) — probablement sorti par un joker, "
+                f"à retirer de la compo avant de sauvegarder"
+            )
+
+    return None
+
+
 class AdminHandler(BaseHTTPRequestHandler):
 
     def log_message(self, fmt, *args):
@@ -246,6 +278,11 @@ class AdminHandler(BaseHTTPRequestHandler):
         for prefix, fname in JOURNEE_FILES.items():
             if path.startswith(prefix):
                 journee = path[len(prefix):]
+                if prefix == "/api/lineups/":
+                    error = _validate_lineups(payload)
+                    if error:
+                        self.send_error_json(error, 400)
+                        return
                 data = read_json(DATA_DIR / fname)
                 data[journee] = payload
                 write_json(DATA_DIR / fname, data)
