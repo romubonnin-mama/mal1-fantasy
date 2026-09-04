@@ -516,20 +516,37 @@ async function init() {
 }
 
 // Pré-remplit avec les propositions envoyées depuis compo.html (bouton "Copier
-// l'image") les managers dont la compo n'a pas encore été sauvegardée pour
-// currentJournee — reste à la charge de l'admin de valider (bouton
-// "Sauvegarder") ou corriger avant. Appelée depuis loadJournee() une fois
-// currentJournee connu, et re-appelée par le script module Firebase une fois
-// window.fetchCompoSubmissions disponible (celui-ci se charge après le script
-// principal, cf. pattern SEASON_CLUBS/ENC_MGR_DOCS plus bas dans le fichier).
+// l'image") tout manager dont la proposition diffère de la compo actuellement
+// affichée pour currentJournee (qu'elle ait déjà été sauvegardée ou non) —
+// reste à la charge de l'admin de valider (bouton "Sauvegarder") ou corriger
+// avant. Appelée depuis loadJournee() une fois currentJournee connu, et
+// re-appelée par le script module Firebase une fois window.fetchCompoSubmissions
+// disponible (celui-ci se charge après le script principal, cf. pattern
+// SEASON_CLUBS/ENC_MGR_DOCS plus bas dans le fichier).
+function sameTitulaires(a, b) {
+  if (!a || !b || a.length !== b.length) return false;
+  const setA = new Set(a);
+  return setA.size === new Set(b).size && b.every(n => setA.has(n));
+}
+
 async function applyCompoProposals() {
   PENDING_VALIDATION = new Set();
   if (typeof window.fetchCompoSubmissions !== 'function') { COMPO_PROPOSALS = {}; return; }
   COMPO_PROPOSALS = await window.fetchCompoSubmissions(currentJournee);
   for (const [manager, prop] of Object.entries(COMPO_PROPOSALS)) {
-    const already = LINEUPS[manager] && LINEUPS[manager].titulaires && LINEUPS[manager].titulaires.length;
-    if (!already && prop.titulaires && prop.titulaires.length) {
+    if (!prop.titulaires || !prop.titulaires.length) continue;
+    const lineup = LINEUPS[manager] || {};
+    const titusChanged = !sameTitulaires(lineup.titulaires, prop.titulaires);
+    const capChanged   = !!prop.capitaine && prop.capitaine !== lineup.capitaine;
+    if (titusChanged) {
+      // Nouvelle proposition de titulaires : on l'applique, capitaine remis à
+      // zéro (jamais repris automatiquement, cf. commentaire plus haut).
       LINEUPS[manager] = { titulaires: [...prop.titulaires], capitaine: null, coeff: 1 };
+      PENDING_VALIDATION.add(manager);
+    } else if (capChanged) {
+      // Même 11, juste une préférence de capitaine différente de celle déjà
+      // validée : on prévient sans toucher au capitaine déjà validé, l'admin
+      // clique "C" lui-même s'il est d'accord.
       PENDING_VALIDATION.add(manager);
     }
   }
