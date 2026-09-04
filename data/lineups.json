@@ -282,14 +282,14 @@
         "B.OZER",
         "C.CRESSWELL",
         "A.KOUASSI",
-        "V.VANDERSON",
         "R.NDIAYE",
         "K.DOUMBIA",
         "A.MILLE",
         "H.ABDELLI",
         "O.EDOUARD",
         "A.GOUIRI",
-        "O.GIROUD"
+        "O.GIROUD",
+        "L.RAOLISOA"
       ],
       "capitaine": null,
       "coeff": 1
@@ -323,7 +323,7 @@
         "P.LEES-MELOU",
         "T.LEBRIS",
         "F.THAUVIN",
-        "K.KVARATSKHELIA"
+        "M.SKORAS"
       ],
       "capitaine": null,
       "coeff": 1
@@ -348,7 +348,6 @@
     "FLORIAN": {
       "titulaires": [
         "B.SAMBA",
-        "D.COPPOLA",
         "J.CLAUSS",
         "M.NIAKHATE",
         "O.CAMARA",
@@ -357,7 +356,8 @@
         "F.IVANOVIC",
         "L.MAFOUTA",
         "B.VANDENBOOMEN",
-        "I.PAIXAO"
+        "I.PAIXAO",
+        "A.GOLOVINE"
       ],
       "capitaine": null,
       "coeff": 1
@@ -370,13 +370,13 @@
         "R.NICOLAISEN",
         "G.HEIN",
         "K.DANOIS",
-        "W.ZAIRE-EMERY",
         "G.BERNARDEAU",
         "E.WAHI",
         "L.SINAYOKO",
         "L.AJORQUE",
         "PE.GOJBJERG",
-        "PE.HOJBJERG"
+        "PE.HOJBJERG",
+        "J.LEFORT"
       ],
       "capitaine": null,
       "coeff": 1
