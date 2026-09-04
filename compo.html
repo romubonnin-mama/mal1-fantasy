@@ -220,7 +220,7 @@ select:focus,input:focus{outline:none;border-color:var(--accent)}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-app.js";
-import { getFirestore, doc, getDoc, getDocs, collection }
+import { getFirestore, doc, getDoc, getDocs, collection, setDoc }
   from "https://www.gstatic.com/firebasejs/12.12.1/firebase-firestore.js";
 
 const FC = {
@@ -346,6 +346,7 @@ let MGR = null;
 let SQUAD = {G:[], D:[], M:[], A:[]};   // par poste
 let TITU = new Set();                    // noms titulaires
 let CAP  = null;                         // nom capitaine
+let CURRENT_JOURNEE = null;              // journée en préparation (data.json:derniere_journee), pour l'envoi à l'admin
 let QUINCONCE = false;
 let FORMATION = 'auto';
 let POS = {};                            // positions custom sauvegardées {nom:{x,y}}
@@ -406,6 +407,11 @@ async function attemptLogin(nom, pin) {
     opt.value = nom; opt.textContent = nom;
     sel.appendChild(opt);
   });
+
+  try {
+    const siteData = await fetch('data.json').then(r => r.json());
+    CURRENT_JOURNEE = siteData.derniere_journee || null;
+  } catch (e) { CURRENT_JOURNEE = null; }
 
   // Connexion memorisee -> reconnexion automatique, sans resaisir nom + PIN.
   try {
@@ -760,9 +766,27 @@ function exportFileName() {
   return `compo-${base}`.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
 }
 
+// ── Envoi de la compo à l'admin (brouillon Firestore, à valider dans l'admin) ──
+// N'écrit jamais dans lineups.json/roster : simple proposition que l'admin
+// voit pré-remplie dans l'onglet Compositions et valide (ou corrige) en
+// cliquant "Sauvegarder" comme avant.
+async function submitCompoToAdmin() {
+  if (!MGR || !CURRENT_JOURNEE) return;
+  await setDoc(doc(db, 'compo_submissions', `${MGR}_${CURRENT_JOURNEE}`), {
+    manager: MGR,
+    journee: CURRENT_JOURNEE,
+    titulaires: [...TITU],
+    capitaine: CAP,
+    updated_at: new Date().toISOString(),
+  });
+}
+
 // ── Copie de l'image du terrain ─────────────────────────────
 document.getElementById('btn-copy-img').addEventListener('click', async () => {
   const canvas = await html2canvas(document.getElementById('export-zone'), {backgroundColor: '#161b27', scale: 2});
+
+  submitCompoToAdmin().catch(e => console.warn('Compo non envoyée à l\'admin :', e));
+
   canvas.toBlob(async (blob) => {
     if (!blob) return;
     try {

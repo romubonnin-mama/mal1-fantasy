@@ -461,6 +461,8 @@ header h1 { font-size: 18px; font-weight: 700; color: var(--accent); }
 <script>
 const API = window.location.origin + '/api';
 let ROSTER = {}, LINEUPS = {}, CORRECTIONS = {}, DATA = {}, MANUAL_STATS = {}, CLUBS = {}, PREV_LINEUPS = {}, CL_DATA = {}, JOKERS = [];
+let COMPO_PROPOSALS = {};   // propositions des managers (compo.html) pour currentJournee, non encore validées
+let PENDING_VALIDATION = new Set(); // managers dont la compo affichée vient d'une proposition, pas encore sauvegardée
 
 function getLogoUrl(nom) {
   const id = CLUBS[nom.trim().toUpperCase()];
@@ -513,6 +515,26 @@ async function init() {
   await loadJournee();
 }
 
+// Pré-remplit avec les propositions envoyées depuis compo.html (bouton "Copier
+// l'image") les managers dont la compo n'a pas encore été sauvegardée pour
+// currentJournee — reste à la charge de l'admin de valider (bouton
+// "Sauvegarder") ou corriger avant. Appelée depuis loadJournee() une fois
+// currentJournee connu, et re-appelée par le script module Firebase une fois
+// window.fetchCompoSubmissions disponible (celui-ci se charge après le script
+// principal, cf. pattern SEASON_CLUBS/ENC_MGR_DOCS plus bas dans le fichier).
+async function applyCompoProposals() {
+  PENDING_VALIDATION = new Set();
+  if (typeof window.fetchCompoSubmissions !== 'function') { COMPO_PROPOSALS = {}; return; }
+  COMPO_PROPOSALS = await window.fetchCompoSubmissions(currentJournee);
+  for (const [manager, prop] of Object.entries(COMPO_PROPOSALS)) {
+    const already = LINEUPS[manager] && LINEUPS[manager].titulaires && LINEUPS[manager].titulaires.length;
+    if (!already && prop.titulaires && prop.titulaires.length) {
+      LINEUPS[manager] = { titulaires: [...prop.titulaires], capitaine: null, coeff: 1 };
+      PENDING_VALIDATION.add(manager);
+    }
+  }
+}
+
 async function loadJournee() {
   currentJournee = parseInt(document.getElementById('journeeInput').value) || 32;
   [LINEUPS, CORRECTIONS, MANUAL_STATS, PREV_LINEUPS] = await Promise.all([
@@ -521,6 +543,8 @@ async function loadJournee() {
     api('GET', `/manual-stats/${currentJournee}`),
     currentJournee > 1 ? api('GET', `/lineups/${currentJournee - 1}`) : Promise.resolve({}),
   ]);
+
+  await applyCompoProposals();
   renderLineups();
   const lbl = document.getElementById('compute-j-lbl');
   if (lbl) lbl.textContent = currentJournee;
@@ -619,6 +643,9 @@ function renderLineups() {
     card.className = 'manager-card';
     card.dataset.manager = manager;
 
+    const isPending = PENDING_VALIDATION.has(manager);
+    const proposedCap = (COMPO_PROPOSALS[manager] || {}).capitaine;
+
     const header = document.createElement('div');
     header.className = 'manager-card-header';
     header.innerHTML = `
@@ -628,6 +655,7 @@ function renderLineups() {
              ${isFirst ? 'disabled' : ''}
              onchange="setCoeff('${manager}', this.value)">
       <span class="titu-count ${isOk ? 'ok' : 'err'}" id="count-${manager}">${remplCount} rempl.</span>
+      ${isPending ? `<span style="font-size:11px;color:#eab308;border:1px solid #eab308;border-radius:4px;padding:1px 6px">🟡 proposition manager — à valider</span>` : ''}
       <div style="flex-basis:100%;font-size:11px;color:var(--muted);margin-top:2px">
         Rang avant J${currentJournee} : <strong>${info.rang ?? '—'}</strong>
         ${isFirst
@@ -635,6 +663,7 @@ function renderLineups() {
           : ` — plafond bonus capitaine : <strong>${plafond}</strong> pts`}
         ${sameAsPrev ? ` — <span style="color:var(--red)">⚠ même capitaine qu'à J${currentJournee - 1}</span>` : ''}
         — capitaines utilisés cette saison : <strong style="color:${capMaxedOut ? 'var(--red)' : 'inherit'}">${capUsage.count}/5</strong>
+        ${proposedCap && !cap && !isFirst ? ` — capitaine proposé : <strong>${proposedCap}</strong> (clique "C" pour valider)` : ''}
       </div>
     `;
     card.appendChild(header);
@@ -754,9 +783,11 @@ function setCoeff(manager, val) {
 async function saveLineup() {
   try {
     await api('POST', `/lineups/${currentJournee}`, LINEUPS);
+    PENDING_VALIDATION.clear();
     toast(`✅ Compositions J${currentJournee} sauvegardées`);
     document.getElementById('lineup-status').textContent = 'Sauvegardé ✓';
     document.getElementById('lineup-status').className = 'save-status ok';
+    renderLineups();
   } catch (e) {
     let msg = e.message;
     try { msg = JSON.parse(e.message).error || msg; } catch (_) {}
@@ -2128,6 +2159,25 @@ window.ENC_MGR_DOCS = {};
   } catch (e) { /* pas encore configuré / hors ligne */ }
   if (typeof populateJokerForm === 'function') populateJokerForm();
 })();
+
+// Propositions de compo envoyées par les managers depuis compo.html (bouton
+// "Copier l'image") : jamais écrites dans lineups.json directement, juste
+// pré-remplies dans l'onglet Compositions pour que l'admin les valide (ou
+// corrige) en cliquant "Sauvegarder" comme avant.
+window.fetchCompoSubmissions = async function(journee) {
+  const out = {};
+  try {
+    const snap = await getDocs(collection(db, 'compo_submissions'));
+    snap.forEach(d => {
+      const v = d.data();
+      if (String(v.journee) === String(journee)) out[v.manager] = v;
+    });
+  } catch (e) { /* pas encore configuré / hors ligne */ }
+  return out;
+};
+if (typeof applyCompoProposals === 'function') {
+  applyCompoProposals().then(() => { if (typeof renderLineups === 'function') renderLineups(); });
+}
 
 // ── Init section ──────────────────────────────────────────
 document.querySelector('[data-tab="enchere"]').addEventListener('click', initEnchere);
