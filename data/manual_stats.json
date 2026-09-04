@@ -653,7 +653,6 @@
     "ANTHONY": {
       "N.AGUERD": {},
       "K.LALA": {},
-      "W.PACHO": {},
       "I.KEBBAL": {},
       "P.SULC": {
         "sort_a": 67,
@@ -667,6 +666,9 @@
         "entre_a": 46
       },
       "D.GREIF": {
+        "full_match": true
+      },
+      "W.PACHO": {
         "full_match": true
       }
     },
@@ -687,16 +689,18 @@
       },
       "C.TOLISSO": {
         "full_match": true
+      },
+      "A.GOLOVINE": {
+        "goals": 1,
+        "sort_a": 87
       }
     },
     "ROMU": {
-      "M.SAFONOV": {},
       "T.SANTOS": {
         "full_match": true,
         "cs": true
       },
       "B.LOCKO": {},
-      "S.SANE": {},
       "H.HARALDSSON": {
         "full_match": true
       },
@@ -712,25 +716,38 @@
         "goals": 1
       },
       "J.ORTEGA": {},
-      "P.BRUNNER": {}
+      "P.BRUNNER": {
+        "sort_a": 73
+      },
+      "M.SAFONOV": {
+        "full_match": true
+      },
+      "S.SANE": {
+        "full_match": true
+      }
     },
     "ADRIEN": {
       "K.TRAPP": {},
       "L.HOGSBERG": {},
-      "F.NAZINHO": {},
+      "F.NAZINHO": {
+        "goals": 1,
+        "full_match": true
+      },
       "A.HAKIMI": {},
       "R.PERRAUD": {
         "entre_a": 46,
         "cs": true
       },
-      "V.VITINHA": {},
       "R.FAIVRE": {
         "entre_a": 78
       },
       "P.LEES-MELOU": {},
       "T.LEBRIS": {},
       "F.THAUVIN": {},
-      "K.KVARATSKHELIA": {}
+      "K.KVARATSKHELIA": {},
+      "V.VITINHA": {
+        "full_match": true
+      }
     },
     "MICKA": {
       "B.OZER": {
@@ -765,7 +782,7 @@
       "L.AJORQUE": {},
       "Z.ATHEKAME": {
         "full_match": true,
-        "pen_scored": 1
+        "goals": 1
       },
       "K.DANOIS": {
         "full_match": true
@@ -775,7 +792,6 @@
       "F.JORGENSEN": {},
       "A.AIT-BOUDLAL": {},
       "I.GANIOU": {},
-      "E.DIER": {},
       "N.NGOY": {
         "full_match": true,
         "cs": true
@@ -783,11 +799,18 @@
       "G.REYNA": {},
       "A.GOMES": {},
       "J.MAKENGO": {},
-      "L.CAMARA": {},
-      "O.DEMBELE": {},
+      "O.DEMBELE": {
+        "entre_a": 68
+      },
       "L.OPENDA": {
         "full_match": true,
         "assists": 1
+      },
+      "E.DIER": {
+        "full_match": true
+      },
+      "L.CAMARA": {
+        "full_match": true
       }
     },
     "BASTIEN": {
@@ -802,10 +825,12 @@
       "A.WITSEL": {},
       "J.CHOTARD": {},
       "A.THOMASSON": {},
-      "D.ZAKARIA": {},
       "A.HARIT": {},
       "E.LEPAUL": {},
-      "D.DOUE": {}
+      "D.DOUE": {},
+      "D.ZAKARIA": {
+        "full_match": true
+      }
     }
   }
 }
