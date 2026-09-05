@@ -444,5 +444,24 @@
       "club": "OM"
     },
     "active_from": 3
+  },
+  {
+    "id": 1788615616774,
+    "date": "2026-09-05T13:40:16.774Z",
+    "manager": "ADRIEN",
+    "type": "saison",
+    "out": {
+      "nom": "M.NAWROCKI",
+      "poste": "D",
+      "club": "Lens",
+      "mise": 2,
+      "id": "m.nawrocki__lens__D"
+    },
+    "in": {
+      "nom": "R.RIPART",
+      "poste": "M",
+      "club": "Troyes"
+    },
+    "active_from": 4
   }
 ]
