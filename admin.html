@@ -468,6 +468,7 @@ const API = window.location.origin + '/api';
 let ROSTER = {}, LINEUPS = {}, CORRECTIONS = {}, DATA = {}, MANUAL_STATS = {}, CLUBS = {}, PREV_LINEUPS = {}, CL_DATA = {}, JOKERS = [];
 let COMPO_PROPOSALS = {};   // propositions des managers (compo.html) pour currentJournee, non encore validées
 let PENDING_VALIDATION = new Set(); // managers dont la compo affichée vient d'une proposition, pas encore sauvegardée
+let VALIDATED_LINEUPS = {}; // snapshot de LINEUPS tel que sauvegardé en base, avant application des propositions (pour pouvoir "Refuser")
 
 function getLogoUrl(nom) {
   const id = CLUBS[nom.trim().toUpperCase()];
@@ -603,6 +604,26 @@ async function applyCompoProposals() {
   }
 }
 
+// Refuse la proposition de compo d'un manager : revient à la version validée
+// précédente (celle sauvegardée en base avant application de la proposition),
+// retire le badge "à valider" et supprime la proposition côté Firestore pour
+// qu'elle ne réapparaisse pas au prochain chargement.
+async function rejectCompoProposal(manager) {
+  const original = VALIDATED_LINEUPS[manager];
+  if (original) {
+    LINEUPS[manager] = JSON.parse(JSON.stringify(original));
+  } else {
+    delete LINEUPS[manager];
+  }
+  delete COMPO_PROPOSALS[manager];
+  PENDING_VALIDATION.delete(manager);
+  if (typeof window.deleteCompoSubmission === 'function') {
+    await window.deleteCompoSubmission(manager, currentJournee);
+  }
+  toast(`Proposition de compo de ${manager} refusée`);
+  renderLineups();
+}
+
 async function loadJournee() {
   currentJournee = parseInt(document.getElementById('journeeInput').value) || 32;
   [LINEUPS, CORRECTIONS, MANUAL_STATS, PREV_LINEUPS] = await Promise.all([
@@ -612,6 +633,7 @@ async function loadJournee() {
     currentJournee > 1 ? api('GET', `/lineups/${currentJournee - 1}`) : Promise.resolve({}),
   ]);
 
+  VALIDATED_LINEUPS = JSON.parse(JSON.stringify(LINEUPS));
   await applyCompoProposals();
   renderLineups();
   const lbl = document.getElementById('compute-j-lbl');
@@ -723,7 +745,8 @@ function renderLineups() {
              ${isFirst ? 'disabled' : ''}
              onchange="setCoeff('${manager}', this.value)">
       <span class="titu-count ${isOk ? 'ok' : 'err'}" id="count-${manager}">${remplCount} rempl.</span>
-      ${isPending ? `<span style="font-size:11px;color:#eab308;border:1px solid #eab308;border-radius:4px;padding:1px 6px">🟡 proposition manager — à valider</span>` : ''}
+      ${isPending ? `<span style="font-size:11px;color:#eab308;border:1px solid #eab308;border-radius:4px;padding:1px 6px">🟡 proposition manager — à valider</span>
+      <button class="btn btn-subtle" style="font-size:11px;padding:2px 8px" onclick="rejectCompoProposal('${manager}')">✖ Refuser</button>` : ''}
       <div style="flex-basis:100%;font-size:11px;color:var(--muted);margin-top:2px">
         Rang avant J${currentJournee} : <strong>${info.rang ?? '—'}</strong>
         ${isFirst
@@ -1187,6 +1210,10 @@ async function saveRoster() {
 // 3 "saison" (hors mercato), 2 "mercato d'été" (hors période d'enchères),
 // 2 "gardien", jusqu'à 3 "bonus" (points économisés au tour 1 des enchères,
 // quota = managers/{nom}.jokers_bonus sur Firestore), et 1 "capitaine transformé".
+// + "joker gratuit" (flag `free: true`) : cas où le club réel repositionne un
+// joueur (ex : milieu replacé défenseur) et qu'on se retrouve avec deux joueurs
+// du même club sur la même ligne dans une équipe — hors quota, ne compte pas
+// dans les compteurs/décomptes ni le résumé de quota, juste tracé dans l'historique.
 
 const JOKER_TYPES = [
   { id: 'saison',      label: 'Joker saison',              max: 3 },
@@ -1194,6 +1221,7 @@ const JOKER_TYPES = [
   { id: 'gardien',      label: 'Joker gardien',              max: 2 },
   { id: 'bonus',        label: 'Joker bonus enchères (T1)',  max: null },
   { id: 'capitaine',    label: 'Joker capitaine transformé', max: 1 },
+  { id: 'gratuit',      label: 'Joker gratuit (repositionnement club)', max: null, free: true },
 ];
 
 // Filet de sécurité si Firestore (config/clubs) n'a pas encore répondu
@@ -1274,7 +1302,7 @@ function updateJokerQuotaSummary() {
   const manager = document.getElementById('joker-out-manager').value;
   const summary = document.getElementById('joker-quota-summary');
   if (!manager) { summary.innerHTML = ''; return; }
-  summary.innerHTML = JOKER_TYPES.map(t => {
+  summary.innerHTML = JOKER_TYPES.filter(t => !t.free).map(t => {
     const used = jokerUsedCount(manager, t.id);
     const max = jokerMaxFor(manager, t.id);
     const maxTxt = max === null ? '?' : max;
@@ -1307,7 +1335,9 @@ async function applyJoker() {
   }
 
   // Règlement §1.1 : pas 2 joueurs du même club au même poste dans une même équipe
-  const dupClub = (ROSTER[inManager]?.[inPoste] || []).length > 0 &&
+  // (sauf "joker gratuit" : c'est justement le cas d'usage prévu pour ce type —
+  // repositionnement de poste par le club réel, pas une erreur de saisie).
+  const dupClub = type !== 'gratuit' && (ROSTER[inManager]?.[inPoste] || []).length > 0 &&
     JOKERS.some(j => j.manager === inManager && j.in.poste === inPoste && j.in.club === inClub);
   if (dupClub) {
     if (!confirm(`${inManager} a peut-être déjà un ${inPoste} de ${inClub} dans son effectif (interdit par le règlement). Continuer quand même ?`)) return;
@@ -1456,8 +1486,9 @@ function renderJokerCountersTable(containerId) {
   if (!box) return;
   const managers = Object.keys(ROSTER);
   if (!managers.length) { box.innerHTML = '<div style="color:var(--muted);font-size:12px">Aucun manager.</div>'; return; }
+  const countedTypes = JOKER_TYPES.filter(t => !t.free);
   const rows = managers.map(m => {
-    const cells = JOKER_TYPES.map(t => {
+    const cells = countedTypes.map(t => {
       const used = jokerUsedCount(m, t.id);
       const max = jokerMaxFor(m, t.id);
       const maxTxt = max === null ? '?' : max;
@@ -1468,7 +1499,7 @@ function renderJokerCountersTable(containerId) {
   }).join('');
   box.innerHTML = `
     <table class="classement-table">
-      <thead><tr><th>Manager</th>${JOKER_TYPES.map(t => `<th style="text-align:center">${t.label}</th>`).join('')}</tr></thead>
+      <thead><tr><th>Manager</th>${countedTypes.map(t => `<th style="text-align:center">${t.label}</th>`).join('')}</tr></thead>
       <tbody>${rows}</tbody>
     </table>`;
 }
@@ -2242,6 +2273,14 @@ window.fetchCompoSubmissions = async function(journee) {
     });
   } catch (e) { /* pas encore configuré / hors ligne */ }
   return out;
+};
+
+// Supprime une proposition de compo refusée par l'admin (bouton "Refuser")
+// pour qu'elle ne réapparaisse pas au prochain chargement de l'onglet.
+window.deleteCompoSubmission = async function(manager, journee) {
+  try {
+    await deleteDoc(doc(db, 'compo_submissions', `${manager}_${journee}`));
+  } catch (e) { /* pas encore configuré / hors ligne */ }
 };
 if (typeof applyCompoProposals === 'function') {
   applyCompoProposals().then(() => { if (typeof renderLineups === 'function') renderLineups(); });
