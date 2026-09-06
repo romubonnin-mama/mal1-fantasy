@@ -463,5 +463,24 @@
       "club": "Troyes"
     },
     "active_from": 4
+  },
+  {
+    "id": 1788711299626,
+    "date": "2026-09-06T16:14:59.626Z",
+    "manager": "ADRIEN",
+    "type": "gratuit",
+    "out": {
+      "nom": "L.HOGSBERG",
+      "poste": "D",
+      "club": "Strasbourg",
+      "mise": 2,
+      "id": "l.hogsberg__strasbourg__D"
+    },
+    "in": {
+      "nom": "G.YASSINE",
+      "poste": "A",
+      "club": "Strasbourg"
+    },
+    "active_from": 4
   }
 ]
