@@ -313,17 +313,17 @@
     },
     "ADRIEN": {
       "titulaires": [
-        "K.TRAPP",
-        "L.HOGSBERG",
-        "F.NAZINHO",
         "A.HAKIMI",
         "R.PERRAUD",
         "V.VITINHA",
         "R.FAIVRE",
+        "F.THAUVIN",
+        "K.TRAPP",
         "P.LEES-MELOU",
         "T.LEBRIS",
-        "F.THAUVIN",
-        "M.SKORAS"
+        "F.NAZINHO",
+        "M.SKORAS",
+        "J.OSO"
       ],
       "capitaine": null,
       "coeff": 1
@@ -348,16 +348,16 @@
     "FLORIAN": {
       "titulaires": [
         "B.SAMBA",
-        "J.CLAUSS",
-        "M.NIAKHATE",
-        "O.CAMARA",
-        "C.TOLISSO",
-        "T.JORGENSEN",
         "F.IVANOVIC",
+        "J.CLAUSS",
+        "T.JORGENSEN",
+        "C.TOLISSO",
+        "M.NIAKHATE",
         "L.MAFOUTA",
-        "B.VANDENBOOMEN",
+        "O.CAMARA",
         "I.PAIXAO",
-        "A.GOLOVINE"
+        "A.GOLOVINE",
+        "D.COPPOLA"
       ],
       "capitaine": null,
       "coeff": 1
