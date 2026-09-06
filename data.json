@@ -38,13 +38,13 @@
     {
       "rang": 8,
       "nom": "ANTHONY",
-      "pts": 76
+      "pts": 77
     }
   ],
   "derniere_journee": 3,
   "scores_journee": {
     "ADRIEN": 25,
-    "ANTHONY": 17,
+    "ANTHONY": 18,
     "BASTIEN": 20,
     "FAB": 27,
     "FLORIAN": 26,
@@ -75,7 +75,7 @@
     },
     "3": {
       "ADRIEN": 25,
-      "ANTHONY": 17,
+      "ANTHONY": 18,
       "BASTIEN": 20,
       "FAB": 27,
       "FLORIAN": 26,
@@ -11448,8 +11448,8 @@
             "nom": "M.ABLINE",
             "statut": "",
             "cap": "",
-            "tj": "0",
-            "tj_pts": 0,
+            "tj": "17",
+            "tj_pts": 1,
             "bm": {
               "val": 0,
               "pts": 0
@@ -11486,7 +11486,7 @@
               "val": 0,
               "pts": 0
             },
-            "pts": 0
+            "pts": 1
           },
           {
             "nom": "P.PAGIS",
@@ -15423,20 +15423,6 @@
         "pts": 98
       }
     ],
-    "FAB": [
-      {
-        "j": 1,
-        "pts": 33
-      },
-      {
-        "j": 2,
-        "pts": 66
-      },
-      {
-        "j": 3,
-        "pts": 93
-      }
-    ],
     "FLORIAN": [
       {
         "j": 1,
@@ -15449,6 +15435,20 @@
       {
         "j": 3,
         "pts": 96
+      }
+    ],
+    "FAB": [
+      {
+        "j": 1,
+        "pts": 33
+      },
+      {
+        "j": 2,
+        "pts": 66
+      },
+      {
+        "j": 3,
+        "pts": 93
       }
     ],
     "BASTIEN": [
@@ -15490,7 +15490,7 @@
       },
       {
         "j": 3,
-        "pts": 76
+        "pts": 77
       }
     ]
   },
