@@ -563,6 +563,7 @@ const JOKER_TYPES = [
   { id: 'gardien',      label: 'Joker gardien',              max: 2 },
   { id: 'bonus',        label: 'Joker bonus enchères (T1)',  max: null },
   { id: 'capitaine',    label: 'Joker capitaine transformé', max: 1 },
+  { id: 'gratuit',      label: 'Joker gratuit (repositionnement club)', max: null, free: true },
 ];
 
 function jokerTypeLabel(id) {
@@ -583,8 +584,9 @@ function renderJokerCountersTable(containerId) {
   if (!box || !DATA) return;
   const managers = DATA.classement.map(c => c.nom);
   if (!managers.length) { box.innerHTML = '<div style="color:var(--muted);font-size:12px">Aucun manager.</div>'; return; }
+  const countedTypes = JOKER_TYPES.filter(t => !t.free);
   const rows = managers.map(m => {
-    const cells = JOKER_TYPES.map(t => {
+    const cells = countedTypes.map(t => {
       const used = jokerUsedCount(m, t.id);
       const max = jokerMaxFor(m, t.id);
       const maxTxt = max === null ? '?' : max;
@@ -596,7 +598,7 @@ function renderJokerCountersTable(containerId) {
   box.innerHTML = `
     <div style="overflow-x:auto;-webkit-overflow-scrolling:touch">
       <table class="classement-table joker-counters-tbl">
-        <thead><tr><th>Manager</th>${JOKER_TYPES.map(t => `<th style="text-align:center">${t.label}</th>`).join('')}</tr></thead>
+        <thead><tr><th>Manager</th>${countedTypes.map(t => `<th style="text-align:center">${t.label}</th>`).join('')}</tr></thead>
         <tbody>${rows}</tbody>
       </table>
     </div>`;
