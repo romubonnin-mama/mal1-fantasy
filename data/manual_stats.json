@@ -657,12 +657,17 @@
       "M.UDOL": {
         "sort_a": 24
       },
-      "T.WEAH": {},
+      "T.WEAH": {
+        "be_malus": true,
+        "full_match": true
+      },
       "V.ALEXSANDRO": {
         "full_match": true,
         "cs": true
       },
-      "M.MBOW": {},
+      "M.MBOW": {
+        "entre_a": 91
+      },
       "J.CHOTARD": {
         "full_match": true
       },
@@ -672,14 +677,16 @@
       "D.ZAKARIA": {
         "full_match": true
       },
-      "A.HARIT": {},
       "E.LEPAUL": {
         "sort_a": 89
       },
       "D.DOUE": {
         "sort_a": 63
       },
-      "A.WITSEL": {}
+      "A.WITSEL": {},
+      "A.HARIT": {
+        "full_match": true
+      }
     },
     "ROMU": {
       "M.SAFONOV": {
@@ -748,11 +755,16 @@
         "goals": 1,
         "full_match": true
       },
-      "H.ABDELLI": {},
+      "H.ABDELLI": {
+        "sort_a": 91
+      },
       "O.EDOUARD": {
         "entre_a": 70
       },
-      "A.GOUIRI": {},
+      "A.GOUIRI": {
+        "goals": 2,
+        "full_match": true
+      },
       "O.GIROUD": {
         "sort_a": 57
       },
@@ -763,7 +775,6 @@
       }
     },
     "ADRIEN": {
-      "K.TRAPP": {},
       "F.NAZINHO": {
         "goals": 1,
         "full_match": true
@@ -785,7 +796,6 @@
       "R.FAIVRE": {
         "entre_a": 78
       },
-      "P.LEES-MELOU": {},
       "T.LEBRIS": {
         "entre_a": 67
       },
@@ -796,10 +806,15 @@
         "full_match": true
       },
       "L.HOGSBERG": {},
-      "K.KVARATSKHELIA": {}
+      "K.KVARATSKHELIA": {},
+      "K.TRAPP": {
+        "full_match": true
+      },
+      "P.LEES-MELOU": {
+        "full_match": true
+      }
     },
     "FLORIAN": {
-      "D.COPPOLA": {},
       "J.CLAUSS": {
         "sort_a": 85
       },
@@ -816,7 +831,9 @@
       "T.JORGENSEN": {
         "full_match": true
       },
-      "I.PAIXAO": {},
+      "I.PAIXAO": {
+        "sort_a": 73
+      },
       "F.IVANOVIC": {
         "absent": true
       },
@@ -829,20 +846,27 @@
       },
       "O.CAMARA": {
         "full_match": true
+      },
+      "D.COPPOLA": {
+        "full_match": true
       }
     },
     "ANTHONY": {
       "D.GREIF": {
         "full_match": true
       },
-      "N.AGUERD": {},
+      "N.AGUERD": {
+        "sort_a": 73
+      },
       "K.LALA": {
         "sort_a": 22
       },
       "W.PACHO": {
         "full_match": true
       },
-      "I.KEBBAL": {},
+      "I.KEBBAL": {
+        "sort_a": 78
+      },
       "P.SULC": {
         "sort_a": 67,
         "assists": 1
@@ -853,7 +877,10 @@
       "M.ABLINE": {
         "entre_a": 73
       },
-      "P.PAGIS": {},
+      "P.PAGIS": {
+        "sort_a": 64,
+        "assists": 1
+      },
       "D.BAKWA": {
         "entre_a": 46
       },
@@ -885,18 +912,25 @@
       "K.DANOIS": {
         "full_match": true
       },
-      "PE.HOJBJERG": {},
       "E.WAHI": {
         "full_match": true,
         "goals": 1,
         "yellow_cards": true
       },
-      "L.SINAYOKO": {},
+      "L.SINAYOKO": {
+        "goals": 2,
+        "pen_scored": 1,
+        "sort_a": 91,
+        "yellow_cards": true
+      },
       "L.AJORQUE": {
         "full_match": true
       },
       "W.ZAIRE-EMERY": {},
-      "G.BERNARDEAU": {}
+      "G.BERNARDEAU": {},
+      "PE.HOJBJERG": {
+        "full_match": true
+      }
     },
     "JEROME": {
       "F.JORGENSEN": {
@@ -915,7 +949,9 @@
       "G.REYNA": {
         "sort_a": 63
       },
-      "A.GOMES": {},
+      "A.GOMES": {
+        "sort_a": 73
+      },
       "J.MAKENGO": {
         "full_match": true
       },
