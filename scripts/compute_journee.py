@@ -18,6 +18,21 @@ POSTES = ["G", "D", "M", "A"]
 from scoring import BM_PTS, PMA_PTS, CS_PTS, BE_PTS
 
 
+def _update_score_extremes(data: dict) -> None:
+    """Recalcule le meilleur et le pire score d'une journée sur toute la saison
+    (parmi tous les managers/journées de data["historique"]) et les écrit dans
+    data["score_max"] / data["score_min"], lus par la page d'accueil du site."""
+    best = worst = None
+    for jj_str, scores in data.get("historique", {}).items():
+        for manager, pts in scores.items():
+            if best is None or pts > best[2]:
+                best = (manager, int(jj_str), pts)
+            if worst is None or pts < worst[2]:
+                worst = (manager, int(jj_str), pts)
+    data["score_max"] = {"manager": best[0], "journee": best[1], "pts": best[2]} if best else {"manager": "", "journee": 0, "pts": 0}
+    data["score_min"] = {"manager": worst[0], "journee": worst[1], "pts": worst[2]} if worst else {"manager": "", "journee": 0, "pts": 0}
+
+
 def _stat_pts(stat: str, poste: str, old_val: int, new_val: int, player: dict):
     """Retourne (old_pts, new_pts) pour un changement de valeur brute d'une stat."""
     if stat == "bm":
@@ -173,6 +188,8 @@ def _apply_corrections_past(journee: int, j_corrections: dict, data: dict) -> di
     )
     for i, entry in enumerate(data["classement"]):
         entry["rang"] = i + 1
+
+    _update_score_extremes(data)
 
     with open(BASE_DIR / "data.json", "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
@@ -448,6 +465,8 @@ def compute(journee: int) -> dict:
     )
     for i, j in enumerate(data["classement"]):
         j["rang"] = i + 1
+
+    _update_score_extremes(data)
 
     with open(BASE_DIR / "data.json", "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)

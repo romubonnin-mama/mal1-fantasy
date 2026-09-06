@@ -306,7 +306,7 @@
       <div class="stat-card"><div class="val green" id="stat-max-val">...</div><div class="lbl">Meilleur score</div><div class="sub" id="stat-max-nom" style="color:var(--accent)">...</div></div>
       <div class="stat-card"><div class="val orange" id="stat-min-val">...</div><div class="lbl">Plus mauvais score</div><div class="sub" id="stat-min-nom">...</div></div>
       <div class="stat-card"><div class="val" id="stat-journee">...</div><div class="lbl">Journée actuelle</div></div>
-      <div class="stat-card"><div class="val green">9</div><div class="lbl">Participants</div></div>
+      <div class="stat-card"><div class="val green" id="stat-participants-val">...</div><div class="lbl">Participants</div></div>
     </div>
     <div class="grid-2">
       <div class="card">
@@ -1248,6 +1248,7 @@ Promise.all([
     const classement = data.classement;
 
     document.getElementById('hero-participants').textContent = classement.length + ' participants';
+    document.getElementById('stat-participants-val').textContent = classement.length;
     document.getElementById('journee-badge').textContent = 'J' + j;
     document.getElementById('hero-journee').textContent = 'J' + j;
     document.getElementById('hero-restantes').textContent = 34 - j;
@@ -1258,10 +1259,12 @@ Promise.all([
     }
     document.getElementById('leader-nom').textContent = classement[0].nom;
     document.getElementById('leader-pts').textContent = classement[0].pts;
-    document.getElementById('stat-max-val').textContent = data.score_max.valeur || '—';
-    document.getElementById('stat-max-nom').textContent = data.score_max.joueur || '—';
-    document.getElementById('stat-min-val').textContent = data.score_min.valeur || '—';
-    document.getElementById('stat-min-nom').textContent = data.score_min.joueur || '—';
+    const scoreMax = data.score_max || {};
+    const scoreMin = data.score_min || {};
+    document.getElementById('stat-max-val').textContent = scoreMax.pts ?? '—';
+    document.getElementById('stat-max-nom').textContent = scoreMax.manager ? `${scoreMax.manager} (J${scoreMax.journee})` : '—';
+    document.getElementById('stat-min-val').textContent = scoreMin.pts ?? '—';
+    document.getElementById('stat-min-nom').textContent = scoreMin.manager ? `${scoreMin.manager} (J${scoreMin.journee})` : '—';
 
     const cc = document.getElementById('classement-container');
     classement.forEach((joueur, i) => {

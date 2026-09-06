@@ -15495,13 +15495,13 @@
     ]
   },
   "score_max": {
-    "manager": "",
-    "journee": 0,
-    "pts": 0
+    "manager": "MICKA",
+    "journee": 1,
+    "pts": 41
   },
   "score_min": {
-    "manager": "",
-    "journee": 0,
-    "pts": 0
+    "manager": "BASTIEN",
+    "journee": 3,
+    "pts": 25
   }
 }
