@@ -239,6 +239,11 @@ header h1 { font-size: 18px; font-weight: 700; color: var(--accent); }
   </div>
 </header>
 
+<div id="sync-banner" style="display:none; background:#7a1f1f; color:#fff; padding:10px 16px; font-size:14px;">
+  <span id="sync-banner-text"></span>
+  <button class="btn btn-subtle" onclick="fixSync()" style="margin-left:12px">🔄 Récupérer depuis GitHub</button>
+</div>
+
 <div class="tabs">
   <div class="tab active" data-tab="lineups"      onclick="showTab('lineups')">Compositions</div>
   <div class="tab"        data-tab="stats"        onclick="showTab('stats')">Stats J</div>
@@ -513,6 +518,52 @@ async function init() {
   currentJournee = DATA.derniere_journee || 1;
   document.getElementById('journeeInput').value = currentJournee;
   await loadJournee();
+  checkSync();
+}
+
+// Alerte si ce serveur (PC ou mobile) a des changements locaux non publiés
+// et/ou n'a pas récupéré les derniers changements publiés depuis l'autre
+// appareil — cause du bug "les stats saisies ailleurs n'apparaissent pas".
+async function checkSync() {
+  let status;
+  try {
+    status = await api('GET', '/sync-status');
+  } catch (e) {
+    return; // pas bloquant si l'endpoit n'existe pas encore (ancienne version déployée)
+  }
+  const banner = document.getElementById('sync-banner');
+  const text = document.getElementById('sync-banner-text');
+  const messages = [];
+  if (status.dirty && status.dirty.length) {
+    messages.push(`des changements locaux non publiés (${status.dirty.join(', ')}) — pensez à cliquer "Publier GitHub"`);
+  }
+  if (status.behind) {
+    messages.push(`${status.behind} mise(s) à jour publiée(s) depuis un autre appareil pas encore récupérée(s)`);
+  }
+  if (messages.length) {
+    text.textContent = '⚠️ ' + messages.join(' — ');
+    banner.style.display = 'block';
+  } else {
+    banner.style.display = 'none';
+  }
+}
+
+async function fixSync() {
+  const text = document.getElementById('sync-banner-text');
+  text.textContent = 'Récupération en cours…';
+  try {
+    const r = await api('POST', '/sync-pull', {});
+    if (r.ok) {
+      alert('Synchro OK, la page va se recharger.');
+      location.reload();
+    } else {
+      alert('Échec de la récupération : ' + r.log + '\n\nSi des changements locaux non publiés sont en cause, publiez-les d\'abord ("Publier GitHub") avant de réessayer.');
+      checkSync();
+    }
+  } catch (e) {
+    alert('Erreur : ' + e);
+    checkSync();
+  }
 }
 
 // Pré-remplit avec les propositions envoyées depuis compo.html (bouton "Copier

@@ -176,6 +176,35 @@ def _validate_lineups(payload: dict):
     return None
 
 
+def _git_sync_status() -> dict:
+    """Renvoie l'état de synchro de ce dépôt local avec origin/main :
+    - dirty : fichiers modifiés/non commités (ces changements bloquent un git pull)
+    - behind : nb de commits distants pas encore récupérés localement
+    Un fetch réseau est tenté (timeout court) ; en cas d'échec (pas de réseau),
+    behind reste à 0 plutôt que de faire planter la requête."""
+    try:
+        status = subprocess.run(
+            ["git", "status", "--porcelain"], cwd=BASE_DIR,
+            capture_output=True, text=True, timeout=10,
+        )
+        dirty = [line[3:] for line in status.stdout.splitlines() if line.strip()]
+    except Exception:
+        dirty = []
+
+    behind = 0
+    try:
+        subprocess.run(["git", "fetch"], cwd=BASE_DIR, capture_output=True, timeout=15)
+        count = subprocess.run(
+            ["git", "rev-list", "--count", "HEAD..origin/main"], cwd=BASE_DIR,
+            capture_output=True, text=True, timeout=10,
+        )
+        behind = int(count.stdout.strip() or 0)
+    except Exception:
+        behind = 0
+
+    return {"dirty": dirty, "behind": behind}
+
+
 class AdminHandler(BaseHTTPRequestHandler):
 
     def log_message(self, fmt, *args):
@@ -243,6 +272,16 @@ class AdminHandler(BaseHTTPRequestHandler):
         # Full-file endpoints
         if path in FILES:
             self.send_json(read_json(FILES[path]))
+            return
+
+        # État de synchro avec GitHub, pour afficher une alerte dans admin.html si
+        # ce dépôt local a des changements non publiés et/ou n'a pas récupéré les
+        # derniers changements distants (ex : publiés depuis l'autre appareil,
+        # PC ou mobile). Sans ça, un git pull qui échoue silencieusement (dépôt
+        # local non propre) fait tourner l'admin sur des données périmées sans
+        # aucun signe visible.
+        if path == "/api/sync-status":
+            self.send_json(_git_sync_status())
             return
 
         # Per-journée endpoints: /api/lineups/32  /api/manual-stats/32  etc.
@@ -354,6 +393,22 @@ class AdminHandler(BaseHTTPRequestHandler):
                 self.send_error_json(str(e), 500)
             return
 
+        # Force une synchro immédiate avec GitHub (pull), utilisée par le bouton
+        # d'alerte de désynchro dans admin.html.
+        if path == "/api/sync-pull":
+            try:
+                r = subprocess.run(
+                    ["git", "pull", "--no-edit"], cwd=BASE_DIR,
+                    capture_output=True, text=True, timeout=30,
+                )
+                if r.returncode == 0:
+                    self.send_json({"ok": True, "log": r.stdout})
+                else:
+                    self.send_json({"ok": False, "log": (r.stdout + r.stderr).strip()})
+            except Exception as e:
+                self.send_error_json(str(e), 500)
+            return
+
         # Synchro roster.json depuis Firestore (résultats d'enchères validés)
         if path == "/api/sync-roster":
             try:
@@ -374,9 +429,17 @@ class AdminHandler(BaseHTTPRequestHandler):
 
 if __name__ == "__main__":
     try:
-        subprocess.run(["git", "pull", "--no-edit"], cwd=BASE_DIR, capture_output=True, timeout=30)
+        r = subprocess.run(
+            ["git", "pull", "--no-edit"], cwd=BASE_DIR,
+            capture_output=True, text=True, timeout=30,
+        )
+        if r.returncode != 0:
+            print("  !! ATTENTION : git pull au démarrage a échoué — les données")
+            print("     affichées peuvent être périmées (probablement des changements")
+            print("     locaux non commités qui bloquent la récupération). Détail :")
+            print("    ", (r.stdout + r.stderr).strip().replace("\n", "\n     "))
     except Exception as e:
-        print(f"  (git pull au démarrage ignoré : {e})")
+        print(f"  !! ATTENTION : git pull au démarrage n'a pas pu s'exécuter : {e}")
 
     print(f"Interface admin : http://localhost:{PORT}")
     if ADMIN_PASSWORD:
