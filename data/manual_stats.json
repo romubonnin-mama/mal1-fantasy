@@ -650,6 +650,40 @@
     }
   },
   "3": {
+    "FAB": {
+      "Y.DIOUF": {
+        "full_match": true
+      },
+      "J.LEFORT": {},
+      "Z.ATHEKAME": {
+        "full_match": true,
+        "goals": 1
+      },
+      "A.SEKO": {
+        "full_match": true
+      },
+      "R.NICOLAISEN": {
+        "full_match": true
+      },
+      "G.HEIN": {
+        "entre_a": 65
+      },
+      "K.DANOIS": {
+        "full_match": true
+      },
+      "PE.HOJBJERG": {},
+      "E.WAHI": {
+        "full_match": true,
+        "goals": 1,
+        "yellow_cards": true
+      },
+      "L.SINAYOKO": {},
+      "L.AJORQUE": {
+        "full_match": true
+      },
+      "W.ZAIRE-EMERY": {},
+      "G.BERNARDEAU": {}
+    },
     "FLORIAN": {
       "B.SAMBA": {},
       "D.COPPOLA": {},
@@ -775,6 +809,33 @@
       },
       "V.VANDERSON": {}
     },
+    "BASTIEN": {
+      "R.RISSER": {
+        "full_match": true
+      },
+      "M.UDOL": {
+        "sort_a": 24
+      },
+      "T.WEAH": {},
+      "V.ALEXSANDRO": {
+        "full_match": true,
+        "cs": true
+      },
+      "M.MBOW": {},
+      "J.CHOTARD": {
+        "full_match": true
+      },
+      "A.THOMASSON": {},
+      "D.ZAKARIA": {
+        "full_match": true
+      },
+      "A.HARIT": {},
+      "E.LEPAUL": {},
+      "D.DOUE": {
+        "sort_a": 63
+      },
+      "A.WITSEL": {}
+    },
     "ANTHONY": {
       "D.GREIF": {
         "full_match": true
@@ -801,44 +862,13 @@
         "entre_a": 46
       }
     },
-    "FAB": {
-      "Y.DIOUF": {
-        "full_match": true
-      },
-      "J.LEFORT": {},
-      "Z.ATHEKAME": {
-        "full_match": true,
-        "goals": 1
-      },
-      "A.SEKO": {
-        "full_match": true
-      },
-      "R.NICOLAISEN": {
-        "full_match": true
-      },
-      "K.DANOIS": {
-        "full_match": true
-      },
-      "PE.HOJBJERG": {},
-      "E.WAHI": {
-        "full_match": true,
-        "goals": 1,
-        "yellow_cards": true
-      },
-      "L.SINAYOKO": {},
-      "L.AJORQUE": {
-        "full_match": true
-      },
-      "W.ZAIRE-EMERY": {},
-      "G.BERNARDEAU": {},
-      "G.HEIN": {
-        "entre_a": 65
-      }
-    },
     "ADRIEN": {
       "K.TRAPP": {},
       "F.NAZINHO": {
         "goals": 1,
+        "full_match": true
+      },
+      "A.HAKIMI": {
         "full_match": true
       },
       "R.PERRAUD": {
@@ -864,35 +894,7 @@
         "full_match": true
       },
       "L.HOGSBERG": {},
-      "K.KVARATSKHELIA": {},
-      "A.HAKIMI": {
-        "full_match": true
-      }
-    },
-    "BASTIEN": {
-      "R.RISSER": {
-        "full_match": true
-      },
-      "M.UDOL": {
-        "sort_a": 24
-      },
-      "T.WEAH": {},
-      "V.ALEXSANDRO": {
-        "full_match": true,
-        "cs": true
-      },
-      "M.MBOW": {},
-      "J.CHOTARD": {
-        "full_match": true
-      },
-      "A.THOMASSON": {},
-      "D.ZAKARIA": {
-        "full_match": true
-      },
-      "A.HARIT": {},
-      "E.LEPAUL": {},
-      "D.DOUE": {},
-      "A.WITSEL": {}
+      "K.KVARATSKHELIA": {}
     }
   }
 }
