@@ -3,17 +3,17 @@
     {
       "rang": 1,
       "nom": "ADRIEN",
-      "pts": 97
+      "pts": 100
     },
     {
       "rang": 2,
       "nom": "MICKA",
-      "pts": 93
+      "pts": 94
     },
     {
       "rang": 3,
       "nom": "FAB",
-      "pts": 91
+      "pts": 92
     },
     {
       "rang": 4,
@@ -43,13 +43,13 @@
   ],
   "derniere_journee": 3,
   "scores_journee": {
-    "ADRIEN": 19,
+    "ADRIEN": 22,
     "ANTHONY": 14,
     "BASTIEN": 14,
-    "FAB": 25,
+    "FAB": 26,
     "FLORIAN": 20,
     "JEROME": 22,
-    "MICKA": 19,
+    "MICKA": 20,
     "ROMU": 31
   },
   "historique": {
@@ -74,13 +74,13 @@
       "ROMU": 31
     },
     "3": {
-      "ADRIEN": 19,
+      "ADRIEN": 22,
       "ANTHONY": 14,
       "BASTIEN": 14,
-      "FAB": 25,
+      "FAB": 26,
       "FLORIAN": 20,
       "JEROME": 22,
-      "MICKA": 19,
+      "MICKA": 20,
       "ROMU": 31
     }
   },
@@ -10510,8 +10510,8 @@
             "nom": "A.HAKIMI",
             "statut": "",
             "cap": "",
-            "tj": "0",
-            "tj_pts": 0,
+            "tj": "M",
+            "tj_pts": 3,
             "bm": {
               "val": 0,
               "pts": 0
@@ -10548,7 +10548,7 @@
               "val": 0,
               "pts": 0
             },
-            "pts": 0
+            "pts": 3
           },
           {
             "nom": "R.PERRAUD",
@@ -12564,10 +12564,10 @@
           },
           {
             "nom": "G.HEIN",
-            "statut": "A",
+            "statut": "",
             "cap": "",
-            "tj": "0",
-            "tj_pts": 0,
+            "tj": "25",
+            "tj_pts": 1,
             "bm": {
               "val": 0,
               "pts": 0
@@ -12604,7 +12604,7 @@
               "val": 0,
               "pts": 0
             },
-            "pts": 0
+            "pts": 1
           },
           {
             "nom": "K.DANOIS",
@@ -14400,8 +14400,8 @@
             "nom": "R.NDIAYE",
             "statut": "",
             "cap": "",
-            "tj": "0",
-            "tj_pts": 0,
+            "tj": "46",
+            "tj_pts": 2,
             "bm": {
               "val": 0,
               "pts": 0
@@ -14438,7 +14438,7 @@
               "val": 0,
               "pts": 0
             },
-            "pts": 0
+            "pts": 2
           },
           {
             "nom": "K.DOUMBIA",
@@ -14475,14 +14475,14 @@
               "pts": 0
             },
             "cj": {
-              "val": 0,
-              "pts": 0
+              "val": 1,
+              "pts": -1
             },
             "cr": {
               "val": 0,
               "pts": 0
             },
-            "pts": 7
+            "pts": 6
           },
           {
             "nom": "A.DONNUM",
@@ -15392,7 +15392,7 @@
       },
       {
         "j": 3,
-        "pts": 97
+        "pts": 100
       }
     ],
     "MICKA": [
@@ -15406,7 +15406,7 @@
       },
       {
         "j": 3,
-        "pts": 93
+        "pts": 94
       }
     ],
     "FAB": [
@@ -15420,7 +15420,7 @@
       },
       {
         "j": 3,
-        "pts": 91
+        "pts": 92
       }
     ],
     "FLORIAN": [
