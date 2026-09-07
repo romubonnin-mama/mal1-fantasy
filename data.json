@@ -22,13 +22,13 @@
     },
     {
       "rang": 5,
-      "nom": "ROMU",
-      "pts": 98
+      "nom": "BASTIEN",
+      "pts": 99
     },
     {
       "rang": 6,
-      "nom": "BASTIEN",
-      "pts": 97
+      "nom": "ROMU",
+      "pts": 98
     },
     {
       "rang": 7,
@@ -45,7 +45,7 @@
   "scores_journee": {
     "ADRIEN": 31,
     "ANTHONY": 28,
-    "BASTIEN": 25,
+    "BASTIEN": 27,
     "FAB": 38,
     "FLORIAN": 32,
     "JEROME": 32,
@@ -76,7 +76,7 @@
     "3": {
       "ADRIEN": 31,
       "ANTHONY": 28,
-      "BASTIEN": 25,
+      "BASTIEN": 27,
       "FAB": 38,
       "FLORIAN": 32,
       "JEROME": 32,
@@ -12099,8 +12099,8 @@
               "pts": 0
             },
             "pd": {
-              "val": 0,
-              "pts": 0
+              "val": 1,
+              "pts": 2
             },
             "cj": {
               "val": 0,
@@ -12110,7 +12110,7 @@
               "val": 0,
               "pts": 0
             },
-            "pts": 3
+            "pts": 5
           }
         ],
         "A": [
@@ -15462,21 +15462,7 @@
       },
       {
         "j": 3,
-        "pts": 97
-      }
-    ],
-    "ANTHONY": [
-      {
-        "j": 1,
-        "pts": 28
-      },
-      {
-        "j": 2,
-        "pts": 59
-      },
-      {
-        "j": 3,
-        "pts": 87
+        "pts": 99
       }
     ],
     "JEROME": [
@@ -15492,6 +15478,20 @@
         "j": 3,
         "pts": 88
       }
+    ],
+    "ANTHONY": [
+      {
+        "j": 1,
+        "pts": 28
+      },
+      {
+        "j": 2,
+        "pts": 59
+      },
+      {
+        "j": 3,
+        "pts": 87
+      }
     ]
   },
   "score_max": {
@@ -15500,8 +15500,8 @@
     "pts": 41
   },
   "score_min": {
-    "manager": "BASTIEN",
-    "journee": 3,
-    "pts": 25
+    "manager": "ROMU",
+    "journee": 1,
+    "pts": 27
   }
 }
