@@ -23,7 +23,7 @@
     {
       "rang": 5,
       "nom": "BASTIEN",
-      "pts": 99
+      "pts": 100
     },
     {
       "rang": 6,
@@ -45,7 +45,7 @@
   "scores_journee": {
     "ADRIEN": 31,
     "ANTHONY": 28,
-    "BASTIEN": 27,
+    "BASTIEN": 28,
     "FAB": 38,
     "FLORIAN": 32,
     "JEROME": 32,
@@ -76,7 +76,7 @@
     "3": {
       "ADRIEN": 31,
       "ANTHONY": 28,
-      "BASTIEN": 27,
+      "BASTIEN": 28,
       "FAB": 38,
       "FLORIAN": 32,
       "JEROME": 32,
@@ -11806,8 +11806,8 @@
             "nom": "M.MBOW",
             "statut": "",
             "cap": "",
-            "tj": "-1",
-            "tj_pts": 0,
+            "tj": "6",
+            "tj_pts": 1,
             "bm": {
               "val": 0,
               "pts": 0
@@ -11844,7 +11844,7 @@
               "val": 0,
               "pts": 0
             },
-            "pts": 0
+            "pts": 1
           },
           {
             "nom": "A.WITSEL",
@@ -15437,6 +15437,20 @@
         "pts": 102
       }
     ],
+    "BASTIEN": [
+      {
+        "j": 1,
+        "pts": 39
+      },
+      {
+        "j": 2,
+        "pts": 72
+      },
+      {
+        "j": 3,
+        "pts": 100
+      }
+    ],
     "ROMU": [
       {
         "j": 1,
@@ -15449,20 +15463,6 @@
       {
         "j": 3,
         "pts": 98
-      }
-    ],
-    "BASTIEN": [
-      {
-        "j": 1,
-        "pts": 39
-      },
-      {
-        "j": 2,
-        "pts": 72
-      },
-      {
-        "j": 3,
-        "pts": 99
       }
     ],
     "JEROME": [
