@@ -102,8 +102,14 @@ def _apply_corrections_past(journee: int, j_corrections: dict, data: dict) -> di
                         corr_entre = int((nom_corr.get("entre") or {}).get("val", 0) or 0)
                         corr_fin   = int((nom_corr.get("fin")   or {}).get("val", 0) or 0)
                         if corr_entre > 0:
-                            end = corr_fin if corr_fin > 0 else 90
-                            mins = end - corr_entre
+                            if corr_fin > 0:
+                                mins, end = corr_fin - corr_entre, corr_fin
+                            elif corr_entre >= 90:
+                                # Entrée à/après la 90e sans fin renseignée : 1 pt TJ garanti
+                                # (le temps additionnel joué n'y change rien).
+                                mins, end = 1, corr_entre
+                            else:
+                                mins, end = 90 - corr_entre, 90
                             red  = isinstance(player.get("cr"), dict) and player["cr"].get("val", 0) < 0
                             from scoring import tj_points
                             new_tj_pts = tj_points(mins, False, red, is_sub=True)
@@ -259,8 +265,13 @@ def _minutes(s: dict) -> int:
     entre_a = int(s.get("entre_a", 0) or 0)
     fin_a   = int(s.get("fin_a",   0) or 0)
     if entre_a > 0:
-        end = sort_a if sort_a > 0 else (fin_a if fin_a > 0 else 90)
-        return end - entre_a
+        end = sort_a if sort_a > 0 else fin_a
+        if end > 0:
+            return end - entre_a
+        # Pas de fin de match renseignée : une entrée à/après la 90e minute compte de
+        # toute façon pour 1 pt TJ (le temps additionnel joué n'y change rien), inutile
+        # de demander la minute exacte de fin du match.
+        return 1 if entre_a >= 90 else 90 - entre_a
     if sort_a > 0:
         return sort_a
     return int(s.get("minutes", 0) or 0)
@@ -347,7 +358,7 @@ def compute(journee: int) -> dict:
                 if corr_entre > 0:
                     s = dict(s)
                     s["entre_a"]    = corr_entre
-                    s["fin_a"]      = corr_fin if corr_fin > 0 else 90
+                    s["fin_a"]      = corr_fin if corr_fin > 0 else 0
                     s["full_match"] = False
                     s.pop("sort_a", None)
 
