@@ -2,13 +2,13 @@
   "phase": "poule",
   "participants": ["ROMU", "ADRIEN", "ANTHONY", "JEROME", "FLORIAN", "BASTIEN", "FAB", "MICKA"],
   "calendrier_poule": {
-    "4": [],
-    "6": [],
-    "8": [],
-    "10": [],
-    "12": [],
-    "14": [],
-    "15": []
+    "4": [["ADRIEN", "ROMU"], ["ANTHONY", "MICKA"], ["BASTIEN", "JEROME"], ["FAB", "FLORIAN"]],
+    "6": [["ADRIEN", "MICKA"], ["ANTHONY", "FLORIAN"], ["BASTIEN", "FAB"], ["JEROME", "ROMU"]],
+    "8": [["ADRIEN", "JEROME"], ["ANTHONY", "BASTIEN"], ["FAB", "ROMU"], ["FLORIAN", "MICKA"]],
+    "10": [["ADRIEN", "FLORIAN"], ["ANTHONY", "ROMU"], ["BASTIEN", "MICKA"], ["FAB", "JEROME"]],
+    "12": [["ADRIEN", "FAB"], ["ANTHONY", "JEROME"], ["BASTIEN", "FLORIAN"], ["MICKA", "ROMU"]],
+    "14": [["ADRIEN", "BASTIEN"], ["ANTHONY", "FAB"], ["FLORIAN", "ROMU"], ["JEROME", "MICKA"]],
+    "15": [["ADRIEN", "ANTHONY"], ["BASTIEN", "ROMU"], ["FAB", "MICKA"], ["FLORIAN", "JEROME"]]
   },
   "report_overrides": {},
   "resultats_poule": {},
