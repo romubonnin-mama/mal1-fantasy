@@ -413,5 +413,143 @@
       "capitaine": null,
       "coeff": 1
     }
+  },
+  "4": {
+    "ADRIEN": {
+      "titulaires": [
+        "K.TRAPP",
+        "P.LEES-MELOU",
+        "F.NAZINHO",
+        "G.YASSINE",
+        "K.KVARATSKHELIA",
+        "J.OSO",
+        "M.SKORAS",
+        "F.THAUVIN",
+        "A.HAKIMI",
+        "T.LEBRIS",
+        "R.RIPART"
+      ],
+      "capitaine": null,
+      "coeff": 1
+    },
+    "BASTIEN": {
+      "titulaires": [
+        "R.RISSER",
+        "T.WEAH",
+        "V.ALEXSANDRO",
+        "J.CHOTARD",
+        "A.THOMASSON",
+        "D.ZAKARIA",
+        "E.LEPAUL",
+        "D.DOUE",
+        "A.HARIT",
+        "A.WITSEL",
+        "S.NANASI"
+      ],
+      "capitaine": null,
+      "coeff": 1
+    },
+    "FLORIAN": {
+      "titulaires": [
+        "B.SAMBA",
+        "J.CLAUSS",
+        "T.JORGENSEN",
+        "C.TOLISSO",
+        "M.NIAKHATE",
+        "L.MAFOUTA",
+        "I.PAIXAO",
+        "A.GOLOVINE",
+        "D.COPPOLA",
+        "B.VANDENBOOMEN",
+        "O.CAMARA"
+      ],
+      "capitaine": null,
+      "coeff": 1
+    },
+    "JEROME": {
+      "titulaires": [
+        "F.JORGENSEN",
+        "I.GANIOU",
+        "A.GOMES",
+        "N.NGOY",
+        "G.REYNA",
+        "J.MAKENGO",
+        "O.DEMBELE",
+        "L.OPENDA",
+        "L.CAMARA",
+        "E.DIER",
+        "L.BLAS"
+      ],
+      "capitaine": null,
+      "coeff": 1
+    },
+    "MICKA": {
+      "titulaires": [
+        "B.OZER",
+        "C.CRESSWELL",
+        "A.KOUASSI",
+        "K.DOUMBIA",
+        "A.GOUIRI",
+        "H.ABDELLI",
+        "A.MILLE",
+        "O.GIROUD",
+        "O.EDOUARD",
+        "N.MENDES",
+        "V.VANDERSON"
+      ],
+      "capitaine": null,
+      "coeff": 1
+    },
+    "ROMU": {
+      "titulaires": [
+        "M.SAFONOV",
+        "T.SANTOS",
+        "H.HARALDSSON",
+        "M.IFNAOUI",
+        "E.NUAMAH",
+        "J.ORTEGA",
+        "B.LOCKO",
+        "P.BRUNNER",
+        "S.SANE",
+        "S.DIOP",
+        "L.KOLEOSHO"
+      ],
+      "capitaine": null,
+      "coeff": 1
+    },
+    "ANTHONY": {
+      "titulaires": [
+        "D.GREIF",
+        "N.AGUERD",
+        "K.LALA",
+        "W.PACHO",
+        "I.KEBBAL",
+        "P.SULC",
+        "V.RONGIER",
+        "A.AVOMEBONG",
+        "M.ABLINE",
+        "P.PAGIS",
+        "D.BAKWA"
+      ],
+      "capitaine": null,
+      "coeff": 1
+    },
+    "FAB": {
+      "titulaires": [
+        "Y.DIOUF",
+        "J.LEFORT",
+        "Z.ATHEKAME",
+        "A.SEKO",
+        "R.NICOLAISEN",
+        "G.HEIN",
+        "K.DANOIS",
+        "PE.HOJBJERG",
+        "E.WAHI",
+        "L.SINAYOKO",
+        "L.AJORQUE"
+      ],
+      "capitaine": null,
+      "coeff": 1
+    }
   }
 }

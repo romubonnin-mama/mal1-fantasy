@@ -972,5 +972,68 @@
       "L.HOGSBERG": {},
       "K.KVARATSKHELIA": {}
     }
+  },
+  "4": {
+    "ANTHONY": {
+      "N.AGUERD": {
+        "sort_a": 88
+      },
+      "V.RONGIER": {
+        "full_match": true
+      }
+    },
+    "BASTIEN": {
+      "T.WEAH": {
+        "full_match": true,
+        "yellow_cards": true
+      },
+      "A.THOMASSON": {
+        "full_match": true,
+        "goals": 1
+      },
+      "A.HARIT": {
+        "full_match": true,
+        "yellow_cards": true
+      },
+      "E.LEPAUL": {
+        "sort_a": 78
+      }
+    },
+    "FAB": {
+      "PE.HOJBJERG": {
+        "full_match": true
+      }
+    },
+    "FLORIAN": {
+      "B.SAMBA": {
+        "full_match": true,
+        "cs": true
+      },
+      "I.PAIXAO": {
+        "sort_a": 88,
+        "yellow_cards": true
+      }
+    },
+    "JEROME": {
+      "A.GOMES": {
+        "sort_a": 65
+      },
+      "L.BLAS": {
+        "sort_a": 73
+      }
+    },
+    "MICKA": {
+      "C.CRESSWELL": {
+        "full_match": true,
+        "cs": true
+      },
+      "H.ABDELLI": {
+        "sort_a": 78,
+        "yellow_cards": true
+      },
+      "A.GOUIRI": {
+        "sort_a": 88
+      }
+    }
   }
 }
