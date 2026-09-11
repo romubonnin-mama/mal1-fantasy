@@ -239,7 +239,7 @@ header h1 { font-size: 18px; font-weight: 700; color: var(--accent); }
     <label>Journée</label>
     <input type="number" id="journeeInput" min="1" max="38" value="32">
     <button class="btn btn-subtle" onclick="loadJournee()">Charger</button>
-    <button class="btn btn-subtle" onclick="ouvrirJourneeCompos()" title="Force cette journée comme celle proposée par défaut aux managers dans l'outil Compo (utile en cas de match décalé ou pour ouvrir la journée suivante manuellement)">📌 Ouvrir pour les compos</button>
+    <button class="btn btn-subtle" onclick="ouvrirJourneeCompos()" title="Fixe la journée que l'outil Compo propose aux managers. Indépendant de « Calculer J » (qui peut être cliqué plusieurs fois pendant le week-end) — à cliquer une seule fois, quand TOUTE la journée en cours est terminée et que les managers peuvent passer à la suivante.">📌 Ouvrir pour les compos</button>
     <span id="journee-ouverte-info" style="color:var(--muted);font-size:12px"></span>
   </div>
 </header>
@@ -521,10 +521,11 @@ async function init() {
     api('GET', '/clubs'),
     api('GET', '/jokers'),
   ]);
-  // Journée par défaut à l'ouverture : celle ouverte aux compos (data.json:journee_ouverte,
-  // forçable manuellement via le bouton "Ouvrir pour les compos" — utile en cas de match
-  // décalé), sinon la journée suivant la dernière calculée (comportement automatique
-  // normal : dès que "Calculer J" a tourné pour J, la journée J+1 s'ouvre toute seule).
+  // Journée par défaut à l'ouverture : celle ouverte aux compos (data.json:journee_ouverte),
+  // fixée manuellement via le bouton "Ouvrir pour les compos" (jamais automatiquement liée à
+  // "Calculer J", qui peut tourner plusieurs fois dans le week-end sur la même journée tant
+  // que tous les matchs ne sont pas joués). Le repli sur derniere_journee+1 ne sert qu'au tout
+  // premier lancement, avant que journee_ouverte n'ait jamais été fixée (début de saison).
   currentJournee = DATA.journee_ouverte || (DATA.derniere_journee || 0) + 1;
   document.getElementById('journeeInput').value = currentJournee;
   await loadJournee();
@@ -666,8 +667,9 @@ function updateJourneeOuverteInfo() {
 }
 
 // Force la journée actuellement chargée comme journée ouverte aux propositions de compo
-// des managers (data.json:journee_ouverte). Utile pour rouvrir une journée décalée ou
-// pour avancer manuellement quand l'auto (dernière calculée + 1) ne convient pas.
+// des managers (data.json:journee_ouverte). À cliquer une seule fois quand la journée en
+// cours est vraiment terminée (tous les matchs joués) — jamais automatiquement déclenché par
+// "Calculer J", qui peut être cliqué plusieurs fois au fil du week-end sur la même journée.
 async function ouvrirJourneeCompos() {
   try {
     await api('POST', '/journee-ouverte', { journee: currentJournee });

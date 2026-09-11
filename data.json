@@ -42,6 +42,7 @@
     }
   ],
   "derniere_journee": 3,
+  "journee_ouverte": 4,
   "scores_journee": {
     "ADRIEN": 31,
     "ANTHONY": 28,
