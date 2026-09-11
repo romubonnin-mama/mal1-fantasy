@@ -465,6 +465,7 @@ header h1 { font-size: 18px; font-weight: 700; color: var(--accent); }
     <button class="btn btn-primary" onclick="saveStats()">💾 Sauvegarder stats</button>
     <button class="btn btn-subtle" onclick="computeJournee()" id="btn-compute">⚙️ Calculer J<span id="compute-j-lbl">—</span></button>
     <button class="btn btn-subtle" onclick="pushGithub()" id="btn-push">🚀 Publier GitHub</button>
+    <button class="btn btn-subtle" onclick="journeeSuivante()" id="btn-journee-suivante" title="À cliquer une seule fois quand tous les matchs de la journée en cours sont joués : ouvre la journée suivante aux managers (outil Compo) et la charge partout dans l'admin (Compositions, Stats, Corrections).">▶ Journée suivante</button>
   </div>
 </div>
 
@@ -676,6 +677,25 @@ async function ouvrirJourneeCompos() {
     DATA.journee_ouverte = currentJournee;
     updateJourneeOuverteInfo();
     toast(`✅ J${currentJournee} ouverte pour les compos des managers`);
+  } catch (e) {
+    toast('Erreur : ' + e.message, 'err');
+  }
+}
+
+// Raccourci "tout en un" (bouton dans l'onglet Stats, à côté de "Publier GitHub") : à
+// cliquer une seule fois quand tous les matchs de la journée en cours sont joués. Ouvre
+// la journée suivante aux managers (comme "Ouvrir pour les compos") ET la charge partout
+// dans l'admin (Compositions/Stats/Corrections), en un clic au lieu de taper le numéro +
+// "Charger" + "Ouvrir pour les compos" séparément.
+async function journeeSuivante() {
+  const next = currentJournee + 1;
+  if (!confirm(`Passer à la journée suivante : J${currentJournee} → J${next} ?\n\nLes managers verront J${next} dans l'outil Compo, et l'admin va charger J${next} partout (Compositions, Stats, Corrections).`)) return;
+  try {
+    await api('POST', '/journee-ouverte', { journee: next });
+    DATA.journee_ouverte = next;
+    document.getElementById('journeeInput').value = next;
+    await loadJournee();
+    toast(`✅ J${next} chargée partout et ouverte pour les compos des managers`);
   } catch (e) {
     toast('Erreur : ' + e.message, 'err');
   }
