@@ -239,6 +239,8 @@ header h1 { font-size: 18px; font-weight: 700; color: var(--accent); }
     <label>Journée</label>
     <input type="number" id="journeeInput" min="1" max="38" value="32">
     <button class="btn btn-subtle" onclick="loadJournee()">Charger</button>
+    <button class="btn btn-subtle" onclick="ouvrirJourneeCompos()" title="Force cette journée comme celle proposée par défaut aux managers dans l'outil Compo (utile en cas de match décalé ou pour ouvrir la journée suivante manuellement)">📌 Ouvrir pour les compos</button>
+    <span id="journee-ouverte-info" style="color:var(--muted);font-size:12px"></span>
   </div>
 </header>
 
@@ -519,7 +521,11 @@ async function init() {
     api('GET', '/clubs'),
     api('GET', '/jokers'),
   ]);
-  currentJournee = DATA.derniere_journee || 1;
+  // Journée par défaut à l'ouverture : celle ouverte aux compos (data.json:journee_ouverte,
+  // forçable manuellement via le bouton "Ouvrir pour les compos" — utile en cas de match
+  // décalé), sinon la journée suivant la dernière calculée (comportement automatique
+  // normal : dès que "Calculer J" a tourné pour J, la journée J+1 s'ouvre toute seule).
+  currentJournee = DATA.journee_ouverte || (DATA.derniere_journee || 0) + 1;
   document.getElementById('journeeInput').value = currentJournee;
   await loadJournee();
   checkSync();
@@ -645,6 +651,32 @@ async function loadJournee() {
   if (corrLbl) corrLbl.textContent = currentJournee;
   const statsSection = document.getElementById('section-stats');
   if (statsSection && statsSection.classList.contains('active')) renderStats();
+  updateJourneeOuverteInfo();
+}
+
+// Affiche quelle journée l'outil Compo propose actuellement par défaut aux managers
+// (data.json:journee_ouverte, ou à défaut dernière calculée + 1), pour repérer tout
+// décalage avec la journée affichée dans l'admin.
+function updateJourneeOuverteInfo() {
+  const el = document.getElementById('journee-ouverte-info');
+  if (!el) return;
+  const ouverte = DATA.journee_ouverte || (DATA.derniere_journee || 0) + 1;
+  el.textContent = `(compos managers → J${ouverte})`;
+  el.style.color = ouverte === currentJournee ? 'var(--muted)' : 'var(--red)';
+}
+
+// Force la journée actuellement chargée comme journée ouverte aux propositions de compo
+// des managers (data.json:journee_ouverte). Utile pour rouvrir une journée décalée ou
+// pour avancer manuellement quand l'auto (dernière calculée + 1) ne convient pas.
+async function ouvrirJourneeCompos() {
+  try {
+    await api('POST', '/journee-ouverte', { journee: currentJournee });
+    DATA.journee_ouverte = currentJournee;
+    updateJourneeOuverteInfo();
+    toast(`✅ J${currentJournee} ouverte pour les compos des managers`);
+  } catch (e) {
+    toast('Erreur : ' + e.message, 'err');
+  }
 }
 
 // ─── COULEURS MANAGERS (identiques au site public) ───────────────────────────

@@ -335,6 +335,22 @@ class AdminHandler(BaseHTTPRequestHandler):
                 self.send_json({"ok": True})
                 return
 
+        # Force la journée ouverte aux propositions de compo des managers (data.json:
+        # journee_ouverte) — utilisée par le bouton "Ouvrir pour les compos" de admin.html,
+        # notamment pour un match décalé ou pour avancer manuellement quand l'automatique
+        # (dernière journée calculée + 1) ne convient pas.
+        if path == "/api/journee-ouverte":
+            journee = payload.get("journee")
+            if not isinstance(journee, int):
+                self.send_error_json("journee (entier) requis", 400)
+                return
+            data_path = BASE_DIR / "data.json"
+            data = read_json(data_path)
+            data["journee_ouverte"] = journee
+            write_json(data_path, data)
+            self.send_json({"ok": True, "journee_ouverte": journee})
+            return
+
         # Compute: calcule les points et met à jour data.json
         if path.startswith("/api/compute/"):
             journee = int(path[len("/api/compute/"):])

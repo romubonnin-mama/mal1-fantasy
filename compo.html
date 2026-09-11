@@ -346,7 +346,7 @@ let MGR = null;
 let SQUAD = {G:[], D:[], M:[], A:[]};   // par poste
 let TITU = new Set();                    // noms titulaires
 let CAP  = null;                         // nom capitaine
-let CURRENT_JOURNEE = null;              // journée en préparation (data.json:derniere_journee), pour l'envoi à l'admin
+let CURRENT_JOURNEE = null;              // journée en préparation (data.json:journee_ouverte, sinon derniere_journee+1), pour l'envoi à l'admin
 let QUINCONCE = false;
 let FORMATION = 'auto';
 let POS = {};                            // positions custom sauvegardées {nom:{x,y}}
@@ -410,7 +410,10 @@ async function attemptLogin(nom, pin) {
 
   try {
     const siteData = await fetch('data.json').then(r => r.json());
-    CURRENT_JOURNEE = siteData.derniere_journee || null;
+    // journee_ouverte = journée que l'admin a explicitement ouverte aux compos (forçable
+    // en cas de match décalé) ; à défaut, dernière journée calculée + 1 (comportement
+    // automatique normal dès que "Calculer J" a tourné côté admin pour la précédente).
+    CURRENT_JOURNEE = siteData.journee_ouverte || (siteData.derniere_journee ? siteData.derniere_journee + 1 : null);
   } catch (e) { CURRENT_JOURNEE = null; }
 
   // Connexion memorisee -> reconnexion automatique, sans resaisir nom + PIN.
