@@ -228,6 +228,19 @@ header h1 { font-size: 18px; font-weight: 700; color: var(--accent); }
   .managers-grid, .roster-grid { grid-template-columns: 1fr; }
   .joker-row-out, .joker-row-in { grid-template-columns: 1fr; }
   .enc-grid-2, .cl-bracket-grid, .cl-pair-grid { grid-template-columns: 1fr; }
+
+  /* Boutons de la barre "Journée" (header) et des barres de sauvegarde : évite qu'un
+     bouton s'étire (Sauvegarder) pendant qu'un autre se fait rogner (Journée suivante) —
+     tous prennent une part égale de la ligne et passent à la ligne suivante si besoin. */
+  .journee-select { flex-wrap: wrap; width: 100%; margin-left: 0; row-gap: 8px; }
+  .journee-select label { flex: 0 0 auto; }
+  .journee-select input { flex: 0 1 70px; }
+  .journee-select .btn { flex: 1 1 calc(50% - 8px); text-align: center; }
+  #journee-ouverte-info { flex: 1 1 100%; }
+
+  .save-bar { flex-wrap: wrap; row-gap: 8px; }
+  .save-bar .save-status { flex: 1 1 100%; }
+  .save-bar .btn { flex: 1 1 calc(50% - 6px); text-align: center; white-space: normal; }
 }
 </style>
 </head>
