@@ -108,24 +108,6 @@
     }
   },
   {
-    "id": 1787939953057,
-    "date": "2026-08-28T17:59:13.057Z",
-    "manager": "ADRIEN",
-    "type": "mercato_ete",
-    "out": {
-      "nom": "S.FAYE",
-      "poste": "A",
-      "club": "Lorient",
-      "mise": 4,
-      "id": "s.faye__lorient__A"
-    },
-    "in": {
-      "nom": "J.OSO",
-      "poste": "A",
-      "club": "Strasbourg"
-    }
-  },
-  {
     "id": 1787940165207,
     "date": "2026-08-28T18:02:45.207Z",
     "manager": "ADRIEN",
@@ -479,6 +461,25 @@
     "in": {
       "nom": "G.YASSINE",
       "poste": "A",
+      "club": "Strasbourg"
+    },
+    "active_from": 4
+  },
+  {
+    "id": 1789103710633,
+    "date": "2026-09-11T05:15:10.633Z",
+    "manager": "ADRIEN",
+    "type": "mercato_ete",
+    "out": {
+      "nom": "S.FAYE",
+      "poste": "A",
+      "club": "Lorient",
+      "mise": 4,
+      "id": "s.faye__lorient__A"
+    },
+    "in": {
+      "nom": "J.OSO",
+      "poste": "D",
       "club": "Strasbourg"
     },
     "active_from": 4
