@@ -974,19 +974,112 @@
     }
   },
   "4": {
-    "ANTHONY": {
-      "N.AGUERD": {
-        "sort_a": 88
+    "ADRIEN": {
+      "K.TRAPP": {},
+      "A.HAKIMI": {},
+      "M.SKORAS": {},
+      "P.LEES-MELOU": {},
+      "T.LEBRIS": {},
+      "R.RIPART": {},
+      "F.THAUVIN": {},
+      "K.KVARATSKHELIA": {},
+      "G.YASSINE": {
+        "sort_a": 93
       },
-      "V.RONGIER": {
+      "J.OSO": {
+        "full_match": true
+      },
+      "F.NAZINHO": {
         "full_match": true
       }
     },
+    "JEROME": {
+      "I.GANIOU": {},
+      "E.DIER": {},
+      "N.NGOY": {},
+      "G.REYNA": {
+        "sort_a": 81
+      },
+      "A.GOMES": {
+        "sort_a": 65
+      },
+      "L.BLAS": {
+        "sort_a": 73
+      },
+      "J.MAKENGO": {},
+      "L.OPENDA": {},
+      "O.DEMBELE": {},
+      "F.JORGENSEN": {
+        "full_match": true
+      },
+      "L.CAMARA": {
+        "full_match": true,
+        "assists": 1
+      }
+    },
+    "ANTHONY": {
+      "D.GREIF": {},
+      "N.AGUERD": {
+        "sort_a": 88
+      },
+      "K.LALA": {},
+      "W.PACHO": {},
+      "I.KEBBAL": {},
+      "P.SULC": {},
+      "V.RONGIER": {
+        "full_match": true
+      },
+      "A.AVOMEBONG": {},
+      "M.ABLINE": {},
+      "P.PAGIS": {},
+      "D.BAKWA": {}
+    },
+    "FLORIAN": {
+      "B.SAMBA": {
+        "full_match": true,
+        "cs": true
+      },
+      "D.COPPOLA": {},
+      "J.CLAUSS": {},
+      "M.NIAKHATE": {},
+      "O.CAMARA": {},
+      "A.GOLOVINE": {
+        "yellow_cards": true,
+        "full_match": true
+      },
+      "C.TOLISSO": {},
+      "B.VANDENBOOMEN": {},
+      "T.JORGENSEN": {},
+      "I.PAIXAO": {
+        "sort_a": 88,
+        "yellow_cards": true
+      },
+      "L.MAFOUTA": {}
+    },
+    "FAB": {
+      "Y.DIOUF": {},
+      "J.LEFORT": {},
+      "Z.ATHEKAME": {},
+      "A.SEKO": {},
+      "R.NICOLAISEN": {},
+      "G.HEIN": {},
+      "K.DANOIS": {},
+      "PE.HOJBJERG": {
+        "full_match": true
+      },
+      "E.WAHI": {},
+      "L.SINAYOKO": {},
+      "L.AJORQUE": {}
+    },
     "BASTIEN": {
+      "R.RISSER": {},
       "T.WEAH": {
         "full_match": true,
         "yellow_cards": true
       },
+      "V.ALEXSANDRO": {},
+      "A.WITSEL": {},
+      "J.CHOTARD": {},
       "A.THOMASSON": {
         "full_match": true,
         "goals": 1
@@ -997,43 +1090,56 @@
       },
       "E.LEPAUL": {
         "sort_a": 78
-      }
-    },
-    "FAB": {
-      "PE.HOJBJERG": {
+      },
+      "S.NANASI": {
+        "sort_a": 81
+      },
+      "D.DOUE": {},
+      "D.ZAKARIA": {
         "full_match": true
       }
     },
-    "FLORIAN": {
-      "B.SAMBA": {
-        "full_match": true,
-        "cs": true
+    "ROMU": {
+      "M.SAFONOV": {},
+      "T.SANTOS": {},
+      "B.LOCKO": {},
+      "S.SANE": {
+        "own_goals": 1,
+        "full_match": true
       },
-      "I.PAIXAO": {
-        "sort_a": 88,
-        "yellow_cards": true
-      }
-    },
-    "JEROME": {
-      "A.GOMES": {
-        "sort_a": 65
+      "L.KOLEOSHO": {},
+      "H.HARALDSSON": {},
+      "S.DIOP": {},
+      "M.IFNAOUI": {},
+      "E.NUAMAH": {},
+      "J.ORTEGA": {
+        "sort_a": 69
       },
-      "L.BLAS": {
-        "sort_a": 73
+      "P.BRUNNER": {
+        "goals": 1,
+        "full_match": true
       }
     },
     "MICKA": {
+      "B.OZER": {},
+      "N.MENDES": {},
       "C.CRESSWELL": {
         "full_match": true,
         "cs": true
       },
+      "A.KOUASSI": {},
+      "V.VANDERSON": {},
+      "K.DOUMBIA": {},
+      "A.MILLE": {},
       "H.ABDELLI": {
         "sort_a": 78,
         "yellow_cards": true
       },
+      "O.EDOUARD": {},
       "A.GOUIRI": {
         "sort_a": 88
-      }
+      },
+      "O.GIROUD": {}
     }
   }
 }
