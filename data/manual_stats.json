@@ -1006,7 +1006,9 @@
       "L.BLAS": {
         "sort_a": 73
       },
-      "J.MAKENGO": {},
+      "J.MAKENGO": {
+        "yellow_cards": true
+      },
       "L.OPENDA": {},
       "O.DEMBELE": {},
       "F.JORGENSEN": {

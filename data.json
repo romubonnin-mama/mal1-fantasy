@@ -33,7 +33,7 @@
     {
       "rang": 7,
       "nom": "JEROME",
-      "pts": 104
+      "pts": 103
     },
     {
       "rang": 8,
@@ -49,7 +49,7 @@
     "BASTIEN": 18,
     "FAB": 3,
     "FLORIAN": 9,
-    "JEROME": 16,
+    "JEROME": 15,
     "MICKA": 9,
     "ROMU": 8
   },
@@ -90,7 +90,7 @@
       "BASTIEN": 18,
       "FAB": 3,
       "FLORIAN": 9,
-      "JEROME": 16,
+      "JEROME": 15,
       "MICKA": 9,
       "ROMU": 8
     }
@@ -18958,14 +18958,14 @@
               "pts": 0
             },
             "cj": {
-              "val": 0,
-              "pts": 0
+              "val": 1,
+              "pts": -1
             },
             "cr": {
               "val": 0,
               "pts": 0
             },
-            "pts": 0
+            "pts": -1
           },
           {
             "nom": "L.CAMARA",
@@ -20525,7 +20525,7 @@
       },
       {
         "j": 4,
-        "pts": 104
+        "pts": 103
       }
     ],
     "ANTHONY": [
