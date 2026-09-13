@@ -437,6 +437,7 @@ header h1 { font-size: 18px; font-weight: 700; color: var(--accent); }
         <div style="display:flex;gap:10px;margin-top:6px">
           <button class="btn btn-subtle" style="font-size:12px;padding:6px 14px" onclick="saveCLReports()">💾 Sauvegarder les reports</button>
           <button class="btn btn-primary" style="font-size:12px;padding:6px 14px" onclick="computeCL()">⚡ Calculer CL J<span id="cl-calc-lbl">—</span></button>
+          <button class="btn btn-subtle" style="font-size:12px;padding:6px 14px" onclick="pushCLGithub()" id="btn-cl-push">🚀 Publier GitHub</button>
         </div>
         <div id="cl-calc-result" style="margin-top:10px"></div>
       </div>
@@ -2010,6 +2011,24 @@ async function pushGithub() {
   btn.disabled = true; btn.textContent = '⏳ Publication…';
   try {
     const r = await api('POST', '/push', { journee: currentJournee });
+    toast(r.ok ? `✅ ${r.msg}` : `❌ ${r.msg}`, r.ok ? 'ok' : 'err');
+  } catch (e) {
+    toast('Erreur push : ' + e.message, 'err');
+  } finally {
+    btn.disabled = false; btn.textContent = orig;
+  }
+}
+
+// Publie champions_league.json sur GitHub Pages : sans ce bouton, calculer une
+// journée CL ne l'écrit qu'en local (aucun bouton "Publier" n'existait pour cet
+// onglet) et rien n'apparaît jamais sur le site public.
+async function pushCLGithub() {
+  if (!confirm(`Publier la Champions League (J${clCurrentJournee ?? '?'}) sur GitHub ?`)) return;
+  const btn = document.getElementById('btn-cl-push');
+  const orig = btn.textContent;
+  btn.disabled = true; btn.textContent = '⏳ Publication…';
+  try {
+    const r = await api('POST', '/push', { msg: `Champions League : mise à jour J${clCurrentJournee ?? ''}` });
     toast(r.ok ? `✅ ${r.msg}` : `❌ ${r.msg}`, r.ok ? 'ok' : 'err');
   } catch (e) {
     toast('Erreur push : ' + e.message, 'err');

@@ -1,29 +1,402 @@
 {
   "phase": "poule",
-  "participants": ["ROMU", "ADRIEN", "ANTHONY", "JEROME", "FLORIAN", "BASTIEN", "FAB", "MICKA"],
+  "participants": [
+    "ROMU",
+    "ADRIEN",
+    "ANTHONY",
+    "JEROME",
+    "FLORIAN",
+    "BASTIEN",
+    "FAB",
+    "MICKA"
+  ],
   "calendrier_poule": {
-    "4": [["ADRIEN", "ROMU"], ["ANTHONY", "MICKA"], ["BASTIEN", "JEROME"], ["FAB", "FLORIAN"]],
-    "6": [["ADRIEN", "MICKA"], ["ANTHONY", "FLORIAN"], ["BASTIEN", "FAB"], ["JEROME", "ROMU"]],
-    "8": [["ADRIEN", "JEROME"], ["ANTHONY", "BASTIEN"], ["FAB", "ROMU"], ["FLORIAN", "MICKA"]],
-    "10": [["ADRIEN", "FLORIAN"], ["ANTHONY", "ROMU"], ["BASTIEN", "MICKA"], ["FAB", "JEROME"]],
-    "12": [["ADRIEN", "FAB"], ["ANTHONY", "JEROME"], ["BASTIEN", "FLORIAN"], ["MICKA", "ROMU"]],
-    "14": [["ADRIEN", "BASTIEN"], ["ANTHONY", "FAB"], ["FLORIAN", "ROMU"], ["JEROME", "MICKA"]],
-    "15": [["ADRIEN", "ANTHONY"], ["BASTIEN", "ROMU"], ["FAB", "MICKA"], ["FLORIAN", "JEROME"]]
+    "4": [
+      [
+        "ADRIEN",
+        "ROMU"
+      ],
+      [
+        "ANTHONY",
+        "MICKA"
+      ],
+      [
+        "BASTIEN",
+        "JEROME"
+      ],
+      [
+        "FAB",
+        "FLORIAN"
+      ]
+    ],
+    "6": [
+      [
+        "ADRIEN",
+        "MICKA"
+      ],
+      [
+        "ANTHONY",
+        "FLORIAN"
+      ],
+      [
+        "BASTIEN",
+        "FAB"
+      ],
+      [
+        "JEROME",
+        "ROMU"
+      ]
+    ],
+    "8": [
+      [
+        "ADRIEN",
+        "JEROME"
+      ],
+      [
+        "ANTHONY",
+        "BASTIEN"
+      ],
+      [
+        "FAB",
+        "ROMU"
+      ],
+      [
+        "FLORIAN",
+        "MICKA"
+      ]
+    ],
+    "10": [
+      [
+        "ADRIEN",
+        "FLORIAN"
+      ],
+      [
+        "ANTHONY",
+        "ROMU"
+      ],
+      [
+        "BASTIEN",
+        "MICKA"
+      ],
+      [
+        "FAB",
+        "JEROME"
+      ]
+    ],
+    "12": [
+      [
+        "ADRIEN",
+        "FAB"
+      ],
+      [
+        "ANTHONY",
+        "JEROME"
+      ],
+      [
+        "BASTIEN",
+        "FLORIAN"
+      ],
+      [
+        "MICKA",
+        "ROMU"
+      ]
+    ],
+    "14": [
+      [
+        "ADRIEN",
+        "BASTIEN"
+      ],
+      [
+        "ANTHONY",
+        "FAB"
+      ],
+      [
+        "FLORIAN",
+        "ROMU"
+      ],
+      [
+        "JEROME",
+        "MICKA"
+      ]
+    ],
+    "15": [
+      [
+        "ADRIEN",
+        "ANTHONY"
+      ],
+      [
+        "BASTIEN",
+        "ROMU"
+      ],
+      [
+        "FAB",
+        "MICKA"
+      ],
+      [
+        "FLORIAN",
+        "JEROME"
+      ]
+    ]
   },
-  "report_overrides": {},
-  "resultats_poule": {},
-  "classement_poule": [],
+  "report_overrides": {
+    "4": []
+  },
+  "resultats_poule": {
+    "4": {
+      "matches": [
+        {
+          "a": "ADRIEN",
+          "b": "ROMU",
+          "pts_a": 22,
+          "pts_b": 26,
+          "vainqueur": "ROMU"
+        },
+        {
+          "a": "ANTHONY",
+          "b": "MICKA",
+          "pts_a": 28,
+          "pts_b": 23,
+          "vainqueur": "ANTHONY"
+        },
+        {
+          "a": "BASTIEN",
+          "b": "JEROME",
+          "pts_a": 25,
+          "pts_b": 28,
+          "vainqueur": "JEROME"
+        },
+        {
+          "a": "FAB",
+          "b": "FLORIAN",
+          "pts_a": 28,
+          "pts_b": 34,
+          "vainqueur": "FLORIAN"
+        }
+      ]
+    }
+  },
+  "classement_poule": [
+    {
+      "nom": "FLORIAN",
+      "pts": 3,
+      "v": 1,
+      "n": 0,
+      "d": 0,
+      "diff_h2h": 6,
+      "bm": 1,
+      "pd": 0,
+      "cs": 4,
+      "cr": 0,
+      "cj": 3
+    },
+    {
+      "nom": "ANTHONY",
+      "pts": 3,
+      "v": 1,
+      "n": 0,
+      "d": 0,
+      "diff_h2h": 5,
+      "bm": 0,
+      "pd": 1,
+      "cs": 1,
+      "cr": 0,
+      "cj": 0
+    },
+    {
+      "nom": "ROMU",
+      "pts": 3,
+      "v": 1,
+      "n": 0,
+      "d": 0,
+      "diff_h2h": 4,
+      "bm": 2,
+      "pd": 0,
+      "cs": 1,
+      "cr": 0,
+      "cj": 0
+    },
+    {
+      "nom": "JEROME",
+      "pts": 3,
+      "v": 1,
+      "n": 0,
+      "d": 0,
+      "diff_h2h": 3,
+      "bm": 0,
+      "pd": 1,
+      "cs": 1,
+      "cr": 0,
+      "cj": 1
+    },
+    {
+      "nom": "BASTIEN",
+      "pts": 0,
+      "v": 0,
+      "n": 0,
+      "d": 1,
+      "diff_h2h": -3,
+      "bm": 1,
+      "pd": 0,
+      "cs": 1,
+      "cr": 0,
+      "cj": 2
+    },
+    {
+      "nom": "ADRIEN",
+      "pts": 0,
+      "v": 0,
+      "n": 0,
+      "d": 1,
+      "diff_h2h": -4,
+      "bm": 0,
+      "pd": 0,
+      "cs": 2,
+      "cr": 0,
+      "cj": 0
+    },
+    {
+      "nom": "MICKA",
+      "pts": 0,
+      "v": 0,
+      "n": 0,
+      "d": 1,
+      "diff_h2h": -5,
+      "bm": 0,
+      "pd": 0,
+      "cs": 2,
+      "cr": 0,
+      "cj": 2
+    },
+    {
+      "nom": "FAB",
+      "pts": 0,
+      "v": 0,
+      "n": 0,
+      "d": 1,
+      "diff_h2h": -6,
+      "bm": 0,
+      "pd": 0,
+      "cs": 3,
+      "cr": 0,
+      "cj": 2
+    }
+  ],
   "bracket": {
     "quarts": {
-      "A": {"paire": [null, null], "aller": {"j": 23, "pts_a": null, "pts_b": null}, "retour": {"j": 26, "pts_a": null, "pts_b": null}, "vainqueur": null},
-      "B": {"paire": [null, null], "aller": {"j": 23, "pts_a": null, "pts_b": null}, "retour": {"j": 26, "pts_a": null, "pts_b": null}, "vainqueur": null},
-      "C": {"paire": [null, null], "aller": {"j": 23, "pts_a": null, "pts_b": null}, "retour": {"j": 26, "pts_a": null, "pts_b": null}, "vainqueur": null},
-      "D": {"paire": [null, null], "aller": {"j": 23, "pts_a": null, "pts_b": null}, "retour": {"j": 26, "pts_a": null, "pts_b": null}, "vainqueur": null}
+      "A": {
+        "paire": [
+          null,
+          null
+        ],
+        "aller": {
+          "j": 23,
+          "pts_a": null,
+          "pts_b": null
+        },
+        "retour": {
+          "j": 26,
+          "pts_a": null,
+          "pts_b": null
+        },
+        "vainqueur": null
+      },
+      "B": {
+        "paire": [
+          null,
+          null
+        ],
+        "aller": {
+          "j": 23,
+          "pts_a": null,
+          "pts_b": null
+        },
+        "retour": {
+          "j": 26,
+          "pts_a": null,
+          "pts_b": null
+        },
+        "vainqueur": null
+      },
+      "C": {
+        "paire": [
+          null,
+          null
+        ],
+        "aller": {
+          "j": 23,
+          "pts_a": null,
+          "pts_b": null
+        },
+        "retour": {
+          "j": 26,
+          "pts_a": null,
+          "pts_b": null
+        },
+        "vainqueur": null
+      },
+      "D": {
+        "paire": [
+          null,
+          null
+        ],
+        "aller": {
+          "j": 23,
+          "pts_a": null,
+          "pts_b": null
+        },
+        "retour": {
+          "j": 26,
+          "pts_a": null,
+          "pts_b": null
+        },
+        "vainqueur": null
+      }
     },
     "demies": {
-      "1": {"paire": [null, null], "aller": {"j": 29, "pts_a": null, "pts_b": null}, "retour": {"j": 32, "pts_a": null, "pts_b": null}, "vainqueur": null},
-      "2": {"paire": [null, null], "aller": {"j": 29, "pts_a": null, "pts_b": null}, "retour": {"j": 32, "pts_a": null, "pts_b": null}, "vainqueur": null}
+      "1": {
+        "paire": [
+          null,
+          null
+        ],
+        "aller": {
+          "j": 29,
+          "pts_a": null,
+          "pts_b": null
+        },
+        "retour": {
+          "j": 32,
+          "pts_a": null,
+          "pts_b": null
+        },
+        "vainqueur": null
+      },
+      "2": {
+        "paire": [
+          null,
+          null
+        ],
+        "aller": {
+          "j": 29,
+          "pts_a": null,
+          "pts_b": null
+        },
+        "retour": {
+          "j": 32,
+          "pts_a": null,
+          "pts_b": null
+        },
+        "vainqueur": null
+      }
     },
-    "finale": {"paire": [null, null], "j": 34, "pts_a": null, "pts_b": null, "vainqueur": null}
+    "finale": {
+      "paire": [
+        null,
+        null
+      ],
+      "j": 34,
+      "pts_a": null,
+      "pts_b": null,
+      "vainqueur": null
+    }
   }
 }
