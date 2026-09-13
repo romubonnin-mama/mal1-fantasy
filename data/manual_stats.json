@@ -974,111 +974,6 @@
     }
   },
   "4": {
-    "FAB": {
-      "Y.DIOUF": {
-        "full_match": true
-      },
-      "J.LEFORT": {
-        "full_match": true,
-        "cs": true,
-        "yellow_cards": true
-      },
-      "Z.ATHEKAME": {
-        "cs": true,
-        "full_match": true
-      },
-      "A.SEKO": {
-        "full_match": true,
-        "cs": true
-      },
-      "G.HEIN": {
-        "full_match": true
-      },
-      "K.DANOIS": {
-        "full_match": true,
-        "yellow_cards": true
-      },
-      "W.ZAIRE-EMERY": {},
-      "PE.HOJBJERG": {
-        "full_match": true
-      },
-      "E.WAHI": {
-        "sort_a": 86
-      },
-      "L.SINAYOKO": {
-        "full_match": true
-      },
-      "L.AJORQUE": {},
-      "R.NICOLAISEN": {}
-    },
-    "ANTHONY": {
-      "D.GREIF": {
-        "full_match": true,
-        "cs": true
-      },
-      "N.AGUERD": {
-        "sort_a": 88
-      },
-      "K.LALA": {},
-      "W.PACHO": {},
-      "I.KEBBAL": {
-        "sort_a": 87
-      },
-      "P.SULC": {
-        "full_match": true
-      },
-      "V.RONGIER": {
-        "full_match": true
-      },
-      "A.AVOMEBONG": {
-        "entre_a": 70
-      },
-      "M.ABLINE": {
-        "entre_a": 22
-      },
-      "P.PAGIS": {
-        "sort_a": 79
-      },
-      "D.BAKWA": {
-        "assists": 1,
-        "sort_a": 71
-      }
-    },
-    "BASTIEN": {
-      "R.RISSER": {
-        "full_match": true
-      },
-      "T.WEAH": {
-        "full_match": true,
-        "yellow_cards": true
-      },
-      "V.ALEXSANDRO": {
-        "full_match": true,
-        "cs": true
-      },
-      "A.WITSEL": {
-        "sort_a": 86
-      },
-      "J.CHOTARD": {},
-      "A.THOMASSON": {
-        "full_match": true,
-        "goals": 1
-      },
-      "D.ZAKARIA": {
-        "full_match": true
-      },
-      "A.HARIT": {
-        "full_match": true,
-        "yellow_cards": true
-      },
-      "E.LEPAUL": {
-        "sort_a": 78
-      },
-      "S.NANASI": {
-        "sort_a": 81
-      },
-      "D.DOUE": {}
-    },
     "JEROME": {
       "F.JORGENSEN": {
         "full_match": true
@@ -1114,7 +1009,46 @@
         "yellow_cards": true
       },
       "O.DEMBELE": {
-        "assists": 1
+        "assists": 1,
+        "sort_a": 66
+      }
+    },
+    "ANTHONY": {
+      "D.GREIF": {
+        "full_match": true,
+        "cs": true
+      },
+      "N.AGUERD": {
+        "sort_a": 88
+      },
+      "I.KEBBAL": {
+        "sort_a": 87
+      },
+      "P.SULC": {
+        "full_match": true
+      },
+      "V.RONGIER": {
+        "full_match": true
+      },
+      "A.AVOMEBONG": {
+        "entre_a": 70
+      },
+      "M.ABLINE": {
+        "entre_a": 22
+      },
+      "P.PAGIS": {
+        "sort_a": 79
+      },
+      "D.BAKWA": {
+        "assists": 1,
+        "sort_a": 71
+      },
+      "K.LALA": {
+        "full_match": true
+      },
+      "W.PACHO": {
+        "full_match": true,
+        "cs": true
       }
     },
     "MICKA": {
@@ -1122,7 +1056,6 @@
         "full_match": true,
         "cs": true
       },
-      "N.MENDES": {},
       "C.CRESSWELL": {
         "full_match": true,
         "cs": true
@@ -1133,7 +1066,10 @@
       "V.VANDERSON": {
         "full_match": true
       },
-      "K.DOUMBIA": {},
+      "K.DOUMBIA": {
+        "yellow_cards": true,
+        "sort_a": 78
+      },
       "A.MILLE": {
         "sort_a": 80
       },
@@ -1150,6 +1086,51 @@
       "O.GIROUD": {
         "entre_a": 71,
         "yellow_cards": true
+      },
+      "N.MENDES": {
+        "full_match": true,
+        "cs": true
+      }
+    },
+    "FAB": {
+      "Y.DIOUF": {
+        "full_match": true
+      },
+      "J.LEFORT": {
+        "full_match": true,
+        "cs": true,
+        "yellow_cards": true
+      },
+      "Z.ATHEKAME": {
+        "cs": true,
+        "full_match": true
+      },
+      "A.SEKO": {
+        "full_match": true,
+        "cs": true
+      },
+      "G.HEIN": {
+        "full_match": true
+      },
+      "K.DANOIS": {
+        "full_match": true,
+        "yellow_cards": true
+      },
+      "PE.HOJBJERG": {
+        "full_match": true
+      },
+      "E.WAHI": {
+        "sort_a": 86
+      },
+      "L.SINAYOKO": {
+        "full_match": true
+      },
+      "R.NICOLAISEN": {},
+      "W.ZAIRE-EMERY": {
+        "full_match": true
+      },
+      "L.AJORQUE": {
+        "full_match": true
       }
     },
     "FLORIAN": {
@@ -1195,6 +1176,45 @@
         "full_match": true
       }
     },
+    "BASTIEN": {
+      "R.RISSER": {
+        "full_match": true
+      },
+      "T.WEAH": {
+        "full_match": true,
+        "yellow_cards": true
+      },
+      "V.ALEXSANDRO": {
+        "full_match": true,
+        "cs": true
+      },
+      "A.WITSEL": {
+        "sort_a": 86
+      },
+      "A.THOMASSON": {
+        "full_match": true,
+        "goals": 1
+      },
+      "D.ZAKARIA": {
+        "full_match": true
+      },
+      "A.HARIT": {
+        "full_match": true,
+        "yellow_cards": true
+      },
+      "E.LEPAUL": {
+        "sort_a": 78
+      },
+      "S.NANASI": {
+        "sort_a": 81
+      },
+      "D.DOUE": {
+        "entre_a": 66
+      },
+      "J.CHOTARD": {
+        "full_match": true
+      }
+    },
     "ADRIEN": {
       "K.TRAPP": {
         "full_match": true,
@@ -1203,7 +1223,9 @@
       "F.NAZINHO": {
         "full_match": true
       },
-      "A.HAKIMI": {},
+      "A.HAKIMI": {
+        "sort_a": 39
+      },
       "R.PERRAUD": {
         "full_match": true,
         "cs": true
@@ -1225,20 +1247,20 @@
         "yellow_cards": true,
         "full_match": true
       },
-      "K.KVARATSKHELIA": {},
+      "K.KVARATSKHELIA": {
+        "sort_a": 66
+      },
       "G.YASSINE": {
         "sort_a": 93
       },
       "R.RIPART": {}
     },
     "ROMU": {
-      "M.SAFONOV": {},
       "T.SANTOS": {
         "goals": 1,
         "full_match": true,
         "cs": true
       },
-      "B.LOCKO": {},
       "S.SANE": {
         "own_goals": 1,
         "full_match": true
@@ -1265,7 +1287,14 @@
         "goals": 1,
         "full_match": true
       },
-      "S.DIOP": {}
+      "S.DIOP": {},
+      "M.SAFONOV": {
+        "full_match": true,
+        "cs": true
+      },
+      "B.LOCKO": {
+        "full_match": true
+      }
     }
   }
 }
