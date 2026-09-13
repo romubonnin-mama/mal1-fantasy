@@ -130,7 +130,7 @@
 
   <div class="card">
     <div class="card-header">
-      <div class="card-title">Résultats H2H — Phase de poule</div>
+      <div class="card-title">Calendrier — Phase de poule</div>
     </div>
     <div id="h2h-container"><div class="empty-state">Chargement…</div></div>
   </div>
@@ -192,14 +192,27 @@ function renderClassement(cl) {
 
 function renderH2H(cl) {
   const box = document.getElementById('h2h-container');
+  const calendrier = cl.calendrier_poule || {};
   const resultats = cl.resultats_poule || {};
-  const journees = POULE_JOURNEES.filter(j => resultats[j]);
+  // Toutes les journées déjà tirées au sort (calendrier), pas seulement celles déjà
+  // jouées : sans ça, les affiches à venir n'apparaissaient jamais sur le site public.
+  const journees = POULE_JOURNEES.filter(j => (calendrier[j] || []).length);
   if (!journees.length) {
-    box.innerHTML = '<div class="empty-state">Aucun résultat pour le moment.</div>';
+    box.innerHTML = '<div class="empty-state">Calendrier pas encore tiré au sort.</div>';
     return;
   }
   box.innerHTML = journees.map(j => {
-    const matches = resultats[j].matches.map(m => {
+    const pairs = calendrier[j] || [];
+    const joues = (resultats[j] || {}).matches || [];
+    const matches = pairs.map(([a, b]) => {
+      const m = joues.find(x => x.a === a && x.b === b);
+      if (!m) {
+        return `<div class="h2h-match">
+          <div class="h2h-side"><span class="h2h-name" style="color:${nameColor(a)}">${esc(a)}</span></div>
+          <div class="h2h-score" style="color:var(--muted);font-size:11px">à venir</div>
+          <div class="h2h-side right"><span class="h2h-name" style="color:${nameColor(b)}">${esc(b)}</span></div>
+        </div>`;
+      }
       const aWin = m.vainqueur === m.a, bWin = m.vainqueur === m.b;
       return `<div class="h2h-match">
         <div class="h2h-side"><span class="h2h-name" style="color:${nameColor(m.a)}">${aWin ? '✓ ' : ''}${esc(m.a)}</span></div>
