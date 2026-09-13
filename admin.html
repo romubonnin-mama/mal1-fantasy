@@ -218,6 +218,12 @@ header h1 { font-size: 18px; font-weight: 700; color: var(--accent); }
 .enc-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
 .cl-bracket-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
 .cl-pair-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+/* Mode "réduit" de la liste des joueurs reportés (CL) : ne garde que les joueurs
+   cochés, pour repérer d'un coup d'œil qui est concerné sans dérouler l'effectif
+   complet des 2 équipes. */
+/* !important nécessaire : le <label> a un style inline display:flex (voir
+   loadCLJournee()), qui prime sinon sur cette règle. */
+#cl-matchs.cl-reduced label:has(.cl-report-chk:not(:checked)) { display: none !important; }
 
 /* ── Mobile ── */
 @media (max-width: 700px) {
@@ -433,6 +439,9 @@ header h1 { font-size: 18px; font-weight: 700; color: var(--accent); }
         <span style="margin-left:auto;font-size:11px;color:var(--muted)">Coche un joueur si son match L1 a été reporté (substitution par sa moyenne de points)</span>
       </div>
       <div style="padding:14px 16px">
+        <div style="display:flex;justify-content:flex-end;margin-bottom:8px">
+          <button class="btn btn-subtle" style="font-size:11px;padding:4px 10px" onclick="toggleCLReducedView()" id="btn-cl-reduce">🔽 N'afficher que les reportés</button>
+        </div>
         <div id="cl-matchs"></div>
         <div style="display:flex;gap:10px;margin-top:6px">
           <button class="btn btn-subtle" style="font-size:12px;padding:6px 14px" onclick="saveCLReports()">💾 Sauvegarder les reports</button>
@@ -2169,6 +2178,22 @@ async function loadCLJournee() {
   }).join('');
   document.getElementById('cl-calc-lbl').textContent = j;
   document.getElementById('cl-calc-result').innerHTML = '';
+
+  // Un nouveau chargement repart toujours sur la liste complète (le mode réduit
+  // d'une journée précédente n'a pas de sens ici).
+  box.classList.remove('cl-reduced');
+  document.getElementById('btn-cl-reduce').textContent = "🔽 N'afficher que les reportés";
+}
+
+// Bascule l'affichage de la liste des joueurs (report de match CL) entre la liste
+// complète des 2 équipes et les seuls joueurs cochés comme reportés — pratique une
+// fois la sélection faite, pour vérifier d'un coup d'œil qui est concerné sans
+// dérouler tout l'effectif.
+function toggleCLReducedView() {
+  const box = document.getElementById('cl-matchs');
+  const btn = document.getElementById('btn-cl-reduce');
+  const reduced = box.classList.toggle('cl-reduced');
+  btn.textContent = reduced ? '🔼 Tout afficher' : "🔽 N'afficher que les reportés";
 }
 
 async function saveCLReports() {
