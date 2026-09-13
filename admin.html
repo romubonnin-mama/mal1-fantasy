@@ -2039,6 +2039,14 @@ async function pushCLGithub() {
 
 // ─── Champions League ──────────────────────────────────────────────────────────
 
+// Dupliquée depuis le <script type="module"> de la section Enchères (ligne ~2670) :
+// un script "module" a sa propre portée et ne partage pas ses fonctions avec ce
+// script classique, donc esc() y était inaccessible — plantait tout renderCL()
+// (calendrier + classement + bracket) dès l'ouverture de l'onglet Champions League.
+function esc(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
 const CL_POULE_JOURNEES = [4, 6, 8, 10, 12, 14, 15];
 let clCurrentJournee = null;
 
