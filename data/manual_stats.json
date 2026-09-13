@@ -1190,10 +1190,11 @@
         "full_match": true
       },
       "J.LEFORT": {
-        "full_match": true
+        "full_match": true,
+        "cs": true,
+        "yellow_cards": true
       },
       "Z.ATHEKAME": {
-        "yellow_cards": true,
         "cs": true,
         "full_match": true
       },

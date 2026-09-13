@@ -8,7 +8,7 @@
     {
       "rang": 2,
       "nom": "FAB",
-      "pts": 131
+      "pts": 132
     },
     {
       "rang": 3,
@@ -47,7 +47,7 @@
     "ADRIEN": 18,
     "ANTHONY": 23,
     "BASTIEN": 21,
-    "FAB": 27,
+    "FAB": 28,
     "FLORIAN": 34,
     "JEROME": 24,
     "MICKA": 15,
@@ -88,7 +88,7 @@
       "ADRIEN": 18,
       "ANTHONY": 23,
       "BASTIEN": 21,
-      "FAB": 27,
+      "FAB": 28,
       "FLORIAN": 34,
       "JEROME": 24,
       "MICKA": 15,
@@ -17336,8 +17336,8 @@
               "pts": 0
             },
             "cs": {
-              "val": 0,
-              "pts": 0
+              "val": 1,
+              "pts": 1
             },
             "pm": {
               "val": 0,
@@ -17352,8 +17352,8 @@
               "pts": 0
             },
             "cj": {
-              "val": 0,
-              "pts": 0
+              "val": 1,
+              "pts": -1
             },
             "cr": {
               "val": 0,
@@ -17396,14 +17396,14 @@
               "pts": 0
             },
             "cj": {
-              "val": 1,
-              "pts": -1
+              "val": 0,
+              "pts": 0
             },
             "cr": {
               "val": 0,
               "pts": 0
             },
-            "pts": 3
+            "pts": 4
           },
           {
             "nom": "A.PIEDFORT",
@@ -20435,7 +20435,7 @@
       },
       {
         "j": 4,
-        "pts": 131
+        "pts": 132
       }
     ],
     "ADRIEN": [
