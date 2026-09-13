@@ -976,7 +976,11 @@
   "4": {
     "ROMU": {
       "M.SAFONOV": {},
-      "T.SANTOS": {},
+      "T.SANTOS": {
+        "goals": 1,
+        "full_match": true,
+        "cs": true
+      },
       "B.LOCKO": {},
       "S.SANE": {
         "own_goals": 1,
@@ -985,9 +989,10 @@
       "L.KOLEOSHO": {
         "sort_a": 79
       },
-      "H.HARALDSSON": {},
+      "H.HARALDSSON": {
+        "sort_a": 61
+      },
       "S.DIOP": {},
-      "M.IFNAOUI": {},
       "E.NUAMAH": {
         "sort_a": 87
       },
@@ -1000,6 +1005,9 @@
       },
       "T.MORTON": {
         "full_match": true
+      },
+      "M.IFNAOUI": {
+        "absent": true
       }
     },
     "BASTIEN": {
@@ -1008,7 +1016,6 @@
         "full_match": true,
         "yellow_cards": true
       },
-      "V.ALEXSANDRO": {},
       "A.WITSEL": {
         "sort_a": 86
       },
@@ -1030,7 +1037,11 @@
       "S.NANASI": {
         "sort_a": 81
       },
-      "D.DOUE": {}
+      "D.DOUE": {},
+      "V.ALEXSANDRO": {
+        "full_match": true,
+        "cs": true
+      }
     },
     "ANTHONY": {
       "N.AGUERD": {
@@ -1053,7 +1064,10 @@
       "P.PAGIS": {
         "sort_a": 79
       },
-      "D.BAKWA": {},
+      "D.BAKWA": {
+        "assists": 1,
+        "sort_a": 71
+      },
       "P.SULC": {
         "full_match": true
       },
@@ -1067,7 +1081,6 @@
         "full_match": true
       },
       "I.GANIOU": {},
-      "N.NGOY": {},
       "G.REYNA": {
         "sort_a": 81
       },
@@ -1091,17 +1104,22 @@
       "O.DEMBELE": {},
       "E.DIER": {
         "full_match": true
+      },
+      "N.NGOY": {
+        "full_match": true,
+        "cs": true
       }
     },
     "MICKA": {
-      "B.OZER": {},
       "N.MENDES": {},
       "C.CRESSWELL": {
         "full_match": true,
         "cs": true
       },
       "K.DOUMBIA": {},
-      "A.MILLE": {},
+      "A.MILLE": {
+        "sort_a": 80
+      },
       "H.ABDELLI": {
         "sort_a": 78,
         "yellow_cards": true
@@ -1110,12 +1128,19 @@
       "A.GOUIRI": {
         "sort_a": 88
       },
-      "O.GIROUD": {},
+      "O.GIROUD": {
+        "entre_a": 71,
+        "yellow_cards": true
+      },
       "A.KOUASSI": {
         "full_match": true
       },
       "V.VANDERSON": {
         "full_match": true
+      },
+      "B.OZER": {
+        "full_match": true,
+        "cs": true
       }
     },
     "FLORIAN": {
@@ -1183,6 +1208,10 @@
       },
       "P.LEES-MELOU": {
         "full_match": true
+      },
+      "R.PERRAUD": {
+        "full_match": true,
+        "cs": true
       }
     },
     "FAB": {
