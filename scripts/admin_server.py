@@ -144,16 +144,50 @@ def write_json(path: Path, data):
         json.dump(data, f, ensure_ascii=False, indent=2)
 
 
-def _validate_lineups(payload: dict):
+def _roster_at_journee(roster: dict, journee: int) -> dict:
+    """Reconstruit l'effectif tel qu'il était à une journée donnée : roster.json
+    reflète l'effectif ACTUEL (un joker s'applique immédiatement à roster.json même
+    quand il n'est "actif" qu'à partir d'une journée future — voir applyJoker() dans
+    admin.html). Annule donc les jokers pas encore actifs à cette journée-là (le
+    joueur OUT redevient présent, le joueur IN ne compte pas encore)."""
+    try:
+        jokers = read_json(DATA_DIR / "jokers.json")
+    except (FileNotFoundError, json.JSONDecodeError):
+        jokers = []
+
+    r = {m: {p: list(names) for p, names in postes.items()} for m, postes in roster.items()}
+    for j in jokers:
+        active_from = j.get("active_from")
+        if not active_from or journee >= active_from:
+            continue
+        manager = j.get("manager")
+        if manager not in r:
+            continue
+        in_poste, in_nom = j["in"]["poste"], j["in"]["nom"]
+        if in_nom in r[manager].get(in_poste, []):
+            r[manager][in_poste].remove(in_nom)
+        out_poste, out_nom = j["out"]["poste"], j["out"]["nom"]
+        r[manager].setdefault(out_poste, [])
+        if out_nom not in r[manager][out_poste]:
+            r[manager][out_poste].append(out_nom)
+    return r
+
+
+def _validate_lineups(payload: dict, journee: str):
     """Vérifie qu'une compo à sauvegarder ne contient que des joueurs présents dans
-    l'effectif actuel de chaque manager, et sans doublon. Empêche notamment qu'une
-    compo enregistrée avant un joker garde le joueur OUT (resté dans le navigateur
-    d'un onglet admin resté ouvert) lors d'une sauvegarde ultérieure. Retourne un
-    message d'erreur (str) si invalide, sinon None."""
+    l'effectif de chaque manager tel qu'il était à cette journée-là, et sans doublon.
+    Empêche notamment qu'une compo enregistrée avant un joker garde le joueur OUT
+    (resté dans le navigateur d'un onglet admin resté ouvert) lors d'une sauvegarde
+    ultérieure. Retourne un message d'erreur (str) si invalide, sinon None."""
     try:
         roster = read_json(DATA_DIR / "roster.json")
     except (FileNotFoundError, json.JSONDecodeError):
         return None
+
+    try:
+        roster = _roster_at_journee(roster, int(journee))
+    except (TypeError, ValueError):
+        pass
 
     for manager, lineup in (payload or {}).items():
         titulaires = (lineup or {}).get("titulaires") or []
@@ -318,7 +352,7 @@ class AdminHandler(BaseHTTPRequestHandler):
             if path.startswith(prefix):
                 journee = path[len(prefix):]
                 if prefix == "/api/lineups/":
-                    error = _validate_lineups(payload)
+                    error = _validate_lineups(payload, journee)
                     if error:
                         self.send_error_json(error, 400)
                         return

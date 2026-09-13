@@ -897,6 +897,34 @@ function renderLineups() {
       }
       card.appendChild(group);
     }
+
+    // Titulaires enregistrés dans la compo mais absents de l'effectif actuel (joker
+    // annulé après coup, faute de frappe…) : sans effectif correspondant, aucune ligne
+    // ne s'affiche pour eux ci-dessus, donc impossible de les décocher — la sauvegarde
+    // reste bloquée en boucle par le serveur (joueur hors effectif). On les affiche à
+    // part pour permettre de les retirer de la compo.
+    const orphelins = (lineup.titulaires || []).filter(n => !new Set(allPlayerNames).has(n));
+    if (orphelins.length) {
+      const group = document.createElement('div');
+      group.className = 'poste-group';
+      group.innerHTML = `<div class="poste-label" style="color:var(--red)" title="Absent(s) de l'effectif actuel — probablement un joker annulé après coup. Décoche pour retirer de la compo.">?!</div>`;
+      for (const nom of orphelins) {
+        const row = document.createElement('div');
+        row.className = 'player-row titu';
+        row.dataset.nom = nom;
+        row.dataset.manager = manager;
+        row.dataset.poste = '?';
+        row.innerHTML = `
+          <div class="player-check"></div>
+          <span class="player-nom" style="color:var(--red)" title="Absent de l'effectif actuel">⚠ ${nom}</span>
+          <button class="cap-btn" disabled title="Capitaine impossible pour un joueur hors effectif">C</button>
+        `;
+        row.addEventListener('click', () => toggleTitu(manager, nom, row));
+        group.appendChild(row);
+      }
+      card.appendChild(group);
+    }
+
     grid.appendChild(card);
   }
 }

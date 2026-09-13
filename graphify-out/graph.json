@@ -435,90 +435,6 @@
       "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\download_maillots.py:63"
     },
     {
-      "id": "file::admin_server",
-      "label": "admin_server.py",
-      "fileType": "code",
-      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py",
-      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py:1"
-    },
-    {
-      "id": "admin_server::read_json",
-      "label": "read_json",
-      "fileType": "code",
-      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py",
-      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py:40"
-    },
-    {
-      "id": "admin_server::_reconstruct_player_stats",
-      "label": "_reconstruct_player_stats",
-      "fileType": "code",
-      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py",
-      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py:45"
-    },
-    {
-      "id": "admin_server::_merge_manual_from_detail",
-      "label": "_merge_manual_from_detail",
-      "fileType": "code",
-      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py",
-      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py:89"
-    },
-    {
-      "id": "admin_server::write_json",
-      "label": "write_json",
-      "fileType": "code",
-      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py",
-      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py:135"
-    },
-    {
-      "id": "admin_server::adminhandler",
-      "label": "AdminHandler",
-      "fileType": "code",
-      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py",
-      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py:140"
-    },
-    {
-      "id": "admin_server::adminhandler::log_message",
-      "label": ".log_message",
-      "fileType": "code",
-      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py",
-      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py:142"
-    },
-    {
-      "id": "admin_server::adminhandler::send_json",
-      "label": ".send_json",
-      "fileType": "code",
-      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py",
-      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py:145"
-    },
-    {
-      "id": "admin_server::adminhandler::send_error_json",
-      "label": ".send_error_json",
-      "fileType": "code",
-      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py",
-      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py:154"
-    },
-    {
-      "id": "admin_server::adminhandler::do_options",
-      "label": ".do_OPTIONS",
-      "fileType": "code",
-      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py",
-      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py:157"
-    },
-    {
-      "id": "admin_server::adminhandler::do_get",
-      "label": ".do_GET",
-      "fileType": "code",
-      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py",
-      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py:164"
-    },
-    {
-      "id": "admin_server::adminhandler::do_post",
-      "label": ".do_POST",
-      "fileType": "code",
-      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py",
-      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py:200"
-    },
-    {
       "id": "file::sync_roster_from_firestore",
       "label": "sync_roster_from_firestore.py",
       "fileType": "code",
@@ -629,6 +545,118 @@
       "fileType": "code",
       "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\export_rosters.py",
       "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\export_rosters.py:50"
+    },
+    {
+      "id": "file::admin_server",
+      "label": "admin_server.py",
+      "fileType": "code",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py:1"
+    },
+    {
+      "id": "admin_server::read_json",
+      "label": "read_json",
+      "fileType": "code",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py:47"
+    },
+    {
+      "id": "admin_server::_reconstruct_player_stats",
+      "label": "_reconstruct_player_stats",
+      "fileType": "code",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py:52"
+    },
+    {
+      "id": "admin_server::_merge_manual_from_detail",
+      "label": "_merge_manual_from_detail",
+      "fileType": "code",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py:96"
+    },
+    {
+      "id": "admin_server::write_json",
+      "label": "write_json",
+      "fileType": "code",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py:142"
+    },
+    {
+      "id": "admin_server::_roster_at_journee",
+      "label": "_roster_at_journee",
+      "fileType": "code",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py:147"
+    },
+    {
+      "id": "admin_server::_validate_lineups",
+      "label": "_validate_lineups",
+      "fileType": "code",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py:176"
+    },
+    {
+      "id": "admin_server::_git_sync_status",
+      "label": "_git_sync_status",
+      "fileType": "code",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py:213"
+    },
+    {
+      "id": "admin_server::adminhandler",
+      "label": "AdminHandler",
+      "fileType": "code",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py:242"
+    },
+    {
+      "id": "admin_server::adminhandler::log_message",
+      "label": ".log_message",
+      "fileType": "code",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py:244"
+    },
+    {
+      "id": "admin_server::adminhandler::send_json",
+      "label": ".send_json",
+      "fileType": "code",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py:247"
+    },
+    {
+      "id": "admin_server::adminhandler::send_error_json",
+      "label": ".send_error_json",
+      "fileType": "code",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py:256"
+    },
+    {
+      "id": "admin_server::adminhandler::_require_auth",
+      "label": "._require_auth",
+      "fileType": "code",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py:259"
+    },
+    {
+      "id": "admin_server::adminhandler::do_options",
+      "label": ".do_OPTIONS",
+      "fileType": "code",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py:283"
+    },
+    {
+      "id": "admin_server::adminhandler::do_get",
+      "label": ".do_GET",
+      "fileType": "code",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py:290"
+    },
+    {
+      "id": "admin_server::adminhandler::do_post",
+      "label": ".do_POST",
+      "fileType": "code",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py:338"
     }
   ],
   "edges": [
@@ -1164,24 +1192,6 @@
       "weight": 1
     },
     {
-      "source": "file::admin_server",
-      "target": "admin_server::_reconstruct_player_stats",
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py",
-      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py:45",
-      "weight": 1
-    },
-    {
-      "source": "file::admin_server",
-      "target": "admin_server::_merge_manual_from_detail",
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py",
-      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py:89",
-      "weight": 1
-    },
-    {
       "source": "file::sync_roster_from_firestore",
       "target": "sync_roster_from_firestore::_fs_value",
       "relation": "contains",
@@ -1288,12 +1298,66 @@
       "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\export_rosters.py",
       "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\export_rosters.py:50",
       "weight": 1
+    },
+    {
+      "source": "file::admin_server",
+      "target": "admin_server::_reconstruct_player_stats",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py:52",
+      "weight": 1
+    },
+    {
+      "source": "file::admin_server",
+      "target": "admin_server::_merge_manual_from_detail",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py:96",
+      "weight": 1
+    },
+    {
+      "source": "file::admin_server",
+      "target": "admin_server::_roster_at_journee",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py:147",
+      "weight": 1
+    },
+    {
+      "source": "file::admin_server",
+      "target": "admin_server::_validate_lineups",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py:176",
+      "weight": 1
+    },
+    {
+      "source": "file::admin_server",
+      "target": "admin_server::_git_sync_status",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py:213",
+      "weight": 1
+    },
+    {
+      "source": "admin_server::adminhandler",
+      "target": "admin_server::adminhandler::_require_auth",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "sourceFile": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py",
+      "sourceLocation": "E:\\Sauvegarde\\draft club\\mal1-fantasy\\scripts\\admin_server.py:259",
+      "weight": 1
     }
   ],
   "metadata": {
     "files": 18,
-    "nodes": 90,
-    "edges": 73,
-    "builtAt": "2026-09-01T17:42:09.983Z"
+    "nodes": 94,
+    "edges": 77,
+    "builtAt": "2026-09-13T08:40:23.220Z"
   }
 }
