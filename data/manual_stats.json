@@ -1033,7 +1033,6 @@
       "D.DOUE": {}
     },
     "ANTHONY": {
-      "D.GREIF": {},
       "N.AGUERD": {
         "sort_a": 88
       },
@@ -1048,13 +1047,19 @@
       "A.AVOMEBONG": {
         "entre_a": 70
       },
-      "M.ABLINE": {},
+      "M.ABLINE": {
+        "entre_a": 22
+      },
       "P.PAGIS": {
         "sort_a": 79
       },
       "D.BAKWA": {},
       "P.SULC": {
         "full_match": true
+      },
+      "D.GREIF": {
+        "full_match": true,
+        "cs": true
       }
     },
     "JEROME": {
@@ -1062,7 +1067,6 @@
         "full_match": true
       },
       "I.GANIOU": {},
-      "E.DIER": {},
       "N.NGOY": {},
       "G.REYNA": {
         "sort_a": 81
@@ -1084,7 +1088,10 @@
         "sort_a": 75,
         "yellow_cards": true
       },
-      "O.DEMBELE": {}
+      "O.DEMBELE": {},
+      "E.DIER": {
+        "full_match": true
+      }
     },
     "MICKA": {
       "B.OZER": {},
@@ -1093,7 +1100,6 @@
         "full_match": true,
         "cs": true
       },
-      "V.VANDERSON": {},
       "K.DOUMBIA": {},
       "A.MILLE": {},
       "H.ABDELLI": {
@@ -1107,6 +1113,9 @@
       "O.GIROUD": {},
       "A.KOUASSI": {
         "full_match": true
+      },
+      "V.VANDERSON": {
+        "full_match": true
       }
     },
     "FLORIAN": {
@@ -1117,7 +1126,6 @@
       "J.CLAUSS": {
         "full_match": true
       },
-      "M.NIAKHATE": {},
       "O.CAMARA": {
         "full_match": true,
         "cs": true
@@ -1145,6 +1153,10 @@
       },
       "C.TOLISSO": {
         "full_match": true
+      },
+      "M.NIAKHATE": {
+        "full_match": true,
+        "cs": true
       }
     },
     "ADRIEN": {
@@ -1156,7 +1168,9 @@
         "full_match": true
       },
       "M.SKORAS": {},
-      "T.LEBRIS": {},
+      "T.LEBRIS": {
+        "entre_a": 58
+      },
       "R.RIPART": {},
       "F.THAUVIN": {},
       "K.KVARATSKHELIA": {},
@@ -1188,7 +1202,6 @@
         "cs": true
       },
       "R.NICOLAISEN": {},
-      "G.HEIN": {},
       "K.DANOIS": {
         "full_match": true,
         "yellow_cards": true
@@ -1201,6 +1214,9 @@
       },
       "L.AJORQUE": {},
       "L.SINAYOKO": {
+        "full_match": true
+      },
+      "G.HEIN": {
         "full_match": true
       }
     }
