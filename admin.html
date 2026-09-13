@@ -2150,11 +2150,15 @@ async function loadCLJournee() {
   box.innerHTML = pairs.map(([a, b]) => {
     const titusA = (lineups[a] && lineups[a].titulaires) || [];
     const titusB = (lineups[b] && lineups[b].titulaires) || [];
-    const rowsFor = (titus) => titus.map(nom => `
-      <label style="display:flex;align-items:center;gap:6px;font-size:12px;padding:2px 0">
+    const rowsFor = (titus) => titus.map(nom => {
+      const logoUrl = getLogoUrl(nom);
+      const logoHtml = logoUrl ? `<img src="${logoUrl}" class="club-logo-adm" onerror="this.style.display='none'" alt="">` : '';
+      return `
+      <label style="display:flex;align-items:center;gap:6px;font-size:12px;padding:2px 0" title="Coche si le match de ${esc(nom)} a été reporté">
         <input type="checkbox" class="cl-report-chk" value="${esc(nom)}" ${reportSet.has(nom) ? 'checked' : ''}>
-        ${esc(nom)}
-      </label>`).join('') || '<div style="font-size:11px;color:var(--muted)">Aucun titulaire trouvé</div>';
+        ${logoHtml}${esc(nom)}
+      </label>`;
+    }).join('') || '<div style="font-size:11px;color:var(--muted)">Aucun titulaire trouvé</div>';
     return `<div style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:10px 12px;margin-bottom:10px">
       <div style="font-weight:700;font-size:13px;margin-bottom:8px">${esc(a)} vs ${esc(b)}</div>
       <div class="cl-pair-grid">
