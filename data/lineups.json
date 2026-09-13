@@ -427,7 +427,7 @@
         "F.THAUVIN",
         "A.HAKIMI",
         "T.LEBRIS",
-        "R.RIPART"
+        "R.PERRAUD"
       ],
       "capitaine": null,
       "coeff": 1
@@ -511,8 +511,8 @@
         "B.LOCKO",
         "P.BRUNNER",
         "S.SANE",
-        "S.DIOP",
-        "L.KOLEOSHO"
+        "L.KOLEOSHO",
+        "T.MORTON"
       ],
       "capitaine": null,
       "coeff": 1
@@ -526,10 +526,10 @@
         "I.KEBBAL",
         "P.SULC",
         "V.RONGIER",
-        "A.AVOMEBONG",
         "M.ABLINE",
         "P.PAGIS",
-        "D.BAKWA"
+        "D.BAKWA",
+        "C.CASSERES"
       ],
       "capitaine": null,
       "coeff": 1
@@ -537,16 +537,16 @@
     "FAB": {
       "titulaires": [
         "Y.DIOUF",
-        "J.LEFORT",
-        "Z.ATHEKAME",
-        "A.SEKO",
-        "R.NICOLAISEN",
-        "G.HEIN",
         "K.DANOIS",
-        "PE.HOJBJERG",
+        "Z.ATHEKAME",
         "E.WAHI",
+        "PE.HOJBJERG",
+        "A.SEKO",
+        "J.LEFORT",
+        "W.ZAIRE-EMERY",
+        "L.AJORQUE",
         "L.SINAYOKO",
-        "L.AJORQUE"
+        "G.HEIN"
       ],
       "capitaine": null,
       "coeff": 1
