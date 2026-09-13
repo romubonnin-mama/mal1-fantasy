@@ -483,24 +483,5 @@
       "club": "Strasbourg"
     },
     "active_from": 4
-  },
-  {
-    "id": 1789286224701,
-    "date": "2026-09-13T07:57:04.701Z",
-    "manager": "ANTHONY",
-    "type": "saison",
-    "out": {
-      "nom": "A.AVOMEBONG",
-      "poste": "M",
-      "club": "Lorient",
-      "mise": 2,
-      "id": "a.avomebong__lorient__M"
-    },
-    "in": {
-      "nom": "C.CASSERES",
-      "poste": "M",
-      "club": "Toulouse"
-    },
-    "active_from": 5
   }
 ]

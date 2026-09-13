@@ -259,7 +259,8 @@ header h1 { font-size: 18px; font-weight: 700; color: var(--accent); }
 
 <div id="sync-banner" style="display:none; background:#7a1f1f; color:#fff; padding:10px 16px; font-size:14px;">
   <span id="sync-banner-text"></span>
-  <button class="btn btn-subtle" onclick="fixSync()" style="margin-left:12px">🔄 Récupérer depuis GitHub</button>
+  <button id="sync-btn-publish" class="btn btn-subtle" onclick="fixPublish()" style="margin-left:12px; display:none">🚀 Publier GitHub</button>
+  <button id="sync-btn-pull" class="btn btn-subtle" onclick="fixSync()" style="margin-left:12px; display:none">🔄 Récupérer depuis GitHub</button>
 </div>
 
 <div class="tabs">
@@ -558,15 +559,24 @@ async function checkSync() {
   }
   const banner = document.getElementById('sync-banner');
   const text = document.getElementById('sync-banner-text');
+  const btnPublish = document.getElementById('sync-btn-publish');
+  const btnPull = document.getElementById('sync-btn-pull');
   const messages = [];
-  if (status.dirty && status.dirty.length) {
-    messages.push(`des changements locaux non publiés (${status.dirty.join(', ')}) — pensez à cliquer "Publier GitHub"`);
+  const isDirty = status.dirty && status.dirty.length;
+  if (isDirty) {
+    messages.push(`des changements locaux non publiés (${status.dirty.join(', ')}) — clique "Publier GitHub" ci-contre (un "Récupérer" ne les publie pas)`);
   }
   if (status.behind) {
     messages.push(`${status.behind} mise(s) à jour publiée(s) depuis un autre appareil pas encore récupérée(s)`);
   }
   if (messages.length) {
     text.textContent = '⚠️ ' + messages.join(' — ');
+    // "Récupérer" (git pull) ne résout jamais un état "dirty" — seul "Publier"
+    // (commit + push) le fait. On ne propose donc "Récupérer" que si on n'a
+    // pas de changements locaux, sinon le bouton ne fait rien et le bandeau
+    // réapparaît identique après un clic (source de confusion vécue en prod).
+    btnPublish.style.display = isDirty ? 'inline-block' : 'none';
+    btnPull.style.display = isDirty ? 'none' : (status.behind ? 'inline-block' : 'none');
     banner.style.display = 'block';
   } else {
     banner.style.display = 'none';
@@ -583,6 +593,24 @@ async function fixSync() {
       location.reload();
     } else {
       alert('Échec de la récupération : ' + r.log + '\n\nSi des changements locaux non publiés sont en cause, publiez-les d\'abord ("Publier GitHub") avant de réessayer.');
+      checkSync();
+    }
+  } catch (e) {
+    alert('Erreur : ' + e);
+    checkSync();
+  }
+}
+
+async function fixPublish() {
+  const text = document.getElementById('sync-banner-text');
+  text.textContent = 'Publication en cours…';
+  try {
+    const r = await api('POST', '/push', { msg: 'Synchro : publication des changements locaux en attente' });
+    if (r.ok) {
+      alert('Publication OK, la page va se recharger.');
+      location.reload();
+    } else {
+      alert('Échec de la publication : ' + r.msg);
       checkSync();
     }
   } catch (e) {
@@ -1502,17 +1530,19 @@ async function pushJokersGithub() {
   }
 }
 
-async function editJoker(id) {
-  const idx = JOKERS.findIndex(j => j.id === id);
-  if (idx === -1) return;
-  const j = JOKERS[idx];
-  if (!confirm(`Corriger ce joker de ${j.manager} ?\n${j.out.nom} (${j.out.poste}) → ${j.in.nom} (${j.in.poste}, ${j.in.club})\n\n${j.in.nom} sera retiré de l'effectif et ${j.out.nom} restauré. Le formulaire sera pré-rempli pour ressaisir la correction.`)) return;
+// Annule l'effet d'un joker (retire le joueur IN, restaure le joueur OUT dans
+// roster.json et Firestore, retire l'entrée de JOKERS) et sauvegarde. Commun à
+// editJoker() (annule + pré-remplit pour corriger) et deleteJoker() (annule
+// définitivement, sans ressaisie).
+async function revertJokerEffect(j) {
+  const idx = JOKERS.findIndex(x => x.id === j.id);
+  if (idx === -1) return false;
 
   try {
     await window.jokerRevertFirestore(j.manager, j.out, j.in.nom, j.in.poste);
   } catch (e) {
     toast('❌ ' + e.message, 'err');
-    return;
+    return false;
   }
 
   // Annule le mouvement de joker (retire le joueur IN, restaure le joueur OUT)
@@ -1531,9 +1561,20 @@ async function editJoker(id) {
     api('POST', '/jokers', JOKERS),
   ]);
 
-  toast('↩️ Joker annulé — corrige les champs puis reclique sur Appliquer');
   renderRoster();
   renderLineups();
+  return true;
+}
+
+async function editJoker(id) {
+  const idx = JOKERS.findIndex(j => j.id === id);
+  if (idx === -1) return;
+  const j = JOKERS[idx];
+  if (!confirm(`Corriger ce joker de ${j.manager} ?\n${j.out.nom} (${j.out.poste}) → ${j.in.nom} (${j.in.poste}, ${j.in.club})\n\n${j.in.nom} sera retiré de l'effectif et ${j.out.nom} restauré. Le formulaire sera pré-rempli pour ressaisir la correction.`)) return;
+
+  if (!(await revertJokerEffect(j))) return;
+
+  toast('↩️ Joker annulé — corrige les champs puis reclique sur Appliquer');
   populateJokerForm();
 
   // Pré-remplit le formulaire avec les valeurs d'origine, prêtes à corriger
@@ -1549,6 +1590,18 @@ async function editJoker(id) {
   updateJokerQuotaSummary();
   document.getElementById('joker-in-nom').scrollIntoView({ behavior: 'smooth', block: 'center' });
   document.getElementById('joker-in-nom').focus();
+}
+
+async function deleteJoker(id) {
+  const idx = JOKERS.findIndex(j => j.id === id);
+  if (idx === -1) return;
+  const j = JOKERS[idx];
+  if (!confirm(`Supprimer définitivement ce joker de ${j.manager} ?\n${j.out.nom} (${j.out.poste}) → ${j.in.nom} (${j.in.poste}, ${j.in.club})\n\n${j.in.nom} sera retiré de l'effectif et ${j.out.nom} restauré. Cette action n'ouvre pas le formulaire.`)) return;
+
+  if (!(await revertJokerEffect(j))) return;
+
+  toast('🗑️ Joker supprimé');
+  populateJokerForm();
 }
 
 function renderJokerCountersTable(containerId) {
@@ -1596,6 +1649,7 @@ function renderJokerHistory(containerId) {
         <span style="color:var(--accent)">${inLogo}${j.in.nom} (${j.in.poste}, ${j.in.club})</span>
         ${j.active_from ? `<span style="color:var(--muted);font-size:11px">actif dès J${j.active_from}</span>` : ''}
         <button class="btn btn-subtle" style="margin-left:auto;font-size:11px;padding:3px 8px" onclick="editJoker(${j.id})" title="Annule ce joker et pré-remplit le formulaire pour corriger une erreur de saisie">✏️ Corriger</button>
+        <button class="btn btn-subtle" style="font-size:11px;padding:3px 8px;color:var(--red)" onclick="deleteJoker(${j.id})" title="Supprime définitivement ce joker (restaure le joueur OUT, retire le joueur IN)">🗑️ Supprimer</button>
       </div>`;
   }).join('');
   box.innerHTML = `<div style="font-weight:700;font-size:12px;margin-bottom:6px;color:var(--muted)">Historique</div>${rows}`;
@@ -1603,6 +1657,31 @@ function renderJokerHistory(containerId) {
 
 
 // ─── STATS MANUELLES ─────────────────────────────────────────────────────────
+
+// Reconstruit l'effectif tel qu'il était à une journée donnée : ROSTER reflète
+// l'effectif ACTUEL (un joker s'applique immédiatement à roster.json même quand
+// il n'est "actif" qu'à partir d'une journée future — voir applyJoker()). Pour
+// afficher/calculer les stats d'une journée passée, il faut donc annuler les
+// jokers pas encore actifs à cette journée-là (le joueur OUT redevient présent,
+// le joueur IN ne compte pas encore).
+function rosterAtJournee(journee) {
+  const r = {};
+  for (const [m, postes] of Object.entries(ROSTER)) {
+    r[m] = {};
+    for (const p of POSTE_ORDER) r[m][p] = [...(postes[p] || [])];
+  }
+  for (const j of JOKERS) {
+    if (!j.active_from || journee >= j.active_from) continue;
+    const m = j.manager;
+    if (!r[m]) continue;
+    const inList = r[m][j.in.poste] || (r[m][j.in.poste] = []);
+    const inIdx = inList.indexOf(j.in.nom);
+    if (inIdx !== -1) inList.splice(inIdx, 1);
+    const outList = r[m][j.out.poste] || (r[m][j.out.poste] = []);
+    if (!outList.includes(j.out.nom)) outList.push(j.out.nom);
+  }
+  return r;
+}
 
 const STAT_NUM_FIELDS = [
   { f: 'goals',         label: 'BM', title: 'Buts marqués' },
@@ -1615,6 +1694,7 @@ const STAT_NUM_FIELDS = [
 function renderStats() {
   const body = document.getElementById('stats-body');
   body.innerHTML = '';
+  const rosterHist = rosterAtJournee(currentJournee);
 
   for (const manager of Object.keys(ROSTER)) {
     const lineup = LINEUPS[manager] || {};
@@ -1623,7 +1703,7 @@ function renderStats() {
 
     let managerTotal = 0;
     for (const p of POSTE_ORDER) {
-      for (const nom of (ROSTER[manager][p] || [])) {
+      for (const nom of (rosterHist[manager][p] || [])) {
         const pts = _calcPts(manager, nom);
         if (pts !== null) managerTotal += pts;
       }
@@ -1661,7 +1741,7 @@ function renderStats() {
     const tbody = wrap.querySelector(`#stb-${manager}`);
     const allPlayers = [];
     for (const p of POSTE_ORDER) {
-      for (const nom of (ROSTER[manager][p] || [])) allPlayers.push({ nom, p, titu: titus.has(nom) });
+      for (const nom of (rosterHist[manager][p] || [])) allPlayers.push({ nom, p, titu: titus.has(nom) });
     }
     allPlayers.sort((a, b) => (b.titu ? 1 : 0) - (a.titu ? 1 : 0));
 
@@ -1736,7 +1816,7 @@ function _calcPts(manager, nom) {
   const s0 = (MANUAL_STATS[manager] || {})[nom] || {};
   if (s0.absent) return 0;
 
-  const rosterM = ROSTER[manager] || {};
+  const rosterM = rosterAtJournee(currentJournee)[manager] || {};
   let poste = null;
   for (const [pos, noms] of Object.entries(rosterM)) {
     if ((noms || []).includes(nom)) { poste = pos; break; }
@@ -1805,9 +1885,10 @@ function updatePtsCell(manager, nom) {
 function updateManagerTotal(manager) {
   const el = document.getElementById(`total-pts-${manager}`);
   if (!el) return;
+  const rosterHist = rosterAtJournee(currentJournee);
   let total = 0;
   for (const p of POSTE_ORDER) {
-    for (const nom of (ROSTER[manager][p] || [])) {
+    for (const nom of (rosterHist[manager][p] || [])) {
       const pts = _calcPts(manager, nom);
       if (pts !== null) total += pts;
     }
