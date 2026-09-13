@@ -1086,7 +1086,9 @@
         "sort_a": 88,
         "yellow_cards": true
       },
-      "L.MAFOUTA": {}
+      "L.MAFOUTA": {
+        "full_match": true
+      }
     },
     "MICKA": {
       "B.OZER": {
@@ -1112,7 +1114,9 @@
         "sort_a": 78,
         "yellow_cards": true
       },
-      "O.EDOUARD": {},
+      "O.EDOUARD": {
+        "sort_a": 46
+      },
       "A.GOUIRI": {
         "sort_a": 88
       },
@@ -1122,7 +1126,6 @@
       }
     },
     "BASTIEN": {
-      "R.RISSER": {},
       "T.WEAH": {
         "full_match": true,
         "yellow_cards": true
@@ -1152,7 +1155,10 @@
       "S.NANASI": {
         "sort_a": 81
       },
-      "D.DOUE": {}
+      "D.DOUE": {},
+      "R.RISSER": {
+        "full_match": true
+      }
     },
     "ANTHONY": {
       "D.GREIF": {
@@ -1203,7 +1209,9 @@
       "J.OSO": {
         "full_match": true
       },
-      "M.SKORAS": {},
+      "M.SKORAS": {
+        "sort_a": 46
+      },
       "P.LEES-MELOU": {
         "full_match": true
       },
@@ -1211,7 +1219,9 @@
         "entre_a": 58
       },
       "F.THAUVIN": {
-        "assists": 1
+        "assists": 1,
+        "yellow_cards": true,
+        "full_match": true
       },
       "K.KVARATSKHELIA": {},
       "G.YASSINE": {
@@ -1223,7 +1233,6 @@
       "F.JORGENSEN": {
         "full_match": true
       },
-      "I.GANIOU": {},
       "E.DIER": {
         "full_match": true
       },
@@ -1251,7 +1260,10 @@
         "sort_a": 75,
         "yellow_cards": true
       },
-      "O.DEMBELE": {}
+      "O.DEMBELE": {},
+      "I.GANIOU": {
+        "absent": true
+      }
     }
   }
 }
