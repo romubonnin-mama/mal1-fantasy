@@ -502,5 +502,24 @@
       "club": "Toulouse"
     },
     "active_from": 5
+  },
+  {
+    "id": 1789492201231,
+    "date": "2026-09-15T17:10:01.231Z",
+    "manager": "ANTHONY",
+    "type": "saison",
+    "out": {
+      "nom": "N.TAGLIAFICO",
+      "poste": "D",
+      "club": "OL",
+      "mise": 1,
+      "id": "n.tagliafico__ol__D"
+    },
+    "in": {
+      "nom": "A.BOURABAA",
+      "poste": "M",
+      "club": "Le Mans"
+    },
+    "active_from": 5
   }
 ]
