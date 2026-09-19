@@ -580,9 +580,9 @@
         "E.LEPAUL",
         "D.DOUE",
         "A.HARIT",
-        "A.WITSEL",
         "S.NANASI",
-        "M.UDOL"
+        "M.UDOL",
+        "T.WEAH"
       ],
       "capitaine": null,
       "coeff": 1
@@ -668,6 +668,23 @@
         "L.CAMARA",
         "L.OPENDA",
         "O.DEMBELE"
+      ],
+      "capitaine": null,
+      "coeff": 1
+    },
+    "FAB": {
+      "titulaires": [
+        "Y.DIOUF",
+        "J.LEFORT",
+        "Z.ATHEKAME",
+        "A.SEKO",
+        "G.HEIN",
+        "K.DANOIS",
+        "W.ZAIRE-EMERY",
+        "PE.HOJBJERG",
+        "E.WAHI",
+        "L.SINAYOKO",
+        "L.AJORQUE"
       ],
       "capitaine": null,
       "coeff": 1
