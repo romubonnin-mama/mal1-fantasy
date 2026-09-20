@@ -521,5 +521,62 @@
       "club": "Le Mans"
     },
     "active_from": 5
+  },
+  {
+    "id": 1789927904558,
+    "date": "2026-09-20T18:11:44.558Z",
+    "manager": "JEROME",
+    "type": "capitaine",
+    "out": {
+      "nom": "Y.GBOHO",
+      "poste": "A",
+      "club": "Toulouse",
+      "mise": 2,
+      "id": "y.gboho__toulouse__A"
+    },
+    "in": {
+      "nom": "C.ARCHER",
+      "poste": "A",
+      "club": "Auxerre"
+    },
+    "active_from": 6
+  },
+  {
+    "id": 1789927969443,
+    "date": "2026-09-20T18:12:49.443Z",
+    "manager": "MICKA",
+    "type": "saison",
+    "out": {
+      "nom": "O.GIROUD",
+      "poste": "A",
+      "club": "LOSC",
+      "mise": 21,
+      "id": "o.giroud__losc__A"
+    },
+    "in": {
+      "nom": "M.AMOURA",
+      "poste": "A",
+      "club": "Nice"
+    },
+    "active_from": 6
+  },
+  {
+    "id": 1789928006536,
+    "date": "2026-09-20T18:13:26.536Z",
+    "manager": "FLORIAN",
+    "type": "saison",
+    "out": {
+      "nom": "F.IVANOVIC",
+      "poste": "A",
+      "club": "Lens",
+      "mise": 3,
+      "id": "f.ivanovic__lens__A"
+    },
+    "in": {
+      "nom": "A.UEDA",
+      "poste": "A",
+      "club": "LOSC"
+    },
+    "active_from": 6
   }
 ]
