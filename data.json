@@ -7,13 +7,13 @@
     },
     {
       "rang": 2,
-      "nom": "ROMU",
-      "pts": 158
+      "nom": "ADRIEN",
+      "pts": 160
     },
     {
       "rang": 3,
-      "nom": "ADRIEN",
-      "pts": 157
+      "nom": "ROMU",
+      "pts": 158
     },
     {
       "rang": 4,
@@ -44,7 +44,7 @@
   "derniere_journee": 5,
   "journee_ouverte": 5,
   "scores_journee": {
-    "ADRIEN": 16,
+    "ADRIEN": 19,
     "ANTHONY": 30,
     "BASTIEN": 18,
     "FAB": 19,
@@ -95,7 +95,7 @@
       "ROMU": 34
     },
     "5": {
-      "ADRIEN": 16,
+      "ADRIEN": 19,
       "ANTHONY": 30,
       "BASTIEN": 18,
       "FAB": 19,
@@ -20639,8 +20639,8 @@
             "nom": "J.OSO",
             "statut": "",
             "cap": "",
-            "tj": "0",
-            "tj_pts": 0,
+            "tj": "M",
+            "tj_pts": 3,
             "bm": {
               "val": 0,
               "pts": 0
@@ -20677,7 +20677,7 @@
               "val": 0,
               "pts": 0
             },
-            "pts": 0
+            "pts": 3
           }
         ],
         "M": [
@@ -25529,7 +25529,7 @@
       },
       {
         "j": 5,
-        "pts": 157
+        "pts": 160
       }
     ],
     "FAB": [
@@ -25576,28 +25576,6 @@
         "pts": 155
       }
     ],
-    "BASTIEN": [
-      {
-        "j": 1,
-        "pts": 39
-      },
-      {
-        "j": 2,
-        "pts": 72
-      },
-      {
-        "j": 3,
-        "pts": 100
-      },
-      {
-        "j": 4,
-        "pts": 132
-      },
-      {
-        "j": 5,
-        "pts": 150
-      }
-    ],
     "ANTHONY": [
       {
         "j": 1,
@@ -25618,6 +25596,28 @@
       {
         "j": 5,
         "pts": 152
+      }
+    ],
+    "BASTIEN": [
+      {
+        "j": 1,
+        "pts": 39
+      },
+      {
+        "j": 2,
+        "pts": 72
+      },
+      {
+        "j": 3,
+        "pts": 100
+      },
+      {
+        "j": 4,
+        "pts": 132
+      },
+      {
+        "j": 5,
+        "pts": 150
       }
     ],
     "JEROME": [
