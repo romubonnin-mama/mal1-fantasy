@@ -1308,7 +1308,10 @@
       "E.DIER": {
         "full_match": true
       },
-      "N.NGOY": {},
+      "N.NGOY": {
+        "own_goals": 1,
+        "full_match": true
+      },
       "G.REYNA": {
         "sort_a": 67
       },
@@ -1375,7 +1378,6 @@
         "cs": true
       },
       "N.AGUERD": {},
-      "K.LALA": {},
       "W.PACHO": {},
       "I.KEBBAL": {
         "sort_a": 68,
@@ -1403,7 +1405,13 @@
         "sort_a": 68,
         "assists": 1
       },
-      "D.BAKWA": {}
+      "D.BAKWA": {
+        "sort_a": 55
+      },
+      "K.LALA": {
+        "full_match": true,
+        "yellow_cards": true
+      }
     },
     "BASTIEN": {
       "R.RISSER": {
@@ -1414,7 +1422,6 @@
         "goals": 1
       },
       "T.WEAH": {},
-      "V.ALEXSANDRO": {},
       "J.CHOTARD": {
         "sort_a": 86,
         "goals": 1
@@ -1433,10 +1440,12 @@
         "sort_a": 67
       },
       "D.DOUE": {},
-      "A.WITSEL": {}
+      "A.WITSEL": {},
+      "V.ALEXSANDRO": {
+        "full_match": true
+      }
     },
     "MICKA": {
-      "B.OZER": {},
       "N.MENDES": {},
       "C.CRESSWELL": {
         "full_match": true,
@@ -1459,13 +1468,17 @@
         "entre_a": 58
       },
       "A.GOUIRI": {},
-      "O.GIROUD": {},
+      "O.GIROUD": {
+        "entre_a": 64
+      },
       "K.DOUMBIA": {
+        "full_match": true
+      },
+      "B.OZER": {
         "full_match": true
       }
     },
     "FAB": {
-      "Y.DIOUF": {},
       "J.LEFORT": {
         "full_match": true,
         "cs": true
@@ -1481,10 +1494,11 @@
         "full_match": true,
         "be_malus": true
       },
-      "G.HEIN": {},
       "W.ZAIRE-EMERY": {},
       "PE.HOJBJERG": {},
-      "E.WAHI": {},
+      "E.WAHI": {
+        "sort_a": 74
+      },
       "L.SINAYOKO": {
         "sort_a": 87,
         "assists": 1
@@ -1494,6 +1508,13 @@
       },
       "K.DANOIS": {
         "full_match": true
+      },
+      "Y.DIOUF": {
+        "full_match": true
+      },
+      "G.HEIN": {
+        "full_match": true,
+        "assists": 1
       }
     },
     "ROMU": {
@@ -1502,7 +1523,6 @@
         "full_match": true,
         "cs": true
       },
-      "T.SANTOS": {},
       "S.SANE": {
         "full_match": true
       },
@@ -1510,7 +1530,9 @@
         "full_match": true,
         "yellow_cards": true
       },
-      "H.HARALDSSON": {},
+      "H.HARALDSSON": {
+        "sort_a": 64
+      },
       "T.MORTON": {
         "sort_a": 79
       },
@@ -1526,6 +1548,9 @@
         "goals": 1
       },
       "B.LOCKO": {
+        "full_match": true
+      },
+      "T.SANTOS": {
         "full_match": true
       }
     },

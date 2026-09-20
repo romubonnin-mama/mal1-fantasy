@@ -2,56 +2,56 @@
   "classement": [
     {
       "rang": 1,
+      "nom": "FAB",
+      "pts": 174
+    },
+    {
+      "rang": 2,
       "nom": "FLORIAN",
       "pts": 172
     },
     {
-      "rang": 2,
-      "nom": "FAB",
-      "pts": 163
+      "rang": 3,
+      "nom": "ROMU",
+      "pts": 166
     },
     {
-      "rang": 3,
+      "rang": 4,
       "nom": "ADRIEN",
       "pts": 162
     },
     {
-      "rang": 4,
-      "nom": "ROMU",
-      "pts": 161
-    },
-    {
       "rang": 5,
       "nom": "MICKA",
-      "pts": 158
+      "pts": 162
     },
     {
       "rang": 6,
       "nom": "BASTIEN",
-      "pts": 155
+      "pts": 158
     },
     {
       "rang": 7,
       "nom": "ANTHONY",
-      "pts": 152
+      "pts": 156
     },
     {
       "rang": 8,
       "nom": "JEROME",
-      "pts": 136
+      "pts": 137
     }
   ],
   "derniere_journee": 5,
   "journee_ouverte": 5,
   "scores_journee": {
     "ADRIEN": 21,
-    "ANTHONY": 30,
-    "BASTIEN": 23,
-    "FAB": 25,
+    "ANTHONY": 34,
+    "BASTIEN": 26,
+    "FAB": 36,
     "FLORIAN": 33,
-    "JEROME": 16,
-    "MICKA": 15,
-    "ROMU": 29
+    "JEROME": 17,
+    "MICKA": 19,
+    "ROMU": 34
   },
   "historique": {
     "1": {
@@ -96,13 +96,13 @@
     },
     "5": {
       "ADRIEN": 21,
-      "ANTHONY": 30,
-      "BASTIEN": 23,
-      "FAB": 25,
+      "ANTHONY": 34,
+      "BASTIEN": 26,
+      "FAB": 36,
       "FLORIAN": 33,
-      "JEROME": 16,
-      "MICKA": 15,
-      "ROMU": 29
+      "JEROME": 17,
+      "MICKA": 19,
+      "ROMU": 34
     }
   },
   "detail_journees": {
@@ -21177,8 +21177,8 @@
             "nom": "K.LALA",
             "statut": "",
             "cap": "",
-            "tj": "0",
-            "tj_pts": 0,
+            "tj": "M",
+            "tj_pts": 3,
             "bm": {
               "val": 0,
               "pts": 0
@@ -21208,14 +21208,14 @@
               "pts": 0
             },
             "cj": {
-              "val": 0,
-              "pts": 0
+              "val": 1,
+              "pts": -1
             },
             "cr": {
               "val": 0,
               "pts": 0
             },
-            "pts": 0
+            "pts": 2
           },
           {
             "nom": "W.PACHO",
@@ -21621,8 +21621,8 @@
             "nom": "D.BAKWA",
             "statut": "",
             "cap": "",
-            "tj": "0",
-            "tj_pts": 0,
+            "tj": "55",
+            "tj_pts": 2,
             "bm": {
               "val": 0,
               "pts": 0
@@ -21659,7 +21659,7 @@
               "val": 0,
               "pts": 0
             },
-            "pts": 0
+            "pts": 2
           },
           {
             "nom": "M.GODO",
@@ -21847,8 +21847,8 @@
             "nom": "V.ALEXSANDRO",
             "statut": "",
             "cap": "",
-            "tj": "0",
-            "tj_pts": 0,
+            "tj": "M",
+            "tj_pts": 3,
             "bm": {
               "val": 0,
               "pts": 0
@@ -21885,7 +21885,7 @@
               "val": 0,
               "pts": 0
             },
-            "pts": 0
+            "pts": 3
           },
           {
             "nom": "M.MBOW",
@@ -22339,8 +22339,8 @@
             "nom": "Y.DIOUF",
             "statut": "",
             "cap": "",
-            "tj": "0",
-            "tj_pts": 0,
+            "tj": "M",
+            "tj_pts": 3,
             "bm": {
               "val": 0,
               "pts": 0
@@ -22377,7 +22377,7 @@
               "val": 0,
               "pts": 0
             },
-            "pts": 0
+            "pts": 3
           }
         ],
         "D": [
@@ -22651,8 +22651,8 @@
             "nom": "G.HEIN",
             "statut": "",
             "cap": "",
-            "tj": "0",
-            "tj_pts": 0,
+            "tj": "M",
+            "tj_pts": 3,
             "bm": {
               "val": 0,
               "pts": 0
@@ -22678,8 +22678,8 @@
               "pts": 0
             },
             "pd": {
-              "val": 0,
-              "pts": 0
+              "val": 1,
+              "pts": 2
             },
             "cj": {
               "val": 0,
@@ -22689,7 +22689,7 @@
               "val": 0,
               "pts": 0
             },
-            "pts": 0
+            "pts": 5
           },
           {
             "nom": "K.DANOIS",
@@ -22829,8 +22829,8 @@
             "nom": "E.WAHI",
             "statut": "",
             "cap": "",
-            "tj": "0",
-            "tj_pts": 0,
+            "tj": "74",
+            "tj_pts": 3,
             "bm": {
               "val": 0,
               "pts": 0
@@ -22867,7 +22867,7 @@
               "val": 0,
               "pts": 0
             },
-            "pts": 0
+            "pts": 3
           },
           {
             "nom": "L.SINAYOKO",
@@ -23813,8 +23813,8 @@
             "nom": "N.NGOY",
             "statut": "",
             "cap": "",
-            "tj": "0",
-            "tj_pts": 0,
+            "tj": "M",
+            "tj_pts": 3,
             "bm": {
               "val": 0,
               "pts": 0
@@ -23824,8 +23824,8 @@
               "pts": 0
             },
             "bcsc": {
-              "val": 0,
-              "pts": 0
+              "val": 1,
+              "pts": -2
             },
             "cs": {
               "val": 0,
@@ -23851,7 +23851,7 @@
               "val": 0,
               "pts": 0
             },
-            "pts": 0
+            "pts": 1
           }
         ],
         "M": [
@@ -24217,8 +24217,8 @@
             "nom": "B.OZER",
             "statut": "",
             "cap": "",
-            "tj": "0",
-            "tj_pts": 0,
+            "tj": "M",
+            "tj_pts": 3,
             "bm": {
               "val": 0,
               "pts": 0
@@ -24255,7 +24255,7 @@
               "val": 0,
               "pts": 0
             },
-            "pts": 0
+            "pts": 3
           }
         ],
         "D": [
@@ -24795,8 +24795,8 @@
             "nom": "O.GIROUD",
             "statut": "",
             "cap": "",
-            "tj": "0",
-            "tj_pts": 0,
+            "tj": "26",
+            "tj_pts": 1,
             "bm": {
               "val": 0,
               "pts": 0
@@ -24833,7 +24833,7 @@
               "val": 0,
               "pts": 0
             },
-            "pts": 0
+            "pts": 1
           }
         ]
       },
@@ -24977,8 +24977,8 @@
             "nom": "T.SANTOS",
             "statut": "",
             "cap": "",
-            "tj": "0",
-            "tj_pts": 0,
+            "tj": "M",
+            "tj_pts": 3,
             "bm": {
               "val": 0,
               "pts": 0
@@ -25015,7 +25015,7 @@
               "val": 0,
               "pts": 0
             },
-            "pts": 0
+            "pts": 3
           },
           {
             "nom": "B.LOCKO",
@@ -25155,8 +25155,8 @@
             "nom": "H.HARALDSSON",
             "statut": "",
             "cap": "",
-            "tj": "0",
-            "tj_pts": 0,
+            "tj": "64",
+            "tj_pts": 2,
             "bm": {
               "val": 0,
               "pts": 0
@@ -25193,7 +25193,7 @@
               "val": 0,
               "pts": 0
             },
-            "pts": 0
+            "pts": 2
           },
           {
             "nom": "T.MORTON",
@@ -25507,7 +25507,7 @@
       },
       {
         "j": 5,
-        "pts": 163
+        "pts": 174
       }
     ],
     "ADRIEN": [
@@ -25551,7 +25551,7 @@
       },
       {
         "j": 5,
-        "pts": 161
+        "pts": 166
       }
     ],
     "MICKA": [
@@ -25573,7 +25573,7 @@
       },
       {
         "j": 5,
-        "pts": 158
+        "pts": 162
       }
     ],
     "BASTIEN": [
@@ -25595,7 +25595,7 @@
       },
       {
         "j": 5,
-        "pts": 155
+        "pts": 158
       }
     ],
     "ANTHONY": [
@@ -25617,7 +25617,7 @@
       },
       {
         "j": 5,
-        "pts": 152
+        "pts": 156
       }
     ],
     "JEROME": [
@@ -25639,7 +25639,7 @@
       },
       {
         "j": 5,
-        "pts": 136
+        "pts": 137
       }
     ]
   },
@@ -25649,8 +25649,8 @@
     "pts": 41
   },
   "score_min": {
-    "manager": "MICKA",
+    "manager": "JEROME",
     "journee": 5,
-    "pts": 15
+    "pts": 17
   }
 }
