@@ -1415,7 +1415,10 @@
       },
       "T.WEAH": {},
       "V.ALEXSANDRO": {},
-      "J.CHOTARD": {},
+      "J.CHOTARD": {
+        "sort_a": 86,
+        "goals": 1
+      },
       "A.THOMASSON": {
         "full_match": true
       },
@@ -1447,7 +1450,6 @@
       "V.VANDERSON": {
         "full_match": true
       },
-      "K.DOUMBIA": {},
       "A.MILLE": {
         "full_match": true,
         "yellow_cards": true
@@ -1457,7 +1459,10 @@
         "entre_a": 58
       },
       "A.GOUIRI": {},
-      "O.GIROUD": {}
+      "O.GIROUD": {},
+      "K.DOUMBIA": {
+        "full_match": true
+      }
     },
     "FAB": {
       "Y.DIOUF": {},
@@ -1477,7 +1482,6 @@
         "be_malus": true
       },
       "G.HEIN": {},
-      "K.DANOIS": {},
       "W.ZAIRE-EMERY": {},
       "PE.HOJBJERG": {},
       "E.WAHI": {},
@@ -1485,7 +1489,12 @@
         "sort_a": 87,
         "assists": 1
       },
-      "L.AJORQUE": {}
+      "L.AJORQUE": {
+        "sort_a": 86
+      },
+      "K.DANOIS": {
+        "full_match": true
+      }
     },
     "ROMU": {
       "M.SAFONOV": {},
@@ -1494,7 +1503,6 @@
         "cs": true
       },
       "T.SANTOS": {},
-      "B.LOCKO": {},
       "S.SANE": {
         "full_match": true
       },
@@ -1516,6 +1524,9 @@
       "P.BRUNNER": {
         "sort_a": 92,
         "goals": 1
+      },
+      "B.LOCKO": {
+        "full_match": true
       }
     },
     "ADRIEN": {
@@ -1530,7 +1541,9 @@
         "entre_a": 69
       },
       "V.VITINHA": {},
-      "R.FAIVRE": {},
+      "R.FAIVRE": {
+        "entre_a": 46
+      },
       "P.LEES-MELOU": {
         "full_match": true
       },
