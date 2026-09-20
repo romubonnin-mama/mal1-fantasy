@@ -1316,7 +1316,8 @@
         "sort_a": 67
       },
       "A.GOMES": {
-        "entre_a": 30
+        "entre_a": 30,
+        "goals": 1
       },
       "L.BLAS": {
         "entre_a": 62
@@ -1386,6 +1387,16 @@
         "full_match": true,
         "cs": true
       },
+      "N.AGUERD": {
+        "full_match": true
+      },
+      "K.LALA": {
+        "full_match": true,
+        "yellow_cards": true
+      },
+      "W.PACHO": {
+        "full_match": true
+      },
       "I.KEBBAL": {
         "sort_a": 68,
         "goals": 1
@@ -1414,16 +1425,6 @@
       },
       "D.BAKWA": {
         "sort_a": 55
-      },
-      "K.LALA": {
-        "full_match": true,
-        "yellow_cards": true
-      },
-      "N.AGUERD": {
-        "full_match": true
-      },
-      "W.PACHO": {
-        "full_match": true
       }
     },
     "BASTIEN": {
@@ -1438,6 +1439,9 @@
         "yellow_cards": true,
         "sort_a": 77,
         "red_card": true
+      },
+      "V.ALEXSANDRO": {
+        "full_match": true
       },
       "J.CHOTARD": {
         "sort_a": 86,
@@ -1462,12 +1466,16 @@
         "sort_a": 79,
         "assists": 1
       },
-      "A.WITSEL": {},
-      "V.ALEXSANDRO": {
-        "full_match": true
-      }
+      "A.WITSEL": {}
     },
     "MICKA": {
+      "B.OZER": {
+        "full_match": true
+      },
+      "N.MENDES": {
+        "full_match": true,
+        "yellow_cards": true
+      },
       "C.CRESSWELL": {
         "full_match": true,
         "be_malus": true
@@ -1480,35 +1488,31 @@
       "V.VANDERSON": {
         "full_match": true
       },
+      "K.DOUMBIA": {
+        "full_match": true
+      },
       "A.MILLE": {
         "full_match": true,
         "yellow_cards": true
       },
+      "H.ABDELLI": {
+        "sort_a": 84
+      },
       "O.EDOUARD": {
         "entre_a": 58
-      },
-      "O.GIROUD": {
-        "entre_a": 64
-      },
-      "K.DOUMBIA": {
-        "full_match": true
-      },
-      "B.OZER": {
-        "full_match": true
-      },
-      "N.MENDES": {
-        "full_match": true,
-        "yellow_cards": true
       },
       "A.GOUIRI": {
         "full_match": true,
         "assists": 1
       },
-      "H.ABDELLI": {
-        "sort_a": 84
+      "O.GIROUD": {
+        "entre_a": 64
       }
     },
     "FAB": {
+      "Y.DIOUF": {
+        "full_match": true
+      },
       "J.LEFORT": {
         "full_match": true,
         "cs": true
@@ -1524,6 +1528,19 @@
         "full_match": true,
         "be_malus": true
       },
+      "G.HEIN": {
+        "full_match": true,
+        "assists": 1
+      },
+      "K.DANOIS": {
+        "full_match": true
+      },
+      "W.ZAIRE-EMERY": {
+        "full_match": true
+      },
+      "PE.HOJBJERG": {
+        "full_match": true
+      },
       "E.WAHI": {
         "sort_a": 74
       },
@@ -1533,28 +1550,21 @@
       },
       "L.AJORQUE": {
         "sort_a": 86
-      },
-      "K.DANOIS": {
-        "full_match": true
-      },
-      "Y.DIOUF": {
-        "full_match": true
-      },
-      "G.HEIN": {
-        "full_match": true,
-        "assists": 1
-      },
-      "W.ZAIRE-EMERY": {
-        "full_match": true
-      },
-      "PE.HOJBJERG": {
-        "full_match": true
       }
     },
     "ROMU": {
+      "M.SAFONOV": {
+        "full_match": true
+      },
       "A.VINICIUS": {
         "full_match": true,
         "cs": true
+      },
+      "T.SANTOS": {
+        "full_match": true
+      },
+      "B.LOCKO": {
+        "full_match": true
       },
       "S.SANE": {
         "full_match": true
@@ -1579,15 +1589,6 @@
       "P.BRUNNER": {
         "sort_a": 92,
         "goals": 1
-      },
-      "B.LOCKO": {
-        "full_match": true
-      },
-      "T.SANTOS": {
-        "full_match": true
-      },
-      "M.SAFONOV": {
-        "full_match": true
       }
     },
     "ADRIEN": {
@@ -1597,8 +1598,17 @@
       "F.NAZINHO": {
         "full_match": true
       },
+      "R.PERRAUD": {
+        "full_match": true
+      },
+      "J.OSO": {
+        "full_match": true
+      },
       "M.SKORAS": {
         "entre_a": 69
+      },
+      "V.VITINHA": {
+        "full_match": true
       },
       "R.FAIVRE": {
         "entre_a": 46
@@ -1617,15 +1627,6 @@
       "G.YASSINE": {
         "sort_a": 87,
         "yellow_cards": true
-      },
-      "J.OSO": {
-        "full_match": true
-      },
-      "R.PERRAUD": {
-        "full_match": true
-      },
-      "V.VITINHA": {
-        "full_match": true
       }
     }
   }

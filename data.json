@@ -38,18 +38,18 @@
     {
       "rang": 8,
       "nom": "JEROME",
-      "pts": 142
+      "pts": 144
     }
   ],
   "derniere_journee": 5,
-  "journee_ouverte": 5,
+  "journee_ouverte": 6,
   "scores_journee": {
     "ADRIEN": 29,
     "ANTHONY": 40,
     "BASTIEN": 34,
     "FAB": 42,
     "FLORIAN": 37,
-    "JEROME": 22,
+    "JEROME": 24,
     "MICKA": 29,
     "ROMU": 37
   },
@@ -100,7 +100,7 @@
       "BASTIEN": 34,
       "FAB": 42,
       "FLORIAN": 37,
-      "JEROME": 22,
+      "JEROME": 24,
       "MICKA": 29,
       "ROMU": 37
     }
@@ -23906,8 +23906,8 @@
             "tj": "60",
             "tj_pts": 2,
             "bm": {
-              "val": 0,
-              "pts": 0
+              "val": 1,
+              "pts": 2
             },
             "be": {
               "val": 0,
@@ -23941,7 +23941,7 @@
               "val": 0,
               "pts": 0
             },
-            "pts": 2
+            "pts": 4
           },
           {
             "nom": "L.BLAS",
@@ -25683,7 +25683,7 @@
       },
       {
         "j": 5,
-        "pts": 142
+        "pts": 144
       }
     ]
   },
@@ -25695,6 +25695,6 @@
   "score_min": {
     "manager": "JEROME",
     "journee": 5,
-    "pts": 22
+    "pts": 24
   }
 }
