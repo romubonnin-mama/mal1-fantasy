@@ -28,7 +28,7 @@
     {
       "rang": 6,
       "nom": "BASTIEN",
-      "pts": 166
+      "pts": 165
     },
     {
       "rang": 7,
@@ -46,7 +46,7 @@
   "scores_journee": {
     "ADRIEN": 29,
     "ANTHONY": 40,
-    "BASTIEN": 34,
+    "BASTIEN": 33,
     "FAB": 42,
     "FLORIAN": 37,
     "JEROME": 24,
@@ -97,7 +97,7 @@
     "5": {
       "ADRIEN": 29,
       "ANTHONY": 40,
-      "BASTIEN": 34,
+      "BASTIEN": 33,
       "FAB": 42,
       "FLORIAN": 37,
       "JEROME": 24,
@@ -21818,8 +21818,8 @@
               "pts": 0
             },
             "cs": {
-              "val": 1,
-              "pts": 1
+              "val": 0,
+              "pts": 0
             },
             "pm": {
               "val": 0,
@@ -21841,7 +21841,7 @@
               "val": -1,
               "pts": 0
             },
-            "pts": 1
+            "pts": 0
           },
           {
             "nom": "V.ALEXSANDRO",
@@ -25639,7 +25639,7 @@
       },
       {
         "j": 5,
-        "pts": 166
+        "pts": 165
       }
     ],
     "ANTHONY": [

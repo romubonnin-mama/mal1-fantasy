@@ -400,7 +400,7 @@ def compute(journee: int) -> dict:
                     result["pts"] = 0
 
                 # CS : uniquement si la case est cochée dans l'admin
-                if not red_card and not absent:
+                if not absent:
                     expected_cs_pts = CS_PTS.get(poste, 0) if s.get("cs") else 0
                     if expected_cs_pts != result["cs"]["pts"]:
                         result["pts"] += expected_cs_pts - result["cs"]["pts"]
