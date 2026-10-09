@@ -1630,5 +1630,63 @@
       }
     }
   },
-  "6": {}
+  "6": {
+    "ADRIEN": {
+      "F.THAUVIN": {
+        "full_match": true,
+        "assists": 2
+      }
+    },
+    "ANTHONY": {
+      "D.GREIF": {
+        "full_match": true
+      },
+      "S.ABDULHAMID": {
+        "absent": true
+      },
+      "P.SULC": {
+        "sort_a": 78
+      }
+    },
+    "BASTIEN": {
+      "R.RISSER": {
+        "full_match": true
+      },
+      "M.UDOL": {
+        "goals": 1,
+        "sort_a": 84,
+        "red_card": true
+      }
+    },
+    "FAB": {
+      "Z.ATHEKAME": {
+        "full_match": true
+      }
+    },
+    "FLORIAN": {
+      "C.TOLISSO": {
+        "full_match": true
+      }
+    },
+    "JEROME": {
+      "I.GANIOU": {
+        "full_match": true
+      },
+      "L.OPENDA": {
+        "sort_a": 60
+      }
+    },
+    "ROMU": {
+      "A.VINICIUS": {
+        "full_match": true,
+        "yellow_cards": true
+      },
+      "T.MORTON": {
+        "sort_a": 77
+      },
+      "E.NUAMAH": {
+        "sort_a": 71
+      }
+    }
+  }
 }
