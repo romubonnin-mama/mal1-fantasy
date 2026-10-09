@@ -578,5 +578,24 @@
       "club": "LOSC"
     },
     "active_from": 6
+  },
+  {
+    "id": 1791567512324,
+    "date": "2026-10-09T17:38:32.324Z",
+    "manager": "FAB",
+    "type": "bonus",
+    "out": {
+      "nom": "R.MATONDO",
+      "poste": "M",
+      "club": "Paris FC",
+      "mise": 1,
+      "id": "r.matondo__paris fc__M"
+    },
+    "in": {
+      "nom": "A.RICHARDSON",
+      "poste": "M",
+      "club": "Le Havre"
+    },
+    "active_from": 6
   }
 ]
