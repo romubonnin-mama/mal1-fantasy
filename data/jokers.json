@@ -597,5 +597,43 @@
       "club": "Le Havre"
     },
     "active_from": 6
+  },
+  {
+    "id": 1791701223796,
+    "date": "2026-10-11T06:47:03.796Z",
+    "manager": "FLORIAN",
+    "type": "capitaine",
+    "out": {
+      "nom": "F.TORRES",
+      "poste": "A",
+      "club": "PSG",
+      "mise": 4,
+      "id": "f.torres__psg__A"
+    },
+    "in": {
+      "nom": "C.TENGSTEDT",
+      "poste": "A",
+      "club": "Toulouse"
+    },
+    "active_from": 7
+  },
+  {
+    "id": 1791701311577,
+    "date": "2026-10-11T06:48:31.577Z",
+    "manager": "BASTIEN",
+    "type": "saison",
+    "out": {
+      "nom": "M.MBOW",
+      "poste": "D",
+      "club": "Paris FC",
+      "mise": 1,
+      "id": "manual_1786916135456_0"
+    },
+    "in": {
+      "nom": "M.TALBI",
+      "poste": "D",
+      "club": "Lorient"
+    },
+    "active_from": 7
   }
 ]
