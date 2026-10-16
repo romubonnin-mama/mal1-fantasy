@@ -635,5 +635,62 @@
       "club": "Lorient"
     },
     "active_from": 7
+  },
+  {
+    "id": 1791822656043,
+    "date": "2026-10-12T16:30:56.043Z",
+    "manager": "ADRIEN",
+    "type": "saison",
+    "out": {
+      "nom": "R.RIPART",
+      "poste": "M",
+      "club": "Troyes",
+      "mise": 2,
+      "id": "r.ripart__troyes__M"
+    },
+    "in": {
+      "nom": "H.MAGNETTI",
+      "poste": "M",
+      "club": "Brest"
+    },
+    "active_from": 7
+  },
+  {
+    "id": 1791822721729,
+    "date": "2026-10-12T16:32:01.729Z",
+    "manager": "ADRIEN",
+    "type": "capitaine",
+    "out": {
+      "nom": "T.LEBRIS",
+      "poste": "M",
+      "club": "Lorient",
+      "mise": 2,
+      "id": "t.lebris__lorient__M"
+    },
+    "in": {
+      "nom": "P.KATSERIS",
+      "poste": "D",
+      "club": "Lorient"
+    },
+    "active_from": 7
+  },
+  {
+    "id": 1791822784579,
+    "date": "2026-10-12T16:33:04.579Z",
+    "manager": "ROMU",
+    "type": "capitaine",
+    "out": {
+      "nom": "T.SANTOS",
+      "poste": "D",
+      "club": "LOSC",
+      "mise": 13,
+      "id": "t.santos__losc__D"
+    },
+    "in": {
+      "nom": "E.PALMIERI",
+      "poste": "D",
+      "club": "OM"
+    },
+    "active_from": 7
   }
 ]
