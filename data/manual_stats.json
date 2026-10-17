@@ -1958,5 +1958,31 @@
         "goals": 1
       }
     }
+  },
+  "7": {
+    "ANTHONY": {
+      "A.BOURABAA": {
+        "absent": true
+      },
+      "C.CASSERES": {
+        "full_match": true,
+        "assists": 1
+      }
+    },
+    "FAB": {
+      "R.NICOLAISEN": {
+        "sort_a": 85,
+        "cs": true
+      }
+    },
+    "FLORIAN": {
+      "T.JORGENSEN": {
+        "full_match": true
+      },
+      "C.TENGSTEDT": {
+        "full_match": true,
+        "goals": 1
+      }
+    }
   }
 }
