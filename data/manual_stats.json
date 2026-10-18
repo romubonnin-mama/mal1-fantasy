@@ -2055,7 +2055,8 @@
     "JEROME": {
       "F.JORGENSEN": {
         "full_match": true,
-        "be_malus": true
+        "be_malus": true,
+        "pen_mm_saved": 1
       },
       "A.AIT-BOUDLAL": {},
       "I.GANIOU": {
