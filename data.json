@@ -38,7 +38,7 @@
     {
       "rang": 8,
       "nom": "JEROME",
-      "pts": 189
+      "pts": 194
     }
   ],
   "derniere_journee": 7,
@@ -49,7 +49,7 @@
     "BASTIEN": 7,
     "FAB": 10,
     "FLORIAN": 11,
-    "JEROME": 15,
+    "JEROME": 20,
     "MICKA": 9,
     "ROMU": 12
   },
@@ -120,7 +120,7 @@
       "BASTIEN": 7,
       "FAB": 10,
       "FLORIAN": 11,
-      "JEROME": 15,
+      "JEROME": 20,
       "MICKA": 9,
       "ROMU": 12
     }
@@ -33941,10 +33941,10 @@
         "M": [
           {
             "nom": "G.REYNA",
-            "statut": "A",
+            "statut": "",
             "cap": "",
-            "tj": "0",
-            "tj_pts": 0,
+            "tj": "M",
+            "tj_pts": 3,
             "bm": {
               "val": 1,
               "pts": 2
@@ -33981,7 +33981,7 @@
               "val": 0,
               "pts": 0
             },
-            "pts": 0
+            "pts": 5
           },
           {
             "nom": "A.GOMES",
@@ -35787,7 +35787,7 @@
       },
       {
         "j": 7,
-        "pts": 189
+        "pts": 194
       }
     ]
   },
