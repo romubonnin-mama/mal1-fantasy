@@ -1964,7 +1964,9 @@
       "M.SAFONOV": {
         "full_match": true
       },
-      "A.VINICIUS": {},
+      "A.VINICIUS": {
+        "sort_a": 82
+      },
       "B.LOCKO": {
         "full_match": true,
         "yellow_cards": true
@@ -1979,7 +1981,6 @@
       "M.IFNAOUI": {
         "full_match": true
       },
-      "E.NUAMAH": {},
       "J.ORTEGA": {
         "entre_a": 83
       },
@@ -1990,10 +1991,15 @@
       },
       "S.SANE": {
         "full_match": true
+      },
+      "S.DIOP": {
+        "entre_a": 87
+      },
+      "E.NUAMAH": {
+        "absent": true
       }
     },
     "ANTHONY": {
-      "D.GREIF": {},
       "N.AGUERD": {
         "entre_a": 60
       },
@@ -2007,7 +2013,10 @@
         "sort_a": 85,
         "yellow_cards": true
       },
-      "P.SULC": {},
+      "P.SULC": {
+        "goals": 1,
+        "sort_a": 81
+      },
       "C.CASSERES": {
         "full_match": true,
         "assists": 1
@@ -2023,11 +2032,16 @@
       },
       "D.BAKWA": {
         "sort_a": 65
+      },
+      "D.GREIF": {
+        "absent": true
       }
     },
     "FAB": {
-      "Y.DIOUF": {},
-      "Z.ATHEKAME": {},
+      "Z.ATHEKAME": {
+        "assists": 1,
+        "full_match": true
+      },
       "A.PIEDFORT": {
         "entre_a": 82
       },
@@ -2035,11 +2049,17 @@
         "sort_a": 85,
         "cs": true
       },
-      "G.HEIN": {},
+      "G.HEIN": {
+        "sort_a": 87
+      },
       "W.ZAIRE-EMERY": {
         "full_match": true
       },
-      "E.WAHI": {},
+      "E.WAHI": {
+        "goals": 1,
+        "full_match": true,
+        "yellow_cards": true
+      },
       "L.SINAYOKO": {
         "goals": 1,
         "assists": 2,
@@ -2054,6 +2074,9 @@
         "assists": 1
       },
       "A.RICHARDSON": {
+        "full_match": true
+      },
+      "Y.DIOUF": {
         "full_match": true
       }
     },
@@ -2079,7 +2102,6 @@
         "sort_a": 67,
         "pen_scored": 1
       },
-      "M.AMOURA": {},
       "A.GOUIRI": {
         "full_match": true,
         "pen_scored": 1,
@@ -2096,6 +2118,10 @@
       "C.CRESSWELL": {
         "full_match": true,
         "be_malus": true
+      },
+      "M.AMOURA": {
+        "full_match": true,
+        "yellow_cards": true
       }
     },
     "JEROME": {
@@ -2142,9 +2168,12 @@
       }
     },
     "FLORIAN": {
-      "J.CLAUSS": {},
-      "M.NIAKHATE": {},
-      "C.TOLISSO": {},
+      "J.CLAUSS": {
+        "assists": 1
+      },
+      "C.TOLISSO": {
+        "entre_a": 61
+      },
       "T.JORGENSEN": {
         "full_match": true
       },
@@ -2172,6 +2201,9 @@
       "D.COPPOLA": {
         "full_match": true,
         "be_malus": true
+      },
+      "M.NIAKHATE": {
+        "full_match": true
       }
     },
     "BASTIEN": {
@@ -2181,12 +2213,15 @@
       "V.ALEXSANDRO": {
         "absent": true
       },
-      "A.WITSEL": {},
+      "A.WITSEL": {
+        "sort_a": 87
+      },
       "J.CHOTARD": {
         "full_match": true
       },
       "A.THOMASSON": {
-        "sort_a": 46
+        "sort_a": 46,
+        "yellow_cards": true
       },
       "M.KJAERGAARD": {
         "entre_a": 77
