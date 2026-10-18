@@ -208,6 +208,7 @@ select:focus,input:focus{outline:none;border-color:var(--accent)}
       <span>Titulaires sélectionnés</span>
       <span><span class="n" id="titu-count">0</span>/11</span>
     </div>
+    <div id="compo-errors" class="alert alert-danger" style="display:none;margin:0 16px 12px"></div>
   </div>
 
   <div style="display:flex;gap:8px;margin-bottom:20px">
@@ -554,6 +555,29 @@ function renderSelection() {
   const cEl = document.getElementById('titu-count');
   cEl.textContent = n;
   cEl.classList.toggle('warn', n !== 11);
+
+  // Règlement : 11 titulaires, 1 gardien, >=3 D, >=3 M, 1 à 3 A. Tant que la compo
+  // n'est pas valide, on liste les problèmes et on bloque l'envoi de l'image.
+  const errs = compoErrors();
+  const errEl = document.getElementById('compo-errors');
+  errEl.innerHTML = errs.map(e => `⚠ ${e}`).join('<br>');
+  errEl.style.display = errs.length ? 'block' : 'none';
+  const btn = document.getElementById('btn-copy-img');
+  btn.disabled = errs.length > 0;
+  btn.title = errs.length ? 'Compo non valide : corrige les erreurs ci-dessus' : '';
+}
+
+function compoErrors() {
+  const c = {};
+  POSTE_ORDER.forEach(p => { c[p] = [...TITU].filter(n => isInPoste(n, p)).length; });
+  const errs = [];
+  if (TITU.size !== 11) errs.push(`Il faut 11 titulaires (${TITU.size} sélectionné${TITU.size > 1 ? 's' : ''})`);
+  if (c.G !== 1) errs.push('Il faut 1 gardien');
+  if (c.D < 3) errs.push(`Il faut au moins 3 défenseurs (${c.D} sélectionné${c.D > 1 ? 's' : ''})`);
+  if (c.M < 3) errs.push(`Il faut au moins 3 milieux (${c.M} sélectionné${c.M > 1 ? 's' : ''})`);
+  if (c.A < 1) errs.push('Il faut au moins 1 attaquant');
+  if (c.A > 3) errs.push(`Maximum 3 attaquants (${c.A} sélectionnés)`);
+  return errs;
 }
 
 function isInPoste(nom, poste) {
@@ -786,6 +810,7 @@ async function submitCompoToAdmin() {
 
 // ── Copie de l'image du terrain ─────────────────────────────
 document.getElementById('btn-copy-img').addEventListener('click', async () => {
+  if (compoErrors().length) return;
   const canvas = await html2canvas(document.getElementById('export-zone'), {backgroundColor: '#161b27', scale: 2});
 
   submitCompoToAdmin().catch(e => console.warn('Compo non envoyée à l\'admin :', e));

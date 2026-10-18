@@ -814,6 +814,26 @@ function capitainesUtilises(manager, journee) {
   return { count: joueurs.size, joueurs };
 }
 
+// Règlement 2026-27 : 11 titulaires, 1 gardien, >=3 D, >=3 M, 1 à 3 A.
+// Renvoie la liste des problèmes (vide si la compo est valide).
+function compoErrors(manager, titus) {
+  const roster = ROSTER[manager] || {};
+  const c = {};
+  POSTE_ORDER.forEach(p => { c[p] = (roster[p] || []).filter(n => titus.has(n)).length; });
+  const errs = [];
+  if (titus.size !== 11) errs.push(`${titus.size} titulaires au lieu de 11`);
+  if (c.G !== 1) errs.push(`${c.G} gardien(s) au lieu de 1`);
+  if (c.D < 3) errs.push(`${c.D} défenseur(s), minimum 3`);
+  if (c.M < 3) errs.push(`${c.M} milieu(x), minimum 3`);
+  if (c.A < 1) errs.push('aucun attaquant, minimum 1');
+  if (c.A > 3) errs.push(`${c.A} attaquants, maximum 3`);
+  return errs;
+}
+
+function compoErrorsHtml(errs) {
+  return errs.length ? `⚠ Compo non valide : ${errs.join(' · ')}` : '';
+}
+
 function renderLineups() {
   const grid = document.getElementById('lineups-grid');
   grid.innerHTML = '';
@@ -864,6 +884,7 @@ function renderLineups() {
         — capitaines utilisés cette saison : <strong style="color:${capMaxedOut ? 'var(--red)' : 'inherit'}">${capUsage.count}/5</strong>
         ${proposedCap && !cap && !isFirst ? ` — capitaine proposé : <strong>${proposedCap}</strong> (clique "C" pour valider)` : ''}
       </div>
+      <div class="compo-errs" style="flex-basis:100%;font-size:11px;color:var(--red);font-weight:600">${compoErrorsHtml(compoErrors(manager, titus))}</div>
     `;
     card.appendChild(header);
 
@@ -965,6 +986,7 @@ function toggleTitu(manager, nom, row) {
   const remplCount = totalPlayers - titus.size;
   countEl.textContent = `${remplCount} rempl.`;
   countEl.className = `titu-count ${titus.size === 11 ? 'ok' : 'err'}`;
+  card.querySelector('.compo-errs').innerHTML = compoErrorsHtml(compoErrors(manager, titus));
 
   document.getElementById('lineup-status').textContent = 'Non sauvegardé*';
   document.getElementById('lineup-status').className = 'save-status err';
@@ -1008,6 +1030,14 @@ function setCoeff(manager, val) {
 }
 
 async function saveLineup() {
+  const invalides = Object.keys(LINEUPS)
+    .filter(m => ROSTER[m] && (LINEUPS[m].titulaires || []).length)
+    .map(m => ({ m, errs: compoErrors(m, new Set(LINEUPS[m].titulaires)) }))
+    .filter(x => x.errs.length);
+  if (invalides.length) {
+    const detail = invalides.map(x => `• ${x.m} : ${x.errs.join(', ')}`).join('\n');
+    if (!confirm(`Compo(s) non conforme(s) au règlement :\n\n${detail}\n\nSauvegarder quand même ?`)) return;
+  }
   try {
     await api('POST', `/lineups/${currentJournee}`, LINEUPS);
     PENDING_VALIDATION.clear();
