@@ -2,12 +2,12 @@
   "classement": [
     {
       "rang": 1,
-      "nom": "FLORIAN",
-      "pts": 219
+      "nom": "ADRIEN",
+      "pts": 221
     },
     {
       "rang": 2,
-      "nom": "ADRIEN",
+      "nom": "FLORIAN",
       "pts": 219
     },
     {
@@ -44,7 +44,7 @@
   "derniere_journee": 7,
   "journee_ouverte": 7,
   "scores_journee": {
-    "ADRIEN": 18,
+    "ADRIEN": 20,
     "ANTHONY": 11,
     "BASTIEN": 7,
     "FAB": 10,
@@ -115,7 +115,7 @@
       "ROMU": 23
     },
     "7": {
-      "ADRIEN": 18,
+      "ADRIEN": 20,
       "ANTHONY": 11,
       "BASTIEN": 7,
       "FAB": 10,
@@ -31062,8 +31062,8 @@
               "pts": 0
             },
             "pd": {
-              "val": 1,
-              "pts": 2
+              "val": 2,
+              "pts": 4
             },
             "cj": {
               "val": 0,
@@ -31073,7 +31073,7 @@
               "val": 0,
               "pts": 0
             },
-            "pts": 4
+            "pts": 6
           },
           {
             "nom": "K.KVARATSKHELIA",
@@ -35014,50 +35014,6 @@
             "pts": 0
           },
           {
-            "nom": "Q.MERLIN",
-            "statut": "r",
-            "cap": "",
-            "tj": "0",
-            "tj_pts": 0,
-            "bm": {
-              "val": 0,
-              "pts": 0
-            },
-            "be": {
-              "val": 0,
-              "pts": 0
-            },
-            "bcsc": {
-              "val": 0,
-              "pts": 0
-            },
-            "cs": {
-              "val": 0,
-              "pts": 0
-            },
-            "pm": {
-              "val": 0,
-              "pts": 0
-            },
-            "pma": {
-              "val": 0,
-              "pts": 0
-            },
-            "pd": {
-              "val": 0,
-              "pts": 0
-            },
-            "cj": {
-              "val": 0,
-              "pts": 0
-            },
-            "cr": {
-              "val": 0,
-              "pts": 0
-            },
-            "pts": 0
-          },
-          {
             "nom": "B.LOCKO",
             "statut": "",
             "cap": "",
@@ -35544,6 +35500,50 @@
               "pts": 0
             },
             "pts": 0
+          },
+          {
+            "nom": "P.MBOUP",
+            "statut": "r",
+            "cap": "",
+            "tj": "0",
+            "tj_pts": 0,
+            "bm": {
+              "val": 0,
+              "pts": 0
+            },
+            "be": {
+              "val": 0,
+              "pts": 0
+            },
+            "bcsc": {
+              "val": 0,
+              "pts": 0
+            },
+            "cs": {
+              "val": 0,
+              "pts": 0
+            },
+            "pm": {
+              "val": 0,
+              "pts": 0
+            },
+            "pma": {
+              "val": 0,
+              "pts": 0
+            },
+            "pd": {
+              "val": 0,
+              "pts": 0
+            },
+            "cj": {
+              "val": 0,
+              "pts": 0
+            },
+            "cr": {
+              "val": 0,
+              "pts": 0
+            },
+            "pts": 0
           }
         ]
       }
@@ -35580,6 +35580,36 @@
         "pts": 219
       }
     ],
+    "ADRIEN": [
+      {
+        "j": 1,
+        "pts": 38
+      },
+      {
+        "j": 2,
+        "pts": 78
+      },
+      {
+        "j": 3,
+        "pts": 109
+      },
+      {
+        "j": 4,
+        "pts": 141
+      },
+      {
+        "j": 5,
+        "pts": 170
+      },
+      {
+        "j": 6,
+        "pts": 201
+      },
+      {
+        "j": 7,
+        "pts": 221
+      }
+    ],
     "FAB": [
       {
         "j": 1,
@@ -35608,36 +35638,6 @@
       {
         "j": 7,
         "pts": 218
-      }
-    ],
-    "ADRIEN": [
-      {
-        "j": 1,
-        "pts": 38
-      },
-      {
-        "j": 2,
-        "pts": 78
-      },
-      {
-        "j": 3,
-        "pts": 109
-      },
-      {
-        "j": 4,
-        "pts": 141
-      },
-      {
-        "j": 5,
-        "pts": 170
-      },
-      {
-        "j": 6,
-        "pts": 201
-      },
-      {
-        "j": 7,
-        "pts": 219
       }
     ],
     "MICKA": [

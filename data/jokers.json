@@ -692,5 +692,24 @@
       "club": "OM"
     },
     "active_from": 7
+  },
+  {
+    "id": 1792309575225,
+    "date": "2026-10-18T07:46:15.225Z",
+    "manager": "ROMU",
+    "type": "saison",
+    "out": {
+      "nom": "Q.MERLIN",
+      "poste": "D",
+      "club": "Rennes",
+      "mise": 4,
+      "id": "q.merlin__rennes__D"
+    },
+    "in": {
+      "nom": "P.MBOUP",
+      "poste": "A",
+      "club": "Brest"
+    },
+    "active_from": 8
   }
 ]
