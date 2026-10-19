@@ -8,7 +8,7 @@
     {
       "rang": 2,
       "nom": "FLORIAN",
-      "pts": 239
+      "pts": 242
     },
     {
       "rang": 3,
@@ -42,13 +42,13 @@
     }
   ],
   "derniere_journee": 7,
-  "journee_ouverte": 7,
+  "journee_ouverte": 8,
   "scores_journee": {
     "ADRIEN": 33,
     "ANTHONY": 24,
     "BASTIEN": 37,
     "FAB": 45,
-    "FLORIAN": 31,
+    "FLORIAN": 34,
     "JEROME": 32,
     "MICKA": 30,
     "ROMU": 27
@@ -119,7 +119,7 @@
       "ANTHONY": 24,
       "BASTIEN": 37,
       "FAB": 45,
-      "FLORIAN": 31,
+      "FLORIAN": 34,
       "JEROME": 32,
       "MICKA": 30,
       "ROMU": 27
@@ -33139,8 +33139,8 @@
             "nom": "J.CLAUSS",
             "statut": "",
             "cap": "",
-            "tj": "0",
-            "tj_pts": 0,
+            "tj": "M",
+            "tj_pts": 3,
             "bm": {
               "val": 0,
               "pts": 0
@@ -33177,7 +33177,7 @@
               "val": 0,
               "pts": 0
             },
-            "pts": 2
+            "pts": 5
           },
           {
             "nom": "M.NIAKHATE",
@@ -35580,6 +35580,36 @@
         "pts": 253
       }
     ],
+    "FLORIAN": [
+      {
+        "j": 1,
+        "pts": 37
+      },
+      {
+        "j": 2,
+        "pts": 70
+      },
+      {
+        "j": 3,
+        "pts": 102
+      },
+      {
+        "j": 4,
+        "pts": 139
+      },
+      {
+        "j": 5,
+        "pts": 176
+      },
+      {
+        "j": 6,
+        "pts": 208
+      },
+      {
+        "j": 7,
+        "pts": 242
+      }
+    ],
     "MICKA": [
       {
         "j": 1,
@@ -35638,36 +35668,6 @@
       {
         "j": 7,
         "pts": 234
-      }
-    ],
-    "FLORIAN": [
-      {
-        "j": 1,
-        "pts": 37
-      },
-      {
-        "j": 2,
-        "pts": 70
-      },
-      {
-        "j": 3,
-        "pts": 102
-      },
-      {
-        "j": 4,
-        "pts": 139
-      },
-      {
-        "j": 5,
-        "pts": 176
-      },
-      {
-        "j": 6,
-        "pts": 208
-      },
-      {
-        "j": 7,
-        "pts": 239
       }
     ],
     "BASTIEN": [
