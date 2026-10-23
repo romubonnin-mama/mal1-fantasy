@@ -456,6 +456,13 @@
           <div id="atk-pd-container"></div>
         </div>
       </div>
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Buteurs — Pénaltys &amp; total des buts</div>
+          <div class="tag" style="background:rgba(255,107,53,0.1);color:var(--accent2)">BM + PM</div>
+        </div>
+        <div id="atk-pen-container"></div>
+      </div>
       <div class="grid-2" style="margin-top:0">
         <div class="card">
           <div class="card-header">
@@ -921,7 +928,7 @@ function toggleJoueur(nom) {
 function buildStats() {
   const cjMap = {}, crMap = {}, capMap = {}, cardsByMgr = {};
   const bmMap = {}, pdMap = {}, ptsMap = {}, csMap = {}, beMap = {};
-  const bmpdM = {}, bmpdA = {}, totalPtsMap = {};
+  const bmpdM = {}, bmpdA = {}, totalPtsMap = {}, penMap = {};
   const attackByMgr = {}, defenseByMgr = {};
   ORDRE_JOUEURS.forEach(mgr => {
     cardsByMgr[mgr] = { cj: 0, cr: 0 };
@@ -974,6 +981,14 @@ function buildStats() {
           if (poste !== 'G') {
             const pmVal  = p.pm  ? (p.pm.val  || 0) : 0;
             const pmaVal = p.pma ? (p.pma.val || 0) : 0;
+            if (bmVal || pmVal || pmaVal) {
+              if (!penMap[nom]) penMap[nom] = { bm: 0, pm: 0, pma: 0, total: 0, mgrs: [] };
+              penMap[nom].bm += bmVal;
+              penMap[nom].pm += pmVal;
+              penMap[nom].pma += pmaVal;
+              penMap[nom].total += bmVal + pmVal;
+              if (!penMap[nom].mgrs.includes(mgr)) penMap[nom].mgrs.push(mgr);
+            }
             const atkVal = bmVal + pdVal + pmVal - pmaVal;
             if (atkVal !== 0) {
               if (!ptsMap[nom]) ptsMap[nom] = { total: 0, mgrs: [] };
@@ -1014,7 +1029,7 @@ function buildStats() {
     });
   });
   Object.values(capMap).forEach(a => a.sort((x, y) => x.j - y.j));
-  return { cjMap, crMap, capMap, cardsByMgr, bmMap, pdMap, ptsMap, csMap, beMap, attackByMgr, defenseByMgr, bmpdM, bmpdA, totalPtsMap };
+  return { cjMap, crMap, capMap, cardsByMgr, bmMap, pdMap, ptsMap, csMap, beMap, attackByMgr, defenseByMgr, bmpdM, bmpdA, totalPtsMap, penMap };
 }
 
 function renderCapStats(capMap) {
@@ -1130,7 +1145,7 @@ function renderCardsStats(cjMap, crMap, cardsByMgr) {
   render(crMap, 'cr-container', 'cr-badge');
 }
 
-function renderAttackStats(bmMap, pdMap, ptsMap, attackByMgr, bmpdM, bmpdA) {
+function renderAttackStats(bmMap, pdMap, ptsMap, attackByMgr, bmpdM, bmpdA, penMap) {
   const topRow = (map, cId, valColor, max = 10) => {
     const items = Object.entries(map).sort((a,b) => b[1].total - a[1].total).slice(0, max);
     if (!items.length) { document.getElementById(cId).innerHTML = '<div style="padding:20px;text-align:center;color:var(--muted);font-size:12px">Aucune donnée</div>'; return; }
@@ -1145,6 +1160,29 @@ function renderAttackStats(bmMap, pdMap, ptsMap, attackByMgr, bmpdM, bmpdA) {
   topRow(pdMap,  'atk-pd-container',  'var(--gold)');
   topRow(bmpdM,  'atk-m-container',   '#10b981', 8);
   topRow(bmpdA,  'atk-a-container',   'var(--danger)', 8);
+
+  // Buteurs : buts dans le jeu, pénaltys marqués / ratés, total des buts (hors gardiens)
+  const penEl = document.getElementById('atk-pen-container');
+  const penItems = Object.entries(penMap || {}).sort((a,b) => b[1].total - a[1].total || b[1].pm - a[1].pm || a[1].pma - b[1].pma);
+  if (!penItems.length) {
+    penEl.innerHTML = '<div style="padding:20px;text-align:center;color:var(--muted);font-size:12px">Aucune donnée</div>';
+  } else {
+    const penCol = 'display:grid;grid-template-columns:28px 1fr 52px 52px 52px 56px;align-items:center;padding:8px 18px;gap:6px;border-bottom:1px solid var(--border)';
+    const num = (v, color) => `<div style="font-family:'Bebas Neue',sans-serif;font-size:16px;text-align:center;color:${v ? color : 'var(--muted)'}">${v || '—'}</div>`;
+    const sum = k => penItems.reduce((s, [, d]) => s + d[k], 0);
+    penEl.innerHTML =
+      `<div style="${penCol};font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;font-weight:600">
+        <div>#</div><div>Joueur</div><div style="text-align:center">⚽ Jeu</div><div style="text-align:center">✅ Pén.</div><div style="text-align:center">❌ Raté</div><div style="text-align:center">Total</div>
+      </div>` + penItems.slice(0, 20).map(([nom, d], i) => `<div style="${penCol};font-size:12px">
+        <div class="rank-num">${i+1}</div>
+        <div class="rank-name"><div>${nom}</div><div style="font-size:10px;font-weight:400">${d.mgrs.map(m => `<span style="color:${(COULEURS[m]||{}).color||'var(--muted)'}">${m}</span>`).join(', ')}</div></div>
+        ${num(d.bm, 'var(--accent2)')}${num(d.pm, 'var(--accent)')}${num(d.pma, 'var(--danger)')}${num(d.total, '#e8eaf0')}
+      </div>`).join('') +
+      `<div style="${penCol};font-size:12px;font-weight:700;border-bottom:none">
+        <div></div><div>Total saison</div>
+        ${num(sum('bm'), 'var(--accent2)')}${num(sum('pm'), 'var(--accent)')}${num(sum('pma'), 'var(--danger)')}${num(sum('total'), '#e8eaf0')}
+      </div>`;
+  }
 
   const colStyle = 'display:grid;grid-template-columns:1fr 60px 60px 70px;align-items:center;padding:9px 18px;gap:8px';
   const sorted = ORDRE_JOUEURS.slice().sort((a,b) => {
@@ -1380,10 +1418,10 @@ Promise.all([
         }
       }
     });
-    const { cjMap, crMap, capMap, cardsByMgr, bmMap, pdMap, ptsMap, csMap, beMap, attackByMgr, defenseByMgr, bmpdM, bmpdA, totalPtsMap } = buildStats();
+    const { cjMap, crMap, capMap, cardsByMgr, bmMap, pdMap, ptsMap, csMap, beMap, attackByMgr, defenseByMgr, bmpdM, bmpdA, totalPtsMap, penMap } = buildStats();
     renderCapStats(capMap);
     renderCardsStats(cjMap, crMap, cardsByMgr);
-    renderAttackStats(bmMap, pdMap, ptsMap, attackByMgr, bmpdM, bmpdA);
+    renderAttackStats(bmMap, pdMap, ptsMap, attackByMgr, bmpdM, bmpdA, penMap);
     renderDefenseStats(csMap, beMap, defenseByMgr);
     renderTopJoueurs(totalPtsMap);
 }).catch(err => console.error('Erreur:', err));
