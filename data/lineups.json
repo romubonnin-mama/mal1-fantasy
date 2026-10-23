@@ -965,5 +965,24 @@
       "capitaine": null,
       "coeff": 1
     }
+  },
+  "8": {
+    "ROMU": {
+      "titulaires": [
+        "M.SAFONOV",
+        "H.HARALDSSON",
+        "E.NUAMAH",
+        "B.LOCKO",
+        "S.SANE",
+        "L.KOLEOSHO",
+        "A.VINICIUS",
+        "M.IFNAOUI",
+        "E.PALMIERI",
+        "P.BRUNNER",
+        "P.MBOUP"
+      ],
+      "capitaine": null,
+      "coeff": 1
+    }
   }
 }
