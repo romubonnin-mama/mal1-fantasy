@@ -444,7 +444,7 @@
         <div class="card">
           <div class="card-header">
             <div class="card-title">Top Buteurs</div>
-            <div class="tag" style="background:rgba(255,107,53,0.1);color:var(--accent2)">BUTS</div>
+            <div class="tag" style="background:rgba(255,107,53,0.1);color:var(--accent2)">BUTS + PÉN.</div>
           </div>
           <div id="atk-bm-container"></div>
         </div>
@@ -965,12 +965,14 @@ function buildStats() {
             capMap[mgr].push({ j, nom, rang, mult, basePts, capPts, extra: capPts - basePts });
           }
           const bmVal = p.bm ? (p.bm.val || 0) : 0;
-          if (bmVal > 0) {
+          // Top Buteurs : buts dans le jeu + pénaltys marqués (PM non inclus dans BM)
+          const butsVal = bmVal + (poste !== 'G' && p.pm ? (p.pm.val || 0) : 0);
+          if (butsVal > 0) {
             if (!bmMap[nom]) bmMap[nom] = { total: 0, mgrs: [] };
-            bmMap[nom].total += bmVal;
+            bmMap[nom].total += butsVal;
             if (!bmMap[nom].mgrs.includes(mgr)) bmMap[nom].mgrs.push(mgr);
-            attackByMgr[mgr].bm += bmVal;
           }
+          if (bmVal > 0) attackByMgr[mgr].bm += bmVal;
           const pdVal = p.pd ? (p.pd.val || 0) : 0;
           if (pdVal > 0) {
             if (!pdMap[nom]) pdMap[nom] = { total: 0, mgrs: [] };
