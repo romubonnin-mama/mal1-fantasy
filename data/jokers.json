@@ -711,5 +711,24 @@
       "club": "Brest"
     },
     "active_from": 8
+  },
+  {
+    "id": 1792737402648,
+    "date": "2026-10-23T06:36:42.648Z",
+    "manager": "ADRIEN",
+    "type": "saison",
+    "out": {
+      "nom": "K.KVARATSKHELIA",
+      "poste": "A",
+      "club": "PSG",
+      "mise": 20,
+      "id": "k.kvaratskhelia__psg__A"
+    },
+    "in": {
+      "nom": "D.NAMASO",
+      "poste": "A",
+      "club": "Auxerre"
+    },
+    "active_from": 8
   }
 ]
