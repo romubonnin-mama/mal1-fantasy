@@ -482,7 +482,7 @@
       <div class="card">
         <div class="card-header">
           <div class="card-title">Classement managers — Attaque</div>
-          <div class="tag">BUTS + PASSES</div>
+          <div class="tag">BUTS + PÉN. + PASSES</div>
         </div>
         <div id="atk-mgr-container"></div>
       </div>
@@ -932,7 +932,7 @@ function buildStats() {
   const attackByMgr = {}, defenseByMgr = {};
   ORDRE_JOUEURS.forEach(mgr => {
     cardsByMgr[mgr] = { cj: 0, cr: 0 };
-    attackByMgr[mgr] = { bm: 0, pd: 0 };
+    attackByMgr[mgr] = { bm: 0, pd: 0, pm: 0 };
     defenseByMgr[mgr] = { cs: 0, be: 0, csPts: 0, bePts: 0, pts: 0 };
   });
   Object.entries(DATA.detail_journees).forEach(([jStr, managers]) => {
@@ -983,6 +983,7 @@ function buildStats() {
           if (poste !== 'G') {
             const pmVal  = p.pm  ? (p.pm.val  || 0) : 0;
             const pmaVal = p.pma ? (p.pma.val || 0) : 0;
+            if (pmVal > 0) attackByMgr[mgr].pm += pmVal;
             if (bmVal || pmVal || pmaVal) {
               if (!penMap[nom]) penMap[nom] = { bm: 0, pm: 0, pma: 0, total: 0, mgrs: [] };
               penMap[nom].bm += bmVal;
@@ -1186,21 +1187,22 @@ function renderAttackStats(bmMap, pdMap, ptsMap, attackByMgr, bmpdM, bmpdA, penM
       </div>`;
   }
 
-  const colStyle = 'display:grid;grid-template-columns:1fr 60px 60px 70px;align-items:center;padding:9px 18px;gap:8px';
+  const colStyle = 'display:grid;grid-template-columns:1fr 54px 54px 54px 62px;align-items:center;padding:9px 18px;gap:6px';
   const sorted = ORDRE_JOUEURS.slice().sort((a,b) => {
-    const da = attackByMgr[a]||{bm:0,pd:0}, db = attackByMgr[b]||{bm:0,pd:0};
-    return (db.bm+db.pd) - (da.bm+da.pd);
+    const da = attackByMgr[a]||{bm:0,pd:0,pm:0}, db = attackByMgr[b]||{bm:0,pd:0,pm:0};
+    return (db.bm+db.pm+db.pd) - (da.bm+da.pm+da.pd);
   });
   document.getElementById('atk-mgr-container').innerHTML =
     `<div style="${colStyle};font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;font-weight:600;border-bottom:1px solid var(--border)">
-      <div>Manager</div><div style="text-align:center">⚽ Buts</div><div style="text-align:center">🎯 Passes</div><div style="text-align:center">Total</div>
+      <div>Manager</div><div style="text-align:center">⚽ Buts</div><div style="text-align:center">✅ Pén.</div><div style="text-align:center">🎯 Passes</div><div style="text-align:center">Total</div>
     </div>` + sorted.map((mgr, i) => {
-      const d = attackByMgr[mgr]||{bm:0,pd:0};
+      const d = attackByMgr[mgr]||{bm:0,pd:0,pm:0};
       const c = COULEURS[mgr]||{color:'#e8eaf0'};
-      const total = d.bm + d.pd;
+      const total = d.bm + d.pm + d.pd;
       return `<div style="${colStyle};border-bottom:1px solid var(--border);font-size:12px">
         <div style="font-weight:600;color:${c.color}">${MEDAILLES[i]||''} ${mgr}</div>
         <div style="font-family:'Bebas Neue',sans-serif;font-size:16px;text-align:center;color:var(--accent2)">${d.bm||'—'}</div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:16px;text-align:center;color:var(--accent)">${d.pm||'—'}</div>
         <div style="font-family:'Bebas Neue',sans-serif;font-size:16px;text-align:center;color:var(--gold)">${d.pd||'—'}</div>
         <div style="font-family:'Bebas Neue',sans-serif;font-size:16px;text-align:center">${total||'—'}</div>
       </div>`;
