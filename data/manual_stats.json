@@ -2292,53 +2292,6 @@
     }
   },
   "8": {
-    "BASTIEN": {
-      "R.RISSER": {},
-      "M.UDOL": {},
-      "T.WEAH": {},
-      "V.ALEXSANDRO": {},
-      "A.WITSEL": {
-        "sort_a": 76
-      },
-      "M.TALBI": {},
-      "J.CHOTARD": {
-        "sort_a": 80
-      },
-      "A.THOMASSON": {},
-      "D.ZAKARIA": {},
-      "A.HARIT": {},
-      "D.DOUE": {}
-    },
-    "ADRIEN": {
-      "K.TRAPP": {},
-      "F.NAZINHO": {},
-      "R.PERRAUD": {},
-      "J.OSO": {},
-      "V.VITINHA": {},
-      "R.FAIVRE": {},
-      "P.LEES-MELOU": {},
-      "H.MAGNETTI": {
-        "sort_a": 87
-      },
-      "F.THAUVIN": {},
-      "G.YASSINE": {},
-      "D.NAMASO": {}
-    },
-    "FLORIAN": {
-      "B.SAMBA": {},
-      "D.COPPOLA": {},
-      "J.CLAUSS": {
-        "sort_a": 54
-      },
-      "O.CAMARA": {},
-      "A.GOLOVINE": {},
-      "S.SZYMANSKI": {},
-      "B.VANDENBOOMEN": {},
-      "T.JORGENSEN": {},
-      "I.PAIXAO": {},
-      "L.MAFOUTA": {},
-      "C.TENGSTEDT": {}
-    },
     "MICKA": {
       "B.OZER": {},
       "C.CRESSWELL": {},
@@ -2358,6 +2311,48 @@
         "assists": 1
       }
     },
+    "ADRIEN": {
+      "F.NAZINHO": {},
+      "R.PERRAUD": {},
+      "J.OSO": {},
+      "V.VITINHA": {},
+      "R.FAIVRE": {},
+      "H.MAGNETTI": {
+        "sort_a": 87
+      },
+      "G.YASSINE": {},
+      "D.NAMASO": {},
+      "K.TRAPP": {
+        "absent": true
+      },
+      "P.LEES-MELOU": {
+        "full_match": true,
+        "yellow_cards": true
+      },
+      "F.THAUVIN": {
+        "full_match": true,
+        "goals": 1,
+        "assists": 1,
+        "yellow_cards": true
+      }
+    },
+    "FLORIAN": {
+      "B.SAMBA": {},
+      "J.CLAUSS": {
+        "sort_a": 54
+      },
+      "O.CAMARA": {},
+      "A.GOLOVINE": {},
+      "S.SZYMANSKI": {},
+      "B.VANDENBOOMEN": {},
+      "T.JORGENSEN": {},
+      "I.PAIXAO": {},
+      "L.MAFOUTA": {},
+      "C.TENGSTEDT": {},
+      "D.COPPOLA": {
+        "full_match": true
+      }
+    },
     "ANTHONY": {
       "D.GREIF": {},
       "N.AGUERD": {},
@@ -2366,12 +2361,16 @@
         "pen_mm_saved": 1
       },
       "W.PACHO": {},
-      "I.KEBBAL": {},
+      "I.KEBBAL": {
+        "sort_a": 76
+      },
       "P.SULC": {},
       "V.RONGIER": {},
       "C.CASSERES": {},
       "M.ABLINE": {},
-      "P.PAGIS": {},
+      "P.PAGIS": {
+        "sort_a": 76
+      },
       "D.BAKWA": {}
     },
     "FAB": {
@@ -2395,29 +2394,14 @@
         "assists": 1,
         "yellow_cards": true
       },
-      "L.SINAYOKO": {},
       "L.AJORQUE": {
         "full_match": true,
         "goals": 1,
         "yellow_cards": true
-      }
-    },
-    "ROMU": {
-      "M.SAFONOV": {},
-      "A.VINICIUS": {},
-      "B.LOCKO": {
-        "full_match": true,
-        "yellow_cards": true
       },
-      "S.SANE": {},
-      "E.PALMIERI": {},
-      "L.KOLEOSHO": {},
-      "H.HARALDSSON": {},
-      "M.IFNAOUI": {},
-      "E.NUAMAH": {},
-      "P.BRUNNER": {},
-      "P.MBOUP": {
-        "sort_a": 70
+      "L.SINAYOKO": {
+        "full_match": true,
+        "assists": 1
       }
     },
     "JEROME": {
@@ -2432,6 +2416,48 @@
       "J.MAKENGO": {},
       "L.CAMARA": {},
       "C.ARCHER": {}
+    },
+    "ROMU": {
+      "M.SAFONOV": {},
+      "A.VINICIUS": {},
+      "B.LOCKO": {
+        "full_match": true,
+        "yellow_cards": true
+      },
+      "S.SANE": {},
+      "E.PALMIERI": {},
+      "L.KOLEOSHO": {
+        "entre_a": 46,
+        "goals": 1
+      },
+      "H.HARALDSSON": {},
+      "M.IFNAOUI": {},
+      "E.NUAMAH": {},
+      "P.BRUNNER": {},
+      "P.MBOUP": {
+        "sort_a": 70
+      }
+    },
+    "BASTIEN": {
+      "T.WEAH": {},
+      "V.ALEXSANDRO": {},
+      "A.WITSEL": {
+        "sort_a": 76
+      },
+      "M.TALBI": {},
+      "J.CHOTARD": {
+        "sort_a": 80
+      },
+      "A.THOMASSON": {},
+      "D.ZAKARIA": {},
+      "A.HARIT": {},
+      "D.DOUE": {},
+      "R.RISSER": {
+        "full_match": true
+      },
+      "M.UDOL": {
+        "full_match": true
+      }
     }
   }
 }
