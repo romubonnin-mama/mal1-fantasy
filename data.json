@@ -13,7 +13,7 @@
     {
       "rang": 3,
       "nom": "MICKA",
-      "pts": 274
+      "pts": 273
     },
     {
       "rang": 4,
@@ -50,7 +50,7 @@
     "FAB": 37,
     "FLORIAN": 41,
     "JEROME": 25,
-    "MICKA": 36,
+    "MICKA": 35,
     "ROMU": 23
   },
   "historique": {
@@ -131,7 +131,7 @@
       "FAB": 37,
       "FLORIAN": 41,
       "JEROME": 25,
-      "MICKA": 36,
+      "MICKA": 35,
       "ROMU": 23
     }
   },
@@ -36130,14 +36130,14 @@
               "pts": 0
             },
             "cj": {
-              "val": 0,
-              "pts": 0
+              "val": 1,
+              "pts": -1
             },
             "cr": {
               "val": 0,
               "pts": 0
             },
-            "pts": 2
+            "pts": 1
           },
           {
             "nom": "D.NAMASO",
@@ -36174,14 +36174,14 @@
               "pts": 0
             },
             "cj": {
-              "val": 1,
-              "pts": -1
+              "val": 0,
+              "pts": 0
             },
             "cr": {
               "val": 0,
               "pts": 0
             },
-            "pts": 2
+            "pts": 3
           }
         ]
       },
@@ -39530,14 +39530,14 @@
               "pts": 0
             },
             "cj": {
-              "val": 0,
-              "pts": 0
+              "val": 1,
+              "pts": -1
             },
             "cr": {
               "val": 0,
               "pts": 0
             },
-            "pts": 3
+            "pts": 2
           },
           {
             "nom": "L.RAOLISOA",
@@ -39589,11 +39589,11 @@
             "nom": "R.NDIAYE",
             "statut": "",
             "cap": "",
-            "tj": "13",
-            "tj_pts": 1,
+            "tj": "61",
+            "tj_pts": 2,
             "bm": {
-              "val": 1,
-              "pts": 2
+              "val": 0,
+              "pts": 0
             },
             "be": {
               "val": 0,
@@ -39620,8 +39620,8 @@
               "pts": 0
             },
             "cj": {
-              "val": 1,
-              "pts": -1
+              "val": 0,
+              "pts": 0
             },
             "cr": {
               "val": 0,
@@ -40669,7 +40669,7 @@
       },
       {
         "j": 8,
-        "pts": 274
+        "pts": 273
       }
     ],
     "BASTIEN": [
