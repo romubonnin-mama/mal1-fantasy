@@ -2292,11 +2292,37 @@
     }
   },
   "8": {
+    "ADRIEN": {
+      "K.TRAPP": {
+        "absent": true
+      },
+      "F.NAZINHO": {},
+      "R.PERRAUD": {},
+      "J.OSO": {},
+      "V.VITINHA": {},
+      "R.FAIVRE": {},
+      "P.LEES-MELOU": {
+        "full_match": true,
+        "yellow_cards": true
+      },
+      "H.MAGNETTI": {
+        "sort_a": 87
+      },
+      "F.THAUVIN": {
+        "full_match": true,
+        "goals": 1,
+        "assists": 1,
+        "yellow_cards": true
+      },
+      "G.YASSINE": {},
+      "D.NAMASO": {}
+    },
     "MICKA": {
       "B.OZER": {},
       "C.CRESSWELL": {},
       "A.KOUASSI": {},
       "V.VANDERSON": {},
+      "R.NDIAYE": {},
       "K.DOUMBIA": {
         "sort_a": 80,
         "yellow_cards": true
@@ -2304,74 +2330,12 @@
       "A.DONNUM": {},
       "A.MILLE": {},
       "H.ABDELLI": {},
-      "O.EDOUARD": {},
       "A.GOUIRI": {},
       "M.AMOURA": {
         "sort_a": 76,
         "assists": 1
-      }
-    },
-    "ADRIEN": {
-      "F.NAZINHO": {},
-      "R.PERRAUD": {},
-      "J.OSO": {},
-      "V.VITINHA": {},
-      "R.FAIVRE": {},
-      "H.MAGNETTI": {
-        "sort_a": 87
       },
-      "G.YASSINE": {},
-      "D.NAMASO": {},
-      "K.TRAPP": {
-        "absent": true
-      },
-      "P.LEES-MELOU": {
-        "full_match": true,
-        "yellow_cards": true
-      },
-      "F.THAUVIN": {
-        "full_match": true,
-        "goals": 1,
-        "assists": 1,
-        "yellow_cards": true
-      }
-    },
-    "FLORIAN": {
-      "B.SAMBA": {},
-      "J.CLAUSS": {
-        "sort_a": 54
-      },
-      "O.CAMARA": {},
-      "A.GOLOVINE": {},
-      "S.SZYMANSKI": {},
-      "B.VANDENBOOMEN": {},
-      "T.JORGENSEN": {},
-      "I.PAIXAO": {},
-      "L.MAFOUTA": {},
-      "C.TENGSTEDT": {},
-      "D.COPPOLA": {
-        "full_match": true
-      }
-    },
-    "ANTHONY": {
-      "D.GREIF": {},
-      "N.AGUERD": {},
-      "K.LALA": {
-        "full_match": true,
-        "pen_mm_saved": 1
-      },
-      "W.PACHO": {},
-      "I.KEBBAL": {
-        "sort_a": 76
-      },
-      "P.SULC": {},
-      "V.RONGIER": {},
-      "C.CASSERES": {},
-      "M.ABLINE": {},
-      "P.PAGIS": {
-        "sort_a": 76
-      },
-      "D.BAKWA": {}
+      "O.EDOUARD": {}
     },
     "FAB": {
       "Y.DIOUF": {
@@ -2394,15 +2358,53 @@
         "assists": 1,
         "yellow_cards": true
       },
+      "L.SINAYOKO": {
+        "full_match": true,
+        "assists": 1
+      },
       "L.AJORQUE": {
         "full_match": true,
         "goals": 1,
         "yellow_cards": true
-      },
-      "L.SINAYOKO": {
-        "full_match": true,
-        "assists": 1
       }
+    },
+    "BASTIEN": {
+      "R.RISSER": {
+        "full_match": true
+      },
+      "M.UDOL": {
+        "full_match": true
+      },
+      "T.WEAH": {},
+      "V.ALEXSANDRO": {},
+      "A.WITSEL": {
+        "sort_a": 76
+      },
+      "M.TALBI": {},
+      "J.CHOTARD": {
+        "sort_a": 80
+      },
+      "A.THOMASSON": {},
+      "D.ZAKARIA": {},
+      "A.HARIT": {},
+      "D.DOUE": {}
+    },
+    "FLORIAN": {
+      "B.SAMBA": {},
+      "D.COPPOLA": {
+        "full_match": true
+      },
+      "J.CLAUSS": {
+        "sort_a": 54
+      },
+      "O.CAMARA": {},
+      "A.GOLOVINE": {},
+      "S.SZYMANSKI": {},
+      "B.VANDENBOOMEN": {},
+      "T.JORGENSEN": {},
+      "I.PAIXAO": {},
+      "L.MAFOUTA": {},
+      "C.TENGSTEDT": {}
     },
     "JEROME": {
       "F.JORGENSEN": {},
@@ -2438,26 +2440,25 @@
         "sort_a": 70
       }
     },
-    "BASTIEN": {
-      "T.WEAH": {},
-      "V.ALEXSANDRO": {},
-      "A.WITSEL": {
+    "ANTHONY": {
+      "D.GREIF": {},
+      "N.AGUERD": {},
+      "K.LALA": {
+        "full_match": true,
+        "pen_mm_saved": 1
+      },
+      "W.PACHO": {},
+      "I.KEBBAL": {
         "sort_a": 76
       },
-      "M.TALBI": {},
-      "J.CHOTARD": {
-        "sort_a": 80
+      "P.SULC": {},
+      "V.RONGIER": {},
+      "C.CASSERES": {},
+      "M.ABLINE": {},
+      "P.PAGIS": {
+        "sort_a": 67
       },
-      "A.THOMASSON": {},
-      "D.ZAKARIA": {},
-      "A.HARIT": {},
-      "D.DOUE": {},
-      "R.RISSER": {
-        "full_match": true
-      },
-      "M.UDOL": {
-        "full_match": true
-      }
+      "D.BAKWA": {}
     }
   }
 }
