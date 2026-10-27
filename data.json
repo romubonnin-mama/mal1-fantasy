@@ -23,12 +23,12 @@
     {
       "rang": 5,
       "nom": "ADRIEN",
-      "pts": 261
+      "pts": 259
     },
     {
       "rang": 6,
       "nom": "ROMU",
-      "pts": 253
+      "pts": 252
     },
     {
       "rang": 7,
@@ -44,14 +44,14 @@
   "derniere_journee": 8,
   "journee_ouverte": 9,
   "scores_journee": {
-    "ADRIEN": 27,
+    "ADRIEN": 25,
     "ANTHONY": 23,
     "BASTIEN": 33,
     "FAB": 40,
     "FLORIAN": 41,
     "JEROME": 25,
     "MICKA": 35,
-    "ROMU": 34
+    "ROMU": 33
   },
   "historique": {
     "1": {
@@ -125,14 +125,14 @@
       "ROMU": 27
     },
     "8": {
-      "ADRIEN": 27,
+      "ADRIEN": 25,
       "ANTHONY": 23,
       "BASTIEN": 33,
       "FAB": 40,
       "FLORIAN": 41,
       "JEROME": 25,
       "MICKA": 35,
-      "ROMU": 34
+      "ROMU": 33
     }
   },
   "detail_journees": {
@@ -36154,8 +36154,8 @@
               "pts": 0
             },
             "bcsc": {
-              "val": 0,
-              "pts": 0
+              "val": 1,
+              "pts": -2
             },
             "cs": {
               "val": 0,
@@ -36181,7 +36181,7 @@
               "val": 0,
               "pts": 0
             },
-            "pts": 3
+            "pts": 1
           }
         ]
       },
@@ -40424,14 +40424,14 @@
               "pts": 0
             },
             "cj": {
-              "val": 0,
-              "pts": 0
+              "val": 1,
+              "pts": -1
             },
             "cr": {
               "val": 0,
               "pts": 0
             },
-            "pts": 3
+            "pts": 2
           },
           {
             "nom": "J.ORTEGA",
@@ -40737,7 +40737,7 @@
       },
       {
         "j": 8,
-        "pts": 261
+        "pts": 259
       }
     ],
     "ROMU": [
@@ -40771,7 +40771,7 @@
       },
       {
         "j": 8,
-        "pts": 253
+        "pts": 252
       }
     ],
     "ANTHONY": [

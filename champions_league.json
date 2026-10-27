@@ -211,9 +211,9 @@
         {
           "a": "ADRIEN",
           "b": "JEROME",
-          "pts_a": 27,
+          "pts_a": 25,
           "pts_b": 25,
-          "vainqueur": "ADRIEN"
+          "vainqueur": null
         },
         {
           "a": "ANTHONY",
@@ -226,7 +226,7 @@
           "a": "FAB",
           "b": "ROMU",
           "pts_a": 40,
-          "pts_b": 34,
+          "pts_b": 33,
           "vainqueur": "FAB"
         },
         {
@@ -268,11 +268,11 @@
     },
     {
       "nom": "JEROME",
-      "pts": 4,
+      "pts": 5,
       "v": 1,
-      "n": 1,
-      "d": 1,
-      "diff_h2h": 5,
+      "n": 2,
+      "d": 0,
+      "diff_h2h": 7,
       "bm": 2,
       "pd": 4,
       "cs": 2,
@@ -298,24 +298,11 @@
       "v": 1,
       "n": 0,
       "d": 2,
-      "diff_h2h": -1,
+      "diff_h2h": 0,
       "bm": 3,
       "pd": 3,
       "cs": 5,
       "cr": 2,
-      "cj": 8
-    },
-    {
-      "nom": "ADRIEN",
-      "pts": 3,
-      "v": 1,
-      "n": 0,
-      "d": 2,
-      "diff_h2h": -5,
-      "bm": 2,
-      "pd": 4,
-      "cs": 3,
-      "cr": 0,
       "cj": 8
     },
     {
@@ -337,12 +324,25 @@
       "v": 1,
       "n": 0,
       "d": 2,
-      "diff_h2h": -11,
+      "diff_h2h": -12,
       "bm": 3,
       "pd": 1,
       "cs": 3,
       "cr": 0,
-      "cj": 3
+      "cj": 4
+    },
+    {
+      "nom": "ADRIEN",
+      "pts": 1,
+      "v": 0,
+      "n": 1,
+      "d": 2,
+      "diff_h2h": -7,
+      "bm": 2,
+      "pd": 4,
+      "cs": 3,
+      "cr": 0,
+      "cj": 8
     }
   ],
   "bracket": {
