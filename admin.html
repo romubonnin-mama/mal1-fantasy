@@ -126,6 +126,11 @@ header h1 { font-size: 18px; font-weight: 700; color: var(--accent); }
   background: var(--surface2); border: 1px solid var(--border); color: var(--text);
   padding: 3px 8px; border-radius: 4px; font-size: 13px; width: 100%;
 }
+.roster-edit-btn {
+  background: none; border: 1px solid var(--border); color: var(--muted); border-radius: 4px;
+  padding: 2px 6px; font-size: 12px; cursor: pointer; flex-shrink: 0;
+}
+.roster-edit-btn:hover { color: var(--text); border-color: var(--accent); }
 
 /* ── Panneau joker OUT/IN ── */
 .joker-panel { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 16px; margin-bottom: 20px; }
@@ -391,7 +396,8 @@ header h1 { font-size: 18px; font-weight: 700; color: var(--accent); }
     </div>
 
     <p style="color:var(--muted);margin-bottom:16px;font-size:13px">
-      Édition libre de l'effectif (hors joker). Double-cliquez sur un nom pour l'éditer directement.
+      Édition libre de l'effectif (hors joker). Double-cliquez sur un nom pour l'éditer directement,
+      ou cliquez sur ✏️ pour changer le poste ou le club d'un joueur (ex : repositionnement par son club).
     </p>
     <div id="roster-grid" class="roster-grid"></div>
     <div style="margin-top:16px">
@@ -1353,7 +1359,9 @@ function renderRoster() {
           ${logoHtml}
           <input class="roster-nom-input" data-manager="${manager}" data-poste="${poste}" data-orig="${nom}"
                  value="${nom}" title="Double-cliquez pour modifier">
+          <button class="roster-edit-btn" title="Modifier le poste / club">✏️</button>
         `;
+        row.querySelector('.roster-edit-btn').addEventListener('click', () => openPlayerEdit(manager, poste, nom));
         card.appendChild(row);
       }
     }
@@ -1371,6 +1379,90 @@ async function saveRoster() {
   await api('POST', '/roster', newRoster);
   ROSTER = newRoster;
   toast('✅ Effectifs sauvegardés');
+  renderLineups();
+  populateJokerForm();
+}
+
+// Édition d'un joueur (poste / club) sans passer par un joker : met à jour
+// roster.json ET Firestore (managers/{nom}.joueurs, source lue par "Ma Compo"),
+// comme applyJoker(), pour que les deux sources restent cohérentes.
+let PLAYER_EDIT = null;
+
+async function openPlayerEdit(manager, poste, nom) {
+  PLAYER_EDIT = { manager, poste, nom, club: '', found: false };
+  const status = document.getElementById('player-edit-status');
+  document.getElementById('player-edit-title').textContent = `${nom} — ${manager}`;
+  document.getElementById('player-edit-poste').value = poste;
+  const clubs = (window.SEASON_CLUBS && window.SEASON_CLUBS.length) ? window.SEASON_CLUBS : JOKER_CLUBS_FALLBACK;
+  const clubSel = document.getElementById('player-edit-club');
+  clubSel.innerHTML = clubs.map(c => `<option value="${c}">${c}</option>`).join('');
+  status.textContent = 'Chargement du club…';
+  document.getElementById('player-edit-modal').style.display = 'flex';
+  try {
+    const p = await window.playerGetFirestore(manager, nom, poste);
+    if (!p) {
+      status.textContent = `⚠️ ${nom} (${poste}) introuvable dans l'effectif Firestore de ${manager} — utilise "📥 Synchro roster.json" (onglet Enchères) avant de le modifier.`;
+      return;
+    }
+    PLAYER_EDIT.found = true;
+    PLAYER_EDIT.club = p.club || '';
+    if (p.club && !clubs.includes(p.club)) clubSel.insertAdjacentHTML('afterbegin', `<option value="${p.club}">${p.club}</option>`);
+    if (p.club) clubSel.value = p.club;
+    status.textContent = '';
+  } catch (e) {
+    status.textContent = '⚠️ ' + e.message;
+  }
+}
+
+function closePlayerEdit() {
+  document.getElementById('player-edit-modal').style.display = 'none';
+  PLAYER_EDIT = null;
+}
+
+async function savePlayerEdit() {
+  if (!PLAYER_EDIT) return;
+  if (!PLAYER_EDIT.found) { toast('Joueur introuvable sur Firestore — modification impossible', 'err'); return; }
+  const { manager, poste: oldPoste, nom, club: oldClub } = PLAYER_EDIT;
+  const newPoste = document.getElementById('player-edit-poste').value;
+  const newClub  = document.getElementById('player-edit-club').value;
+  if (newPoste === oldPoste && newClub === oldClub) { closePlayerEdit(); return; }
+
+  let msg = `Modifier ${nom} (${manager}) ?\n`;
+  if (newPoste !== oldPoste) msg += `Poste : ${oldPoste} → ${newPoste}\n`;
+  if (newClub !== oldClub)   msg += `Club : ${oldClub || '?'} → ${newClub}\n`;
+  if (newPoste !== oldPoste) {
+    msg += `\nLes journées déjà calculées gardent leurs points. Attention : recalculer une ancienne journée la recalculera avec le nouveau poste.`;
+    if ((LINEUPS[manager]?.titulaires || []).includes(nom))
+      msg += `\n\n${nom} est titulaire dans la compo J${currentJournee} de ${manager} : vérifie qu'elle respecte toujours la répartition des postes.`;
+  }
+  if (!confirm(msg)) return;
+
+  try {
+    await window.playerEditFirestore(manager, nom, oldPoste, newPoste, newClub);
+  } catch (e) {
+    toast('❌ ' + e.message, 'err');
+    return;
+  }
+
+  if (newPoste !== oldPoste) {
+    const oldList = ROSTER[manager][oldPoste] || [];
+    const idx = oldList.indexOf(nom);
+    if (idx !== -1) oldList.splice(idx, 1);
+    if (!ROSTER[manager][newPoste]) ROSTER[manager][newPoste] = [];
+    ROSTER[manager][newPoste].push(nom);
+    await api('POST', '/roster', ROSTER);
+  }
+
+  // Logo (admin uniquement) : met à jour clubs.json si le club est reconnu
+  const clubId = (window.CLUB_IDS_A || {})[(newClub || '').toUpperCase().trim()];
+  if (newClub !== oldClub && clubId) {
+    CLUBS[nom] = String(clubId);
+    api('POST', '/clubs', CLUBS).catch(e => console.warn('clubs.json non synchronisé :', e));
+  }
+
+  closePlayerEdit();
+  toast(`✅ ${nom} modifié (roster.json + Firestore) — pense à "🚀 Publier sur le site"`);
+  renderRoster();
   renderLineups();
   populateJokerForm();
 }
@@ -3308,6 +3400,37 @@ window.jokerRevertFirestore = async function(manager, outObj, inNom, inPoste) {
   mgrDocs[manager] = { ...mgrDoc, joueurs: finalJoueurs };
 };
 
+// Édition d'un joueur (onglet Effectifs, bouton ✏️) : lecture / mise à jour du
+// poste et du club dans managers/{nom}.joueurs, appelées depuis openPlayerEdit()/
+// savePlayerEdit() (script principal) via window.*.
+async function getMgrDoc(manager) {
+  if (mgrDocs[manager]) return mgrDocs[manager];
+  const snap = await getDoc(doc(db, 'managers', manager));
+  return snap.exists() ? snap.data() : { joueurs: [] };
+}
+
+window.playerGetFirestore = async function(manager, nom, poste) {
+  const mgrDoc = await getMgrDoc(manager);
+  return (mgrDoc.joueurs || []).find(x => (x.nom || '').toUpperCase() === nom.toUpperCase() && x.poste === poste) || null;
+};
+
+window.playerEditFirestore = async function(manager, nom, oldPoste, newPoste, newClub) {
+  const mgrDoc = await getMgrDoc(manager);
+  const joueurs = (mgrDoc.joueurs || []).slice();
+  const idx = joueurs.findIndex(x => (x.nom || '').toUpperCase() === nom.toUpperCase() && x.poste === oldPoste);
+  if (idx === -1) {
+    throw new Error(`${nom} (${oldPoste}) introuvable dans l'effectif Firestore de ${manager}. Utilise "📥 Synchro roster.json" pour repartir d'un état cohérent.`);
+  }
+  const p = joueurs[idx];
+  joueurs[idx] = {
+    ...p,
+    id: `${(p.nom || nom).toLowerCase()}__${newClub.toLowerCase()}__${newPoste}`,
+    club: newClub, poste: newPoste,
+  };
+  await setDoc(doc(db, 'managers', manager), { ...mgrDoc, joueurs });
+  mgrDocs[manager] = { ...mgrDoc, joueurs };
+};
+
 // ── Synchro roster.json depuis Firestore ───────────────────
 document.getElementById('enc-sync-roster-btn').addEventListener('click', async () => {
   const btn = document.getElementById('enc-sync-roster-btn');
@@ -3876,6 +3999,30 @@ async function resetCompilation(round) {
     </div>
     <div id="invite-modal-status" style="font-size:12px;color:#00e5a0;min-height:16px;margin-bottom:12px"></div>
     <button id="invite-modal-close" style="width:100%;padding:9px;background:#1e2535;border:1px solid #2a3348;color:#e8eaf0;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer">Fermer</button>
+  </div>
+</div>
+
+<div id="player-edit-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:999;align-items:center;justify-content:center;padding:16px">
+  <div style="background:#1e2535;border:1px solid #2a3348;border-radius:12px;padding:20px;width:100%;max-width:420px">
+    <div style="font-weight:700;font-size:14px;margin-bottom:4px">✏️ Modifier le joueur</div>
+    <div id="player-edit-title" style="font-size:12px;color:#8892a4;margin-bottom:14px"></div>
+    <div style="display:grid;grid-template-columns:.6fr 1fr;gap:10px;margin-bottom:10px">
+      <div>
+        <label class="joker-lbl">Poste</label>
+        <select id="player-edit-poste" class="joker-select">
+          <option value="G">G</option><option value="D">D</option><option value="M">M</option><option value="A">A</option>
+        </select>
+      </div>
+      <div>
+        <label class="joker-lbl">Club</label>
+        <select id="player-edit-club" class="joker-select"></select>
+      </div>
+    </div>
+    <div id="player-edit-status" style="font-size:12px;color:#fbbf24;min-height:16px;margin-bottom:12px"></div>
+    <div style="display:flex;gap:8px">
+      <button class="btn btn-primary" style="flex:1" onclick="savePlayerEdit()">💾 Enregistrer</button>
+      <button class="btn btn-subtle" style="flex:1" onclick="closePlayerEdit()">Annuler</button>
+    </div>
   </div>
 </div>
 
