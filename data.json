@@ -3,7 +3,7 @@
     {
       "rang": 1,
       "nom": "FAB",
-      "pts": 293
+      "pts": 291
     },
     {
       "rang": 2,
@@ -47,7 +47,7 @@
     "ADRIEN": 25,
     "ANTHONY": 23,
     "BASTIEN": 33,
-    "FAB": 40,
+    "FAB": 38,
     "FLORIAN": 41,
     "JEROME": 25,
     "MICKA": 35,
@@ -128,7 +128,7 @@
       "ADRIEN": 25,
       "ANTHONY": 23,
       "BASTIEN": 33,
-      "FAB": 40,
+      "FAB": 38,
       "FLORIAN": 41,
       "JEROME": 25,
       "MICKA": 35,
@@ -37960,8 +37960,8 @@
               "pts": 0
             },
             "pd": {
-              "val": 1,
-              "pts": 2
+              "val": 0,
+              "pts": 0
             },
             "cj": {
               "val": 1,
@@ -37971,7 +37971,7 @@
               "val": 0,
               "pts": 0
             },
-            "pts": 6
+            "pts": 4
           },
           {
             "nom": "L.SINAYOKO",
@@ -40601,7 +40601,7 @@
       },
       {
         "j": 8,
-        "pts": 293
+        "pts": 291
       }
     ],
     "FLORIAN": [
