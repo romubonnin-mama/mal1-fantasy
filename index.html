@@ -228,6 +228,13 @@
   .classement-table { width: 100%; border-collapse: collapse; }
   .classement-table th, .classement-table td { padding: 8px 10px; border-bottom: 1px solid var(--border); font-size: 12px; }
   .classement-table th { color: var(--muted); font-size: 11px; font-weight: 700; letter-spacing: .06em; text-align: left; }
+  .cap-ref-sub, .cap-short { display: none; }
+  @media (max-width: 599px) {
+    .cap-tbl th, .cap-tbl td { padding: 7px 4px; font-size: 11px; letter-spacing: 0; }
+    .cap-ref-col, .cap-long { display: none; }
+    .cap-ref-sub { display: block; font-size: 9px; font-weight: 400; color: var(--muted); }
+    .cap-short { display: inline; }
+  }
   .joker-counters-tbl { white-space: nowrap; }
   .joker-counters-tbl th, .joker-counters-tbl td { padding: 8px 12px; }
   .joker-history-item { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; padding: 6px 0; border-bottom: 1px solid var(--border); font-size: 12px; }
@@ -718,23 +725,26 @@ function renderClassementCapitaine(journee) {
     const capTxt = `<td style="text-align:center;${nbCap >= 5 ? 'color:var(--danger);font-weight:700' : ''}">${nbCap}/5</td>`;
     if (m.rang === 1) {
       return `<tr><td>${m.rang}</td><td style="font-weight:700;color:${mColor}">${m.nom}</td><td style="text-align:right">${m.pts}</td>` +
-             `<td colspan="3" style="text-align:center;color:var(--danger)">capitaine interdit (1er)</td>${capTxt}</tr>`;
+             `<td style="text-align:center;color:var(--muted)">—</td><td class="cap-ref-col" style="color:var(--muted)">—</td>` +
+             `<td style="text-align:right;color:var(--danger)">interdit<span class="cap-long"> (1er)</span></td>${capTxt}</tr>`;
     }
     const ref = m.rang === 2 ? ranked[0] : ranked[i - 2];
     const plafond = Math.max(0, ref.pts - m.pts);
     const coeff = Math.min(Math.max(m.rang - 1, 1), 7);
     return `<tr><td>${m.rang}</td><td style="font-weight:700;color:${mColor}">${m.nom}</td><td style="text-align:right">${m.pts}</td>` +
            `<td style="text-align:center;font-weight:700;color:var(--accent)">x${coeff}</td>` +
-           `<td>${ref.nom} (${ref.pts})</td>` +
-           `<td style="text-align:right;font-weight:700">${plafond} pts</td>${capTxt}</tr>`;
+           `<td class="cap-ref-col">${ref.nom} (${ref.pts})</td>` +
+           `<td style="text-align:right;font-weight:700">${plafond} pts<span class="cap-ref-sub">vs ${ref.nom}</span></td>${capTxt}</tr>`;
   }).join('');
 
   document.getElementById('capitaine-ref-table').innerHTML = `
     <div style="overflow-x:auto;-webkit-overflow-scrolling:touch">
-      <table class="classement-table">
-        <thead><tr><th>Rang</th><th>Manager</th><th style="text-align:right">Pts J${journee - 1}</th>
-          <th style="text-align:center">Coeff.</th><th>Réf. plafond</th><th style="text-align:right">Bonus max</th>
-          <th style="text-align:center">Capitaines</th></tr></thead>
+      <table class="classement-table cap-tbl">
+        <thead><tr><th><span class="cap-long">Rang</span><span class="cap-short">#</span></th><th>Manager</th>
+          <th style="text-align:right">Pts<span class="cap-long"> J${journee - 1}</span></th>
+          <th style="text-align:center">Coeff<span class="cap-long">.</span></th><th class="cap-ref-col">Réf. plafond</th>
+          <th style="text-align:right"><span class="cap-long">Bonus max</span><span class="cap-short">Max</span></th>
+          <th style="text-align:center"><span class="cap-long">Capitaines</span><span class="cap-short">Cap.</span></th></tr></thead>
         <tbody>${rows}</tbody>
       </table>
     </div>`;
