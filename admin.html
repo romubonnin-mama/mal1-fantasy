@@ -814,6 +814,11 @@ function capitainesUtilises(manager, journee) {
   return { count: joueurs.size, joueurs };
 }
 
+// 5 capitaines/saison, moins ceux transformés en joker (joker "capitaine transformé").
+function capitainesMax(manager) {
+  return 5 - JOKERS.filter(j => j.manager === manager && j.type === 'capitaine').length;
+}
+
 // Règlement 2026-27 : 11 titulaires, 1 gardien, >=3 D, >=3 M, 1 à 3 A.
 // Renvoie la liste des problèmes (vide si la compo est valide).
 function compoErrors(manager, titus) {
@@ -855,7 +860,7 @@ function renderLineups() {
     const prevCap    = (PREV_LINEUPS[manager] || {}).capitaine;
     const sameAsPrev = cap && prevCap && cap === prevCap;
     const capUsage   = capitainesUtilises(manager, currentJournee);
-    const capMaxedOut = capUsage.count >= 5 && !capUsage.joueurs.has(cap);
+    const capMaxedOut = capUsage.count >= capitainesMax(manager) && !capUsage.joueurs.has(cap);
 
     const card = document.createElement('div');
     card.className = 'manager-card';
@@ -881,7 +886,7 @@ function renderLineups() {
           ? ` — <span style="color:var(--red)">capitaine interdit (1er)</span>`
           : ` — plafond bonus capitaine : <strong>${plafond}</strong> pts`}
         ${sameAsPrev ? ` — <span style="color:var(--red)">⚠ même capitaine qu'à J${currentJournee - 1}</span>` : ''}
-        — capitaines utilisés cette saison : <strong style="color:${capMaxedOut ? 'var(--red)' : 'inherit'}">${capUsage.count}/5</strong>
+        — capitaines utilisés cette saison : <strong style="color:${capMaxedOut ? 'var(--red)' : 'inherit'}">${capUsage.count}/${capitainesMax(manager)}</strong>
         ${proposedCap && !cap && !isFirst ? ` — capitaine proposé : <strong>${proposedCap}</strong> (clique "C" pour valider)` : ''}
       </div>
       <div class="compo-errs" style="flex-basis:100%;font-size:11px;color:var(--red);font-weight:600">${compoErrorsHtml(compoErrors(manager, titus))}</div>
@@ -902,7 +907,7 @@ function renderLineups() {
         const capBlocked = !isCap && (capMaxedOut || capUsage.joueurs.has(nom));
         const capBtnTitle = isFirst
           ? 'Capitaine interdit pour le 1er au classement'
-          : capMaxedOut ? 'Plafond de 5 capitaines/saison atteint'
+          : capMaxedOut ? `Plafond de ${capitainesMax(manager)} capitaines/saison atteint`
           : capUsage.joueurs.has(nom) ? `${nom} a déjà été capitaine cette saison`
           : '';
 
@@ -1010,8 +1015,8 @@ function setCap(e, manager, nom) {
       toast(`${nom} a déjà été capitaine de ${manager} cette saison (pas de répétition, règlement 2026-27).`, 'err');
       return;
     }
-    if (usage.count >= 5) {
-      toast(`${manager} a déjà utilisé ses 5 capitaines de la saison (règlement 2026-27).`, 'err');
+    if (usage.count >= capitainesMax(manager)) {
+      toast(`${manager} a déjà utilisé ses ${capitainesMax(manager)} capitaines de la saison (règlement 2026-27).`, 'err');
       return;
     }
   }

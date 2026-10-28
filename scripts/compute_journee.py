@@ -416,9 +416,11 @@ def compute(journee: int) -> dict:
                             f"capitaine de {manager} avant de calculer."
                         )
                     usage = _capitaines_utilises(manager, journee, data)
-                    if nom not in usage["joueurs"] and usage["count"] >= 5:
+                    cap_max = 5 - sum(1 for j in jokers_history
+                                      if j.get("manager") == manager and j.get("type") == "capitaine")
+                    if nom not in usage["joueurs"] and usage["count"] >= cap_max:
                         raise ValueError(
-                            f"{manager} a déjà utilisé ses 5 capitaines de la saison "
+                            f"{manager} a déjà utilisé ses {cap_max} capitaines de la saison "
                             f"(règlement 2026-2027). Retirez le capitaine de {manager} "
                             f"avant de calculer."
                         )

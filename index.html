@@ -697,6 +697,11 @@ function capitainesUtilisesAvant(manager, journee) {
   return joueurs.size;
 }
 
+// 5 capitaines/saison, moins ceux transformés en joker (joker "capitaine transformé").
+function capitainesDisponibles(manager) {
+  return 5 - jokerUsedCount(manager, 'capitaine');
+}
+
 function renderClassementCapitaine(journee) {
   if (!DATA) return;
   const ouverte = DATA.journee_ouverte || (DATA.derniere_journee + 1);
@@ -717,12 +722,14 @@ function renderClassementCapitaine(journee) {
     `Ce classement est <b>figé à la fin de la J${journee - 1}</b> : les points marqués pendant la J${journee} ` +
     `(vendredi, samedi, dimanche) ne le modifient pas. Coefficient = rang − 1 (max x7). ` +
     `Le bonus capitaine est plafonné à l'écart de points avec le manager classé 2 places devant ` +
-    `(1 place pour le 2e). Le 1er ne peut pas jouer de capitaine.${fenetre}`;
+    `(1 place pour le 2e). Le 1er ne peut pas jouer de capitaine. 🔁 = un capitaine transformé en joker (4 capitaines au lieu de 5).${fenetre}`;
 
   const rows = ranked.map((m, i) => {
     const mColor = (COULEURS[m.nom] || {}).color || '#e8eaf0';
     const nbCap = capitainesUtilisesAvant(m.nom, journee);
-    const capTxt = `<td style="text-align:center;${nbCap >= 5 ? 'color:var(--danger);font-weight:700' : ''}">${nbCap}/5</td>`;
+    const capMax = capitainesDisponibles(m.nom);
+    const capJoker = capMax < 5 ? ` title="1 capitaine transformé en joker"` : '';
+    const capTxt = `<td style="text-align:center;${nbCap >= capMax ? 'color:var(--danger);font-weight:700' : ''}"${capJoker}>${nbCap}/${capMax}${capMax < 5 ? ' 🔁' : ''}</td>`;
     if (m.rang === 1) {
       return `<tr><td>${m.rang}</td><td style="font-weight:700;color:${mColor}">${m.nom}</td><td style="text-align:right">${m.pts}</td>` +
              `<td style="text-align:center;color:var(--muted)">—</td><td class="cap-ref-col" style="color:var(--muted)">—</td>` +
