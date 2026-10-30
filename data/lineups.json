@@ -1206,6 +1206,40 @@
       ],
       "capitaine": null,
       "coeff": 1
+    },
+    "BASTIEN": {
+      "titulaires": [
+        "R.RISSER",
+        "M.UDOL",
+        "T.WEAH",
+        "V.ALEXSANDRO",
+        "M.TALBI",
+        "J.CHOTARD",
+        "A.THOMASSON",
+        "D.ZAKARIA",
+        "A.HARIT",
+        "A.WITSEL",
+        "D.DOUE"
+      ],
+      "capitaine": null,
+      "coeff": 1
+    },
+    "ANTHONY": {
+      "titulaires": [
+        "D.GREIF",
+        "N.AGUERD",
+        "K.LALA",
+        "W.PACHO",
+        "I.KEBBAL",
+        "P.SULC",
+        "V.RONGIER",
+        "C.CASSERES",
+        "M.ABLINE",
+        "P.PAGIS",
+        "D.BAKWA"
+      ],
+      "capitaine": null,
+      "coeff": 1
     }
   }
 }

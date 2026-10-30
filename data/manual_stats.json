@@ -2624,5 +2624,90 @@
         "goals": 1
       }
     }
+  },
+  "9": {
+    "ADRIEN": {
+      "A.HAKIMI": {
+        "sort_a": 72,
+        "goals": 3,
+        "assists": 2
+      }
+    },
+    "FAB": {
+      "A.RICHARDSON": {
+        "sort_a": 65
+      },
+      "W.ZAIRE-EMERY": {
+        "full_match": true
+      },
+      "Y.DIOUF": {
+        "full_match": true
+      },
+      "E.WAHI": {
+        "sort_a": 85,
+        "goals": 1,
+        "assists": 1,
+        "pen_scored": 2,
+        "yellow_cards": true
+      }
+    },
+    "MICKA": {
+      "R.NDIAYE": {
+        "entre_a": 65
+      },
+      "C.CRESSWELL": {
+        "full_match": true,
+        "yellow_cards": true,
+        "be_malus": true
+      },
+      "M.AMOURA": {
+        "full_match": true,
+        "goals": 1,
+        "yellow_cards": true
+      }
+    },
+    "BASTIEN": {
+      "A.THOMASSON": {
+        "sort_a": 46
+      },
+      "D.DOUE": {
+        "absent": true
+      },
+      "A.WITSEL": {
+        "absent": true
+      }
+    },
+    "ANTHONY": {
+      "W.PACHO": {
+        "absent": true
+      },
+      "V.RONGIER": {
+        "sort_a": 68
+      }
+    },
+    "ROMU": {
+      "M.SAFONOV": {
+        "full_match": true
+      }
+    },
+    "FLORIAN": {
+      "J.CLAUSS": {
+        "sort_a": 85,
+        "goals": 1
+      },
+      "S.SZYMANSKI": {
+        "full_match": true,
+        "goals": 1
+      }
+    },
+    "JEROME": {
+      "A.AIT-BOUDLAL": {
+        "full_match": true,
+        "be_malus": true
+      },
+      "L.BLAS": {
+        "absent": true
+      }
+    }
   }
 }
