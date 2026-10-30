@@ -2631,6 +2631,13 @@
         "sort_a": 72,
         "goals": 3,
         "assists": 2
+      },
+      "R.PERRAUD": {
+        "cs": true,
+        "sort_a": 78
+      },
+      "F.THAUVIN": {
+        "full_match": true
       }
     },
     "FAB": {
@@ -2664,6 +2671,10 @@
         "full_match": true,
         "goals": 1,
         "yellow_cards": true
+      },
+      "B.OZER": {
+        "full_match": true,
+        "cs": true
       }
     },
     "BASTIEN": {
@@ -2675,6 +2686,16 @@
       },
       "A.WITSEL": {
         "absent": true
+      },
+      "R.RISSER": {
+        "full_match": true
+      },
+      "M.UDOL": {
+        "full_match": true
+      },
+      "V.ALEXSANDRO": {
+        "full_match": true,
+        "cs": true
       }
     },
     "ANTHONY": {
@@ -2683,11 +2704,17 @@
       },
       "V.RONGIER": {
         "sort_a": 68
+      },
+      "D.BAKWA": {
+        "entre_a": 73
       }
     },
     "ROMU": {
       "M.SAFONOV": {
         "full_match": true
+      },
+      "H.HARALDSSON": {
+        "sort_a": 91
       }
     },
     "FLORIAN": {
@@ -2707,6 +2734,10 @@
       },
       "L.BLAS": {
         "absent": true
+      },
+      "N.NGOY": {
+        "full_match": true,
+        "cs": true
       }
     }
   }
