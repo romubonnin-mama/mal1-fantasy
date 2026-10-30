@@ -1103,5 +1103,109 @@
       "capitaine": null,
       "coeff": 1
     }
+  },
+  "9": {
+    "ADRIEN": {
+      "titulaires": [
+        "K.TRAPP",
+        "P.LEES-MELOU",
+        "F.NAZINHO",
+        "G.YASSINE",
+        "J.OSO",
+        "F.THAUVIN",
+        "H.MAGNETTI",
+        "R.FAIVRE",
+        "R.PERRAUD",
+        "A.HAKIMI",
+        "D.NAMASO"
+      ],
+      "capitaine": null,
+      "coeff": 1
+    },
+    "FAB": {
+      "titulaires": [
+        "Y.DIOUF",
+        "J.LEFORT",
+        "Z.ATHEKAME",
+        "R.NICOLAISEN",
+        "A.RICHARDSON",
+        "PE.HOJBJERG",
+        "K.DANOIS",
+        "E.WAHI",
+        "L.SINAYOKO",
+        "L.AJORQUE",
+        "W.ZAIRE-EMERY"
+      ],
+      "capitaine": null,
+      "coeff": 1
+    },
+    "FLORIAN": {
+      "titulaires": [
+        "D.COPPOLA",
+        "A.GOLOVINE",
+        "T.JORGENSEN",
+        "I.PAIXAO",
+        "L.MAFOUTA",
+        "C.TENGSTEDT",
+        "M.NIAKHATE",
+        "S.SZYMANSKI",
+        "J.CLAUSS",
+        "B.VANDENBOOMEN",
+        "Y.MVOGO"
+      ],
+      "capitaine": null,
+      "coeff": 1
+    },
+    "JEROME": {
+      "titulaires": [
+        "F.JORGENSEN",
+        "A.GOMES",
+        "N.NGOY",
+        "G.REYNA",
+        "J.MAKENGO",
+        "L.CAMARA",
+        "C.ARCHER",
+        "K.COULIBALY",
+        "L.BLAS",
+        "A.AIT-BOUDLAL",
+        "E.DIER"
+      ],
+      "capitaine": null,
+      "coeff": 1
+    },
+    "MICKA": {
+      "titulaires": [
+        "B.OZER",
+        "C.CRESSWELL",
+        "A.KOUASSI",
+        "K.DOUMBIA",
+        "H.ABDELLI",
+        "A.MILLE",
+        "V.VANDERSON",
+        "M.AMOURA",
+        "A.DONNUM",
+        "R.NDIAYE",
+        "L.RAOLISOA"
+      ],
+      "capitaine": null,
+      "coeff": 1
+    },
+    "ROMU": {
+      "titulaires": [
+        "M.SAFONOV",
+        "H.HARALDSSON",
+        "S.SANE",
+        "L.KOLEOSHO",
+        "A.VINICIUS",
+        "M.IFNAOUI",
+        "E.PALMIERI",
+        "P.BRUNNER",
+        "P.MBOUP",
+        "E.NUAMAH",
+        "B.LOCKO"
+      ],
+      "capitaine": null,
+      "coeff": 1
+    }
   }
 }

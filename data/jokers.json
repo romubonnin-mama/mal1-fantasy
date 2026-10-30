@@ -730,5 +730,24 @@
       "club": "Auxerre"
     },
     "active_from": 8
+  },
+  {
+    "id": 1793383113602,
+    "date": "2026-10-30T17:58:33.602Z",
+    "manager": "FLORIAN",
+    "type": "gardien",
+    "out": {
+      "nom": "B.SAMBA",
+      "poste": "G",
+      "club": "Rennes",
+      "mise": 2,
+      "id": "b.samba__rennes__G"
+    },
+    "in": {
+      "nom": "Y.MVOGO",
+      "poste": "G",
+      "club": "Lorient"
+    },
+    "active_from": 9
   }
 ]
