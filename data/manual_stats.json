@@ -2626,7 +2626,85 @@
     }
   },
   "9": {
+    "MICKA": {
+      "B.OZER": {
+        "full_match": true,
+        "cs": true
+      },
+      "C.CRESSWELL": {
+        "full_match": true,
+        "yellow_cards": true,
+        "be_malus": true
+      },
+      "A.KOUASSI": {},
+      "V.VANDERSON": {},
+      "L.RAOLISOA": {},
+      "R.NDIAYE": {
+        "entre_a": 65
+      },
+      "K.DOUMBIA": {},
+      "A.DONNUM": {},
+      "H.ABDELLI": {},
+      "M.AMOURA": {
+        "full_match": true,
+        "goals": 1,
+        "yellow_cards": true
+      },
+      "A.MILLE": {
+        "full_match": true
+      }
+    },
+    "FLORIAN": {
+      "Y.MVOGO": {},
+      "D.COPPOLA": {},
+      "J.CLAUSS": {
+        "sort_a": 85,
+        "goals": 1
+      },
+      "M.NIAKHATE": {},
+      "A.GOLOVINE": {},
+      "S.SZYMANSKI": {
+        "full_match": true,
+        "goals": 1
+      },
+      "B.VANDENBOOMEN": {},
+      "T.JORGENSEN": {},
+      "I.PAIXAO": {},
+      "L.MAFOUTA": {
+        "sort_a": 74
+      },
+      "C.TENGSTEDT": {}
+    },
+    "FAB": {
+      "Y.DIOUF": {
+        "full_match": true
+      },
+      "J.LEFORT": {},
+      "Z.ATHEKAME": {},
+      "R.NICOLAISEN": {},
+      "K.DANOIS": {
+        "sort_a": 63
+      },
+      "W.ZAIRE-EMERY": {
+        "full_match": true
+      },
+      "PE.HOJBJERG": {},
+      "A.RICHARDSON": {
+        "sort_a": 65
+      },
+      "E.WAHI": {
+        "sort_a": 85,
+        "goals": 1,
+        "assists": 1,
+        "pen_scored": 2,
+        "yellow_cards": true
+      },
+      "L.SINAYOKO": {},
+      "L.AJORQUE": {}
+    },
     "ADRIEN": {
+      "K.TRAPP": {},
+      "F.NAZINHO": {},
       "A.HAKIMI": {
         "sort_a": 72,
         "goals": 3,
@@ -2636,95 +2714,89 @@
         "cs": true,
         "sort_a": 78
       },
+      "P.LEES-MELOU": {},
+      "H.MAGNETTI": {},
       "F.THAUVIN": {
         "full_match": true
-      }
-    },
-    "FAB": {
-      "A.RICHARDSON": {
-        "sort_a": 65
       },
-      "W.ZAIRE-EMERY": {
-        "full_match": true
+      "D.NAMASO": {
+        "sort_a": 63
       },
-      "Y.DIOUF": {
-        "full_match": true
+      "G.YASSINE": {
+        "full_match": true,
+        "goals": 2,
+        "assists": 1
       },
-      "E.WAHI": {
-        "sort_a": 85,
-        "goals": 1,
+      "R.FAIVRE": {
+        "full_match": true,
         "assists": 1,
-        "pen_scored": 2,
-        "yellow_cards": true
-      }
-    },
-    "MICKA": {
-      "R.NDIAYE": {
-        "entre_a": 65
-      },
-      "C.CRESSWELL": {
-        "full_match": true,
-        "yellow_cards": true,
-        "be_malus": true
-      },
-      "M.AMOURA": {
-        "full_match": true,
-        "goals": 1,
         "yellow_cards": true
       },
-      "B.OZER": {
+      "J.OSO": {
         "full_match": true,
-        "cs": true
+        "assists": 2
       }
     },
     "BASTIEN": {
-      "A.THOMASSON": {
-        "sort_a": 46
-      },
-      "D.DOUE": {
-        "absent": true
-      },
-      "A.WITSEL": {
-        "absent": true
-      },
       "R.RISSER": {
         "full_match": true
       },
       "M.UDOL": {
         "full_match": true
       },
+      "T.WEAH": {},
       "V.ALEXSANDRO": {
         "full_match": true,
         "cs": true
-      }
-    },
-    "ANTHONY": {
-      "W.PACHO": {
+      },
+      "M.TALBI": {},
+      "J.CHOTARD": {},
+      "A.THOMASSON": {
+        "sort_a": 46
+      },
+      "D.ZAKARIA": {},
+      "A.HARIT": {},
+      "A.WITSEL": {
         "absent": true
       },
-      "V.RONGIER": {
-        "sort_a": 68
-      },
-      "D.BAKWA": {
-        "entre_a": 73
+      "D.DOUE": {
+        "absent": true
       }
     },
     "ROMU": {
       "M.SAFONOV": {
         "full_match": true
       },
+      "A.VINICIUS": {},
+      "B.LOCKO": {},
+      "S.SANE": {},
+      "E.PALMIERI": {},
+      "L.KOLEOSHO": {},
       "H.HARALDSSON": {
         "sort_a": 91
-      }
-    },
-    "FLORIAN": {
-      "J.CLAUSS": {
-        "sort_a": 85,
-        "goals": 1
       },
-      "S.SZYMANSKI": {
-        "full_match": true,
-        "goals": 1
+      "M.IFNAOUI": {},
+      "E.NUAMAH": {},
+      "P.BRUNNER": {},
+      "P.MBOUP": {}
+    },
+    "ANTHONY": {
+      "D.GREIF": {},
+      "N.AGUERD": {},
+      "K.LALA": {},
+      "W.PACHO": {
+        "absent": true
+      },
+      "I.KEBBAL": {},
+      "P.SULC": {},
+      "V.RONGIER": {
+        "sort_a": 68
+      },
+      "C.CASSERES": {},
+      "M.ABLINE": {},
+      "P.PAGIS": {},
+      "D.BAKWA": {
+        "entre_a": 73
       }
     },
     "JEROME": {
@@ -2732,12 +2804,27 @@
         "full_match": true,
         "be_malus": true
       },
-      "L.BLAS": {
-        "absent": true
-      },
+      "E.DIER": {},
       "N.NGOY": {
         "full_match": true,
         "cs": true
+      },
+      "G.REYNA": {},
+      "A.GOMES": {},
+      "L.BLAS": {
+        "absent": true
+      },
+      "J.MAKENGO": {},
+      "L.CAMARA": {},
+      "F.JORGENSEN": {
+        "full_match": true
+      },
+      "K.COULIBALY": {
+        "full_match": true
+      },
+      "C.ARCHER": {
+        "full_match": true,
+        "goals": 1
       }
     }
   }
