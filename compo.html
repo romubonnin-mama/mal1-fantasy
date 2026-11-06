@@ -211,6 +211,7 @@ select:focus,input:focus{outline:none;border-color:var(--accent)}
     <div id="compo-errors" class="alert alert-danger" style="display:none;margin:0 16px 12px"></div>
   </div>
 
+  <div id="compo-journee" style="font-size:13px;font-weight:600;color:var(--accent);text-align:center;margin-bottom:8px;display:none"></div>
   <div style="display:flex;gap:8px;margin-bottom:20px">
     <button class="btn btn-primary" style="flex:1" id="btn-copy-img">📋 Copier l'image</button>
   </div>
@@ -409,13 +410,7 @@ async function attemptLogin(nom, pin) {
     sel.appendChild(opt);
   });
 
-  try {
-    const siteData = await fetch('data.json').then(r => r.json());
-    // journee_ouverte = journée que l'admin a explicitement ouverte aux compos (forçable
-    // en cas de match décalé) ; à défaut, dernière journée calculée + 1 (comportement
-    // automatique normal dès que "Calculer J" a tourné côté admin pour la précédente).
-    CURRENT_JOURNEE = siteData.journee_ouverte || (siteData.derniere_journee ? siteData.derniere_journee + 1 : null);
-  } catch (e) { CURRENT_JOURNEE = null; }
+  await refreshCurrentJournee();
 
   // Connexion memorisee -> reconnexion automatique, sans resaisir nom + PIN.
   try {
@@ -797,7 +792,23 @@ function exportFileName() {
 // N'écrit jamais dans lineups.json/roster : simple proposition que l'admin
 // voit pré-remplie dans l'onglet Compositions et valide (ou corrige) en
 // cliquant "Sauvegarder" comme avant.
+async function refreshCurrentJournee() {
+  try {
+    // Sans cache : le site garde data.json 10 min, et la page peut rester ouverte
+    // bien plus longtemps, or l'admin peut avoir ouvert une nouvelle journée entre-temps.
+    const siteData = await fetch(`data.json?t=${Date.now()}`, {cache: 'no-store'}).then(r => r.json());
+    // journee_ouverte = journée que l'admin a explicitement ouverte aux compos (forçable
+    // en cas de match décalé) ; à défaut, dernière journée calculée + 1 (comportement
+    // automatique normal dès que "Calculer J" a tourné côté admin pour la précédente).
+    CURRENT_JOURNEE = siteData.journee_ouverte || (siteData.derniere_journee ? siteData.derniere_journee + 1 : null);
+  } catch (e) { /* hors ligne : on garde la dernière journée connue */ }
+  const el = document.getElementById('compo-journee');
+  el.textContent = CURRENT_JOURNEE ? `📅 Compo pour la J${CURRENT_JOURNEE}` : '';
+  el.style.display = CURRENT_JOURNEE ? 'block' : 'none';
+}
+
 async function submitCompoToAdmin() {
+  await refreshCurrentJournee();
   if (!MGR || !CURRENT_JOURNEE) return;
   await setDoc(doc(db, 'compo_submissions', `${MGR}_${CURRENT_JOURNEE}`), {
     manager: MGR,

@@ -263,7 +263,7 @@ header h1 { font-size: 18px; font-weight: 700; color: var(--accent); }
     <label>Journée</label>
     <input type="number" id="journeeInput" min="1" max="38" value="32">
     <button class="btn btn-subtle" onclick="loadJournee()">Charger</button>
-    <button class="btn btn-subtle" onclick="ouvrirJourneeCompos()" title="Fixe la journée que l'outil Compo propose aux managers. Indépendant de « Calculer J » (qui peut être cliqué plusieurs fois pendant le week-end) — à cliquer une seule fois, quand TOUTE la journée en cours est terminée et que les managers peuvent passer à la suivante.">📌 Ouvrir pour les compos</button>
+    <button class="btn btn-subtle" onclick="ouvrirJourneeCompos()" title="Fixe la journée que l'outil Compo propose aux managers. Indépendant de « Calculer J » (qui peut être cliqué plusieurs fois pendant le week-end) — à cliquer une seule fois, quand TOUTE la journée en cours est terminée et que les managers peuvent passer à la suivante. Publié aussitôt sur le site.">📌 Ouvrir pour les compos</button>
     <span id="journee-ouverte-info" style="color:var(--muted);font-size:12px"></span>
   </div>
 </header>
@@ -495,7 +495,7 @@ header h1 { font-size: 18px; font-weight: 700; color: var(--accent); }
     <button class="btn btn-primary" onclick="saveStats()">💾 Sauvegarder stats</button>
     <button class="btn btn-subtle" onclick="computeJournee()" id="btn-compute">⚙️ Calculer J<span id="compute-j-lbl">—</span></button>
     <button class="btn btn-subtle" onclick="pushGithub()" id="btn-push">🚀 Publier GitHub</button>
-    <button class="btn btn-subtle" onclick="journeeSuivante()" id="btn-journee-suivante" title="À cliquer une seule fois quand tous les matchs de la journée en cours sont joués : ouvre la journée suivante aux managers (outil Compo) et la charge partout dans l'admin (Compositions, Stats, Corrections).">▶ Journée suivante</button>
+    <button class="btn btn-subtle" onclick="journeeSuivante()" id="btn-journee-suivante" title="À cliquer une seule fois quand tous les matchs de la journée en cours sont joués : ouvre la journée suivante aux managers (outil Compo), la publie aussitôt sur le site et la charge partout dans l'admin (Compositions, Stats, Corrections).">▶ Journée suivante</button>
   </div>
 </div>
 
@@ -724,16 +724,35 @@ function updateJourneeOuverteInfo() {
   el.style.color = ouverte === currentJournee ? 'var(--muted)' : 'var(--red)';
 }
 
+// Fixe la journée ouverte ET la publie : compo.html lit le data.json du site, donc tant
+// que ce n'est pas publié, les propositions des managers partent sur l'ancienne journée.
+// Renvoie false (après avoir prévenu) si la publication a échoué.
+async function publierJourneeOuverte(journee) {
+  await api('POST', '/journee-ouverte', { journee });
+  DATA.journee_ouverte = journee;
+  let erreur;
+  try {
+    const r = await api('POST', '/push', { msg: `Ouverture J${journee} pour les compos` });
+    if (r.ok) return true;
+    erreur = r.msg;
+  } catch (e) {
+    erreur = e.message;
+  }
+  alert(`J${journee} ouverte ici, mais la publication a échoué : ${erreur}\n\nLes managers restent sur l'ancienne journée tant que ce n'est pas publié : clique sur "Publier GitHub".`);
+  checkSync();
+  return false;
+}
+
 // Force la journée actuellement chargée comme journée ouverte aux propositions de compo
 // des managers (data.json:journee_ouverte). À cliquer une seule fois quand la journée en
 // cours est vraiment terminée (tous les matchs joués) — jamais automatiquement déclenché par
 // "Calculer J", qui peut être cliqué plusieurs fois au fil du week-end sur la même journée.
 async function ouvrirJourneeCompos() {
+  if (!confirm(`Ouvrir J${currentJournee} pour les compos des managers ?\n\nC'est publié tout de suite sur le site, avec les éventuelles modifications locales en attente.`)) return;
   try {
-    await api('POST', '/journee-ouverte', { journee: currentJournee });
-    DATA.journee_ouverte = currentJournee;
+    const publie = await publierJourneeOuverte(currentJournee);
     updateJourneeOuverteInfo();
-    toast(`✅ J${currentJournee} ouverte pour les compos des managers`);
+    if (publie) toast(`✅ J${currentJournee} ouverte et publiée pour les compos des managers`);
   } catch (e) {
     toast('Erreur : ' + e.message, 'err');
   }
@@ -746,15 +765,19 @@ async function ouvrirJourneeCompos() {
 // "Charger" + "Ouvrir pour les compos" séparément.
 async function journeeSuivante() {
   const next = currentJournee + 1;
-  if (!confirm(`Passer à la journée suivante : J${currentJournee} → J${next} ?\n\nLes managers verront J${next} dans l'outil Compo, et l'admin va charger J${next} partout (Compositions, Stats, Corrections).`)) return;
+  if (!confirm(`Passer à la journée suivante : J${currentJournee} → J${next} ?\n\nLes managers verront J${next} dans l'outil Compo, et l'admin va charger J${next} partout (Compositions, Stats, Corrections).\n\nC'est publié tout de suite sur le site, avec les éventuelles modifications locales en attente.`)) return;
+  const btn = document.getElementById('btn-journee-suivante');
+  const orig = btn.textContent;
+  btn.disabled = true; btn.textContent = '⏳ Publication…';
   try {
-    await api('POST', '/journee-ouverte', { journee: next });
-    DATA.journee_ouverte = next;
+    const publie = await publierJourneeOuverte(next);
     document.getElementById('journeeInput').value = next;
     await loadJournee();
-    toast(`✅ J${next} chargée partout et ouverte pour les compos des managers`);
+    if (publie) toast(`✅ J${next} chargée partout, ouverte et publiée pour les compos des managers`);
   } catch (e) {
     toast('Erreur : ' + e.message, 'err');
+  } finally {
+    btn.disabled = false; btn.textContent = orig;
   }
 }
 
