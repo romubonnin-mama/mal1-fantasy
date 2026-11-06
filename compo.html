@@ -822,27 +822,28 @@ async function submitCompoToAdmin() {
 // ── Copie de l'image du terrain ─────────────────────────────
 document.getElementById('btn-copy-img').addEventListener('click', async () => {
   if (compoErrors().length) return;
-  const canvas = await html2canvas(document.getElementById('export-zone'), {backgroundColor: '#161b27', scale: 2});
+  const canvasPromise = html2canvas(document.getElementById('export-zone'), {backgroundColor: '#161b27', scale: 2});
 
-  submitCompoToAdmin().catch(e => console.warn('Compo non envoyée à l\'admin :', e));
+  canvasPromise.then(() => submitCompoToAdmin()).catch(e => console.warn('Compo non envoyée à l\'admin :', e));
 
-  canvas.toBlob(async (blob) => {
-    if (!blob) return;
-    try {
-      if (!navigator.clipboard || !window.ClipboardItem) throw new Error('clipboard-image non supportée');
-      await navigator.clipboard.write([new ClipboardItem({'image/png': blob})]);
-      const s = document.getElementById('copy-status');
-      s.style.display = 'block';
-      setTimeout(() => s.style.display = 'none', 2000);
-    } catch (e) {
-      // Repli : le navigateur ne permet pas de copier une image dans le presse-papiers -> téléchargement.
-      const link = document.createElement('a');
-      link.download = `${exportFileName()}.png`;
-      link.href = canvas.toDataURL('image/png');
-      link.click();
-      alert("Ton navigateur ne permet pas de copier une image dans le presse-papiers : l'image a été téléchargée à la place.");
-    }
-  }, 'image/png');
+  try {
+    if (!navigator.clipboard || !window.ClipboardItem) throw new Error('clipboard-image non supportée');
+    // write() appelé tout de suite, avec une image encore en cours de calcul : le navigateur
+    // peut refuser la copie si le clic est trop ancien quand elle démarre (téléphone lent).
+    const blobPromise = canvasPromise.then(canvas => new Promise(resolve => canvas.toBlob(resolve, 'image/png')));
+    await navigator.clipboard.write([new ClipboardItem({'image/png': blobPromise})]);
+    const s = document.getElementById('copy-status');
+    s.style.display = 'block';
+    setTimeout(() => s.style.display = 'none', 2000);
+  } catch (e) {
+    // Repli : la copie dans le presse-papiers a échoué -> téléchargement.
+    const canvas = await canvasPromise;
+    const link = document.createElement('a');
+    link.download = `${exportFileName()}.png`;
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+    alert(`L'image n'a pas pu être copiée dans le presse-papiers : elle a été téléchargée à la place. (détail : ${e.name})`);
+  }
 });
 </script>
 </body>
