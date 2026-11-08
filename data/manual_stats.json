@@ -2972,7 +2972,9 @@
         "sort_a": 70,
         "goals": 1
       },
-      "A.GOMES": {},
+      "A.GOMES": {
+        "entre_a": 78
+      },
       "L.BLAS": {
         "entre_a": 75
       },
@@ -3017,11 +3019,16 @@
         "full_match": true,
         "be_malus": true
       },
-      "M.SKORAS": {},
+      "M.SKORAS": {
+        "entre_a": 88
+      },
       "R.FAIVRE": {
         "full_match": true
       },
-      "F.THAUVIN": {},
+      "F.THAUVIN": {
+        "goals": 1,
+        "full_match": true
+      },
       "G.YASSINE": {
         "sort_a": 62,
         "yellow_cards": true
@@ -3038,12 +3045,13 @@
       }
     },
     "ANTHONY": {
-      "N.AGUERD": {},
       "W.PACHO": {
         "full_match": true,
         "cs": true
       },
-      "S.ABDULHAMID": {},
+      "S.ABDULHAMID": {
+        "sort_a": 88
+      },
       "I.KEBBAL": {
         "sort_a": 73
       },
@@ -3069,6 +3077,9 @@
         "cs": true
       },
       "D.GREIF": {
+        "full_match": true
+      },
+      "N.AGUERD": {
         "full_match": true
       }
     },
@@ -3112,9 +3123,6 @@
       }
     },
     "BASTIEN": {
-      "R.RISSER": {},
-      "M.UDOL": {},
-      "T.WEAH": {},
       "A.THOMASSON": {
         "sort_a": 75
       },
@@ -3137,6 +3145,15 @@
       },
       "J.MAJA": {
         "full_match": true
+      },
+      "R.RISSER": {
+        "full_match": true
+      },
+      "M.UDOL": {
+        "full_match": true
+      },
+      "T.WEAH": {
+        "full_match": true
       }
     },
     "FLORIAN": {
@@ -3155,7 +3172,6 @@
         "goals": 1,
         "yellow_cards": true
       },
-      "I.PAIXAO": {},
       "L.MAFOUTA": {
         "sort_a": 74
       },
@@ -3177,6 +3193,9 @@
       "Y.MVOGO": {
         "full_match": true,
         "cs": true
+      },
+      "I.PAIXAO": {
+        "full_match": true
       }
     },
     "MICKA": {
@@ -3187,8 +3206,14 @@
         "sort_a": 73,
         "assists": 1
       },
-      "H.ABDELLI": {},
-      "A.GOUIRI": {},
+      "H.ABDELLI": {
+        "sort_a": 78
+      },
+      "A.GOUIRI": {
+        "goals": 1,
+        "full_match": true,
+        "yellow_cards": true
+      },
       "B.OZER": {
         "full_match": true
       },
@@ -3227,7 +3252,6 @@
       "W.ZAIRE-EMERY": {
         "full_match": true
       },
-      "PE.HOJBJERG": {},
       "A.RICHARDSON": {
         "entre_a": 46
       },
@@ -3252,6 +3276,9 @@
       },
       "E.WAHI": {
         "sort_a": 80
+      },
+      "PE.HOJBJERG": {
+        "full_match": true
       }
     }
   }
