@@ -768,5 +768,24 @@
       "club": "Le Havre"
     },
     "active_from": 10
+  },
+  {
+    "id": 1794161637196,
+    "date": "2026-11-08T18:13:57.196Z",
+    "manager": "JEROME",
+    "type": "gardien",
+    "out": {
+      "nom": "F.JORGENSEN",
+      "poste": "G",
+      "club": "Strasbourg",
+      "mise": 3,
+      "id": "f.jorgensen__strasbourg__G"
+    },
+    "in": {
+      "nom": "B.SAMBA",
+      "poste": "G",
+      "club": "Rennes"
+    },
+    "active_from": 11
   }
 ]
