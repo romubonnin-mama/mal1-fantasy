@@ -3,7 +3,7 @@
     {
       "rang": 1,
       "nom": "FAB",
-      "pts": 367
+      "pts": 369
     },
     {
       "rang": 2,
@@ -13,7 +13,7 @@
     {
       "rang": 3,
       "nom": "ADRIEN",
-      "pts": 338
+      "pts": 339
     },
     {
       "rang": 4,
@@ -44,10 +44,10 @@
   "derniere_journee": 10,
   "journee_ouverte": 10,
   "scores_journee": {
-    "ADRIEN": 23,
+    "ADRIEN": 24,
     "ANTHONY": 30,
     "BASTIEN": 20,
-    "FAB": 31,
+    "FAB": 33,
     "FLORIAN": 34,
     "JEROME": 29,
     "MICKA": 28,
@@ -145,10 +145,10 @@
       "ROMU": 30
     },
     "10": {
-      "ADRIEN": 23,
+      "ADRIEN": 24,
       "ANTHONY": 30,
       "BASTIEN": 20,
-      "FAB": 31,
+      "FAB": 33,
       "FLORIAN": 34,
       "JEROME": 29,
       "MICKA": 28,
@@ -45666,8 +45666,8 @@
               "pts": 0
             },
             "cs": {
-              "val": 0,
-              "pts": 0
+              "val": 1,
+              "pts": 1
             },
             "pm": {
               "val": 0,
@@ -45689,7 +45689,7 @@
               "val": 0,
               "pts": 0
             },
-            "pts": 3
+            "pts": 4
           },
           {
             "nom": "A.HAKIMI",
@@ -47973,8 +47973,8 @@
             "nom": "E.WAHI",
             "statut": "",
             "cap": "",
-            "tj": "10",
-            "tj_pts": 1,
+            "tj": "80",
+            "tj_pts": 3,
             "bm": {
               "val": 0,
               "pts": 0
@@ -48011,7 +48011,7 @@
               "val": 0,
               "pts": 0
             },
-            "pts": 1
+            "pts": 3
           },
           {
             "nom": "L.SINAYOKO",
@@ -50693,7 +50693,7 @@
       },
       {
         "j": 10,
-        "pts": 367
+        "pts": 369
       }
     ],
     "FLORIAN": [
@@ -50777,7 +50777,7 @@
       },
       {
         "j": 10,
-        "pts": 338
+        "pts": 339
       }
     ],
     "MICKA": [

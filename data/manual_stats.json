@@ -3007,7 +3007,8 @@
         "cs": true
       },
       "F.NAZINHO": {
-        "sort_a": 88
+        "sort_a": 88,
+        "cs": true
       },
       "R.PERRAUD": {
         "entre_a": 62
@@ -3230,9 +3231,6 @@
       "A.RICHARDSON": {
         "entre_a": 46
       },
-      "E.WAHI": {
-        "entre_a": 80
-      },
       "L.SINAYOKO": {
         "sort_a": 90,
         "goals": 1
@@ -3251,6 +3249,9 @@
       },
       "J.LEFORT": {
         "full_match": true
+      },
+      "E.WAHI": {
+        "sort_a": 80
       }
     }
   }
