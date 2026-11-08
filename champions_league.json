@@ -237,112 +237,144 @@
           "vainqueur": "FLORIAN"
         }
       ]
+    },
+    "10": {
+      "matches": [
+        {
+          "a": "ADRIEN",
+          "b": "FLORIAN",
+          "pts_a": 30,
+          "pts_b": 37,
+          "vainqueur": "FLORIAN"
+        },
+        {
+          "a": "ANTHONY",
+          "b": "ROMU",
+          "pts_a": 36,
+          "pts_b": 28,
+          "vainqueur": "ANTHONY"
+        },
+        {
+          "a": "BASTIEN",
+          "b": "MICKA",
+          "pts_a": 29,
+          "pts_b": 35,
+          "vainqueur": "MICKA"
+        },
+        {
+          "a": "FAB",
+          "b": "JEROME",
+          "pts_a": 36,
+          "pts_b": 30,
+          "vainqueur": "FAB"
+        }
+      ]
     }
   },
   "classement_poule": [
+    {
+      "nom": "FLORIAN",
+      "pts": 10,
+      "v": 3,
+      "n": 1,
+      "d": 0,
+      "diff_h2h": 16,
+      "bm": 8,
+      "pd": 1,
+      "cs": 9,
+      "cr": 0,
+      "cj": 8
+    },
     {
       "nom": "BASTIEN",
       "pts": 7,
       "v": 2,
       "n": 1,
-      "d": 0,
-      "diff_h2h": 14,
+      "d": 1,
+      "diff_h2h": 8,
       "bm": 6,
       "pd": 1,
-      "cs": 4,
+      "cs": 5,
       "cr": 1,
       "cj": 4
     },
     {
-      "nom": "FLORIAN",
+      "nom": "ANTHONY",
       "pts": 7,
       "v": 2,
       "n": 1,
-      "d": 0,
-      "diff_h2h": 9,
-      "bm": 6,
-      "pd": 1,
+      "d": 1,
+      "diff_h2h": 2,
+      "bm": 2,
+      "pd": 3,
       "cs": 6,
       "cr": 0,
-      "cj": 6
+      "cj": 2
+    },
+    {
+      "nom": "FAB",
+      "pts": 6,
+      "v": 2,
+      "n": 0,
+      "d": 2,
+      "diff_h2h": 4,
+      "bm": 4,
+      "pd": 3,
+      "cs": 6,
+      "cr": 2,
+      "cj": 10
+    },
+    {
+      "nom": "MICKA",
+      "pts": 6,
+      "v": 2,
+      "n": 0,
+      "d": 2,
+      "diff_h2h": 1,
+      "bm": 3,
+      "pd": 6,
+      "cs": 8,
+      "cr": 0,
+      "cj": 11
     },
     {
       "nom": "JEROME",
       "pts": 5,
       "v": 1,
       "n": 2,
-      "d": 0,
-      "diff_h2h": 7,
-      "bm": 2,
-      "pd": 4,
+      "d": 1,
+      "diff_h2h": 1,
+      "bm": 5,
+      "pd": 5,
       "cs": 2,
       "cr": 0,
-      "cj": 3
-    },
-    {
-      "nom": "ANTHONY",
-      "pts": 4,
-      "v": 1,
-      "n": 1,
-      "d": 1,
-      "diff_h2h": -6,
-      "bm": 2,
-      "pd": 1,
-      "cs": 4,
-      "cr": 0,
-      "cj": 2
-    },
-    {
-      "nom": "FAB",
-      "pts": 3,
-      "v": 1,
-      "n": 0,
-      "d": 2,
-      "diff_h2h": -2,
-      "bm": 3,
-      "pd": 2,
-      "cs": 5,
-      "cr": 2,
-      "cj": 8
-    },
-    {
-      "nom": "MICKA",
-      "pts": 3,
-      "v": 1,
-      "n": 0,
-      "d": 2,
-      "diff_h2h": -5,
-      "bm": 2,
-      "pd": 3,
-      "cs": 7,
-      "cr": 0,
-      "cj": 9
+      "cj": 7
     },
     {
       "nom": "ROMU",
       "pts": 3,
       "v": 1,
       "n": 0,
-      "d": 2,
-      "diff_h2h": -10,
-      "bm": 3,
+      "d": 3,
+      "diff_h2h": -18,
+      "bm": 4,
       "pd": 1,
-      "cs": 3,
+      "cs": 5,
       "cr": 0,
-      "cj": 4
+      "cj": 5
     },
     {
       "nom": "ADRIEN",
       "pts": 1,
       "v": 0,
       "n": 1,
-      "d": 2,
-      "diff_h2h": -7,
-      "bm": 2,
+      "d": 3,
+      "diff_h2h": -14,
+      "bm": 3,
       "pd": 4,
-      "cs": 3,
+      "cs": 5,
       "cr": 0,
-      "cj": 8
+      "cj": 10
     }
   ],
   "bracket": {
