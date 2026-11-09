@@ -3,7 +3,7 @@
     {
       "rang": 1,
       "nom": "FAB",
-      "pts": 372
+      "pts": 370
     },
     {
       "rang": 2,
@@ -33,7 +33,7 @@
     {
       "rang": 7,
       "nom": "ANTHONY",
-      "pts": 306
+      "pts": 304
     },
     {
       "rang": 8,
@@ -45,9 +45,9 @@
   "journee_ouverte": 11,
   "scores_journee": {
     "ADRIEN": 30,
-    "ANTHONY": 36,
+    "ANTHONY": 34,
     "BASTIEN": 29,
-    "FAB": 36,
+    "FAB": 34,
     "FLORIAN": 37,
     "JEROME": 30,
     "MICKA": 35,
@@ -146,9 +146,9 @@
     },
     "10": {
       "ADRIEN": 30,
-      "ANTHONY": 36,
+      "ANTHONY": 34,
       "BASTIEN": 29,
-      "FAB": 36,
+      "FAB": 34,
       "FLORIAN": 37,
       "JEROME": 30,
       "MICKA": 35,
@@ -46748,8 +46748,8 @@
               "pts": 0
             },
             "pd": {
-              "val": 1,
-              "pts": 2
+              "val": 0,
+              "pts": 0
             },
             "cj": {
               "val": 0,
@@ -46759,7 +46759,7 @@
               "val": 0,
               "pts": 0
             },
-            "pts": 5
+            "pts": 3
           },
           {
             "nom": "D.BAKWA",
@@ -47732,8 +47732,8 @@
               "pts": 0
             },
             "pd": {
-              "val": 1,
-              "pts": 2
+              "val": 0,
+              "pts": 0
             },
             "cj": {
               "val": 0,
@@ -47743,7 +47743,7 @@
               "val": 0,
               "pts": 0
             },
-            "pts": 5
+            "pts": 3
           }
         ],
         "M": [
@@ -50693,7 +50693,7 @@
       },
       {
         "j": 10,
-        "pts": 372
+        "pts": 370
       }
     ],
     "FLORIAN": [
@@ -50945,7 +50945,7 @@
       },
       {
         "j": 10,
-        "pts": 306
+        "pts": 304
       }
     ],
     "JEROME": [
