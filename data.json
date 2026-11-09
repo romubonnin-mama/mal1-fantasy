@@ -23,7 +23,7 @@
     {
       "rang": 5,
       "nom": "BASTIEN",
-      "pts": 325
+      "pts": 328
     },
     {
       "rang": 6,
@@ -46,7 +46,7 @@
   "scores_journee": {
     "ADRIEN": 30,
     "ANTHONY": 34,
-    "BASTIEN": 29,
+    "BASTIEN": 32,
     "FAB": 34,
     "FLORIAN": 37,
     "JEROME": 30,
@@ -147,7 +147,7 @@
     "10": {
       "ADRIEN": 30,
       "ANTHONY": 34,
-      "BASTIEN": 29,
+      "BASTIEN": 32,
       "FAB": 34,
       "FLORIAN": 37,
       "JEROME": 30,
@@ -47213,8 +47213,8 @@
             "nom": "A.HARIT",
             "statut": "",
             "cap": "",
-            "tj": "0",
-            "tj_pts": 0,
+            "tj": "78",
+            "tj_pts": 3,
             "bm": {
               "val": 0,
               "pts": 0
@@ -47251,7 +47251,7 @@
               "val": 0,
               "pts": 0
             },
-            "pts": 0
+            "pts": 3
           },
           {
             "nom": "A.WITSEL",
@@ -50861,7 +50861,7 @@
       },
       {
         "j": 10,
-        "pts": 325
+        "pts": 328
       }
     ],
     "ROMU": [
