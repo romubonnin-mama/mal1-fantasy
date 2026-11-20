@@ -1379,5 +1379,41 @@
       "capitaine": null,
       "coeff": 1
     }
+  },
+  "11": {
+    "ADRIEN": {
+      "titulaires": [
+        "K.TRAPP",
+        "P.LEES-MELOU",
+        "F.NAZINHO",
+        "G.YASSINE",
+        "J.OSO",
+        "F.THAUVIN",
+        "H.MAGNETTI",
+        "R.FAIVRE",
+        "D.NAMASO",
+        "A.HAKIMI",
+        "V.VITINHA"
+      ],
+      "capitaine": null,
+      "coeff": 1
+    },
+    "ROMU": {
+      "titulaires": [
+        "M.SAFONOV",
+        "H.HARALDSSON",
+        "S.SANE",
+        "A.VINICIUS",
+        "M.IFNAOUI",
+        "P.BRUNNER",
+        "P.MBOUP",
+        "E.NUAMAH",
+        "B.LOCKO",
+        "S.DIOP",
+        "L.KOLEOSHO"
+      ],
+      "capitaine": null,
+      "coeff": 1
+    }
   }
 }

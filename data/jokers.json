@@ -787,5 +787,24 @@
       "club": "Rennes"
     },
     "active_from": 11
+  },
+  {
+    "id": 1795126947101,
+    "date": "2026-11-19T22:22:27.101Z",
+    "manager": "FAB",
+    "type": "saison",
+    "out": {
+      "nom": "A.PIEDFORT",
+      "poste": "D",
+      "club": "Auxerre",
+      "mise": 1,
+      "id": "a.piedfort__auxerre__D"
+    },
+    "in": {
+      "nom": "M.NAGIDA",
+      "poste": "D",
+      "club": "Rennes"
+    },
+    "active_from": 11
   }
 ]
