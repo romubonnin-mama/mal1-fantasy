@@ -806,5 +806,24 @@
       "club": "Rennes"
     },
     "active_from": 11
+  },
+  {
+    "id": 1795195245850,
+    "date": "2026-11-20T17:20:45.850Z",
+    "manager": "MICKA",
+    "type": "saison",
+    "out": {
+      "nom": "R.NDIAYE",
+      "poste": "M",
+      "club": "Le Havre",
+      "mise": 2,
+      "id": "r.ndiaye__le havre__M"
+    },
+    "in": {
+      "nom": "E.MBAPPE",
+      "poste": "M",
+      "club": "LOSC"
+    },
+    "active_from": 11
   }
 ]
