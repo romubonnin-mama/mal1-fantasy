@@ -3281,5 +3281,34 @@
         "yellow_cards": true
       }
     }
+  },
+  "11": {
+    "BASTIEN": {
+      "J.MAJA": {
+        "sort_a": 87,
+        "yellow_cards": true,
+        "goals": 1
+      }
+    },
+    "FAB": {
+      "A.SEKO": {
+        "full_match": true,
+        "be_malus": true
+      },
+      "A.RICHARDSON": {
+        "full_match": true
+      }
+    },
+    "MICKA": {
+      "A.MILLE": {
+        "full_match": true,
+        "goals": 2
+      }
+    },
+    "ROMU": {
+      "M.IFNAOUI": {
+        "sort_a": 78
+      }
+    }
   }
 }

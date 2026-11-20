@@ -1499,6 +1499,23 @@
       ],
       "capitaine": null,
       "coeff": 1
+    },
+    "ANTHONY": {
+      "titulaires": [
+        "D.GREIF",
+        "N.AGUERD",
+        "K.LALA",
+        "W.PACHO",
+        "S.ABDULHAMID",
+        "I.KEBBAL",
+        "V.RONGIER",
+        "C.CASSERES",
+        "P.PAGIS",
+        "D.BAKWA",
+        "M.GODO"
+      ],
+      "capitaine": null,
+      "coeff": 1
     }
   }
 }
