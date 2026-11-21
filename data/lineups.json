@@ -1468,17 +1468,17 @@
     },
     "JEROME": {
       "titulaires": [
-        "A.GOMES",
         "N.NGOY",
-        "G.REYNA",
         "J.MAKENGO",
         "L.CAMARA",
         "C.ARCHER",
         "K.COULIBALY",
-        "L.BLAS",
         "A.AIT-BOUDLAL",
         "E.DIER",
-        "B.SAMBA"
+        "B.SAMBA",
+        "O.DEMBELE",
+        "I.GANIOU",
+        "L.BLAS"
       ],
       "capitaine": null,
       "coeff": 1
@@ -1486,16 +1486,16 @@
     "MICKA": {
       "titulaires": [
         "B.OZER",
-        "C.CRESSWELL",
         "A.KOUASSI",
+        "C.CRESSWELL",
         "V.VANDERSON",
-        "K.DOUMBIA",
-        "A.DONNUM",
+        "E.MBAPPE",
         "A.MILLE",
+        "K.DOUMBIA",
         "H.ABDELLI",
-        "A.GOUIRI",
+        "A.DONNUM",
         "M.AMOURA",
-        "L.RAOLISOA"
+        "A.GOUIRI"
       ],
       "capitaine": null,
       "coeff": 1
