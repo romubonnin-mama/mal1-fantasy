@@ -3301,8 +3301,11 @@
       "T.JORGENSEN": {
         "sort_a": 91
       },
-      "I.PAIXAO": {},
-      "L.MAFOUTA": {},
+      "L.MAFOUTA": {
+        "sort_a": 83,
+        "goals": 1,
+        "pen_mm_saved": 1
+      },
       "C.TENGSTEDT": {
         "full_match": true
       },
@@ -3318,6 +3321,10 @@
       },
       "Y.MVOGO": {
         "full_match": true
+      },
+      "I.PAIXAO": {
+        "full_match": true,
+        "goals": 1
       }
     },
     "FAB": {
@@ -3343,7 +3350,6 @@
       "K.DANOIS": {
         "entre_a": 72
       },
-      "PE.HOJBJERG": {},
       "A.RICHARDSON": {
         "full_match": true
       },
@@ -3355,6 +3361,9 @@
       },
       "L.SINAYOKO": {
         "absent": true
+      },
+      "PE.HOJBJERG": {
+        "absent": true
       }
     },
     "BASTIEN": {
@@ -3364,7 +3373,6 @@
       "M.UDOL": {
         "full_match": true
       },
-      "T.WEAH": {},
       "V.ALEXSANDRO": {
         "full_match": true
       },
@@ -3378,7 +3386,9 @@
       "D.ZAKARIA": {
         "sort_a": 69
       },
-      "A.HARIT": {},
+      "A.HARIT": {
+        "sort_a": 88
+      },
       "E.LEPAUL": {
         "entre_a": 71
       },
@@ -3390,10 +3400,13 @@
       "M.TALBI": {
         "full_match": true,
         "goals": 1
+      },
+      "T.WEAH": {
+        "full_match": true,
+        "be_malus": true
       }
     },
     "ANTHONY": {
-      "N.AGUERD": {},
       "K.LALA": {
         "sort_a": 27
       },
@@ -3426,6 +3439,10 @@
       "D.GREIF": {
         "full_match": true,
         "cs": true
+      },
+      "N.AGUERD": {
+        "full_match": true,
+        "be_malus": true
       }
     },
     "MICKA": {
@@ -3449,11 +3466,9 @@
         "full_match": true,
         "goals": 2
       },
-      "H.ABDELLI": {},
       "E.MBAPPE": {
         "entre_a": 62
       },
-      "A.GOUIRI": {},
       "M.AMOURA": {
         "sort_a": 67,
         "goals": 1
@@ -3461,6 +3476,15 @@
       "L.RAOLISOA": {},
       "C.CRESSWELL": {
         "full_match": true
+      },
+      "H.ABDELLI": {
+        "full_match": true,
+        "yellow_cards": true
+      },
+      "A.GOUIRI": {
+        "full_match": true,
+        "assists": 1,
+        "goals": 1
       }
     },
     "ROMU": {
