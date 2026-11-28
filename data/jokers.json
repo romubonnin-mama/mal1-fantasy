@@ -844,24 +844,5 @@
       "club": "Paris FC"
     },
     "active_from": 12
-  },
-  {
-    "id": 1795863764459,
-    "date": "2026-11-28T11:02:44.459Z",
-    "manager": "BASTIEN",
-    "type": "gardien",
-    "out": {
-      "nom": "R.RISSER",
-      "poste": "G",
-      "club": "Lens",
-      "mise": 7,
-      "id": "r.risser__lens__G"
-    },
-    "in": {
-      "nom": "E.SELVIK",
-      "poste": "G",
-      "club": "Brest"
-    },
-    "active_from": 13
   }
 ]
