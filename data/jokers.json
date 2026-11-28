@@ -825,5 +825,43 @@
       "club": "LOSC"
     },
     "active_from": 11
+  },
+  {
+    "id": 1795863531567,
+    "date": "2026-11-28T10:58:51.567Z",
+    "manager": "BASTIEN",
+    "type": "gardien",
+    "out": {
+      "nom": "R.RISSER",
+      "poste": "G",
+      "club": "Lens",
+      "mise": 7,
+      "id": "r.risser__lens__G"
+    },
+    "in": {
+      "nom": "S.SELVIK",
+      "poste": "G",
+      "club": "Brest"
+    },
+    "active_from": 12
+  },
+  {
+    "id": 1795863555903,
+    "date": "2026-11-28T10:59:15.903Z",
+    "manager": "BASTIEN",
+    "type": "saison",
+    "out": {
+      "nom": "D.DOUE",
+      "poste": "A",
+      "club": "PSG",
+      "mise": 6,
+      "id": "d.doue__psg__A"
+    },
+    "in": {
+      "nom": "M.LOPEZ",
+      "poste": "M",
+      "club": "Paris FC"
+    },
+    "active_from": 12
   }
 ]
